@@ -1,6 +1,10 @@
 library(dplyr)
 library(data.table)
 
+
+#' Create a disk.frame
+#' @param path The path to store the output file
+#' @param preview.rows The number of rows to load into memory
 disk.frame <- function(path, preview.rows = 1, ...) {
   #browser()
   first.file <-  file.path(path,sort(dir(path))[1])
@@ -19,18 +23,20 @@ disk.frame <- function(path, preview.rows = 1, ...) {
   df
 }
 
+
+#' Look inside the paths looking for disk.frame data sets. *** Stub ***
+#' @export
 disk.lib <- function(path) {
   dir(path)
-  # look inside the paths looking for disk.frame data sets.
 }
 
+#' Access an element of the disk.frame 
 `$.disk.frame`<- function(x,y) {  
-  #b <- data.table::fread(attr(x,"file"))
-  #browser()
   env <- attr(x,"env")
   env$a[,get(y)]
 }
 
+#' The [ method of disk.frame
 `[.disk.frame` <- function(df, chunk_id = -1, ...) {
   # b <- data.table::fread(attr(df,"file"),na.strings=".")
   # chunk_id <- -1 means all the chunks
@@ -38,6 +44,7 @@ disk.lib <- function(path) {
   env$a[...]
 }
 
+#' The $<- method of disk.frame
 `$<-` <- function(x, name, value) {
   if("disk.frame" %in% class(x) ) {
     `$<-.disk.frame`(x,name,value)
@@ -46,9 +53,8 @@ disk.lib <- function(path) {
   }
 }
 
+#' The $<- method of disk.frame
 `$<-.disk.frame` <- function(x, name, value) {
-  #browser()
-  
     path <- attr(x,"path")
     for(p in sort(dir(path))) {
       print(paste0(which(p == dir(path)),"/",length(dir(path))))
@@ -61,6 +67,7 @@ disk.lib <- function(path) {
     }
 }
 
+#' The first chunk of the disk.frame
 firstchunk <- function(df) {
   #df is expected to be a disk.frame  
   path <- attr(df, "path")
@@ -84,6 +91,7 @@ firstchunk <- function(df) {
   df  
 } 
 
+#' Gives the next chunk of the disk.frame
 nextchunk <- function(df) {
   # df is a disk.frame chunk
   chunk.seq <- attr(df,"chunk.seq") + 1 
@@ -113,6 +121,7 @@ nextchunk <- function(df) {
   df  
 }
 
+# The mutate method
 mutate <- function(...) UseMethod("mutate")
 
 mutate.default <- function(...) dplyr::mutate
