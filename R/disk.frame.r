@@ -130,5 +130,3 @@ mutate.disk.frame <- function(df,...) {
     #save(a, attr(a,"file"))
   }
 }
-
-

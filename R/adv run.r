@@ -1,10 +1,3 @@
-#system.time(csv.zip.to.sqlite("c:/testing/AO_ACCOUNTLEVEL_1406_FIX", outpath = "c:/testing/bwazip.sqlite3", outtable = "bwa"))
-
-
-#parallel::detectCores()
-
-
-
 library(parallel)
 cl <- makeCluster(getOption("cl.cores", 2))
 

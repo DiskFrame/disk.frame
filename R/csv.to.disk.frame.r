@@ -14,6 +14,7 @@ csv.to.disk.frame <- function(infile, outpath, ..., mem.prop = 0.1) {
   # set a connection to the file so the file can be read nrows at a time
   f <- file(infile)
   
+  # this doesn't seem to work
   #f = unz(paste0(csv,".zip"), "AO_ACCOUNTLEVEL_1406_FIX.csv")
   
   if(isOpen(f) | isIncomplete(f)) {    
