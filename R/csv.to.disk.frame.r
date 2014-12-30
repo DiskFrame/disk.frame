@@ -81,7 +81,6 @@ csv.to.disk.frame <- function(infile, outpath, ..., mem.prop = 0.1) {
     tfs <- file.size(tf)/1024*n + tfs
     
     
-    
     provlinesize <- (pryr::object_size(data)  + totreadn*provlinesize) / (totreadn + n) #95% CI of line size
     totreadn <- totreadn + n        
   }
