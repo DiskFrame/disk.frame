@@ -7,4 +7,4 @@ Author: AnalytixWare Ltd Pty
 Maintainer: ZJ <dzj@analytixware.com>
 Description: This package will allow the user to use near native syntax of dplyr and data.table and run row-by-row processs on large files without loading the file into memory. It uses a diskbased file format and relies heavily on using dplyr and data.table as backend.
 License: MIT
-Depends: dplyr,data.table
+Depends: dplyr (>= 0.3.0.2),data.table (>= 1.9.4),RSQLite
