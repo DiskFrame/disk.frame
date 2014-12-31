@@ -1,30 +1,35 @@
-# depends on data.table
-#require(data.table)
+#' Convert a csv file to disk.frame format
+#' 
+#' @param infile The csv file to convert into disk.frame format
+#' @param outpath The path (in the form of a folder) to output the disk.frame. A
+#'   disk.frame is folder containing multiple R data files
+#' @param mem.prop The proportion of memory to use. On Windows the memory limit 
+#'   is determined using the memory.limit() function while on other platforms 
+#'   the avaialble memory is assumed to be 4Gb. So by default on Windows it will
+#'   use 10% of the memory while on Linux it will use 400mb
+#' @param ... Parameters passed to read.table
+#' 
+#'
 csv.to.disk.frame <- function(infile, outpath, ..., mem.prop = 0.1) {  
   if (length(dir(outpath)) == 0) {
     dir.create(outpath)
   }
   
-  Sys.info()["sysname"]
   mb = 1048576 # number of bytes in megabyte
   
   if(Sys.info()["sysname"] == "Windows") {
     memlimit = memory.limit() * mb # the memory limit
   } else {
-    # assume 4 gigs
+    # assume you have at least 4 gigs of RAM to play with
     memlimit = mb * 1024 * 4 
   }
-    
   
   # the infile size
-  # do NOT use file.size this function does not work on digitial ocean
+  # do NOT use file.size this function does not work on Digitial Ocean
   infile.size <- file.info(infile)$size
     
   # set a connection to the file so the file can be read nrows at a time
   f <- file(infile)
-  
-  # this doesn't seem to work
-  #f = unz(paste0(csv,".zip"), "AO_ACCOUNTLEVEL_1406_FIX.csv")
   
   if(isOpen(f) | isIncomplete(f)) {    
     close(f)
@@ -34,12 +39,14 @@ csv.to.disk.frame <- function(infile, outpath, ..., mem.prop = 0.1) {
   # read 50 lines to try and have a first guess at the size of the data
   data <-read.csv(f,nrows=50, ...)
   var.names = names(data)    
+  
+  # can't seem to install pryr on Digital Ocean (could be a case of small instance)
   #provlinesize = pryr::object_size(data)/50  
   provlinesize = object.size(data)/50  
   close(f, blocking =TRUE) # now that I have determined n
   
   # the theory is the more you read in the first round the less likely your data format to be wrong
-  #f = unz(paste0(csv,".zip"), "AO_ACCOUNTLEVEL_1406_FIX.csv")
+  
   f <- file(infile)
   file.con = open(f, open ="r") # open a connection to the file again
   
@@ -59,14 +66,12 @@ csv.to.disk.frame <- function(infile, outpath, ..., mem.prop = 0.1) {
   tf <- tempfile()
   write.csv(data[1:1024,], file = tf, row.names = FALSE, col.names = FALSE)
   
-  # the approximate total file size fpr the first chunk
+  # the approximate total file size in bytes for the first chunk
   tfs <- file.info(tf)$size/1024 * n
     
   # a more realistic estimate of line size
   provlinesize = object.size(data)  / n 
   
-  #setting up disk.frame folder
-
   
   while(nrow(data) == n) { # if not reached the end of line    
     # this line needs to be here

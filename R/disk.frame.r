@@ -6,7 +6,6 @@ library(data.table)
 #' @param path The path to store the output file
 #' @param preview.rows The number of rows to load into memory
 disk.frame <- function(path, preview.rows = 1, ...) {
-  #browser()
   first.file <-  file.path(path,sort(dir(path))[1])
   
   # df <- data.table::fread(first.file, nrows = nrows, ...)
@@ -14,7 +13,7 @@ disk.frame <- function(path, preview.rows = 1, ...) {
   newe <- new.env()
   load(first.file, newe)
   
-  df <- newe$a[1:preview.rows,]
+  df <- newe$data[1:preview.rows,]
   # the loaded variable sould be called a 
   class(df) <- c("disk.frame",class(df))
   
@@ -33,7 +32,7 @@ disk.lib <- function(path) {
 #' Access an element of the disk.frame 
 `$.disk.frame`<- function(x,y) {  
   env <- attr(x,"env")
-  env$a[,get(y)]
+  env$data[,get(y)]
 }
 
 #' The [ method of disk.frame
@@ -41,7 +40,7 @@ disk.lib <- function(path) {
   # b <- data.table::fread(attr(df,"file"),na.strings=".")
   # chunk_id <- -1 means all the chunks
   env <- attr(df,"env")
-  env$a[...]
+  env$data[...]
 }
 
 #' The $<- method of disk.frame
@@ -80,7 +79,7 @@ firstchunk <- function(df) {
   newe <- new.env()
   load(first.file, newe)
   
-  df <- newe$a
+  df <- newe$data
   # the loaded variable sould be called a 
   #class(df) <- c("disk.frame.",class(df))
   
@@ -110,7 +109,7 @@ nextchunk <- function(df) {
   newe <- new.env()
   load(file, newe)
   
-  df <- newe$a
+  df <- newe$data
   # the loaded variable sould be called a 
   #class(df) <- c("disk.frame.",class(df))
   
