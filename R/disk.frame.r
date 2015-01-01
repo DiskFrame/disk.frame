@@ -130,11 +130,11 @@ mutate.disk.frame <- function(df,...) {
   a <- firstchunk(df)
   a <- dplyr::mutate(a, ...)
   
-  #save(a, attr(a,"file"))
+  save(a, attr(a,"path"))
   while(!is.null(a <- nextchunk(a))) {
-    #a <- nextchunk(a)
-    browser()
+    #a <- nextchunk(a)    
+    #browser()
     a <- dplyr::mutate(a, ...)
-    #save(a, attr(a,"file"))
+    save(a, attr(a,"path"))
   }
 }
