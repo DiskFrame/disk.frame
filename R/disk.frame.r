@@ -1,10 +1,11 @@
-library(dplyr)
-library(data.table)
+# library(dplyr)
+# library(data.table)
 
 
 #' Create a disk.frame
 #' @param path The path to store the output file
 #' @param preview.rows The number of rows to load into memory
+#' @export
 disk.frame <- function(path, preview.rows = 1, ...) {
   first.file <-  file.path(path,sort(dir(path))[1])
   

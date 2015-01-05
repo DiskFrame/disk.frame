@@ -1,10 +1,10 @@
 Package: disk.frame
 Type: Package
-Title: A package for dealing with gigabyte-sized dataset especiallly the type of row-by-row processing of tabular data.
+Title: Work with gigabyte-sized datasets especially the type of row-by-row processing of tabular data.
 Version: 0.1.0
 Date: 2014-11-20
-Author: AnalytixWare Ltd Pty
-Maintainer: ZJ <dzj@analytixware.com>
-Description: This package will allow the user to use near native syntax of dplyr and data.table and run row-by-row processs on large files without loading the file into memory. It uses a diskbased file format and relies heavily on using dplyr and data.table as backend.
+Author: Zhuo Jia Dai
+Maintainer: Zhuo Jia Dai <dzj@analytixware.com>
+Description: Disk.frame allows the user to use near native syntax of dplyr and data.table and run row-by-row processs on large files without loading the file into memory. It uses a disk-based file format and relies heavily on using dplyr and data.table as backend.
 License: MIT
-Depends: dplyr (>= 0.3.0.2),data.table (>= 1.9.4),RSQLite
+Imports: dplyr (>= 0.3.0.2),data.table (>= 1.9.4), RSQLite
