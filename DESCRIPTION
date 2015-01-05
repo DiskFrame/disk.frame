@@ -1,10 +1,11 @@
 Package: disk.frame
 Type: Package
-Title: Work with gigabyte-sized datasets especially the type of row-by-row processing of tabular data.
+Title: Disk-based chunk-wise processing of gigabyte-sized data
 Version: 0.1.0
 Date: 2014-11-20
 Author: Zhuo Jia Dai
 Maintainer: Zhuo Jia Dai <dzj@analytixware.com>
-Description: Disk.frame allows the user to use near native syntax of dplyr and data.table and run row-by-row processs on large files without loading the file into memory. It uses a disk-based file format and relies heavily on using dplyr and data.table as backend.
+Description: Disk.frame allows the user to use near native syntax of dplyr and data.table and run 
+  chunk-wise processs on gigabyte-sized files without loading the file into memory.
 License: MIT
 Imports: dplyr (>= 0.3.0.2),data.table (>= 1.9.4), RSQLite
