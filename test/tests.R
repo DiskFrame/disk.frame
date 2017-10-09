@@ -1,3 +1,37 @@
+df <-disk.frame("d:/data/aaa.fst")
+system.time(res <- chunks_lapply(df, nrow))
+
+system.time(res <- chunks_sapply(df, nrow))
+
+system.time(res <- chunks_sapply(df, function(chunk) {
+  chunk[,max(ordinal), asdiflightplanid]
+}))
+
+system.time(res <- chunks_lapply(df, function(chunk) {
+  chunk[,max(ordinal), asdiflightplanid]
+},outdir = getwd()))
+
+
+library(future)
+plan(multiprocess)
+
+system.time(res <- chunks_lapply(df, function(chunk) {
+  chunk[,max(ordinal), asdiflightplanid]
+}, parallel = T))
+
+
+system.time(res <- chunks_lapply(df, function(chunk) {
+  chunk[,max(ordinal), asdiflightplanid]
+}, parallel = T))
+system.time(rbindlist(res)[,max(V1), asdiflightplanid])
+
+
+system.time(res <- chunks_lapply(df, function(chunk) {
+  chunk[ordinal >= 100,]
+}, outdir=getwd()))
+
+res <- rbindlist(res)
+
 # a <- disk.frame("c:/testing/AO_ACCOUNTLEVEL_1406_FIX_bk/")
 # 
 # system.time(a.mut <- mutate(a, speed1 = paste0(AccountNumber,"0")))
