@@ -1,3 +1,4 @@
+
 # library(dplyr)
 # library(data.table)
 
@@ -7,7 +8,8 @@
 #' @param preview.rows The number of rows to load into memory
 #' @export
 disk.frame <- function(path, ..., backend = "fst") {
-  df <- fst::fst.metadata("d:/data/aaa.fst")
+  df <- list()
+  attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
   attr(df,"backend") <- backend
   class(df) <- "disk.frame"
@@ -74,7 +76,7 @@ nextchunk <- function(df) {
   # df is a disk.frame chunk
   fromi <- (attr(df,"chunk.seq")+1)*1000000+1
   toi <- fromi + 1000000 -1
-
+  
   dfstr <- as.character(substitute(df))
   eval(parse(text = sprintf("attr(%s,'chunk.seq') <- attr(%s,'chunk.seq') + 1 ", dfstr, dfstr)), envir = parent.frame())
   fst::read.fst(attr(df,"path"), from = fromi, to = toi)
@@ -94,6 +96,7 @@ chunks_lapply <- function(df, fn, ..., outdir=NULL, chunks = 16, parallel = F) {
       fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
     })
   } else {
+    browser()
     chunks_xapply(df, fn, lapply, ..., outdir = outdir, chunks = chunks)
   }
 }
@@ -103,17 +106,36 @@ chunks_sapply <- function(df, fn, ..., outdir=NULL, chunks = 16) {
 }
 
 chunks_xapply <- function(df, fn, xapply, ..., outdir=NULL, chunks = 16) {
-  ii <- seq(0,df$NrOfRows, length.out = chunks)
-  xapply(2:length(ii), function(i) {
-    res <- fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
+  ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = chunks)
+  browser()
+  xapply(2:length(ii), function(i, ...) {
+    browser()
+    res <- fn(fst::read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T), ...)
+    
     if(!is.null(outdir)) {
-      write.fst(res, file.path(outdir,paste0(i,".chunk")))
+      fst::write.fst(res, file.path(outdir,paste0(i,".chunk")))
     }
     res
   }, ...)
 }
 
-
+#' Yeah yeah yeah
+#' @import data.table
+`[.disk.frame` <- function(df, i,j,...) {
+  ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = 16)
+  res <- lapply(2:length(ii), function(k,i,j,dotdot) {
+    a <- fst::read.fst(attr(df,"path"), from = ii[k-1]+1, to = ii[k], as.data.table = T)
+    if(deparse(dotdot) == "NULL") {
+      code = sprintf("a[%s,%s]", deparse(i), deparse(j))
+    } else {
+      code = sprintf("a[%s,%s,%s]", deparse(i), deparse(j), deparse(dotdot))
+    }
+    
+    eval(parse(text=code))
+  }, substitute(i),substitute(j), substitute(...))
+  
+  rbindlist(res)
+}
 
 
 # The mutate method
