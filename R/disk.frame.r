@@ -4,10 +4,25 @@
 
 
 #' Create a disk.frame
-#' @param path The path to store the output file
+#' @param path The path to store the output file or to a directory
 #' @param preview.rows The number of rows to load into memory
 #' @export
 disk.frame <- function(path, ..., backend = "fst") {
+  if(dir.exists(path)) {
+    disk.frame_folder(path)
+  } else if (file.exists(path)) {
+    disk.frame_fst(path)
+  }
+}
+
+# 
+disk.frame_folder <- function(path, ....) {
+  
+}
+
+#' Create a disk.frame from fst files
+#' @path The path to store the output file or to a directory
+disk.frame_fst <= function(path, ...) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
@@ -15,6 +30,7 @@ disk.frame <- function(path, ..., backend = "fst") {
   class(df) <- "disk.frame"
   df
 }
+
 
 #' Head
 #' @export
@@ -65,26 +81,26 @@ tail.disk.frame <- function(df, n = 6L, ...) {
 # }
 
 #' The first chunk of the disk.frame
-firstchunk <- function(df) {
-  eval(parse(text = sprintf("attr(%s,'chunk.seq') <- 1",as.character(substitute(df)) )),envir = parent.frame())
-  attr(df, "chunk.seq") <- 1
-  fst::read.fst(attr(df,"path"), from = 1, to = 1000000)
-}
-
-#' Gives the next chunk of the disk.frame
-nextchunk <- function(df) {
-  # df is a disk.frame chunk
-  fromi <- (attr(df,"chunk.seq")+1)*1000000+1
-  toi <- fromi + 1000000 -1
-  
-  dfstr <- as.character(substitute(df))
-  eval(parse(text = sprintf("attr(%s,'chunk.seq') <- attr(%s,'chunk.seq') + 1 ", dfstr, dfstr)), envir = parent.frame())
-  fst::read.fst(attr(df,"path"), from = fromi, to = toi)
-}
-
-start <- function(df) {
-  
-}
+#' firstchunk <- function(df) {
+#'   eval(parse(text = sprintf("attr(%s,'chunk.seq') <- 1",as.character(substitute(df)) )),envir = parent.frame())
+#'   attr(df, "chunk.seq") <- 1
+#'   fst::read.fst(attr(df,"path"), from = 1, to = 1000000)
+#' }
+#' 
+#' #' Gives the next chunk of the disk.frame
+#' nextchunk <- function(df) {
+#'   # df is a disk.frame chunk
+#'   fromi <- (attr(df,"chunk.seq")+1)*1000000+1
+#'   toi <- fromi + 1000000 -1
+#'   
+#'   dfstr <- as.character(substitute(df))
+#'   eval(parse(text = sprintf("attr(%s,'chunk.seq') <- attr(%s,'chunk.seq') + 1 ", dfstr, dfstr)), envir = parent.frame())
+#'   fst::read.fst(attr(df,"path"), from = fromi, to = toi)
+#' }
+#' 
+#' start <- function(df) {
+#'   
+#' }
 
 #' do to all chunks
 #' @import fst
@@ -139,17 +155,17 @@ chunks_xapply <- function(df, fn, xapply, ..., outdir=NULL, chunks = 16) {
 
 
 # The mutate method
-mutate <- function(...) UseMethod("mutate")
-
-mutate.default <- function(...) dplyr::mutate
-
-mutate.disk.frame <- function(df,...) {
-  a <- firstchunk(df)
-  a <- dplyr::mutate(a, ...)
-  
-  save(a, attr(a,"path"))
-  while(!is.null(a <- nextchunk(a))) {
-    a <- dplyr::mutate(a, ...)
-    save(a, attr(a,"path"))
-  }
-}
+# mutate <- function(...) UseMethod("mutate")
+# 
+# mutate.default <- function(...) dplyr::mutate
+# 
+# mutate.disk.frame <- function(df,...) {
+#   a <- firstchunk(df)
+#   a <- dplyr::mutate(a, ...)
+#   
+#   save(a, attr(a,"path"))
+#   while(!is.null(a <- nextchunk(a))) {
+#     a <- dplyr::mutate(a, ...)
+#     save(a, attr(a,"path"))
+#   }
+# }
