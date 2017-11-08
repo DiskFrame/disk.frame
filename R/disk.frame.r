@@ -1,7 +1,5 @@
-
 # library(dplyr)
 # library(data.table)
-
 
 #' Create a disk.frame
 #' @param path The path to store the output file or to a directory
@@ -15,18 +13,28 @@ disk.frame <- function(path, ..., backend = "fst") {
   }
 }
 
-# 
+#' Create a data frame pointed to a folder
 disk.frame_folder <- function(path, ....) {
-  
+  df <- list()
+  files <- dir(path, full.names = T)
+  attr(df,"path") <- path
+  attr(df,"backend") <- "fst"
+  class(df) <- "disk.frame"
+  attr(df, "metadata") <- sapply(files,function(file1) fst::fst.metadata(file1))
+  df
 }
+
+
 
 #' Create a disk.frame from fst files
 #' @path The path to store the output file or to a directory
-disk.frame_fst <= function(path, ...) {
+#' @import fst
+#' @export
+disk.frame_fst <- function(path, ...) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
-  attr(df,"backend") <- backend
+  attr(df,"backend") <- "fst"
   class(df) <- "disk.frame"
   df
 }
@@ -35,50 +43,25 @@ disk.frame_fst <= function(path, ...) {
 #' Head
 #' @export
 head.disk.frame <- function(df, n = 6L, ...) {
-  head(fst::read.fst(attr(df,"path"), from = 1, to = n), n = n, ...)
+  path1 <- attr(df,"path")
+  if(dir.exists(path1)) {
+    path2 <- dir(path1,full.names = T)[1]
+    head(fst::read.fst(path2, from = 1, to = n), n = n, ...)
+  } else {
+    head(fst::read.fst(path1, from = 1, to = n), n = n, ...)
+  }
 }
 
 tail.disk.frame <- function(df, n = 6L, ...) {
-  tail(fst::read.fst(attr(df,"path"), from = (df$NrOfRows-n+1), to = df$NrOfRows), n = n, ...)
+  path1 <- attr(df,"path")
+  if(dir.exists(path1)) {
+    path2 <- dir(path1,full.names = T)
+    path2 <- path2[length(path2)]
+    tail(fst::read.fst(path2, from = 1, to = n), n = n, ...)
+  } else {
+    tail(fst::read.fst(path1, from = (df$NrOfRows-n+1), to = df$NrOfRows), n = n, ...)
+  }
 }
-
-#' Access an element of the disk.frame 
-#' `$.disk.frame`<- function(x,y) {
-#'   xx <- x
-#'   class(xx) <- "list"
-#'   fst::read.fst(.Primitive("$")(xx, "path"), columns = substitute(y))
-#' }
-#' 
-#' #' The [ method of disk.frame
-#' `[.disk.frame` <- function(df, chunk_id = -1, ...) {
-#'   # b <- data.table::fread(attr(df,"file"),na.strings=".")
-#'   # chunk_id <- -1 means all the chunks
-#'   env <- attr(df,"env")
-#'   env$data[...]
-#' }
-#' 
-#' #' The $<- method of disk.frame
-#' `$<-` <- function(x, name, value) {
-#'   if("disk.frame" %in% class(x) ) {
-#'     `$<-.disk.frame`(x,name,value)
-#'   } else {
-#'     dplyr::`$<-`(x,name,value)
-#'   }
-#' }
-#' 
-#' The $<- method of disk.frame
-# `$<-.disk.frame` <- function(x, name, value) {
-#     # path <- attr(x,"path")
-#     # for(p in sort(dir(path))) {
-#     #   print(paste0(which(p == dir(path)),"/",length(dir(path))))
-#     #   load(file.path(path,p))
-#     # 
-#     #   name <- as.character(match.call()[3])
-#     #   a <- `$<-`(a, name, value)
-#     #   save(a, file = file.path(path,p))
-#     #   rm(a)
-#     # }
-# }
 
 #' The first chunk of the disk.frame
 #' firstchunk <- function(df) {
@@ -105,53 +88,74 @@ tail.disk.frame <- function(df, n = 6L, ...) {
 #' do to all chunks
 #' @import fst
 #' @import future
-chunks_lapply <- function(df, fn, ..., outdir=NULL, chunks = 16, parallel = F) {
-  if(parallel) {
-    ii <- seq(0,df$NrOfRows, length.out = chunks)
-    future_lapply(2:length(ii), function(i) {
-      fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
-    })
-  } else {
-    browser()
-    chunks_xapply(df, fn, lapply, ..., outdir = outdir, chunks = chunks)
-  }
-}
+# chunks_lapply <- function(df, fn, ..., outdir=NULL, chunks = 16, parallel = F) {
+#   if(parallel) {
+#     ii <- seq(0,df$NrOfRows, length.out = chunks)
+#     future_lapply(2:length(ii), function(i) {
+#       fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
+#     })
+#   } else {
+#     chunks_xapply(df, fn, lapply, ..., outdir = outdir, chunks = chunks)
+#   }
+# }
+# 
+# chunks_sapply <- function(df, fn, ..., outdir=NULL, chunks = 16) {
+#   chunks_xapply(df, fn, chunks, sapply, ..., outdir=outdir)
+# }
+# 
+# chunks_xapply <- function(df, fn, xapply, ..., outdir=NULL, chunks = 16) {
+#   ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = chunks)
+#   browser()
+#   xapply(2:length(ii), function(i, ...) {
+#     browser()
+#     res <- fn(fst::read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T), ...)
+#     
+#     if(!is.null(outdir)) {
+#       fst::write.fst(res, file.path(outdir,paste0(i,".chunk")))
+#     }
+#     res
+#   }, ...)
+# }
 
-chunks_sapply <- function(df, fn, ..., outdir=NULL, chunks = 16) {
-  chunks_xapply(df, fn, chunks, sapply, ..., outdir=outdir)
-}
 
-chunks_xapply <- function(df, fn, xapply, ..., outdir=NULL, chunks = 16) {
-  ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = chunks)
-  browser()
-  xapply(2:length(ii), function(i, ...) {
-    browser()
-    res <- fn(fst::read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T), ...)
-    
-    if(!is.null(outdir)) {
-      fst::write.fst(res, file.path(outdir,paste0(i,".chunk")))
-    }
-    res
-  }, ...)
-}
+# `[.disk.frame` <- function(df, i,j,...) {
+#   ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = 16)
+#   res <- lapply(2:length(ii), function(k,i,j,dotdot) {
+#     a <- fst::read.fst(attr(df,"path"), from = ii[k-1]+1, to = ii[k], as.data.table = T)
+#     if(deparse(dotdot) == "NULL") {
+#       code = sprintf("a[%s,%s]", deparse(i), deparse(j))
+#     } else {
+#       code = sprintf("a[%s,%s,%s]", deparse(i), deparse(j), deparse(dotdot))
+#     }
+#     
+#     eval(parse(text=code))
+#   }, substitute(i),substitute(j), substitute(...))
+#   
+#   rbindlist(res)
+# }
 
 #' Yeah yeah yeah
 #' @import data.table
+#' @import future
+#' @import fst
 `[.disk.frame` <- function(df, i,j,...) {
-  ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = 16)
-  res <- lapply(2:length(ii), function(k,i,j,dotdot) {
-    a <- fst::read.fst(attr(df,"path"), from = ii[k-1]+1, to = ii[k], as.data.table = T)
-    if(deparse(dotdot) == "NULL") {
-      code = sprintf("a[%s,%s]", deparse(i), deparse(j))
+  ff <- dir("fst", full.names = T)
+  res <- future_lapply(ff, function(k,i,j,dotdot) {
+    a <- fst::read.fst(k, as.data.table = T)
+    if(dotdot == "NULL") {
+      code = sprintf("a[%s,%s]", i, j)
+    } else if (j == "NULL") {
+      code = sprintf("a[%s]", i)
     } else {
-      code = sprintf("a[%s,%s,%s]", deparse(i), deparse(j), deparse(dotdot))
+      code = sprintf("a[%s,%s,%s]", i, j, dotdot)
     }
     
     eval(parse(text=code))
-  }, substitute(i),substitute(j), substitute(...))
+  }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
   
   rbindlist(res)
 }
+
 
 
 # The mutate method
