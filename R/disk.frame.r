@@ -150,7 +150,9 @@ tail.disk.frame <- function(df, n = 6L, ...) {
       code = sprintf("a[%s,%s,%s]", i, j, dotdot)
     }
     
-    eval(parse(text=code))
+    aa <- eval(parse(text=code))
+    rm(a); gc()
+    aa
   }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
   
   rbindlist(res)
