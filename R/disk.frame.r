@@ -25,7 +25,6 @@ disk.frame_folder <- function(path, ....) {
 }
 
 
-
 #' Create a disk.frame from fst files
 #' @path The path to store the output file or to a directory
 #' @import fst
@@ -38,24 +37,6 @@ disk.frame_fst <- function(path, ...) {
   class(df) <- "disk.frame"
   df
 }
-
-# 
-# head <- function(...) {
-#   UseMethod("head")
-# }
-# 
-# head.default <- function(...) {
-#   base::head(...)
-# }
-# 
-# tail <- function(...) {
-#   UseMethod("tail")
-# }
-# 
-# tail <- function(...) {
-#   base::tail(...)
-# }
-
 
 #' Head
 #' @export
@@ -82,6 +63,10 @@ tail.disk.frame <- function(df, n = 6L, ...) {
 
 nrow <- function(...) {
   UseMethod("nrow")
+}
+
+nrow.default <- function(...) {
+  base::nrow(...)
 }
 
 nrow.disk.frame <- function(df) {
@@ -119,53 +104,34 @@ nrow.disk.frame <- function(df) {
 #' do to all chunks
 #' @import fst
 #' @import future
-# chunks_lapply <- function(df, fn, ..., outdir=NULL, chunks = 16, parallel = F) {
-#   if(parallel) {
-#     ii <- seq(0,df$NrOfRows, length.out = chunks)
-#     future_lapply(2:length(ii), function(i) {
-#       fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
-#     })
-#   } else {
-#     chunks_xapply(df, fn, lapply, ..., outdir = outdir, chunks = chunks)
-#   }
-# }
-# 
-# chunks_sapply <- function(df, fn, ..., outdir=NULL, chunks = 16) {
-#   chunks_xapply(df, fn, chunks, sapply, ..., outdir=outdir)
-# }
-# 
-# chunks_xapply <- function(df, fn, xapply, ..., outdir=NULL, chunks = 16) {
-#   ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = chunks)
-#   browser()
-#   xapply(2:length(ii), function(i, ...) {
-#     browser()
-#     res <- fn(fst::read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T), ...)
-#     
-#     if(!is.null(outdir)) {
-#       fst::write.fst(res, file.path(outdir,paste0(i,".chunk")))
-#     }
-#     res
-#   }, ...)
-# }
-
-
-# `[.disk.frame` <- function(df, i,j,...) {
-#   ii <- seq(0,attr(df,"metadata")$NrOfRows, length.out = 16)
-#   res <- lapply(2:length(ii), function(k,i,j,dotdot) {
-#     a <- fst::read.fst(attr(df,"path"), from = ii[k-1]+1, to = ii[k], as.data.table = T)
-#     if(deparse(dotdot) == "NULL") {
-#       code = sprintf("a[%s,%s]", deparse(i), deparse(j))
-#     } else {
-#       code = sprintf("a[%s,%s,%s]", deparse(i), deparse(j), deparse(dotdot))
-#     }
-#     
-#     eval(parse(text=code))
-#   }, substitute(i),substitute(j), substitute(...))
-#   
-#   rbindlist(res)
-# }
-
-#' Yeah yeah yeah
+chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100) {
+  if(F) {
+    ii <- seq(0,df$nrOfRows, length.out = chunks)
+    future_lapply(2:length(ii), function(i) {
+      fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
+    })
+  } else {
+    path <- attr(df, "path")
+    files <- dir(path, full.names = T)
+    
+    res = future_lapply(1:length(files), function(ii) {
+      res = fn(read.fst(files[ii], as.data.table=T), ...)
+      if(!is.null(outdir)) {
+        write.fst(res, file.path(outdir, ii), compress)
+        return(NULL)
+      } else {
+        return(res)
+      }
+    })
+    if(!is.null(outdir)) {
+      return(disk.frame(outdir))
+    } else {
+      return(res)
+    }
+  }
+}
+ 
+#' [ interface for disk.frame using fst backend
 #' @import data.table
 #' @import future
 #' @import fst
