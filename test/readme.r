@@ -7,8 +7,8 @@ library(fst)
 nworkers = parallel::detectCores()
 plan(multiprocess, workers = nworkers, gc = T)
 options(future.globals.maxSize=Inf)
-
-source("R/disk.frame.r")
+library(disk.frame)
+#source("R/disk.frame.r")
 
 # generate synthetic data
 tmpdir = file.path(tempdir(),"tmpfst")

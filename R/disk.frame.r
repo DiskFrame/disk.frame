@@ -1,9 +1,6 @@
-# library(dplyr)
-# library(data.table)
-
 #' Create a disk.frame
 #' @param path The path to store the output file or to a directory
-#' @param preview.rows The number of rows to load into memory
+#' @param backend The only available backend is fst at the moment
 #' @export
 disk.frame <- function(path, ..., backend = "fst") {
   if(dir.exists(path)) {
@@ -19,7 +16,7 @@ disk.frame_folder <- function(path, ....) {
   files <- dir(path, full.names = T)
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
-  class(df) <- "disk.frame"
+  class(df) <- c("disk.frame", "disk.frame.folder")
   attr(df, "metadata") <- sapply(files,function(file1) fst::fst.metadata(file1))
   df
 }
@@ -28,14 +25,33 @@ disk.frame_folder <- function(path, ....) {
 #' Create a disk.frame from fst files
 #' @path The path to store the output file or to a directory
 #' @import fst
-#' @export
 disk.frame_fst <- function(path, ...) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
-  class(df) <- "disk.frame"
+  class(df) <- c("disk.frame", "disk.frame.file")
   df
+}
+
+
+#' Checks if the df is a single-file based disk.frame
+#' @export
+is.file.disk.frame <- function(df, check.consistency = T) {
+  if(check.consistency) {
+    fpath <- attr(df,"path")
+    if(!dir.exists(fpath) & file.exists(fpath)) {
+      return(TRUE) 
+    } else {
+      return(F)
+    }
+  }
+  return("disk.frame.file" %in% class(df))
+}
+
+#' @rdname is.file.disk.frame
+is.dir.disk.frame <- function(...) {
+  !is.file.disk.frame(...)
 }
 
 #' Head
@@ -50,6 +66,8 @@ head.disk.frame <- function(df, n = 6L, ...) {
   }
 }
 
+#' tail of disk.frame
+#' @export
 tail.disk.frame <- function(df, n = 6L, ...) {
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
@@ -61,14 +79,20 @@ tail.disk.frame <- function(df, n = 6L, ...) {
   }
 }
 
+#' Number of rows of disk.frame
+#' @export
 nrow <- function(...) {
   UseMethod("nrow")
 }
 
+#' @rdname nrow
+#' @export
 nrow.default <- function(...) {
   base::nrow(...)
 }
 
+#' @rdname nrow
+#' @export
 nrow.disk.frame <- function(df) {
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
@@ -104,6 +128,7 @@ nrow.disk.frame <- function(df) {
 #' do to all chunks
 #' @import fst
 #' @import future
+#' @export
 chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100) {
   if(F) {
     ii <- seq(0,df$nrOfRows, length.out = chunks)
@@ -135,6 +160,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
 #' @import data.table
 #' @import future
 #' @import fst
+#' @export
 `[.disk.frame` <- function(df, i,j,..., keep = NULL) {
   res <- NULL
   fpath <- attr(df,"path")
@@ -188,11 +214,16 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
     
 }
 
+#' Distribute (chunk-up/break-up) a fst file into chunks into a folder
+#' @param df The disk.frame
+#' @param outdirpath The directory/folder to output the chunks to 
+#' @param compress Level of compression: 0-100 where 100 is the highest level of compress
+#' @export
 distribute <- function(...) {
   UseMethod("distribute")
 }
 
-distribute.disk.frame <- function (df, outdirpath, compress = 0) {
+distribute.disk.frame <- function(df, outdirpath, compress = 100) {
   fpath <- attr(df, "path")
   md <- fst.metadata(fpath)
   ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
