@@ -5,3 +5,7 @@ disk.frame.sublime-project
 disk.frame.sublime-workspace
 
 *.Rproj
+
+tmpfst2/
+
+tmpfst/

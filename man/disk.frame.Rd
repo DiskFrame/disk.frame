@@ -9,7 +9,7 @@ disk.frame(path, ..., backend = "fst")
 \arguments{
 \item{path}{The path to store the output file or to a directory}
 
-\item{preview.rows}{The number of rows to load into memory}
+\item{backend}{The only available backend is fst at the moment}
 }
 \description{
 Create a disk.frame

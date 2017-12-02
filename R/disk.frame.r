@@ -142,6 +142,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
     res = future_lapply(1:length(files), function(ii) {
       res = fn(read.fst(files[ii], as.data.table=T), ...)
       if(!is.null(outdir)) {
+        if(!dir.exists(outdir)) dir.create(outdir)
         write.fst(res, file.path(outdir, ii), compress)
         return(NULL)
       } else {
@@ -149,6 +150,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
       }
     })
     if(!is.null(outdir)) {
+      if(!dir.exists(outdir)) dir.create(outdir)
       return(disk.frame(outdir))
     } else {
       return(res)
