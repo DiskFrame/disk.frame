@@ -5,4 +5,5 @@
   nworkers = parallel::detectCores()
   plan(multiprocess, workers = nworkers, gc = T)
   options(future.globals.maxSize=Inf)
+  options(disk.frame.nworkers = nworkers)
 }

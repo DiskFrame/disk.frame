@@ -7,5 +7,6 @@ Author: Dai ZJ
 Maintainer: Dai ZJ <dzj@analytixware.com>
 Description: Disk.frame allows the user process arbitrarily large datasets on disk chunk-wise without loading the file into memory.
 License: MIT
-Imports: dplyr (>= 0.3.0.2),data.table (>= 1.9.4), fst (>= 0.7.2)
+Imports: dplyr (>= 0.3.0.2),data.table (>= 1.9.4), fst (>= 0.7.2), hashstr2i
 RoxygenNote: 6.0.1
+

@@ -1,4 +1,5 @@
 if(!require(devtools)) install.packages("devtools")
+if(!require(hashstr2i)) devtools::install_github("xiaodaigh/hashstr2i")
 if(!require(disk.frame)) devtools::install_github("xiaodaigh/disk.frame")
 
 library(disk.frame)
