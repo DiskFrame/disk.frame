@@ -1,7 +1,6 @@
 
 #' Perform a group by and ensuring that every unique grouping of by is
 #' in the same chunk
-#' @import hashstr2i
 #' @export
 hard_group_by <- function(...) {
   UseMethod("hard_group_by")
