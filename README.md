@@ -4,6 +4,8 @@ A simple data manipulation library utilising on disk stored data structure (prim
 # Example usage
 
 ```r
+#install.packages(c("fst","future","data.table"))
+
 if(!require(devtools)) install.packages("devtools")
 if(!require(hashstr2i)) devtools::install_github("xiaodaigh/hashstr2i")
 if(!require(disk.frame)) devtools::install_github("xiaodaigh/disk.frame")
@@ -14,6 +16,7 @@ library(future)
 library(data.table)
 #nworkers = parallel::detectCores(logical=F)
 nworkers = parallel::detectCores()
+cat(nworkers," workers\n")
 plan(multiprocess, workers = nworkers, gc = T)
 options(future.globals.maxSize=Inf)
 

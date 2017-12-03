@@ -9,3 +9,13 @@ disk.frame.sublime-workspace
 tmpfst2/
 
 tmpfst/
+
+*.dll
+
+*.o
+
+tmphardgroupby/
+
+tmphardgroupby2/
+
+man/

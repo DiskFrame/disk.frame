@@ -18,6 +18,7 @@ disk.frame_folder <- function(path, ....) {
   attr(df,"backend") <- "fst"
   class(df) <- c("disk.frame", "disk.frame.folder")
   attr(df, "metadata") <- sapply(files,function(file1) fst::fst.metadata(file1))
+  attr(df, "performing") <- "none"
   df
 }
 
@@ -31,9 +32,26 @@ disk.frame_fst <- function(path, ...) {
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
   class(df) <- c("disk.frame", "disk.frame.file")
+  attr(df, "performing") <- "none"
   df
 }
 
+
+#' Return the number of chunks
+#' @export
+nchunk <- function(...) {
+  UseMethod("nchunk")
+}
+
+#' @export
+nchunk.disk.frame <- function(df) {
+  fpath <- attr(df,"path")
+  if(is.dir.disk.frame(df)) {
+    return(length(dir(fpath)))
+  } else {
+    return(1)
+  }
+}
 
 #' Checks if the df is a single-file based disk.frame
 #' @export
@@ -129,7 +147,7 @@ nrow.disk.frame <- function(df) {
 #' @import fst
 #' @import future
 #' @export
-chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100) {
+chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100, lazy = T) {
   if(F) {
     ii <- seq(0,df$nrOfRows, length.out = chunks)
     future_lapply(2:length(ii), function(i) {
