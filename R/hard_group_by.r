@@ -69,6 +69,8 @@ progressbar <- function(df) {
 
 if(F) {
   library(disk.frame)
+  library(fst)
+  library(data.table)
   
   df <- disk.frame("tmphardgroupby")
   by = "acct_id"
@@ -123,13 +125,14 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
   dir.create(tmp)
   sapply(file.path(tmp,1:l), dir.create)
   
+  # split
   tmp_throwaway = lapply(2:length(indexes), function(ii) {
     tmp_throwaway1 %<-% lapply((indexes[ii-1]+1):indexes[ii], function(i) {
       aa = a[i]
       pt = proc.time()
       print(i)
       fst_tmp <- fst::read.fst(aa, as.data.table = T)
-      fst_tmp[,out.disk.frame.id := hashstr2i::hashstr2i(acct_id, l)]
+      fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
       
       fst_tmp[,{
         write.fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
@@ -138,8 +141,6 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
       gc()
       print(timetaken(pt))
       NULL
-      
-      write.fst(file.path)
     })
     ii
   })
