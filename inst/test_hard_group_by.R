@@ -23,7 +23,7 @@ system.time(future_lapply(1:(nworkers*3), function(ii) {
     v3 =  sample(round(runif(100,max=100),4), N, TRUE) # numeric e.g. 23.5749
   )
   
-  write.fst(dt, file.path(tmpdir, ii), 100)
+  write.fst(dt, file.path(tmpdir, paste0(ii, ".fst")), 100)
   # do not let write.fst be the last as it return the full data
   gc()
   NULL

@@ -37,14 +37,70 @@ disk.frame_fst <- function(path, ...) {
 }
 
 
+prepare_dir.disk.frame <- function(df, path, clean = F) {
+  fpath = attr(df, "path")
+  fpath2 = file.path(fpath,path)
+  if(!dir.exists(fpath2)) {
+    dir.create(fpath2)
+  } else if(clean) {
+    # file.remove(dir(fpath2,full.names = T))
+    sapply(dir(fpath2,full.names = T), unlink, recursive =T, force  = T)
+  }
+  fpath2
+}
+
 #' Return the number of chunks
 #' @export
 nchunk <- function(...) {
   UseMethod("nchunk")
 }
 
+#' is the disk.frame ready
 #' @export
-nchunk.disk.frame <- function(df) {
+is_ready <- function(df) {
+  UseMethod("is_ready")  
+}
+
+status <- function(...) {
+  UseMethod("status")
+}
+
+status.disk.frame <- function(df) {
+  #browser()
+  perf = attr(df,"performing")
+  if(perf == "none") {
+    nc = nchunk(df, skip.ready.check = T)
+    return(list(status = "at rest", nchunk = nc, nchunk_ready = nc))
+  } else if (perf == "hard_group_by") {
+    fpath = attr(df, "parent")
+    ndf = nchunk(df, skip.ready.check = T)
+    if(!dir.exists(file.path(fpath, ".performing"))) {
+      return(list(status = "hard group by", nchunk = ndf, nchunk_ready = 0))
+    } else if(dir.exists(file.path(fpath, ".performing", "outchunks"))) {
+      l = length(dir(file.path(fpath, ".performing", "outchunks")))
+      if(l == ndf) {
+        attr(df, "performing") <- "none"
+        return(list(status ="none", nchunk = ndf, nchunk_read = ndf))
+      }
+      return(list(status = "hard group by", nchunk = ndf, nchunk_ready = l))
+    }
+  } else {
+    return(list(status = "unknown", nchunk = NA, nchunk_ready = NA))
+  }
+}
+
+is_ready.disk.frame <- function(df) {
+  sts = status(df)
+  if(sts$status == "none") {
+    return(T)
+  } else {
+    return(T)
+  }
+}
+
+#' @export
+nchunk.disk.frame <- function(df, skip.ready.check = F) {
+  if(!skip.ready.check) stopifnot(is_ready(df))
   fpath <- attr(df,"path")
   if(is.dir.disk.frame(df)) {
     return(length(dir(fpath)))
@@ -75,6 +131,7 @@ is.dir.disk.frame <- function(...) {
 #' Head
 #' @export
 head.disk.frame <- function(df, n = 6L, ...) {
+  stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
     path2 <- dir(path1,full.names = T)[1]
@@ -87,6 +144,7 @@ head.disk.frame <- function(df, n = 6L, ...) {
 #' tail of disk.frame
 #' @export
 tail.disk.frame <- function(df, n = 6L, ...) {
+  stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
     path2 <- dir(path1,full.names = T)
@@ -112,6 +170,7 @@ nrow.default <- function(...) {
 #' @rdname nrow
 #' @export
 nrow.disk.frame <- function(df) {
+  stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
     path2 <- dir(path1,full.names = T)
@@ -148,6 +207,7 @@ nrow.disk.frame <- function(df) {
 #' @import future
 #' @export
 chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100, lazy = T) {
+  stopifnot(is_ready(df))
   if(F) {
     ii <- seq(0,df$nrOfRows, length.out = chunks)
     future_lapply(2:length(ii), function(i) {
@@ -182,6 +242,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
 #' @import fst
 #' @export
 `[.disk.frame` <- function(df, i,j,..., keep = NULL) {
+  stopifnot(is_ready(df))
   res <- NULL
   fpath <- attr(df,"path")
   if(!dir.exists(fpath) & file.exists(fpath)) {
