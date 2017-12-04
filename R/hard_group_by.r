@@ -117,9 +117,9 @@ hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   # system.time(tmp_throwaway <- future_lapply(1:l, function(i) {
   #   if(!file.exists("tmptmp/dothis")) return(data.table(-1,-1,-1))
   #   aa = a[i]
-  #   fst_tmp <- fst::read.fst(aa, as.data.table = T, columns = "acct_id")
+  #   fst_tmp <- fst::read.fst(aa, as.data.table = T, columns = "ACCOUNT_ID")
   #   nrow2 = base::nrow(fst_tmp)
-  #   res = fst_tmp[,.N,acct_id][,out.disk.frame.id := hashstrtoi(acct_id, l)]
+  #   res = fst_tmp[,.N,ACCOUNT_ID][,out.disk.frame.id := hashstrtoi(ACCOUNT_ID, l)]
   #   rm(fst_tmp);gc()
   #   ramsize = pryr::object_size(res)
   #   if(ramsize*l <= ramlim) {

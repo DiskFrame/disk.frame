@@ -174,7 +174,12 @@ nrow.disk.frame <- function(df) {
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
     path2 <- dir(path1,full.names = T)
-    return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$NrOfRows)))
+    tmpfstmeta = fst::fst.metadata(path2[1])
+    if("nrOfRows" %in% names(tmpfstmeta)) {
+      return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$nrOfRows)))
+    } else {
+      return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$NrOfRows)))
+    }
   } else {
     return(fst::fst.metadata(path1)$NrOfRows)
   }
