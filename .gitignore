@@ -21,3 +21,11 @@ tmphardgroupby2/
 man/
 
 large_sorted/
+
+*.csv
+
+*.fst
+
+*.txt
+
+*.tmp
