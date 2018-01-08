@@ -22,10 +22,12 @@ man/
 
 large_sorted/
 
-*.csv
-
 *.fst
 
-*.txt
+derby\.log
 
-*.tmp
+*.log
+
+logs/
+
+NA
