@@ -58,6 +58,7 @@ nchunk <- function(...) {
 #' is the disk.frame ready
 #' @export
 is_ready <- function(df) {
+  return(TRUE)
   UseMethod("is_ready")  
 }
 
@@ -247,7 +248,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
 #' @import fst
 #' @export
 `[.disk.frame` <- function(df, i,j,..., keep = NULL) {
-  stopifnot(is_ready(df))
+  # stopifnot(is_ready(df))
   res <- NULL
   fpath <- attr(df,"path")
   if(!dir.exists(fpath) & file.exists(fpath)) {

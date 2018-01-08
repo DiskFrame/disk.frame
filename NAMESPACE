@@ -1,3 +1,8 @@
 useDynLib(disk.frame, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")
 importFrom(Rcpp, evalCpp)
+import(data.table)
+import(dplyr)
+import(fst)
+import(future)
+import(glue)

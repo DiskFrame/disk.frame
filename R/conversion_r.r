@@ -1,4 +1,5 @@
-library(data.table)
+function() {
+  library(data.table)
 library(fst)
 library(future)
 library(stringr)
@@ -68,4 +69,5 @@ while(!all(ready)) {
   if(!done1) {
     print(paste0("didn't get any work :(", Sys.time()))
   }
+}
 }

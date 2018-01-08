@@ -84,6 +84,10 @@ if(F) {
   by = "acct_id"
   outdir = "large_sorted"
   
+  nrow(df)
+  
+  a = df[,acct_id]
+  
   # plan(multiprocess, workers = 4)
   # hgb = hard_group_by(df, "acct_id", outdir, 4); 
   
@@ -93,7 +97,6 @@ if(F) {
   2+2
 }
 
-#' @import hashstr2i
 hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   #browser()
   if(is.null(nworkers)) {
