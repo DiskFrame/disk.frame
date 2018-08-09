@@ -211,13 +211,12 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
     }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
   } else {
     ff <- dir(attr(df,"path"), full.names = T)
-    
-    # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-    j = paste0(j,collapse="")
-    dotdot = paste0(dotdot,collapse="")
-    i = paste0(i,collapse="")
-    
+       
     res <- future_lapply(ff, function(k,i,j,dotdot) {
+      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+      j = paste0(j,collapse="")
+      dotdot = paste0(dotdot,collapse="")
+      i = paste0(i,collapse="")
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)
       } else if (j == "NULL") {
