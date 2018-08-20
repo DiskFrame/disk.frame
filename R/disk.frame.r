@@ -211,6 +211,7 @@ nrow.disk.frame <- function(df) {
 #' do to all chunks
 #' @import fst
 #' @import future
+#' @import future.apply
 #' @export
 chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100, lazy = T) {
   stopifnot(is_ready(df))
@@ -247,7 +248,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
 #' @import future
 #' @import fst
 #' @export
-`[.disk.frame` <- function(df, i,j,..., keep = NULL) {
+`[.disk.frame` <- function(df, i, j,..., keep = NULL) {
   # stopifnot(is_ready(df))
   res <- NULL
   fpath <- attr(df,"path")
@@ -292,8 +293,8 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
   # sometimes the returned thing is a vetor e.g. df[,.N]
   if("data.frame" %in% class(res[[1]])) {
     return(rbindlist(res))
-  } else  if(is.vector(res)) {
-    return(unlist(res))
+  } else if(is.vector(res)) {
+    return(unlist(res, recursive = F))
   } else {
     warning("spooky")
     return(res)
