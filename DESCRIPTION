@@ -9,4 +9,4 @@ Description: Disk.frame allows the user process arbitrarily large datasets on di
 License: MIT
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12.13), dplyr (>= 0.3.0.2), data.table (>= 1.9.4), fst (>= 0.8.0)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
