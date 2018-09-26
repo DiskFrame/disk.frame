@@ -1,16 +1,20 @@
 
-#' Automatically read and convert every single file within the zip file to df format
+#' Automatically read and convert every single file within the zip file to disk.frame format
 #' @import glue
 #' @import dplyr
 #' @import fst
 #' @import future
-zip_to_disk.frame = function(zipfile, outpath, ... , replace = F, validation.check = F, parallel = T) {
+#' @import future.apply
+#' TODO change the unzip to directory into a tempory directory
+#' TODO add all the options of fread into the ... as future may not be able to deal with it
+zip_to_disk.frame = function(zipfile, outpath, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
   files = unzip(zipfile, list=T)
   
   if(!dir.exists(outpath)) dir.create(outpath)
   
   if(parallel) {
-    system.time(future_lapply(files$Name, function(fn) {
+    #browser()
+    system.time(future.apply::future_lapply(files$Name, function(fn) {
       print(fn)
       out_fst_file = file.path(outpath, paste0(fn,".fst"))
       
@@ -22,7 +26,12 @@ zip_to_disk.frame = function(zipfile, outpath, ... , replace = F, validation.che
       pt = proc.time()
       unzip(zipfile, files = fn, exdir = "fm_perf")
       print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-      write_fst(fread(file.path("fm_perf", fn)), paste0(out_fst_file,".tmp"),100)
+      if(is.null(col.names)) {
+        write_fst(fread(file.path("fm_perf", fn),colClasses = colClasses), paste0(out_fst_file,".tmp"),compress)
+      } else {
+        write_fst(fread(file.path("fm_perf", fn),colClasses = colClasses, col.names =col.names), paste0(out_fst_file,".tmp"),compress)
+      }
+      
       print(paste0("read: ", timetaken(pt)))
       file.rename(paste0(out_fst_file,".tmp"), out_fst_file)
       unlink(file.path("fm_perf", fn))

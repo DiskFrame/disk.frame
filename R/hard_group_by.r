@@ -97,6 +97,27 @@ if(F) {
   2+2
 }
 
+#' Shard a data.frame/data.table into chunk and saves it into a disk.frame
+shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
+  setDT(df)
+  code = glue("df[,out.disk.frame.id := disk.frame::hashstr2i({shardby}, nchunks)]")
+  eval(parse(text=code))
+  
+  if(dir.exists(outdir)) {
+    if(!overwrite) {
+      stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
+    }
+  } else if(!dir.exists(outdir)) {
+    dir.create(outdir)
+  }
+  
+  df[,{
+    write.fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
+  }, out.disk.frame.id]
+  
+  disk.frame(outdir)
+}
+
 hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   #browser()
   if(is.null(nworkers)) {

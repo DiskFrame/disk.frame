@@ -213,8 +213,20 @@ nrow.disk.frame <- function(df) {
 #' @import future
 #' @import future.apply
 #' @export
-chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100, lazy = T) {
+chunk_lapply <- function(df, fn, ..., keep=NULL, outdir = NULL, chunks = 16, compress = 100, lazy = F) {
+  #browser()
   stopifnot(is_ready(df))
+  keep1 = attr(df,"keep")
+  
+  if(lazy) {
+    attr(df, "lazyfn") = fn
+    return(df)
+  }
+  
+  if(is.null(keep)) {
+    keep = keep1
+  }
+  
   if(F) {
     ii <- seq(0,df$nrOfRows, length.out = chunks)
     future_lapply(2:length(ii), function(i) {
@@ -223,12 +235,13 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
   } else {
     path <- attr(df, "path")
     files <- dir(path, full.names = T)
-    
+    files_shortname <- dir(path)
+    #browser()
     res = future_lapply(1:length(files), function(ii) {
-      res = fn(read.fst(files[ii], as.data.table=T), ...)
+      res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
       if(!is.null(outdir)) {
         if(!dir.exists(outdir)) dir.create(outdir)
-        write.fst(res, file.path(outdir, ii), compress)
+        write_fst(res, file.path(outdir, files_shortname[ii]), compress)
         return(NULL)
       } else {
         return(res)
@@ -241,6 +254,24 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = 16, compress = 100
       return(res)
     }
   }
+}
+
+#' Lazy chunk_lapply wrapper
+#' 
+lazy <- function(df,...) {
+  UseMethod("lazy")
+}
+
+lazy.disk.frame <- function(df, fn, ...) {
+  chunk_lapply(df, fn, lazy=T, ...)
+}
+
+delayed <- function(df,...) {
+  UseMethod("lazy")
+}
+
+delayed.disk.frame <- function(df, fn, ...) {
+  chunk_lapply(df, fn, lazy=T, ...)
 }
  
 #' [ interface for disk.frame using fst backend
@@ -321,10 +352,25 @@ distribute.disk.frame <- function(df, outdirpath, compress = 100) {
   }
   
   future_lapply(2:length(ii), function(k) {
-    write.fst(fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T), file.path(outdirpath, sprintf("fst%d", k-1)), compress = compress)
+    write_fst(fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T), file.path(outdirpath, sprintf("fst%d", k-1)), compress = compress)
     gc()
   })
 }
+
+#' Returns names
+# names <- function(x) {
+#   UseMethod("names")
+# }
+# 
+# names.default <- function(x) {
+#   base::names(x)
+# }
+# 
+# names.disk.frame <- function(x) {
+#   path = attr(x,"path")
+#   res = fst::fst.metadata(dir(path,full.names = T)[1])
+#   res$columnNames
+# }
 
 # The mutate method
 # mutate <- function(...) UseMethod("mutate")
