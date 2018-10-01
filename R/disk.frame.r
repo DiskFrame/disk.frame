@@ -214,7 +214,7 @@ nrow.disk.frame <- function(df) {
 #' @import future.apply
 #' @export
 chunk_lapply <- function(df, fn, ..., keep=NULL, outdir = NULL, chunks = 16, compress = 100, lazy = F) {
-  #browser()
+  browser()
   stopifnot(is_ready(df))
   keep1 = attr(df,"keep")
   
@@ -238,7 +238,9 @@ chunk_lapply <- function(df, fn, ..., keep=NULL, outdir = NULL, chunks = 16, com
     files_shortname <- dir(path)
     #browser()
     res = future_lapply(1:length(files), function(ii) {
-      res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
+      #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
+      browser()
+      res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
       if(!is.null(outdir)) {
         if(!dir.exists(outdir)) dir.create(outdir)
         write_fst(res, file.path(outdir, files_shortname[ii]), compress)
@@ -288,7 +290,7 @@ delayed.disk.frame <- function(df, fn, ...) {
     ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
     
     res <- future_lapply(2:length(ii), function(k,i,j,dotdot) {
-      a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
+      #a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
       #a <- fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T)
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)

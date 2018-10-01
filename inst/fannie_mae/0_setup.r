@@ -7,6 +7,7 @@ library(disk.frame)
 library(magrittr)
 library(purrr)
 library(pryr)
+library(tidyr)
 #plan(multiprocess(workers= parallel::detectCores()/2)) # use only half the cores
 plan(multiprocess(workers = 6))
 #plan(sequential)
@@ -32,4 +33,6 @@ Performance_Variables =
 dfiles = dir(raw_perf_data_path, full.names = T)
 short_dfiles = dir(raw_perf_data_path)
 
-dir.create("test_fm")
+if(!dir.exists("test_fm")) {
+  dir.create("test_fm")
+}

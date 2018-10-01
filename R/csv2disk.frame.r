@@ -1,7 +1,7 @@
 #' convert a CSV file to disk.frame format
 #' @import glue
 #' @param in_chunk_size When reading in the file, how many chunks to read it in. This is different to nchunks which controls how many chunks are output
-csv_to_disk.frame <- function(infile, outdir, nchunks = 16, in_chunk_size = NULL, append = F, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress=50,...) {
+csv_to_disk.frame <- function(infile, outdir, inmapfn = function(x) x, nchunks = 16, in_chunk_size = NULL, append = F, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress=50,...) {
   #browser()
   if(!dir.exists(outdir)) {
     dir.create(outdir)
@@ -13,18 +13,13 @@ csv_to_disk.frame <- function(infile, outdir, nchunks = 16, in_chunk_size = NULL
   
   l = length(dir(outdir))
   if(is.null(shardby)) {
-    a = write_fst(fread(infile,colClasses=colClasses, col.names = col.names, ...), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
+    a = write_fst(inmapfn(fread(infile,colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
     rm(a); gc()
   } else { # so shard by some element
+    #browser()
     if(is.null(in_chunk_size)) {
-      shard(fread(infile,colClasses = colClasses, col.names = col.names, ...), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
+      shard(inmapfn(fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
     } else {
-      # use readr's type classes
-      ct = list()
-      mapply(function(v,c) {
-        ct[v] <<- substr(c,1,1)
-      }, col.names, colClasses)
-      
       i <- 0
       tmpdir1 = tempfile(pattern="df_tmp")
       dir.create(tmpdir1)
@@ -33,10 +28,10 @@ csv_to_disk.frame <- function(infile, outdir, nchunks = 16, in_chunk_size = NULL
       done = F
       skiprows = 0
       while(!done) {
-        tmpdt = fread(
+        tmpdt = inmapfn(fread(
           infile,
           colClasses = colClasses, 
-          col.names = col.names, skip = skiprows, nrows = in_chunk_size, ...)
+          col.names = col.names, skip = skiprows, nrows = in_chunk_size, ...))
         i <- i + 1
         skiprows = skiprows + in_chunk_size
         rows <- tmpdt[,.N]

@@ -2,15 +2,24 @@
 source("inst/fannie_mae/0_setup.r")
 
 fmdf = disk.frame("fmdf")
+harp = disk.frame("harp.df")
 
 # create forward looking flag ---------------------------------------------
-plan(multiprocess(workers=6))
-
 #df = get_chunk.disk.frame(fmdf,1)
-#df = df[loan_id == "100513171914", ]
+#df = df[loan_id == "100513171914", ] 
+harp1 = lazy(harp, function(df) {
+  df[,date:=as.Date(monthly.rpt.prd, "%m/%d/%Y")]
+  df
+})
 
-#plan(sequential)
+plan(transparent)
+#harp_min_date = 
+  
+harp1[,.(min_date = min(date)),keep=c("monthly.rpt.prd","loan_id")]
+
+
 system.time(defaults <- chunk_lapply(fmdf, function(df) {
+  # create the default flag
   df[,date:=as.Date(monthly.rpt.prd,"%m/%d/%Y")]
   setkey(df,loan_id, date)
   df[,delq.status := as.integer(delq.status)]
@@ -30,6 +39,13 @@ system.time(defaults <- chunk_lapply(fmdf, function(df) {
   df3 = df2[,.(start_date = min(start_date), end_date = max(end_date), default_12m=T),.(loan_id,grp)]
   
   df3[,grp:=NULL]
+  
+  # create the hardship flag
+  # whether the customer goes into in the next 12 months hardship 
+  
+  
+  
+  
   df3
 }, keep=c("monthly.rpt.prd", "delq.status", "loan_id"), outdir="tmp2"))
 
