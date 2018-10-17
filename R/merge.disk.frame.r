@@ -1,3 +1,15 @@
+shardkey <- function(...) {
+  #"not implemented yet"
+  runif(1)
+}
+
+keep.disk.frame <- function(df, selections) {
+  stopifnot("disk.frame" %in% class(df))
+  
+  df1 = disk.frame(attr(df,"path"))
+  attr(df1,"keep") = selections
+  df1
+}
 
 merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
   
@@ -52,7 +64,7 @@ merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
       all=T,
       allow.cartesian = T
     )
-    
+    stop("error not implemented")
     setDT(df3)
     i <- 0
     mapply(function(pathA, pathB) {

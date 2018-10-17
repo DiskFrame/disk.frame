@@ -99,8 +99,17 @@ if(F) {
 
 #' Shard a data.frame/data.table into chunk and saves it into a disk.frame
 shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
+
+  browser()
   setDT(df)
-  code = glue("df[,out.disk.frame.id := disk.frame::hashstr2i({shardby}, nchunks)]")
+  if(length(shardby) == 1) {
+    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
+  } else {
+    shardby_list = glue("paste0({paste0(shardby,collapse=',')})")
+    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
+  }
+  
+
   eval(parse(text=code))
   
   if(dir.exists(outdir)) {
@@ -174,7 +183,7 @@ hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   } else {
     dir.create(tmp)
   }
-
+  
   sapply(file.path(tmp,1:l), dir.create)
   
   fperf = prepare_dir.disk.frame(df, ".performing", T)
@@ -191,14 +200,14 @@ hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
         print(i)
         fst_tmp <- fst::read.fst(aa, as.data.table = T)
         fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
-
+        
         fst_tmp[,{
           write.fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
         }, out.disk.frame.id]
-
+        
         ## write file to inidcate stage 1 is done
         ## stage 2 will check if all files are present and will start work on later
-
+        
         file.create(file.path(fperfinchunks,i))
         rm(fst_tmp)
         gc()
@@ -220,7 +229,7 @@ hard_group_by.disk.frame <- function(df, by, outdir, nworkers = NULL) {
       lapply(inchunkindices, function(ii) {
         #browser()
         dtfn = fldrs[ii]
-
+        
         tmptmp2 = rbindlist(lapply(dir(dtfn,full.names =  T), function(ddtfn) {
           fst::read.fst(ddtfn, as.data.table=T)
         }))

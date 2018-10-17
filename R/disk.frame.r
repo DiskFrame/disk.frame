@@ -213,8 +213,10 @@ nrow.disk.frame <- function(df) {
 #' @import future
 #' @import future.apply
 #' @export
-chunk_lapply <- function(df, fn, ..., keep=NULL, outdir = NULL, chunks = 16, compress = 100, lazy = F) {
-  browser()
+
+chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+  if(!dir.exists(outdir)) dir.create(outdir)
+
   stopifnot(is_ready(df))
   keep1 = attr(df,"keep")
   
