@@ -19,3 +19,11 @@ tmphardgroupby/
 tmphardgroupby2/
 
 man/
+*.fst
+fmdf0/
+
+*.csv
+
+derby\.log
+
+*.png
