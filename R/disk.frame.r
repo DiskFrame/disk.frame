@@ -215,48 +215,43 @@ nrow.disk.frame <- function(df) {
 #' @export
 
 chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
-  if(!dir.exists(outdir)) dir.create(outdir)
-
-  stopifnot(is_ready(df))
-  keep1 = attr(df,"keep")
-  
+  # browser()
   if(lazy) {
     attr(df, "lazyfn") = fn
     return(df)
   }
   
+  if(!is.null(outdir)) {
+    if(!dir.exists(outdir)) dir.create(outdir)
+  }
+  
+  stopifnot(is_ready(df))
+  keep1 = attr(df,"keep")
+  
   if(is.null(keep)) {
     keep = keep1
   }
   
-  if(F) {
-    ii <- seq(0,df$nrOfRows, length.out = chunks)
-    future_lapply(2:length(ii), function(i) {
-      fn(read.fst(attr(df,"path"), from = ii[i-1]+1, to = ii[i], as.data.table=T))
-    })
-  } else {
-    path <- attr(df, "path")
-    files <- dir(path, full.names = T)
-    files_shortname <- dir(path)
-    #browser()
-    res = future_lapply(1:length(files), function(ii) {
-      #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
-      browser()
-      res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
-      if(!is.null(outdir)) {
-        if(!dir.exists(outdir)) dir.create(outdir)
-        write_fst(res, file.path(outdir, files_shortname[ii]), compress)
-        return(NULL)
-      } else {
-        return(res)
-      }
-    })
+  path <- attr(df, "path")
+  files <- dir(path, full.names = T)
+  files_shortname <- dir(path)
+  #browser()
+  res = future_lapply(1:length(files), function(ii) {
+    #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
+    res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
     if(!is.null(outdir)) {
       if(!dir.exists(outdir)) dir.create(outdir)
-      return(disk.frame(outdir))
+      write_fst(res, file.path(outdir, files_shortname[ii]), compress)
+      return(NULL)
     } else {
       return(res)
     }
+  })
+  if(!is.null(outdir)) {
+    if(!dir.exists(outdir)) dir.create(outdir)
+    return(disk.frame(outdir))
+  } else {
+    return(res)
   }
 }
 
@@ -271,7 +266,7 @@ lazy.disk.frame <- function(df, fn, ...) {
 }
 
 delayed <- function(df,...) {
-  UseMethod("lazy")
+  UseMethod("delayed")
 }
 
 delayed.disk.frame <- function(df, fn, ...) {
@@ -285,6 +280,7 @@ delayed.disk.frame <- function(df, fn, ...) {
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
   # stopifnot(is_ready(df))
+  #browser()
   res <- NULL
   fpath <- attr(df,"path")
   if(!dir.exists(fpath) & file.exists(fpath)) {
@@ -307,7 +303,7 @@ delayed.disk.frame <- function(df, fn, ...) {
       aa
     }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
   } else {
-    ff <- dir(attr(df,"path"), full.names = T)
+    ff <- dir(attr(df,"path"))
     
     res <- future_lapply(ff, function(k,i,j,dotdot) {
       if(dotdot == "NULL") {
@@ -317,7 +313,8 @@ delayed.disk.frame <- function(df, fn, ...) {
       } else {
         code = sprintf("a[%s,%s,%s]", i, j, dotdot)
       }
-      a <- fst::read.fst(k, columns = keep, as.data.table = T)
+      a = get_chunk.disk.frame(df, ff)
+      
       aa <- eval(parse(text=code))
       #browser()
       rm(a); gc()

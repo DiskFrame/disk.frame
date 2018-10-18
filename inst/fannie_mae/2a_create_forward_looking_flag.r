@@ -7,16 +7,16 @@ harp = disk.frame("harp.df")
 # create forward looking flag ---------------------------------------------
 #df = get_chunk.disk.frame(fmdf,1)
 #df = df[loan_id == "100513171914", ] 
-harp1 = lazy(harp, function(df) {
+harp1 = delayed(harp, function(df) {
   df[,date:=as.Date(monthly.rpt.prd, "%m/%d/%Y")]
-  df
+  df[,.(loan_id, date)]
 })
 
-plan(transparent)
-#harp_min_date = 
-  
-harp1[,.(min_date = min(date)),keep=c("monthly.rpt.prd","loan_id")]
+harp2 <- hard_group_by(harp1, by = "loan_id", outdir = "tmp_harp2")
 
+# find out the first date on which an account enters into harp
+harp1[,.(min_date = min(date)),loan_id,keep=c("monthly.rpt.prd","loan_id")]
+harp1[,.(min = min(date))]
 
 system.time(defaults <- chunk_lapply(fmdf, function(df) {
   # create the default flag

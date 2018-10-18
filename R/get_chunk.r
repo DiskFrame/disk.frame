@@ -1,4 +1,9 @@
-get_chunk.disk.frame <- function(df, n, keep = NULL) {
+get_chunk <- function(...) {
+  UseMethod("get_chunk")
+}
+
+
+get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")
@@ -13,10 +18,20 @@ get_chunk.disk.frame <- function(df, n, keep = NULL) {
       warning("some of the variables specified in keep is not available")
     }
   }
-    
-  if (is.null(fn)) {
-    read_fst(dir(path,full.names = T)[n], columns = keep, as.data.table = T)
+  
+  if(is.numeric(n)) {
+    filename = dir(path,full.names = T)[n]
   } else {
-    fn(read_fst(dir(path,full.names = T)[n], columns = keep, as.data.table = T)) 
+    if (full.name) {
+      filename = n
+    } else {
+      filename = file.path(path, n)
+    }
+  }
+  
+  if (is.null(fn)) {
+    read_fst(filename, columns = keep, as.data.table = T)
+  } else {
+    fn(read_fst(filename, columns = keep, as.data.table = T))
   }
 }
