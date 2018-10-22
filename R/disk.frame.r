@@ -17,7 +17,7 @@ disk.frame_folder <- function(path, ....) {
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
   class(df) <- c("disk.frame", "disk.frame.folder")
-  attr(df, "metadata") <- sapply(files,function(file1) fst::fst.metadata(file1))
+  #attr(df, "metadata") <- sapply(files,function(file1) fst::fst.metadata(file1))
   attr(df, "performing") <- "none"
   df
 }
