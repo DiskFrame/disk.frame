@@ -107,7 +107,6 @@ shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) 
     code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
   }
   
-
   eval(parse(text=code))
   
   if(dir.exists(outdir)) {

@@ -215,7 +215,6 @@ nrow.disk.frame <- function(df) {
 #' @export
 
 chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
-  # browser()
   if(lazy) {
     attr(df, "lazyfn") = fn
     return(df)
