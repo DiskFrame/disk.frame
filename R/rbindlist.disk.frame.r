@@ -1,10 +1,11 @@
 rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50) {
-  #browser()
+  browser()
   if(!dir.exists(outdir)) dir.create(outdir)
   if(by_chunk_id) {
     list_of_paths = map_chr(df_list, ~attr(.x,"path"))
     list_of_chunks = map_dfr(list_of_paths, ~data.table(path = dir(.x),full_path = dir(.x,full.names = T)))
     setDT(list_of_chunks)
+    browser()
     
     # split the list of chunks into lists for easy operation with future
     slist = split(list_of_chunks$full_path,list_of_chunks$path)

@@ -1,10 +1,16 @@
 #' Bring the disk.frame into R
 #' @export
 #' 
-function collect.disk.frame(df, ...) {
-  map_dfr(1:nchunk(df), ~get_chunk.disk.frame(df, .x)
+collect.disk.frame <- function(df, ...) {
+  map_dfr(1:nchunk(df), ~get_chunk.disk.frame(df, .x))
+  
+  #rbindlist(lapply(1:nchunk(df), function(i) get_chunk.disk.frame(df, i)), ...)
 }
 
-function collect(...) {
+collect <- function(...) {
   UseMethod("collect")
+}
+
+collect.disk.frame <- function(df, ...) {
+  
 }

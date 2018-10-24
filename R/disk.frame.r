@@ -214,7 +214,9 @@ nrow.disk.frame <- function(df) {
 #' @import future.apply
 #' @export
 
-chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+
+chunk_lapply <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+  #browser()
   if(lazy) {
     attr(df, "lazyfn") = fn
     return(df)
@@ -237,6 +239,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compre
   #browser()
   res = future_lapply(1:length(files), function(ii) {
     #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
+    
     res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
     if(!is.null(outdir)) {
       if(!dir.exists(outdir)) dir.create(outdir)
@@ -246,6 +249,7 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compre
       return(res)
     }
   })
+  #browser()
   if(!is.null(outdir)) {
     if(!dir.exists(outdir)) dir.create(outdir)
     return(disk.frame(outdir))
@@ -312,7 +316,7 @@ delayed.disk.frame <- function(df, fn, ...) {
       } else {
         code = sprintf("a[%s,%s,%s]", i, j, dotdot)
       }
-      a = get_chunk.disk.frame(df, ff)
+      a = get_chunk.disk.frame(df, k)
       
       aa <- eval(parse(text=code))
       #browser()

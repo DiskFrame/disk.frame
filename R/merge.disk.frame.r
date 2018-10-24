@@ -1,6 +1,7 @@
 shardkey <- function(...) {
   #"not implemented yet"
-  runif(1)
+  #runif(1)
+  T
 }
 
 keep.disk.frame <- function(df, selections) {

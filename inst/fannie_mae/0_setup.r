@@ -9,7 +9,7 @@ library(purrr)
 library(pryr)
 library(tidyr)
 #plan(multiprocess(workers= parallel::detectCores()/2)) # use only half the cores
-plan(multiprocess(workers = 6))
+plan(multiprocess(workers = 3))
 #plan(sequential)
 sapply(dir("R",full.names = T),source)
 #source("R/zip_to_disk.frame.r")
