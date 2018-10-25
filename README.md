@@ -1,9 +1,15 @@
 # disk.frame
-A simple data manipulation library utilising on disk stored data structure (primarily fst) for batch processing of large files.
+A simple data manipulation library utilising on-disk stored data structure (primarily fst) for batch processing of large files.
 
 # Example usage
 
 ```r
+# disk.frame
+A simple data manipulation library utilising on disk stored data structure (primarily fst) for batch processing of large files.
+
+# Example usage
+
+
 #install.packages(c("fst","future","data.table"))
 
 if(!require(devtools)) install.packages("devtools")
@@ -58,7 +64,7 @@ cat("sum(df[,.N]) took: ", timetaken(pt), "\n")
 pt = proc.time()
 system.time(df_filtered <- df[a < 0.1,])
 cat("df[a < 0.1,] took: ", timetaken(pt), "\n")
-base::nrow(df_filtered) # beacuse of bug in disk.frame
+nrow(df_filtered)
 
 # group by
 pt = proc.time()

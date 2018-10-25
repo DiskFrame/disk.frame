@@ -6,19 +6,25 @@ hard_group_by <- function(...) {
   UseMethod("hard_group_by")
 }
 
-hard_group_by_progress <- function(df) {
-  
-}
-
 #' Show a progress bar of the action being performed
 #' @export
 progressbar <- function(df) {
   if(attr(df,"performing") == "hard_group_by") {
     # create progress bar
+    
+    shardby = "acct_id"
+    #browser()
+    fparent = attr(df,"parent")
+    
+    #tmp = file.path(fparent,".performing","inchunks")
+    tmp = "tmphardgroupby2"
+    
+    l = length(dir(fparent))
+    pt_begin_split = proc.time()
     doprog <- function(pt_from, sleep = 1) {
-      tkpb = winProgressBar(title = sprintf("Group By - %s", shardby), label = "Checking completeness",
-                            min = 0, max = l, initial = 0, width = 500)
-      pb <- txtProgressBar(min = 0, max = l, style = 3)
+      tkpb = winProgressBar(title = sprintf("Hard Group By Stage 1(/2) - %s", shardby), label = "Checking completeness",
+                            min = 0, max = l*1.5, initial = 0, width = 500)
+      pb <- txtProgressBar(min = 0, max = l*1.5, style = 3)
       
       on.exit(close(pb))
       on.exit(close(tkpb))
@@ -27,23 +33,24 @@ progressbar <- function(df) {
         tt <- proc.time()[3] - pt_from[3]
         #browser()
         avg_speed = tt/wl
-        pred_speed = avg_speed*(l-wl)
+        pred_speed = avg_speed*(l-wl) + avg_speed*l/2
         elapsed = round(tt/60,1)
         
         setWinProgressBar(tkpb, wl, 
-                          title = sprintf("Group By - %s", shardby),
+                          title = sprintf("Hard Group By Stage 1(/2) - %s", shardby),
                           label = sprintf("%.0f out of %d; avg speed %.2f mins; elapsed %.1f mins; another %.1f mins", wl,l, round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
         setTxtProgressBar(pb, length(dir(file.path(tmp,l))), 
                           title = sprint("Group By - %s", shardby))
-        Sys.sleep(1)
+        Sys.sleep(sleep)
       }
     }
-    doprog(pt_begin_split, 20)
+    doprog(pt_begin_split, 1)
     
+    pt_begin_collate = proc.time()
     doprog2 <- function(pt_from, sleep = 1) {
-      tkpb = winProgressBar(title = sprintf("Group By - %s -- Stage 2 (of 2) collating", shardby), label = "Checking completeness",
-                            min = 0, max = l, initial = 0, width = 600)
-      pb <- txtProgressBar(min = 0, max = l, style = 3)
+      tkpb = winProgressBar(title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating", shardby), label = "Checking completeness",
+                            min = 0, max = l*1.5, initial = 0, width = 600)
+      pb <- txtProgressBar(min = 0, max = l*1.5, style = 3)
       
       on.exit(close(pb))
       on.exit(close(tkpb))
@@ -55,31 +62,112 @@ progressbar <- function(df) {
         pred_speed = avg_speed*(l-wl)
         elapsed = round(tt/60,1)
         
-        setWinProgressBar(tkpb, wl, 
-                          title = sprintf("Group By - %s -- Stage 2 (of 2) collating -- %.0f out of %d chunks processed;", shardby, wl, l),
+        setWinProgressBar(tkpb, l + wl/2, 
+                          title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating -- %.0f out of %d chunks processed;", shardby, wl, l),
                           label = sprintf("avg %.2f min/chunk; %.1f mins elapsed; %.1f mins remaining;", round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
         setTxtProgressBar(pb, length(dir("large_sorted")), 
-                          title = sprint("Group By - %s", shardby))
+                          title = sprint("Hard Group By - %s", shardby))
         Sys.sleep(sleep)
       }
     }
-    doprog2(pt_begin_collate,10)
+    doprog2(pt_begin_collate, 1)
   }
 }
 
 if(F) {
   library(disk.frame)
+  library(fst)
+  library(data.table)
+  library(magrittr)
   
   df <- disk.frame("tmphardgroupby")
   by = "acct_id"
-  outdir = "tmphgb2"
+  outdir = "large_sorted"
+  
+  nrow(df)
+  
+  a = df[,acct_id]
+  
+  # plan(multiprocess, workers = 4)
+  # hgb = hard_group_by(df, "acct_id", outdir, 4); 
+  
+  plan(multiprocess, workers = 7)
+  hgb = hard_group_by(df, "acct_id", outdir, 7); 
+  progressbar(hgb)
+  2+2
 }
 
-#' @import hashstr2i
+#' Shard a data.frame/data.table into chunk and saves it into a disk.frame
+#' @param df A disk.frame
+#' @param shardby The column(s) to shard the data by.
+#' @param nchunks The number of chunks
+#' @param outdir The output directory of the disk.frame
+#' @param append If TRUE then the chunks are appended
+#' @param overwrite If TRUE then the chunks are overwritten
+#' @import glue
+#' @import fst
+#' @export
+shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
+  setDT(df)
+  if(length(shardby) == 1) {
+    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
+  } else {
+    shardby_list = glue("paste0({paste0(shardby,collapse=',')})")
+    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
+  }
+  
+  eval(parse(text=code))
+  
+  if(dir.exists(outdir)) {
+    if(!overwrite) {
+      stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
+    }
+  } else if(!dir.exists(outdir)) {
+    dir.create(outdir)
+  }
+  
+  df[,{
+    write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
+  }, out.disk.frame.id]
+  
+  disk.frame(outdir)
+}
+
+#' hard_group_by
+#' @export
 hard_group_by.disk.frame <- function(df, by, outdir) {
-  nworkers = parallel::detectCores()
+  browser()
+  ff = dir(attr(df, "path"))
+  
+  # shard and create temporary diskframes
+  tmp_df  = chunk_lapply(df, function(df1) {
+    tmpdir = tempfile()
+    shard(df1, shardby = by, nchunks = nchunk.disk.frame(df), outdir = tmpdir)
+  }, lazy = F)
+  
+  # now rbindlist
+  res = rbindlist.disk.frame(tmp_df, outdir=outdir)
+
+  # clean up the tmp dir
+  sapply(tmp_df, function(x) {
+    unlink(attr(x, "path"))
+  })
+  
+  res
+}
+
+
+#' The nb stands for non-blocking
+#' TODO make it work!
+hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
+  browser()
+  if(is.null(nworkers)) {
+    nworkers = parallel::detectCores()
+  }
+  
   fpath = attr(df, "path")
-  attr(df, "performing") <- "hard_group_by"
+  
+  if(!dir.exists(outdir)) dir.create(outdir)
   
   # indexes = unique(round(seq(0, l, length.out = nworkers+1),0))
   # tmp_throwaway <- NULL
@@ -93,13 +181,13 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
   # system.time(tmp_throwaway <- future_lapply(1:l, function(i) {
   #   if(!file.exists("tmptmp/dothis")) return(data.table(-1,-1,-1))
   #   aa = a[i]
-  #   fst_tmp <- fst::read.fst(aa, as.data.table = T, columns = "acct_id")
+  #   fst_tmp <- fst::read.fst(aa, as.data.table = T, columns = "ACCOUNT_ID")
   #   nrow2 = base::nrow(fst_tmp)
-  #   res = fst_tmp[,.N,acct_id][,out.disk.frame.id := hashstrtoi(acct_id, l)]
+  #   res = fst_tmp[,.N,ACCOUNT_ID][,out.disk.frame.id := hashstrtoi(ACCOUNT_ID, l)]
   #   rm(fst_tmp);gc()
   #   ramsize = pryr::object_size(res)
   #   if(ramsize*l <= ramlim) {
-  #     write.fst(res, sprintf("tmptmp/%d",i))
+  #     write_fst(res, sprintf("tmptmp/%d",i))
   #   } else {
   #     file.remove("tmptmp/dothis")
   #     return(data.table(-1,-1,-1))
@@ -120,94 +208,79 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
   a = dir(fpath, full.names =T)
   
   tmp = "tmphardgroupby2"
-  dir.create(tmp)
+  if(dir.exists(tmp)) {
+    unlink(tmp,T,T)
+    dir.create(tmp)
+  } else {
+    dir.create(tmp)
+  }
+  
   sapply(file.path(tmp,1:l), dir.create)
   
+  fperf = prepare_dir.disk.frame(df, ".performing", T)
+  fperfinchunks = prepare_dir.disk.frame(df, ".performing/inchunks", T)
+  fperfoutchunks = prepare_dir.disk.frame(df, ".performing/outchunks", T)
+  
+  # split the chunks into smaller chunks based on hash value
   tmp_throwaway = lapply(2:length(indexes), function(ii) {
-    tmp_throwaway1 %<-% lapply((indexes[ii-1]+1):indexes[ii], function(i) {
-      aa = a[i]
-      pt = proc.time()
-      print(i)
-      fst_tmp <- fst::read.fst(aa, as.data.table = T)
-      fst_tmp[,out.disk.frame.id := hashstr2i::hashstr2i(acct_id, l)]
+    tmp_throwaway1 %<-% {
+      inchunkindices = (indexes[ii-1]+1):indexes[ii]
+      lapply(inchunkindices, function(i) {
+        aa = a[i]
+        pt = proc.time()
+        print(i)
+        fst_tmp <- fst::read.fst(aa, as.data.table = T)
+        fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
+        
+        fst_tmp[,{
+          write_fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
+        }, out.disk.frame.id]
+        
+        ## write file to inidcate stage 1 is done
+        ## stage 2 will check if all files are present and will start work on later
+        
+        file.create(file.path(fperfinchunks,i))
+        rm(fst_tmp)
+        gc()
+        print(timetaken(pt))
+        NULL
+      })
       
-      fst_tmp[,{
-        write.fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
-      }, out.disk.frame.id]
-      rm(fst_tmp)
-      gc()
-      print(timetaken(pt))
-      NULL
+      # wait for next phase
+      while(length(dir(fperfinchunks)) < nchunk(df)) {
+        Sys.sleep(0.5)
+      }
       
-      write.fst(file.path)
-    })
+      pt_begin_collate <- proc.time()
+      fldrs = dir(tmp,full.names = T)
+      l = length(fldrs)
+      tmp_throwaway <- NULL
+      lapply(inchunkindices, function(ii) {
+        #browser()
+        dtfn = fldrs[ii]
+        
+        tmptmp2 = rbindlist(lapply(dir(dtfn,full.names =  T), function(ddtfn) {
+          fst::read.fst(ddtfn, as.data.table=T)
+        }))
+        
+        setkey(tmptmp2, acct_id)
+        fst::write_fst(tmptmp2, file.path("large_sorted",sprintf("%d.fst",ii)), 100);
+        gc()
+        
+        file.create(file.path(fperfoutchunks,ii))
+        gc()
+        NULL
+      })
+      
+      print(paste0("collate files took: ", timetaken(pt))); pt <- proc.time()
+      timetaken(pt)
+    }
     ii
   })
-  
-  #, future.lazy = T, future.globals = c("a","l")
-  print(timetaken(pt))
-  # 2.5hours
-  
-  print(paste0("sorting took: ", timetaken(pt))); pt <- proc.time()
-  
-  print(paste("started collating into sorted", Sys.time()))
-  
-  
-  # collate the files in each folder and write out into sorted form
-  pt_begin_collate <- proc.time()
-  fldrs = dir(tmp,full.names = T)
-  l = length(fldrs)
-  indexes = unique(round(seq(0, l, length.out = nworkers+1),0))
-  tmp_throwaway <- NULL
-  for(iii in 2:length(indexes)) {
-    #for(iii in split(1:l, 1:nworkers)) {
-    system.time(tmp_throwaway %<-% lapply((indexes[iii-1]+1):indexes[iii], function(ii) {
-      dtfn = fldrs[ii]
-      tmptmp <- {
-        tmptmp2 = lapply(dir(dtfn,full.names =  T), function(ddtfn) {
-          fst::read.fst(ddtfn, as.data.table=T)
-        }) %>% rbindlist
-        
-        setkey(tmptmp2, acct_id)
-        tmptmp2 %>% 
-          fst::write.fst(file.path("large_sorted",sprintf("%d.fst",ii)), 100);
-        gc()}
-      gc()
-      NULL
-    }))
-  }
-  
-  
-  print(paste0("collate files took: ", timetaken(pt))); pt <- proc.time()
-  
-  timetaken(pt)
-  #}
-  
-  pt_begin_collate <- proc.time()
-  fldrs = dir(tmp,full.names = T)
-  l = length(fldrs)
-  indexes = unique(round(seq(0, l, length.out = nworkers+1),0))
-  tmp_throwaway <- NULL
-  for(iii in 2:length(indexes)) {
-    #for(iii in split(1:l, 1:nworkers)) {
-    system.time(tmp_throwaway %<-% lapply((indexes[iii-1]+1):indexes[iii], function(ii) {
-      if(file.exists(file.path("large_sorted",sprintf("%d.fst",ii)))) {
-        
-      }
-      dtfn = fldrs[ii]
-      tmptmp <- {
-        tmptmp2 = lapply(dir(dtfn,full.names =  T), function(ddtfn) {
-          fst::read.fst(ddtfn, as.data.table=T)
-        }) %>% rbindlist
-        
-        setkey(tmptmp2, acct_id)
-        tmptmp2 %>% 
-          fst::write.fst(file.path("large_sorted",sprintf("%d.fst",ii)), 100);
-        gc()}
-      gc()
-      NULL
-    }))
-  }
+  res = disk.frame(outdir)
+  attr(res,"performing") <- "hard_group_by"
+  attr(res,"parent") <- attr(df, "path")
+  res
 }
 
 

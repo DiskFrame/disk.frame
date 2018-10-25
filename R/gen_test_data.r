@@ -15,5 +15,3 @@ gen_datatable_synthetic <- function(N=2e8, K=100) {
     v3 =  sample(round(runif(100,max=100),4), N, TRUE) # numeric e.g. 23.5749
   )
 }
-
-

@@ -7,3 +7,8 @@
   options(future.globals.maxSize=Inf)
   options(disk.frame.nworkers = nworkers)
 }
+
+#' @useDynLib disk.frame
+#' @importFrom Rcpp evalCpp
+#' @exportPattern "^[[:alpha:]]+"
+NULL
