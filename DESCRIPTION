@@ -2,7 +2,7 @@ Package: disk.frame
 Type: Package
 itle: Disk-based chunk-wise processing of gigabyte-sized datasets
 Version: 0.1.0
-Date: 2017-12-02
+Date: 2018-10-25
 Author: Dai ZJ
 Maintainer: Dai ZJ <dzj@analytixware.com>
 Description: Disk.frame allows the user process arbitrarily large datasets on disk chunk-wise without loading the file into RAM.

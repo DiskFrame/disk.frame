@@ -1,6 +1,3 @@
-library(dplyr)
-library(dtplyr)
-
 #' @export
 #' @import dplyr
 select_.disk.frame <- function(.data, ..., .dots){

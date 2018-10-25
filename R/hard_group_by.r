@@ -98,8 +98,16 @@ if(F) {
 }
 
 #' Shard a data.frame/data.table into chunk and saves it into a disk.frame
+#' @param df A disk.frame
+#' @param shardby The column(s) to shard the data by.
+#' @param nchunks The number of chunks
+#' @param outdir The output directory of the disk.frame
+#' @param append If TRUE then the chunks are appended
+#' @param overwrite If TRUE then the chunks are overwritten
+#' @import glue
+#' @import fst
+#' @export
 shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
-
   setDT(df)
   if(length(shardby) == 1) {
     code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
@@ -119,13 +127,14 @@ shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) 
   }
   
   df[,{
-    write.fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
+    write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
   }, out.disk.frame.id]
   
   disk.frame(outdir)
 }
 
 #' hard_group_by
+#' @export
 hard_group_by.disk.frame <- function(df, by, outdir) {
   browser()
   ff = dir(attr(df, "path"))
@@ -149,6 +158,7 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
 
 
 #' The nb stands for non-blocking
+#' TODO make it work!
 hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   browser()
   if(is.null(nworkers)) {
@@ -177,7 +187,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   #   rm(fst_tmp);gc()
   #   ramsize = pryr::object_size(res)
   #   if(ramsize*l <= ramlim) {
-  #     write.fst(res, sprintf("tmptmp/%d",i))
+  #     write_fst(res, sprintf("tmptmp/%d",i))
   #   } else {
   #     file.remove("tmptmp/dothis")
   #     return(data.table(-1,-1,-1))
@@ -223,7 +233,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
         fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
         
         fst_tmp[,{
-          write.fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
+          write_fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
         }, out.disk.frame.id]
         
         ## write file to inidcate stage 1 is done
@@ -254,7 +264,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
         }))
         
         setkey(tmptmp2, acct_id)
-        fst::write.fst(tmptmp2, file.path("large_sorted",sprintf("%d.fst",ii)), 100);
+        fst::write_fst(tmptmp2, file.path("large_sorted",sprintf("%d.fst",ii)), 100);
         gc()
         
         file.create(file.path(fperfoutchunks,ii))
