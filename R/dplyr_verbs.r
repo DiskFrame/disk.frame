@@ -11,9 +11,10 @@ select_.disk.frame <- function(.data, ..., .dots){
 
 #' @export
 rename_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
-  record(.data, cmd)
+  # .dots <- lazyeval::all_dots(.dots, ...)
+  # cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
+  # record(.data, cmd)
+  stop("not implemented rename!")
 }
 
 #' @export
@@ -86,10 +87,11 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
 
 #' @export
 groups.disk.frame <- function(x){
-  if (is.null(x$.groups)){
-    x$.groups <- groups(collect(x, first_chunk_only=TRUE))
-  }
-  x$.groups
+  # if (is.null(x$.groups)){
+  #   x$.groups <- groups(collect(x, first_chunk_only=TRUE))
+  # }
+  # x$.groups
+  stop("groups.disk.frame not yet implemented")
 }
 
 #' @export
