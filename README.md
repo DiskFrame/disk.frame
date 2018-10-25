@@ -7,9 +7,6 @@ A simple data manipulation library utilising on-disk stored data structure (prim
 # disk.frame
 A simple data manipulation library utilising on disk stored data structure (primarily fst) for batch processing of large files.
 
-# Example usage
-
-
 #install.packages(c("fst","future","data.table"))
 
 if(!require(devtools)) install.packages("devtools")
