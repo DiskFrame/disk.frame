@@ -304,8 +304,12 @@ delayed.disk.frame <- function(df, fn, ...) {
     ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
     
     res <- future_lapply(2:length(ii), function(k,i,j,dotdot) {
-      #a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
-      #a <- fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T)
+      a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
+      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+      j = paste0(j,collapse="")
+      dotdot = paste0(dotdot,collapse="")
+      i = paste0(i,collapse="")
+
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)
       } else if (j == "NULL") {
@@ -322,6 +326,10 @@ delayed.disk.frame <- function(df, fn, ...) {
     ff <- dir(attr(df,"path"))
     
     res <- future_lapply(ff, function(k,i,j,dotdot) {
+      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+      j = paste0(j,collapse="")
+      dotdot = paste0(dotdot,collapse="")
+      i = paste0(i,collapse="")
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)
       } else if (j == "NULL") {
