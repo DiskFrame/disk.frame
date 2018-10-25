@@ -10,7 +10,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   keep1 = attr(df,"keep")
   
   #browser()
-  fn = attr(df,"lazyfn")
+  cmds = attr(df,"lazyfn")
   
   if(!is.null(keep1)) {
     keep = intersect(keep1, keep)
@@ -29,9 +29,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
     }
   }
   
-  if (is.null(fn)) {
+  if (is.null(cmds)) {
     read_fst(filename, columns = keep, as.data.table = T)
   } else {
-    fn(read_fst(filename, columns = keep, as.data.table = T))
+    play(read_fst(filename, columns = keep, as.data.table = T), cmds)
   }
 }

@@ -213,10 +213,22 @@ nrow.disk.frame <- function(df) {
 #' @import future
 #' @import future.apply
 #' @export
+chunk_lapply <- function (...) {
+  warning("chunk_lapply is deprecated in favour of map.disk.frame")
+  map.disk.frame(...)
+}
 
-chunk_lapply <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+#' do to all chunks
+#' @import fst
+#' @import future
+#' @import future.apply
+#' @export
+
+map <- function(...) UseMethod("map")
+
+map.disk.frame <- function(df, fn, ..., outdir = NULL, chunks = nchunk(df), compress = 50, lazy = T) {
   if(lazy) {
-    attr(df, "lazyfn") = fn
+    attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
     return(df)
   }
   
