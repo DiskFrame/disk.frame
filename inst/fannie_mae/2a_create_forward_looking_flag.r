@@ -4,20 +4,21 @@ source("inst/fannie_mae/0_setup.r")
 fmdf = disk.frame("fmdf")
 harp = disk.frame("harp.df")
 
-# create forward looking flag ---------------------------------------------
-#df = get_chunk.disk.frame(fmdf,1)
-#df = df[loan_id == "100513171914", ] 
-harp1 = delayed(harp, function(df) {
-  df[,date:=as.Date(monthly.rpt.prd, "%m/%d/%Y")]
-  df[,.(loan_id, date)]
-})
+# harp contains the first date on which a loan enters into HARP
+system.time(
+  harp1 <- 
+    harp[,.(first_harp_date = min(as.Date(monthly.rpt.prd, "%m/%d/%Y"))), loan_id, 
+         keep=c("loan_id", "monthly.rpt.prd")])
 
-harp2 <- hard_group_by(harp1, by = "loan_id", outdir = "tmp_harp2")
+harp1[,before_12m_first_harp_date:=first_harp_date]
+system.time(lubridate::month(harp1$before_12m_first_harp_date) <- lubridate::month(harp1$before_12m_first_harp_date) - 12)
+harp1[,harp_12m := TRUE]
 
-# find out the first date on which an account enters into harp
-harp1[,.(min_date = min(date)),loan_id,keep=c("monthly.rpt.prd","loan_id")]
-harp1[,.(min = min(date))]
+# break it out into smaller chunks for even faster merging
+system.time(harp2 <- shard(harp1, "loan_id", nchunk(fmdf), outdir = "first_harp_date.df", overwrite=T))
 
+# no need to hard group by it's already sharded by loan_id
+# took about 503 seconds
 system.time(defaults <- chunk_lapply(fmdf, function(df) {
   # create the default flag
   df[,date:=as.Date(monthly.rpt.prd,"%m/%d/%Y")]
@@ -42,12 +43,9 @@ system.time(defaults <- chunk_lapply(fmdf, function(df) {
   
   # create the hardship flag
   # whether the customer goes into in the next 12 months hardship 
-  
-  
-  
-  
   df3
-}, keep=c("monthly.rpt.prd", "delq.status", "loan_id"), outdir="tmp2"))
+}, keep=c("monthly.rpt.prd", "delq.status", "loan_id"), outdir="defaults.df", lazy = F))
+
 
 # 
 # a = df[loan_id == "100513171914", ]

@@ -9,7 +9,7 @@ harp_mapping <- fread("D:/data/fannie_mae/HARP_Files/Loan_Mapping.txt", colClass
 setkey(harp_mapping, harp_id)
 fst::write_fst(harp_mapping,"harp_mapping.fst")
 
-# too about 438.65
+# took about 438.65
 system.time(
   harp <- csv_to_disk.frame("D:/data/fannie_mae/HARP_Files/Performance_HARP.txt", inmapfn = function(df) {
     setnames(df, "loan_id", "harp_id")

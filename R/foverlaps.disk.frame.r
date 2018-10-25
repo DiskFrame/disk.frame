@@ -1,11 +1,11 @@
-foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
+foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, compress=50) {
   if(!dir.exists(outdir)) dir.create(outdir)
   stopifnot("disk.frame" %in% class(df1))
   
   if("data.frame" %in% class(df2)) {
     chunk_lapply(df1, function(df1) foverlaps(df1, df2, ...), ...)
-  } else if (merge_by_chunk_id | (all(sort(shardkey(df1)) == sort(shardkey(df2))))) {
-    # ifthe shardkeys are the same then only need to match by segment id
+  } else if (merge_by_chunk_id | (all(shardkey(df1) == shardkey(df2)))) {
+    # if the shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
     path1 = attr(df1,"path")
     path2 = attr(df2,"path")
@@ -35,17 +35,33 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
     # 
     # dotdotdot$x = data1
     # dotdotdot$y = data2
+    #browser()
     
-    df3[,{
-      data1 = get_chunk.disk.frame(df1,file_id)
-      data2 = get_chunk.disk.frame(df2,file_id)
+    future_lapply(1:nrow(df3), function(row) {
+      chunk_id = df3[row,chunk_id]
+      
+      data1 = get_chunk.disk.frame(df1,chunk_id)
+      data2 = get_chunk.disk.frame(df2,chunk_id)
       dotdotdot$x = data1
       dotdotdot$y = data2
       data3 = do_call(foverlaps, dotdotdot)
-      rm(data1); rm(data2); gc()
-      write_fst(data3, glue("{outdir}/{.BY}"))
+      rm(data1); rm(data2); #gc()
+      outdir
+      write_fst(data3, glue("{outdir}/{chunk_id}"), compress = compress)
+      rm(data3); #gc()
       NULL
-    }, chunk_id]
+    })
+    
+    # df3[,{
+    #   data1 = get_chunk.disk.frame(df1,file_id)
+    #   data2 = get_chunk.disk.frame(df2,file_id)
+    #   dotdotdot$x = data1
+    #   dotdotdot$y = data2
+    #   data3 = do_call(foverlaps, dotdotdot)
+    #   rm(data1); rm(data2); gc()
+    #   write_fst(data3, glue("{outdir}/{.BY}"))
+    #   NULL
+    # }, chunk_id]
     return(disk.frame(outdir))
   } else {
     stop("foverlaps.disk.frame branch: not implemented")

@@ -99,6 +99,7 @@ if(F) {
 
 #' Shard a data.frame/data.table into chunk and saves it into a disk.frame
 shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
+
   setDT(df)
   if(length(shardby) == 1) {
     code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
@@ -126,21 +127,20 @@ shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) 
 
 #' hard_group_by
 hard_group_by.disk.frame <- function(df, by, outdir) {
-  #browser()
+  browser()
   ff = dir(attr(df, "path"))
   
-  # shard
-  tmp_dirs  = chunk_lapply(df, function(df) {
+  # shard and create temporary diskframes
+  tmp_df  = chunk_lapply(df, function(df1) {
     tmpdir = tempfile()
-    dir.create(tmpdir)
-    shard(df, shardby = by, nchunks = nchunk(df), outdir = tmpdir)
+    shard(df1, shardby = by, nchunks = nchunk.disk.frame(df), outdir = tmpdir)
   }, lazy = F)
   
   # now rbindlist
-  res = rbindlist.disk.frame(tmp_dirs)
+  res = rbindlist.disk.frame(tmp_df, outdir=outdir)
 
   # clean up the tmp dir
-  sapply(tmp_dirs, function(x) {
+  sapply(tmp_df, function(x) {
     unlink(attr(x, "path"))
   })
   
@@ -150,7 +150,7 @@ hard_group_by.disk.frame <- function(df, by, outdir) {
 
 #' The nb stands for non-blocking
 hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
-  #browser()
+  browser()
   if(is.null(nworkers)) {
     nworkers = parallel::detectCores()
   }

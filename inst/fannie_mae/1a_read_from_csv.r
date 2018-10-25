@@ -15,6 +15,10 @@ if(T) {
 }
 
 plan(multiprocess(workers = 3))
+
+# remove the contents of test_fm
+dir("test_fm", full.names = T)
+
 for(k in 1:2) {
   files_to_do = ok[newid == k, path]
   if(length(files_to_do) > 0) {
