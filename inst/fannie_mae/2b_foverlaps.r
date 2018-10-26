@@ -15,6 +15,13 @@ tmp2_lazy = delayed(tmp2, function(df) {
   setkey(df, "loan_id","start_date","end_date")
 })
 
+harp2_lazy = lazy(harp2, function(df) {
+  setkey(df, "loan_id","before_12m_first_harp_date","first_harp_date")
+})
+
+
+#dh <- rbindlist.disk.frame(tmp2_lazy, harp2_lazy, outdir ="defaults_harp.df", by_chunk_id = T)
+
 
 #plan(transparent)
 system.time(tmp3 <- foverlaps.disk.frame(
@@ -24,12 +31,9 @@ system.time(tmp3 <- foverlaps.disk.frame(
   by.x = c("loan_id", "monthly.rpt.prd", "monthly.rpt.prd2"),
   by.y = c("loan_id", "start_date", "end_date"),
   merge_by_chunk_id = T,
-  compress = 100
+  compress = 50
 ))
 
-harp2_lazy = lazy(harp2, function(df) {
-  setkey(df, "loan_id","before_12m_first_harp_date","first_harp_date")
-})
 
 system.time(tmp4 <- foverlaps.disk.frame(
   tmp3, 
@@ -38,5 +42,5 @@ system.time(tmp4 <- foverlaps.disk.frame(
   by.x = c("loan_id", "monthly.rpt.prd", "monthly.rpt.prd2"),
   by.y = c("loan_id", "before_12m_first_harp_date", "first_harp_date"),
   merge_by_chunk_id = T,
-  compress = 100
+  compress = 50
 ))

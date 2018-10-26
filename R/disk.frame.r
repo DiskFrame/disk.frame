@@ -269,61 +269,35 @@ delayed.disk.frame <- function(df, fn, ...) {
 #' @import fst
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
-  # stopifnot(is_ready(df))
-  #browser()
   res <- NULL
   fpath <- attr(df,"path")
-  # if it's a file disk.frame
-  if(!dir.exists(fpath) & file.exists(fpath)) {
-    md <- fst.metadata(fpath)
-    ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
-    
-    res <- future_lapply(2:length(ii), function(k,i,j,dotdot) {
-      a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
-      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-      j = paste0(j,collapse="")
-      dotdot = paste0(dotdot,collapse="")
-      i = paste0(i,collapse="")
+  
+  ff <- dir(attr(df,"path"))
+  
+  i = deparse(substitute(i))
+  j = deparse(substitute(j))
+  dotdot = deparse(substitute(...))
+  
+  res <- future_lapply(ff, function(k,i,j,dotdot) {
+    # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+    j = paste0(j,collapse="")
+    dotdot = paste0(dotdot,collapse="")
+    i = paste0(i,collapse="")
 
-      if(dotdot == "NULL") {
-        code = sprintf("a[%s,%s]", i, j)
-      } else if (j == "NULL") {
-        code = sprintf("a[%s]", i)
-      } else {
-        code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-      }
-      
-      aa <- eval(parse(text=code))
-      rm(a); gc()
-      aa
-    }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
-  } else {
-    ff <- dir(attr(df,"path"))
+    if(dotdot == "NULL") {
+      code = sprintf("a[%s,%s]", i, j)
+    } else if (j == "NULL") {
+      code = sprintf("a[%s]", i)
+    } else {
+      code = sprintf("a[%s,%s,%s]", i, j, dotdot)
+    }
+    a = get_chunk.disk.frame(df, k)
     
-    i = deparse(substitute(i))
-    j = deparse(substitute(j))
-    dotdot = deparse(substitute(...))
-    
-    res <- future_lapply(ff, function(k,i,j,dotdot) {
-      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-      j = paste0(j,collapse="")
-      dotdot = paste0(dotdot,collapse="")
-      i = paste0(i,collapse="")
-      if(dotdot == "NULL") {
-        code = sprintf("a[%s,%s]", i, j)
-      } else if (j == "NULL") {
-        code = sprintf("a[%s]", i)
-      } else {
-        code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-      }
-      a = get_chunk.disk.frame(df, k)
-      
-      aa <- eval(parse(text=code))
-      #browser()
-      rm(a); gc()
-      aa
-    }, i,j,dotdot)
-  }
+    aa <- eval(parse(text=code))
+    #browser()
+    rm(a); gc()
+    aa
+  }, i, j, dotdot)
   
   # sometimes the returned thing is a vetor e.g. df[,.N]
   if("data.frame" %in% class(res[[1]])) {
@@ -334,7 +308,6 @@ delayed.disk.frame <- function(df, fn, ...) {
     warning("spooky")
     return(res)
   }
-    
 }
 
 #' Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard
