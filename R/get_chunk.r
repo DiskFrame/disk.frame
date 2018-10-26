@@ -1,8 +1,17 @@
+#' Obtain one chunk by chunk id
+#' @export
+#' @param df a disk.frame
+#' @param n the chunk id. If numeric then matches by number, if character then returns the chunk with the same name as n
+#' @param keep the columns to keep
+#' @param full.name whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
 get_chunk <- function(...) {
   UseMethod("get_chunk")
 }
 
 
+#' @export
+#' @rdname get_chunk
+#' @import fst
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   #browser()
   stopifnot("disk.frame" %in% class(df))
@@ -10,17 +19,18 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   path = attr(df,"path")
   keep1 = attr(df,"keep")
   
-  # browser()
-  fn = attr(df,"lazyfn")
+  cmds = attr(df,"lazyfn")
   filename = ""
   
-  if(!is.null(keep1)) {
+  if(!is.null(keep1) & !is.null(keep)) {
     keep = intersect(keep1, keep)
     if (!all(keep %in% keep1)) {
       warning("some of the variables specified in keep is not available")
     }
   } else if (typeof(keep) == "closure") {
     keep = NULL
+  } else {
+    keep = keep1
   }
   
   if(is.numeric(n)) {
@@ -32,8 +42,8 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
       filename = file.path(path, n)
     }
   }
-  
-  if (is.null(fn)) {
+
+  if (is.null(cmds)) {
     if(typeof(keep)!="closure") {
       read_fst(filename, columns = keep, as.data.table = T)
     } else {
@@ -41,9 +51,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
     }
   } else {
     if(typeof(keep)!="closure") {
-      fn(read_fst(filename, columns = keep, as.data.table = T))
+      play(read_fst(filename, columns = keep, as.data.table = T), cmds)
     } else {
-      fn(read_fst(filename, as.data.table = T))
+      play(read_fst(filename, as.data.table = T), cmds)
     }
   }
 }

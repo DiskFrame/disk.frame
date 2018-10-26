@@ -1,3 +1,15 @@
+#' Apply data.table's foverlaps to the disk.frame
+#' @param df1 A disk.frame
+#' @param df2 A disk.frame or a data.frame
+#' @param outdir The output directory of the disk.frame
+#' @param merge_by_chunk_id If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise everychunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame
+#' @param compress The compression ratio for fst
+#' @import glue
+#' @import fst
+#' @import data.table
+#' @import future_apply
+#' @import future
+#' @export
 foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, compress=50) {
   if(!dir.exists(outdir)) dir.create(outdir)
   stopifnot("disk.frame" %in% class(df1))
@@ -64,6 +76,6 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
     # }, chunk_id]
     return(disk.frame(outdir))
   } else {
-    stop("foverlaps.disk.frame branch: not implemented")
+    stop("this foverlaps.disk.frame branch is not implemented")
   }
 }

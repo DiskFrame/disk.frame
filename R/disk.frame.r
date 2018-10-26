@@ -24,7 +24,7 @@ disk.frame_folder <- function(path, ....) {
 
 
 #' Create a disk.frame from fst files
-#' @path The path to store the output file or to a directory
+#' @param path The path to store the output file or to a directory
 #' @import fst
 disk.frame_fst <- function(path, ...) {
   df <- list()
@@ -49,14 +49,8 @@ prepare_dir.disk.frame <- function(df, path, clean = F) {
   fpath2
 }
 
-#' Return the number of chunks
-#' @export
-nchunk <- function(...) {
-  UseMethod("nchunk")
-}
 
 #' is the disk.frame ready
-#' @export
 is_ready <- function(df) {
   return(TRUE)
   UseMethod("is_ready")  
@@ -99,19 +93,7 @@ is_ready.disk.frame <- function(df) {
   }
 }
 
-#' @export
-nchunk.disk.frame <- function(df, skip.ready.check = F) {
-  if(!skip.ready.check) stopifnot(is_ready(df))
-  fpath <- attr(df,"path")
-  if(is.dir.disk.frame(df)) {
-    return(length(dir(fpath)))
-  } else {
-    return(1)
-  }
-}
-
 #' Checks if the df is a single-file based disk.frame
-#' @export
 is.file.disk.frame <- function(df, check.consistency = T) {
   if(check.consistency) {
     fpath <- attr(df,"path")
@@ -129,8 +111,9 @@ is.dir.disk.frame <- function(...) {
   !is.file.disk.frame(...)
 }
 
-#' Head
+#' Head of the disk.frame
 #' @export
+#' @import fst
 head.disk.frame <- function(df, n = 6L, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
@@ -144,6 +127,7 @@ head.disk.frame <- function(df, n = 6L, ...) {
 
 #' tail of disk.frame
 #' @export
+#' @import fst
 tail.disk.frame <- function(df, n = 6L, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
@@ -152,7 +136,7 @@ tail.disk.frame <- function(df, n = 6L, ...) {
     path2 <- path2[length(path2)]
     tail(fst::read.fst(path2, from = 1, to = n), n = n, ...)
   } else {
-    tail(fst::read.fst(path1, from = (df$NrOfRows-n+1), to = df$NrOfRows), n = n, ...)
+    stop("tail failed: dir not exist")
   }
 }
 
@@ -170,6 +154,8 @@ nrow.default <- function(...) {
 
 #' @rdname nrow
 #' @export
+#' @param df a disk.frame
+#' @import fst
 nrow.disk.frame <- function(df) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
@@ -182,43 +168,40 @@ nrow.disk.frame <- function(df) {
       return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$NrOfRows)))
     }
   } else {
-    return(fst::fst.metadata(path1)$NrOfRows)
+    #return(fst::fst.metadata(path1)$NrOfRows)
+    stop("nrow error")
   }
 }
 
-#' The first chunk of the disk.frame
-#' firstchunk <- function(df) {
-#'   eval(parse(text = sprintf("attr(%s,'chunk.seq') <- 1",as.character(substitute(df)) )),envir = parent.frame())
-#'   attr(df, "chunk.seq") <- 1
-#'   fst::read.fst(attr(df,"path"), from = 1, to = 1000000)
-#' }
-#' 
-#' #' Gives the next chunk of the disk.frame
-#' nextchunk <- function(df) {
-#'   # df is a disk.frame chunk
-#'   fromi <- (attr(df,"chunk.seq")+1)*1000000+1
-#'   toi <- fromi + 1000000 -1
-#'   
-#'   dfstr <- as.character(substitute(df))
-#'   eval(parse(text = sprintf("attr(%s,'chunk.seq') <- attr(%s,'chunk.seq') + 1 ", dfstr, dfstr)), envir = parent.frame())
-#'   fst::read.fst(attr(df,"path"), from = fromi, to = toi)
-#' }
-#' 
-#' start <- function(df) {
-#'   
-#' }
-
 #' do to all chunks
+#' @export
+#' @rdname map
+chunk_lapply <- function (...) {
+  warning("chunk_lapply is deprecated in favour of map.disk.frame")
+  map.disk.frame(...)
+}
+
+#' Apply the same function to all chunks
+#' @param df a disk.frame
+#' @param fn a function to apply to each of the chunks
+#' @param outdir the output directory
+#' @param keep the columns to keep from the input
+#' @param chunks The number of chunks to output
+#' @param lazy if TRUE then do this lazily
+#' @param compress 0-100 fst compression ratio
+#' @export 
+map <- function(...) UseMethod("map")
+
 #' @import fst
 #' @import future
 #' @import future.apply
+#' @import purrr
 #' @export
-
-
-chunk_lapply <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(df), compress = 50, lazy = T) {
-  #browser()
+#' @rdname map
+map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+  fn = purrr::as_mapper(fn)
   if(lazy) {
-    attr(df, "lazyfn") = fn
+    attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
     return(df)
   }
   
@@ -259,7 +242,8 @@ chunk_lapply <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(
 }
 
 #' Lazy chunk_lapply wrapper
-#' 
+#' @export
+#' @rdname map
 lazy <- function(df,...) {
   UseMethod("lazy")
 }
@@ -268,12 +252,15 @@ lazy.disk.frame <- function(df, fn, ...) {
   chunk_lapply(df, fn, lazy=T, ...)
 }
 
-delayed <- function(df,...) {
+#' Lazy chunk_lapply wrapper
+#' @export
+#' @rdname map
+delayed <- function(...) {
   UseMethod("delayed")
 }
 
 delayed.disk.frame <- function(df, fn, ...) {
-  chunk_lapply(df, fn, lazy=T, ...)
+  map(df, fn, lazy=T, ...)
 }
  
 #' [ interface for disk.frame using fst backend
@@ -282,65 +269,35 @@ delayed.disk.frame <- function(df, fn, ...) {
 #' @import fst
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
-  # stopifnot(is_ready(df))
-  #browser()
   res <- NULL
   fpath <- attr(df,"path")
-  if(!dir.exists(fpath) & file.exists(fpath)) {
-    md <- fst.metadata(fpath)
-    ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
-    
-    i = deparse(substitute(i))
-    j = deparse(substitute(j))
-    dotdot = deparse(substitute(...))
-    
-    res <- future_lapply(2:length(ii), function(k,i,j,dotdot) {
-      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-      j = paste0(j,collapse="")
-      dotdot = paste0(dotdot,collapse="")
-      i = paste0(i,collapse="")
-      
-      if(dotdot == "NULL") {
-        code = sprintf("a[%s,%s]", i, j)
-      } else if (j == "NULL") {
-        code = sprintf("a[%s]", i)
-      } else {
-        code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-      }
-      
-      aa <- eval(parse(text=code))
-      rm(a); gc()
-      aa
-    }, i, j, dotdot)
-  } else {
-    ff <- dir(attr(df,"path"))
-    
-    i = deparse(substitute(i))
-    j = deparse(substitute(j))
-    dotdot = deparse(substitute(...))
-    
-    
-    res <- future_lapply(ff, function(k,i,j,dotdot) {
-      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-      j = paste0(j,collapse="")
-      dotdot = paste0(dotdot,collapse="")
-      i = paste0(i,collapse="")
+  
+  ff <- dir(attr(df,"path"))
+  
+  i = deparse(substitute(i))
+  j = deparse(substitute(j))
+  dotdot = deparse(substitute(...))
+  
+  res <- future_lapply(ff, function(k,i,j,dotdot) {
+    # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+    j = paste0(j,collapse="")
+    dotdot = paste0(dotdot,collapse="")
+    i = paste0(i,collapse="")
 
-      if(dotdot == "NULL") {
-        code = sprintf("a[%s,%s]", i, j)
-      } else if (j == "NULL") {
-        code = sprintf("a[%s]", i)
-      } else {
-        code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-      }
-      a = get_chunk.disk.frame(df, k)
-      
-      aa <- eval(parse(text=code))
-      #browser()
-      rm(a); gc()
-      aa
-    }, i, j, dotdot)
-  }
+    if(dotdot == "NULL") {
+      code = sprintf("a[%s,%s]", i, j)
+    } else if (j == "NULL") {
+      code = sprintf("a[%s]", i)
+    } else {
+      code = sprintf("a[%s,%s,%s]", i, j, dotdot)
+    }
+    a = get_chunk.disk.frame(df, k)
+    
+    aa <- eval(parse(text=code))
+    #browser()
+    rm(a); gc()
+    aa
+  }, i, j, dotdot)
   
   # sometimes the returned thing is a vetor e.g. df[,.N]
   if("data.frame" %in% class(res[[1]])) {
@@ -351,60 +308,11 @@ delayed.disk.frame <- function(df, fn, ...) {
     warning("spooky")
     return(res)
   }
-    
 }
 
-#' Distribute (chunk-up/break-up) a fst file into chunks into a folder
-#' @param df The disk.frame
-#' @param outdirpath The directory/folder to output the chunks to 
-#' @param compress Level of compression: 0-100 where 100 is the highest level of compress
+#' Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard
 #' @export
+#' @rdname shard
 distribute <- function(...) {
-  UseMethod("distribute")
+  UseMethod("shard")
 }
-
-distribute.disk.frame <- function(df, outdirpath, compress = 100) {
-  fpath <- attr(df, "path")
-  md <- fst.metadata(fpath)
-  ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
-  
-  if(!dir.exists(outdirpath)) {
-    dir.create(outdirpath)
-  }
-  
-  future_lapply(2:length(ii), function(k) {
-    write_fst(fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T), file.path(outdirpath, sprintf("fst%d", k-1)), compress = compress)
-    gc()
-  })
-}
-
-#' Returns names
-# names <- function(x) {
-#   UseMethod("names")
-# }
-# 
-# names.default <- function(x) {
-#   base::names(x)
-# }
-# 
-# names.disk.frame <- function(x) {
-#   path = attr(x,"path")
-#   res = fst::fst.metadata(dir(path,full.names = T)[1])
-#   res$columnNames
-# }
-
-# The mutate method
-# mutate <- function(...) UseMethod("mutate")
-# 
-# mutate.default <- function(...) dplyr::mutate
-# 
-# mutate.disk.frame <- function(df,...) {
-#   a <- firstchunk(df)
-#   a <- dplyr::mutate(a, ...)
-#   
-#   save(a, attr(a,"path"))
-#   while(!is.null(a <- nextchunk(a))) {
-#     a <- dplyr::mutate(a, ...)
-#     save(a, attr(a,"path"))
-#   }
-# }

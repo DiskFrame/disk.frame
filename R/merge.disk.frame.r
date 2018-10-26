@@ -1,25 +1,19 @@
-shardkey <- function(...) {
-  #"not implemented yet"
-  #runif(1)
-  T
-}
-
-keep.disk.frame <- function(df, selections) {
-  stopifnot("disk.frame" %in% class(df))
-  
-  df1 = disk.frame(attr(df,"path"))
-  attr(df1,"keep") = selections
-  df1
-}
-
+#' Merge function for disk.frames
+#' @export
+#' @param df1 a disk.frame
+#' @param df2 a disk.frame or data.frame
+#' @param outdir The output directory for the disk.frame
+#' @param merge_by_chunkd_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
+#' @import data.table
+#' @import dtplyr
+#' @import dplyr
 merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
-  
   if(!dir.exists(outdir)) dir.create(outdir)
   stopifnot("disk.frame" %in% class(df1))
   
   if("data.frame" %in% class(df2)) {
     chunk_lapply(df1, function(df1) merge(df1, df2, ...), ...)
-  } else if (merge_by_chunk_id | (all(sort(shardkey(df1)) == sort(shardkey(df2))))) {
+  } else if (merge_by_chunk_id | (all(shardkey(df1) == shardkey(df2)))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
     path1 = attr(df1,"path")
@@ -46,6 +40,8 @@ merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
     }, chunk_id]
     return(disk.frame(outdir))
   } else {
+    stop("Cartesian joins are currently not implemented")
+    
     # have to make every possible combination
     path1 = attr(df1,"path")
     path2 = attr(df2,"path")
@@ -65,7 +61,8 @@ merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
       all=T,
       allow.cartesian = T
     )
-    stop("error not implemented")
+    
+    
     setDT(df3)
     i <- 0
     mapply(function(pathA, pathB) {
