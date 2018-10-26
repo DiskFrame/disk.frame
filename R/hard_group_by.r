@@ -127,7 +127,11 @@ shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) 
   }
   
   df[,{
-    write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
+    if (base::nrow(.SD) > 0) {
+      write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
+      NULL
+    }
+    NULL
   }, out.disk.frame.id]
   
   disk.frame(outdir)
@@ -135,14 +139,14 @@ shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) 
 
 #' hard_group_by
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir) {
-  browser()
+hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame(df)) {
+  #browser()
   ff = dir(attr(df, "path"))
   
   # shard and create temporary diskframes
   tmp_df  = chunk_lapply(df, function(df1) {
     tmpdir = tempfile()
-    shard(df1, shardby = by, nchunks = nchunk.disk.frame(df), outdir = tmpdir)
+    shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir)
   }, lazy = F)
   
   # now rbindlist

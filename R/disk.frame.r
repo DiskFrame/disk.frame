@@ -49,17 +49,6 @@ prepare_dir.disk.frame <- function(df, path, clean = F) {
   fpath2
 }
 
-#' Return the number of chunks
-#' @export
-nchunks <- function(...) {
-  UseMethod("nchunks")
-}
-
-#' @export
-#' @rdname nchunks
-nchunk <- function(...) {
-  UseMethod("nchunk")
-}
 
 #' is the disk.frame ready
 is_ready <- function(df) {
@@ -101,23 +90,6 @@ is_ready.disk.frame <- function(df) {
     return(T)
   } else {
     return(T)
-  }
-}
-
-#' @export
-nchunk.disk.frame <- function(...) nchunks.disk.frame(...)
-  
-#' @export
-#' @param df a disk.frame
-#' @param skip.ready.chunk NOT implemented
-#' @import fs
-nchunks.disk.frame <- function(df, skip.ready.check = F) {
-  #if(!skip.ready.check) stopifnot(is_ready(df))
-  fpath <- attr(df,"path")
-  if(is.dir.disk.frame(df)) {
-    return(length(fs::dir_ls(fpath, type="files")))
-  } else {
-    return(1)
   }
 }
 
@@ -223,9 +195,11 @@ map <- function(...) UseMethod("map")
 #' @import fst
 #' @import future
 #' @import future.apply
+#' @import purrr
 #' @export
 #' @rdname map
 map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+  fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
     return(df)
@@ -281,12 +255,12 @@ lazy.disk.frame <- function(df, fn, ...) {
 #' Lazy chunk_lapply wrapper
 #' @export
 #' @rdname map
-delayed <- function(df,...) {
+delayed <- function(...) {
   UseMethod("delayed")
 }
 
 delayed.disk.frame <- function(df, fn, ...) {
-  chunk_lapply(df, fn, lazy=T, ...)
+  map(df, fn, lazy=T, ...)
 }
  
 #' [ interface for disk.frame using fst backend
@@ -299,6 +273,7 @@ delayed.disk.frame <- function(df, fn, ...) {
   #browser()
   res <- NULL
   fpath <- attr(df,"path")
+  # if it's a file disk.frame
   if(!dir.exists(fpath) & file.exists(fpath)) {
     md <- fst.metadata(fpath)
     ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
@@ -325,6 +300,10 @@ delayed.disk.frame <- function(df, fn, ...) {
   } else {
     ff <- dir(attr(df,"path"))
     
+    i = deparse(substitute(i))
+    j = deparse(substitute(j))
+    dotdot = deparse(substitute(...))
+    
     res <- future_lapply(ff, function(k,i,j,dotdot) {
       # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
       j = paste0(j,collapse="")
@@ -343,7 +322,7 @@ delayed.disk.frame <- function(df, fn, ...) {
       #browser()
       rm(a); gc()
       aa
-    }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
+    }, i,j,dotdot)
   }
   
   # sometimes the returned thing is a vetor e.g. df[,.N]
