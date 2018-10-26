@@ -290,9 +290,16 @@ delayed.disk.frame <- function(df, fn, ...) {
     md <- fst.metadata(fpath)
     ii <- sort(unique(round(seq(0, md$nrOfRows, length.out = 1+parallel::detectCores()))))
     
+    i = deparse(substitute(i))
+    j = deparse(substitute(j))
+    dotdot = deparse(substitute(...))
+    
     res <- future_lapply(2:length(ii), function(k,i,j,dotdot) {
-      #a <- fst::read.fst(fpath, columns = keep, from = ii[k-1]+1, to = ii[k], as.data.table = T)
-      #a <- fst::read.fst(fpath, from = ii[k-1]+1, to = ii[k], as.data.table = T)
+      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+      j = paste0(j,collapse="")
+      dotdot = paste0(dotdot,collapse="")
+      i = paste0(i,collapse="")
+      
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)
       } else if (j == "NULL") {
@@ -304,11 +311,21 @@ delayed.disk.frame <- function(df, fn, ...) {
       aa <- eval(parse(text=code))
       rm(a); gc()
       aa
-    }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
+    }, i, j, dotdot)
   } else {
     ff <- dir(attr(df,"path"))
     
+    i = deparse(substitute(i))
+    j = deparse(substitute(j))
+    dotdot = deparse(substitute(...))
+    
+    
     res <- future_lapply(ff, function(k,i,j,dotdot) {
+      # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
+      j = paste0(j,collapse="")
+      dotdot = paste0(dotdot,collapse="")
+      i = paste0(i,collapse="")
+
       if(dotdot == "NULL") {
         code = sprintf("a[%s,%s]", i, j)
       } else if (j == "NULL") {
@@ -322,7 +339,7 @@ delayed.disk.frame <- function(df, fn, ...) {
       #browser()
       rm(a); gc()
       aa
-    }, deparse(substitute(i)), deparse(substitute(j)), deparse(substitute(...)))
+    }, i, j, dotdot)
   }
   
   # sometimes the returned thing is a vetor e.g. df[,.N]

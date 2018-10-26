@@ -21,5 +21,5 @@ fm_perf/
 *.csv
 *.xlsx
 fmdf0
-
 Rplot\.png
+*.png
