@@ -108,7 +108,7 @@ play <- function(.data, cmds=NULL){
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
-      print(.data)
+      #print(.data)
     } else {
       .data <- lazyeval::lazy_eval(cmd, list(.data=.data)) 
     }

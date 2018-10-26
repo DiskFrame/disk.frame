@@ -22,13 +22,15 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   cmds = attr(df,"lazyfn")
   filename = ""
   
-  if(!is.null(keep1)) {
+  if(!is.null(keep1) & !is.null(keep)) {
     keep = intersect(keep1, keep)
     if (!all(keep %in% keep1)) {
       warning("some of the variables specified in keep is not available")
     }
   } else if (typeof(keep) == "closure") {
     keep = NULL
+  } else {
+    keep = keep1
   }
   
   if(is.numeric(n)) {
