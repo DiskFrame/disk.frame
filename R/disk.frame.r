@@ -13,7 +13,7 @@ disk.frame <- function(path, ..., backend = "fst") {
 #' Create a data frame pointed to a folder
 disk.frame_folder <- function(path, ....) {
   df <- list()
-  files <- dir(path, full.names = T)
+  files <- list.files(path, full.names = T)
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
   class(df) <- c("disk.frame", "disk.frame.folder")
@@ -42,9 +42,8 @@ prepare_dir.disk.frame <- function(df, path, clean = F) {
   fpath2 = file.path(fpath,path)
   if(!dir.exists(fpath2)) {
     dir.create(fpath2)
-  } else if(clean) {
-    # file.remove(dir(fpath2,full.names = T))
-    sapply(dir(fpath2,full.names = T), unlink, recursive =T, force  = T)
+  } else if(clean) {    
+    sapply(list.files(fpath2,full.names = T), unlink, recursive =T, force  = T)
   }
   fpath2
 }
@@ -72,7 +71,7 @@ status.disk.frame <- function(df) {
     if(!dir.exists(file.path(fpath, ".performing"))) {
       return(list(status = "hard group by", nchunk = ndf, nchunk_ready = 0))
     } else if(dir.exists(file.path(fpath, ".performing", "outchunks"))) {
-      l = length(dir(file.path(fpath, ".performing", "outchunks")))
+      l = length(list.files(file.path(fpath, ".performing", "outchunks")))
       if(l == ndf) {
         attr(df, "performing") <- "none"
         return(list(status ="none", nchunk = ndf, nchunk_read = ndf))
@@ -119,7 +118,7 @@ head.disk.frame <- function(df, n = 6L, ...) {
   path1 <- attr(df,"path")
   cmds <- attr(df, "lazyfn")
   if(dir.exists(path1)) {
-    path2 <- dir(path1,full.names = T)[1]
+    path2 <- list.files(path1,full.names = T)[1]
     head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n), cmds), n = n, ...)
   } else {
     head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n), cmds), n = n, ...)
@@ -133,7 +132,7 @@ tail.disk.frame <- function(df, n = 6L, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
-    path2 <- dir(path1,full.names = T)
+    path2 <- list.files(path1,full.names = T)
     path2 <- path2[length(path2)]
     tail(fst::read.fst(path2, from = 1, to = n), n = n, ...)
   } else {
@@ -161,7 +160,7 @@ nrow.disk.frame <- function(df) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
-    path2 <- dir(path1,full.names = T)
+    path2 <- list.files(path1,full.names = T)
     tmpfstmeta = fst::fst.metadata(path2[1])
     if("nrOfRows" %in% names(tmpfstmeta)) {
       return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$nrOfRows)))
@@ -218,8 +217,8 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   }
   
   path <- attr(df, "path")
-  files <- dir(path, full.names = T)
-  files_shortname <- dir(path)
+  files <- list.files(path, full.names = T)
+  files_shortname <- list.files(path)
   #browser()
   res = future.apply::future_lapply(1:length(files), function(ii) {
     #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
@@ -271,7 +270,7 @@ delayed.disk.frame <- function(df, fn, ...) {
   res <- NULL
   fpath <- attr(df,"path")
   
-  ff <- dir(attr(df,"path"))
+  ff <- list.files(attr(df,"path"))
   
   i = deparse(substitute(i))
   j = deparse(substitute(j))

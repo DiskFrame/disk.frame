@@ -16,7 +16,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
   #browser()
   #fs::dir_create(outdir)
   
-  l = length(dir(outdir))
+  l = length(list.files(outdir))
   if(is.null(shardby)) {
     #a = write_fst(inmapfn(fread(infile, colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
     a = as.disk.frame(inmapfn(fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = T, ...)
@@ -67,7 +67,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       print(glue("read {rows} rows from {infile}"))
       
       # do not run this in parallel as the level above this is likely in parallel
-      system.time(fnl_out <- rbindlist.disk.frame(lapply(dir(tmpdir1,full.names = T), disk.frame), outdir = outdir, by_chunk_id = T, parallel=F))
+      system.time(fnl_out <- rbindlist.disk.frame(lapply(list.files(tmpdir1,full.names = T), disk.frame), outdir = outdir, by_chunk_id = T, parallel=F))
       
       # remove the files
       unlink(tmpdir1, recursive = T, force = T)

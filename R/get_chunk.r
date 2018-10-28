@@ -33,7 +33,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   }
   
   if(is.numeric(n)) {
-    filename = dir(path,full.names = T)[n]
+    filename = list.files(path, full.names = T)[n]
   } else {
     if (full.name) {
       filename = n
