@@ -13,7 +13,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
   if(!dir.exists(outdir)) dir.create(outdir)
   if(by_chunk_id) {
     list_of_paths = map_chr(df_list, ~attr(.x,"path"))
-    list_of_chunks = map_dfr(list_of_paths, ~data.table(path = dir(.x),full_path = dir(.x,full.names = T)))
+    list_of_chunks = map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = T)))
     setDT(list_of_chunks)
     
     # split the list of chunks into lists for easy operation with future

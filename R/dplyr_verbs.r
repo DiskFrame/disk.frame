@@ -52,7 +52,15 @@ do_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
-inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
+inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = NULL, merge_by_chunk_id){
+  if("disk.frame" %in% class(y)) {
+    #if(all(shardkey(x) == shardkey(y))) {
+    ncx = nchunks(x)
+    ncy = nchunks(y)
+    hard_group_by(x, by, nchunks = max(ncy,ncx))
+    hard_group_by(y, by, nchunks = max(ncy,ncx))
+    #}
+  }
   # note that x is named .data in the lazy evaluation
   .data <- x
   cmd <- lazyeval::lazy(inner_join(.data, y, by, copy, ...))

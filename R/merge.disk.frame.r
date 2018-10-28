@@ -21,12 +21,12 @@ merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
     
     df3 = merge(
       data.table(
-        chunk_id = dir(path1), 
-        pathA = dir(path1,full.names = T)
+        chunk_id = list.files(path1), 
+        pathA = list.files(path1,full.names = T)
       ),
       data.table(
-        chunk_id = dir(path2), 
-        pathB = dir(path2,full.names = T)
+        chunk_id = list.files(path2), 
+        pathB = list.files(path2,full.names = T)
       )
     )
     setDT(df3)
@@ -49,13 +49,13 @@ merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {
     df3 = merge(
       data.table(
         justmerge = T,
-        chunk_id1 = dir(path1), 
-        pathA = dir(path1,full.names = T)
+        chunk_id1 = list.files(path1), 
+        pathA = list.files(path1,full.names = T)
       ),
       data.table(
         justmerge = T,
-        chunk_id2 = dir(path2), 
-        pathB = dir(path2,full.names = T)
+        chunk_id2 = list.files(path2), 
+        pathB = list.files(path2,full.names = T)
       ),
       by = "justmerge",
       all=T,

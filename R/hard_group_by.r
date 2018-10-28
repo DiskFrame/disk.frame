@@ -10,7 +10,7 @@ progressbar <- function(df) {
     #tmp = file.path(fparent,".performing","inchunks")
     tmp = "tmphardgroupby2"
     
-    l = length(dir(fparent))
+    l = length(list.files(fparent))
     pt_begin_split = proc.time()
     doprog <- function(pt_from, sleep = 1) {
       tkpb = winProgressBar(title = sprintf("Hard Group By Stage 1(/2) - %s", shardby), label = "Checking completeness",
@@ -19,8 +19,8 @@ progressbar <- function(df) {
       
       on.exit(close(pb))
       on.exit(close(tkpb))
-      while(length(dir(file.path(tmp,l))) < l) {
-        wl = length(dir(file.path(tmp,1:l)))/l
+      while(length(list.files(file.path(tmp,l))) < l) {
+        wl = length(list.files(file.path(tmp,1:l)))/l
         tt <- proc.time()[3] - pt_from[3]
         #browser()
         avg_speed = tt/wl
@@ -30,7 +30,7 @@ progressbar <- function(df) {
         setWinProgressBar(tkpb, wl, 
                           title = sprintf("Hard Group By Stage 1(/2) - %s", shardby),
                           label = sprintf("%.0f out of %d; avg speed %.2f mins; elapsed %.1f mins; another %.1f mins", wl,l, round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
-        setTxtProgressBar(pb, length(dir(file.path(tmp,l))), 
+        setTxtProgressBar(pb, length(list.files(file.path(tmp,l))), 
                           title = sprint("Group By - %s", shardby))
         Sys.sleep(sleep)
       }
@@ -45,8 +45,8 @@ progressbar <- function(df) {
       
       on.exit(close(pb))
       on.exit(close(tkpb))
-      while(length(dir("large_sorted")) < l) {
-        wl = length(dir("large_sorted"))
+      while(length(list.files("large_sorted")) < l) {
+        wl = length(list.files("large_sorted"))
         tt <- proc.time()[3] - pt_from[3]
         #browser()
         avg_speed = tt/wl
@@ -56,7 +56,7 @@ progressbar <- function(df) {
         setWinProgressBar(tkpb, l + wl/2, 
                           title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating -- %.0f out of %d chunks processed;", shardby, wl, l),
                           label = sprintf("avg %.2f min/chunk; %.1f mins elapsed; %.1f mins remaining;", round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
-        setTxtProgressBar(pb, length(dir("large_sorted")), 
+        setTxtProgressBar(pb, length(list.files("large_sorted")), 
                           title = sprint("Hard Group By - %s", shardby))
         Sys.sleep(sleep)
       }
@@ -148,22 +148,21 @@ shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), ove
 
 #' Perform a group by and ensuring that every unique grouping of by is
 #' in the same chunk
-#' @parm df, by, outdir, nchunks = nchunk.disk.frame(df)
+#' @param df a disk.frame
+#' @param by the columns to shard by
+#' @param outdir the output directory
+#' @param nchunks The number of chunks in the output. Defaults = nchunk.disk.frame(df)
 #' @export
 hard_group_by <- function(...) {
   UseMethod("hard_group_by")
 }
 
-#' hard_group_by
-#' @param df a disk.frame
-#' @param by the columns to shard by
-#' @param outdir the output directory
-#' @param nchunks The number of chunks in the output. Defaults = nchunk.disk.frame(df)
+#' @rdname hard_group_by
 #' @import purrr
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame(df)) {
   #browser()
-  ff = dir(attr(df, "path"))
+  ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
   tmp_df  = map(df, function(df1) {
@@ -231,7 +230,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   l = nchunk(df)
   indexes = unique(round(seq(0, l, length.out = nworkers+1),0))
   fpath = attr(df,"path")
-  a = dir(fpath, full.names =T)
+  a = list.files(fpath, full.names =T)
   
   tmp = "tmphardgroupby2"
   if(dir.exists(tmp)) {
@@ -273,19 +272,19 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
       })
       
       # wait for next phase
-      while(length(dir(fperfinchunks)) < nchunk(df)) {
+      while(length(list.files(fperfinchunks)) < nchunk(df)) {
         Sys.sleep(0.5)
       }
       
       pt_begin_collate <- proc.time()
-      fldrs = dir(tmp,full.names = T)
+      fldrs = list.files(tmp,full.names = T)
       l = length(fldrs)
       tmp_throwaway <- NULL
       lapply(inchunkindices, function(ii) {
         #browser()
         dtfn = fldrs[ii]
         
-        tmptmp2 = rbindlist(lapply(dir(dtfn,full.names =  T), function(ddtfn) {
+        tmptmp2 = rbindlist(lapply(list.files(dtfn,full.names =  T), function(ddtfn) {
           fst::read.fst(ddtfn, as.data.table=T)
         }))
         

@@ -24,13 +24,13 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
     
     df3 = merge(
       data.table(
-        chunk_id = dir(path1), 
-        pathA = dir(path1,full.names = T),
-        file_id = 1:length(dir(path1))
+        chunk_id = list.files(path1), 
+        pathA = list.files(path1,full.names = T),
+        file_id = 1:length(list.files(path1))
       ),
       data.table(
-        chunk_id = dir(path2), 
-        pathB = dir(path2,full.names = T)
+        chunk_id = list.files(path2), 
+        pathB = list.files(path2,full.names = T)
       ),
       by = "chunk_id"
     )
