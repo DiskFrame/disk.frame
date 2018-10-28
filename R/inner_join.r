@@ -21,9 +21,9 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
       #list.files(
       res = map_by_chunk_id(x, y, ~{
         if(is.na(.y)) {
-          return(.x)
+          return(data.table())
         } else if (is.na(.x)) {
-          return(.y)
+          return(data.table())
         }
         inner_join(.x, .y, by = by, copy = copy, ...)
       }, outdir = outdir)
