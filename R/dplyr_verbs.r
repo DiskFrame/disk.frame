@@ -8,10 +8,10 @@ select_.disk.frame <- function(.data, ..., .dots){
 
 #' @export
 rename_.disk.frame <- function(.data, ..., .dots){
-  # .dots <- lazyeval::all_dots(.dots, ...)
-  # cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
-  # record(.data, cmd)
-  stop("not implemented rename!")
+  .dots <- lazyeval::all_dots(.dots, ...)
+  cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
+  record(.data, cmd)
+  #stop("not implemented rename!")
 }
 
 #' @export
@@ -45,13 +45,14 @@ summarise_.disk.frame <- function(.data, ..., .dots){
 
 #' @export
 do_.disk.frame <- function(.data, ..., .dots){
+  warning("applying `do` to each chunk of disk.frame; this may not work as expected")
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(do_(.data, .dots=.dots))
   record(.data, cmd)
 }
 
 #' @export
-inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
+inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
   # note that x is named .data in the lazy evaluation
   .data <- x
   cmd <- lazyeval::lazy(inner_join(.data, y, by, copy, ...))
@@ -59,7 +60,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
 }
 
 #' @export
-left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
+left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
   # note that x is named .data in the lazy evaluation
   .data <- x
   cmd <- lazyeval::lazy(left_join(.data, y, by, copy, ...))
@@ -67,7 +68,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
 }
 
 #' @export
-semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
+semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
   # note that x is named .data in the lazy evaluation
   .data <- x
   cmd <- lazyeval::lazy(semi_join(.data, y, by, copy, ...))
@@ -75,28 +76,59 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
 }
 
 #' @export
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ...){
+anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
   # note that x is named .data in the lazy evaluation
   .data <- x
   cmd <- lazyeval::lazy(anti_join(.data, y, by, copy, ...))
   record(.data, cmd)
 }
 
-#' @export
+#' 
 groups.disk.frame <- function(x){
-  # if (is.null(x$.groups)){
-  #   x$.groups <- groups(collect(x, first_chunk_only=TRUE))
-  # }
-  # x$.groups
-  stop("groups.disk.frame not yet implemented")
+  shardkey(x)
+}
+
+#' Group by designed for disk.frames
+#' @import pryr dplyr purrr
+#' @export
+#' @rdname group_by
+group_by.disk.frame <- function(.data, ..., add = FALSE, hard = FALSE, outdir = NULL) {
+  # hard group_by requested, need to regroup these into 
+  # get a list of variables to group by
+  #browser()
+  dots <- dplyr:::compat_as_lazy_dots(...)
+  shardby = map_chr(dots, ~deparse(.x$expr))
+  
+  if (hard == TRUE) {
+    if(is.null(outdir)) {
+      outdir = tempfile("tmp_disk_frame")
+    }
+    
+    .data = hard_group_by(.data, by = shardby, outdir = outdir)
+    #browser()
+    .data = dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add)
+    return(.data)
+  } else if (hard == FALSE) {
+    #if(sort(shardkey(.data)) != sort(shardby)) {
+    warning("hard is set to FALSE but grouping don't match up between disk.frame and group by vars")
+    #}
+    return(dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add))
+  } else {
+    stop("group_by for disk.frames must set hard to TRUE or FALSE")
+  }
 }
 
 #' @export
 group_by_.disk.frame <- function(.data, ..., .dots, add=FALSE){
-  .data$.warn <- TRUE
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(group_by_(.data, .dots=.dots, add=add))
   record(.data, cmd)
+}
+
+#' Take a glimpse
+#' @export
+glimpse.disk.frame <- function(df, ...) {
+  glimpse(head(df, ...), ...)
 }
 
 record <- function(.data, cmd){
@@ -105,6 +137,7 @@ record <- function(.data, cmd){
 }
 
 play <- function(.data, cmds=NULL){
+  #browser()
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)

@@ -8,4 +8,14 @@ names.disk.frame <- function(df) {
 }
 
 #' @export
-colnames.disk.frame <- function(df) names.disk.frame(df)
+colnames.disk.frame <- function(df) {
+  names.disk.frame(df)
+}
+
+colnames <- function(x, ...) {
+  UseMethod("colnames")
+}
+
+colnames.default <- function(x, ...) {
+  Base::colnames(x, ...)
+}

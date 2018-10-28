@@ -6,6 +6,7 @@ print.disk.frame <- function(df) {
              ,glue::glue("path: \"{attr(df,'path')}\"")
              ,glue::glue("nchunks: {nchunk(df)}")
              ,glue::glue("nrow: {nrow(df)}")
+             ,glue::glue("ncol: {ncol(df)}")
   )
   cat(a)
 }

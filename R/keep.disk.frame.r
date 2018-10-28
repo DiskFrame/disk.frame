@@ -1,4 +1,4 @@
-#' Keep only the variables listed in selections
+#' Keep only the variables from the input listed in selections
 #' @param df a disk.frame
 #' @param selections The list of variables to keep from the input source
 #' @export
