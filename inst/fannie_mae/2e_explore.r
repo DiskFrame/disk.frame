@@ -13,7 +13,7 @@ library(magrittr)
 a = disk.frame("tmp4")
 system.time(a1 <- a %>% 
   keep(names(a)[1:16]) %>% 
-  map(~.x, outdir="only16.df", lazy = F))
+  map.disk.frame(~.x, outdir="only16.df", lazy = F))
 
 system.time(a2 <- a1[,.(.N, sum(default_12m, na.rm=T)), servicer.name, keep=c("servicer.name","default_12m")])
 a2[,sum(N)/sum(default_12m), servicer.name]

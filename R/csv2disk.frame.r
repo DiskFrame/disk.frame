@@ -13,7 +13,7 @@
 #' @export
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress=50,...) {
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, ...) {
-  #browser()
+  #list.files(
   #fs::dir_create(outdir)
   
   l = length(list.files(outdir))
@@ -22,7 +22,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
     a = as.disk.frame(inmapfn(fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = T, ...)
     return(a)
   } else { # so shard by some element
-    #browser()
+    #list.files(
     if(is.null(in_chunk_size)) {
       #shard(inmapfn(fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
       shard(inmapfn(fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T, compress = compress,...)
@@ -44,7 +44,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
         skiprows = skiprows + in_chunk_size
         rows <- tmpdt[,.N]
         if(rows < in_chunk_size) {
-          #browser()
+          #list.files(
           done <- T
         }
         
@@ -63,7 +63,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       #   i <<- i + 1
       #   shard(indf, shardby = shardby, nchunks = nchunks, outdir = file.path(tmpdir1,i), overwrite = T, compress=compress,...)
       # })
-      #browser()
+      #list.files(
       print(glue("read {rows} rows from {infile}"))
       
       # do not run this in parallel as the level above this is likely in parallel
@@ -71,7 +71,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       
       # remove the files
       unlink(tmpdir1, recursive = T, force = T)
-      #browser()
+      #list.files(
     }
   }
   disk.frame(outdir)

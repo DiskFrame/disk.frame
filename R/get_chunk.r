@@ -12,7 +12,8 @@ get_chunk <- function(...) {
 #' @rdname get_chunk
 #' @import fst
 #' @export
-get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
+get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F) {
+  #list.files(
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")
@@ -35,7 +36,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.name = F) {
   if(is.numeric(n)) {
     filename = list.files(path, full.names = T)[n]
   } else {
-    if (full.name) {
+    if (full.names) {
       filename = n
     } else {
       filename = file.path(path, n)

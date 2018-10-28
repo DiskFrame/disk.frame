@@ -11,7 +11,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., col.names = NULL, colClasses 
   tmpdir = tempfile(pattern = "tmp_zip2csv")
   
   if(parallel) {
-    #browser()
+    #list.files(
     system.time(future.apply::future_lapply(files$Name, function(fn) {
       print(fn)
       out_fst_file = file.path(outdir, paste0(fn,".fst"))
