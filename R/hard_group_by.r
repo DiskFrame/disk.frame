@@ -1,13 +1,4 @@
-
-#' Perform a group by and ensuring that every unique grouping of by is
-#' in the same chunk
-#' @export
-hard_group_by <- function(...) {
-  UseMethod("hard_group_by")
-}
-
 #' Show a progress bar of the action being performed
-#' @export
 progressbar <- function(df) {
   if(attr(df,"performing") == "hard_group_by") {
     # create progress bar
@@ -97,54 +88,85 @@ if(F) {
   2+2
 }
 
+
+#' Output a data.frame into disk.frame
+#' @import glue fst fs
+output_disk.frame <- function(df, outdir, nchunks, overwrite, ...) {
+  if(dir.exists(outdir)) {
+    if(!overwrite) {
+      stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
+    }
+  } else {
+    fs::dir_create(outdir)
+  }
+  
+  df[,{
+    if (base::nrow(.SD) > 0) {
+      write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")))
+      NULL
+    }
+    NULL
+  }, .out.disk.frame.id]
+  disk.frame(outdir)
+}
+
+#' Make a data.frame into a disk.frame
+#' @import data.table fst
+#' @export
+as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
+  setDT(df)
+  
+  odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))
+  odfi = odfi[1:nrow(df)]
+  df[, .out.disk.frame.id := odfi]
+  
+  output_disk.frame(df, outdir, nchunks, overwrite, ...)
+}
+
+
 #' Shard a data.frame/data.table into chunk and saves it into a disk.frame
 #' @param df A disk.frame
 #' @param shardby The column(s) to shard the data by.
 #' @param nchunks The number of chunks
 #' @param outdir The output directory of the disk.frame
-#' @param append If TRUE then the chunks are appended
 #' @param overwrite If TRUE then the chunks are overwritten
-#' @import glue
-#' @import fst
+#' @import glue fst
 #' @export
-shard <- function(df, shardby, nchunks, outdir, ..., append = F, overwrite = F) {
+shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), overwrite = F) {
   setDT(df)
   if(length(shardby) == 1) {
-    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
+    code = glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
   } else {
     shardby_list = glue("paste0({paste0(shardby,collapse=',')})")
-    code = glue("df[,out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
+    code = glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
   }
   
   eval(parse(text=code))
   
-  if(dir.exists(outdir)) {
-    if(!overwrite) {
-      stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
-    }
-  } else if(!dir.exists(outdir)) {
-    dir.create(outdir)
-  }
-  
-  df[,{
-    if (base::nrow(.SD) > 0) {
-      write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), ...)
-      NULL
-    }
-    NULL
-  }, out.disk.frame.id]
-  
-  disk.frame(outdir)
+  output_disk.frame(df, outdir, nchunks, overwrite)
+}
+
+#' Perform a group by and ensuring that every unique grouping of by is
+#' in the same chunk
+#' @parm df, by, outdir, nchunks = nchunk.disk.frame(df)
+#' @export
+hard_group_by <- function(...) {
+  UseMethod("hard_group_by")
 }
 
 #' hard_group_by
+#' @param df a disk.frame
+#' @param by the columns to shard by
+#' @param outdir the output directory
+#' @param nchunks The number of chunks in the output. Defaults = nchunk.disk.frame(df)
+#' @import purrr
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame(df)) {
   #browser()
   ff = dir(attr(df, "path"))
   
   # shard and create temporary diskframes
-  tmp_df  = chunk_lapply(df, function(df1) {
+  tmp_df  = map(df, function(df1) {
     tmpdir = tempfile()
     shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir)
   }, lazy = F)
@@ -153,8 +175,8 @@ hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame
   res = rbindlist.disk.frame(tmp_df, outdir=outdir)
 
   # clean up the tmp dir
-  sapply(tmp_df, function(x) {
-    unlink(attr(x, "path"))
+  purrr::map(tmp_df, ~{
+    unlink(attr(.x, "path"))
   })
   
   res
@@ -164,7 +186,7 @@ hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame
 #' The nb stands for non-blocking
 #' TODO make it work!
 hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
-  browser()
+  #browser()
   if(is.null(nworkers)) {
     nworkers = parallel::detectCores()
   }

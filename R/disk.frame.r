@@ -117,11 +117,12 @@ is.dir.disk.frame <- function(...) {
 head.disk.frame <- function(df, n = 6L, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
+  cmds <- attr(df, "lazyfn")
   if(dir.exists(path1)) {
     path2 <- dir(path1,full.names = T)[1]
-    head(fst::read.fst(path2, from = 1, to = n), n = n, ...)
+    head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n), cmds), n = n, ...)
   } else {
-    head(fst::read.fst(path1, from = 1, to = n), n = n, ...)
+    head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n), cmds), n = n, ...)
   }
 }
 
@@ -220,7 +221,7 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   files <- dir(path, full.names = T)
   files_shortname <- dir(path)
   #browser()
-  res = future_lapply(1:length(files), function(ii) {
+  res = future.apply::future_lapply(1:length(files), function(ii) {
     #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
     
     res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
@@ -249,7 +250,7 @@ lazy <- function(df,...) {
 }
 
 lazy.disk.frame <- function(df, fn, ...) {
-  chunk_lapply(df, fn, lazy=T, ...)
+  map.disk.frame(df, fn, lazy=T, ...)
 }
 
 #' Lazy chunk_lapply wrapper
@@ -260,13 +261,11 @@ delayed <- function(...) {
 }
 
 delayed.disk.frame <- function(df, fn, ...) {
-  map(df, fn, lazy=T, ...)
+  map.disk.frame(df, fn, lazy=T, ...)
 }
  
 #' [ interface for disk.frame using fst backend
-#' @import data.table
-#' @import future
-#' @import fst
+#' @import data.table future fst future_lapply
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
   res <- NULL
@@ -278,7 +277,7 @@ delayed.disk.frame <- function(df, fn, ...) {
   j = deparse(substitute(j))
   dotdot = deparse(substitute(...))
   
-  res <- future_lapply(ff, function(k,i,j,dotdot) {
+  res <- future.apply::future_lapply(ff, function(k,i,j,dotdot) {
     # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
     j = paste0(j,collapse="")
     dotdot = paste0(dotdot,collapse="")
@@ -315,4 +314,23 @@ delayed.disk.frame <- function(df, fn, ...) {
 #' @rdname shard
 distribute <- function(...) {
   UseMethod("shard")
+}
+
+#' Number of columns
+#' @import fst
+#' @export
+ncol <- function(x) {
+  UseMethod("ncol")
+}
+
+#' @import fs
+#' @export
+#' @rdname ncol
+ncol.disk.frame <- function(df) {
+  length(colnames(df))
+}
+
+#' @export
+ncol.default <- function(x) {
+  base::ncol(x)
 }

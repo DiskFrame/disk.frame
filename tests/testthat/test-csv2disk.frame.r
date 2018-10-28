@@ -1,0 +1,37 @@
+context("test-csv2disk.frame")
+
+setup({
+  df = disk.frame:::gen_datatable_synthetic(1e3+11)
+  data.table::fwrite(df, "tmp_pls_delete.csv")
+})
+
+test_that("csv2disk.frame works with no shard", {
+  dff = csv_to_disk.frame("tmp_pls_delete.csv", "tmp_pls_delete.df")
+  dff1 = dff[,sum(v1), id1]
+  dff2 = dff1[,sum(V1), id1]
+  expect_false(nrow(dff1) == nrow(dff2))
+  expect_equal(nrow(dff), 1e3+11)
+  expect_equal(ncol(dff), 9)
+})
+
+test_that("csv2disk.frame works with shard", {
+  dff = csv_to_disk.frame("tmp_pls_delete.csv", "tmp_pls_delete1.df", shardby = "id1")
+  dff1 = dff[,sum(v1), id1]
+  dff2 = dff1[,sum(V1), id1]
+  expect_true(nrow(dff1) == nrow(dff2))
+  expect_equal(nrow(dff), 1e3+11)
+  expect_equal(ncol(dff), 9)
+  dff = csv_to_disk.frame("tmp_pls_delete.csv", "tmp_pls_delete2.df", shardby = c("id1","id2"))
+  dff1 = dff[,sum(v1), .(id1,id2)]
+  dff2 = dff1[,sum(V1), .(id1,id2)]
+  expect_true(nrow(dff1) == nrow(dff2))
+  expect_equal(nrow(dff), 1e3+11)
+  expect_equal(ncol(dff), 9)
+})
+
+teardown({
+  fs::dir_delete("tmp_pls_delete.df")
+  fs::dir_delete("tmp_pls_delete1.df")
+  fs::dir_delete("tmp_pls_delete2.df")
+  fs::file_delete("tmp_pls_delete.csv")
+})
