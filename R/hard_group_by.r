@@ -4,7 +4,7 @@ progressbar <- function(df) {
     # create progress bar
     
     shardby = "acct_id"
-    #browser()
+    #list.files(
     fparent = attr(df,"parent")
     
     #tmp = file.path(fparent,".performing","inchunks")
@@ -22,7 +22,7 @@ progressbar <- function(df) {
       while(length(list.files(file.path(tmp,l))) < l) {
         wl = length(list.files(file.path(tmp,1:l)))/l
         tt <- proc.time()[3] - pt_from[3]
-        #browser()
+        #list.files(
         avg_speed = tt/wl
         pred_speed = avg_speed*(l-wl) + avg_speed*l/2
         elapsed = round(tt/60,1)
@@ -48,7 +48,7 @@ progressbar <- function(df) {
       while(length(list.files("large_sorted")) < l) {
         wl = length(list.files("large_sorted"))
         tt <- proc.time()[3] - pt_from[3]
-        #browser()
+        #list.files(
         avg_speed = tt/wl
         pred_speed = avg_speed*(l-wl)
         elapsed = round(tt/60,1)
@@ -92,6 +92,7 @@ if(F) {
 #' Output a data.frame into disk.frame
 #' @import glue fst fs
 output_disk.frame <- function(df, outdir, nchunks, overwrite, ...) {
+  #list.files(
   if(dir.exists(outdir)) {
     if(!overwrite) {
       stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
@@ -130,15 +131,17 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @param nchunks The number of chunks
 #' @param outdir The output directory of the disk.frame
 #' @param overwrite If TRUE then the chunks are overwritten
-#' @import glue fst
+#' @import glue 
+#' @import fst
 #' @export
 shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), overwrite = F) {
+  #list.files(
   setDT(df)
   if(length(shardby) == 1) {
-    code = glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby}, nchunks)]")
+    code = glue::glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i(as.character({shardby}), nchunks)]")
   } else {
-    shardby_list = glue("paste0({paste0(shardby,collapse=',')})")
-    code = glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
+    shardby_list = glue::glue("paste0({paste0(shardby,collapse=',')})")
+    code = glue::glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
   }
   
   eval(parse(text=code))
@@ -160,12 +163,11 @@ hard_group_by <- function(...) {
 #' @rdname hard_group_by
 #' @import purrr
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame(df)) {
-  #browser()
+hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df)) {
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
-  tmp_df  = map(df, function(df1) {
+  tmp_df  = map.disk.frame(df, function(df1) {
     tmpdir = tempfile()
     shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir)
   }, lazy = F)
@@ -185,7 +187,7 @@ hard_group_by.disk.frame <- function(df, by, outdir, nchunks = nchunk.disk.frame
 #' The nb stands for non-blocking
 #' TODO make it work!
 hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
-  #browser()
+  #list.files(
   if(is.null(nworkers)) {
     nworkers = parallel::detectCores()
   }
@@ -281,7 +283,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
       l = length(fldrs)
       tmp_throwaway <- NULL
       lapply(inchunkindices, function(ii) {
-        #browser()
+        #list.files(
         dtfn = fldrs[ii]
         
         tmptmp2 = rbindlist(lapply(list.files(dtfn,full.names =  T), function(ddtfn) {

@@ -35,7 +35,7 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
       by = "chunk_id"
     )
     setDT(df3)
-    #browser()
+    #list.files(
     dotdotdot = list(...)
     # file_id = 1
     # data1 = get_chunk.disk.frame(df1,file_id)
@@ -47,7 +47,7 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
     # 
     # dotdotdot$x = data1
     # dotdotdot$y = data2
-    #browser()
+    #list.files(
     
     future_lapply(1:nrow(df3), function(row) {
       chunk_id = df3[row,chunk_id]

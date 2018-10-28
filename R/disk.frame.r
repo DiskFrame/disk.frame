@@ -60,7 +60,7 @@ status <- function(...) {
 }
 
 status.disk.frame <- function(df) {
-  #browser()
+  #list.files(
   perf = attr(df,"performing")
   if(perf == "none") {
     nc = nchunk(df, skip.ready.check = T)
@@ -189,16 +189,13 @@ chunk_lapply <- function (...) {
 #' @param chunks The number of chunks to output
 #' @param lazy if TRUE then do this lazily
 #' @param compress 0-100 fst compression ratio
-#' @export 
-map <- function(...) UseMethod("map")
-
 #' @import fst
 #' @import future
 #' @import future.apply
 #' @import purrr
 #' @export
-#' @rdname map
-map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunk(df), compress = 50, lazy = T) {
+map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunks(df), compress = 50, lazy = T) {
+  #list.files(
   fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
@@ -206,7 +203,7 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   }
   
   if(!is.null(outdir)) {
-    if(!dir.exists(outdir)) dir.create(outdir)
+    fs::dir_create(outdir)
   }
   
   stopifnot(is_ready(df))
@@ -219,20 +216,21 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   path <- attr(df, "path")
   files <- list.files(path, full.names = T)
   files_shortname <- list.files(path)
-  #browser()
+  #list.files(
   res = future.apply::future_lapply(1:length(files), function(ii) {
     #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
-    
-    res = fn(get_chunk.disk.frame(df, ii, keep=keep), ...)
+    #list.files(
+    ds = get_chunk.disk.frame(df, ii, keep=keep)
+    res = fn(ds)
     if(!is.null(outdir)) {
-      if(!dir.exists(outdir)) dir.create(outdir)
+      fs::dir_create(outdir)
       write_fst(res, file.path(outdir, files_shortname[ii]), compress)
-      return(NULL)
+      return(ii)
     } else {
       return(res)
     }
   })
-  #browser()
+  #list.files(
   if(!is.null(outdir)) {
     if(!dir.exists(outdir)) dir.create(outdir)
     return(disk.frame(outdir))
@@ -292,7 +290,7 @@ delayed.disk.frame <- function(df, fn, ...) {
     a = get_chunk.disk.frame(df, k)
     
     aa <- eval(parse(text=code))
-    #browser()
+    #list.files(
     rm(a); gc()
     aa
   }, i, j, dotdot)

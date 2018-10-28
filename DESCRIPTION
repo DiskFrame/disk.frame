@@ -14,7 +14,8 @@ Imports:
     data.table (>= 1.9.4),
     dplyr (>= 0.3.0.2),
     fst (>= 0.8.0),
-    Rcpp (>= 0.12.13)
+    Rcpp (>= 0.12.13),
+    glue
 Suggests: 
     testthat
 LinkingTo: 
