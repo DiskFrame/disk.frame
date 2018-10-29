@@ -1,3 +1,4 @@
+#' dplyr version implemented for disk.frame
 #' @export
 #' @import dplyr
 select_.disk.frame <- function(.data, ..., .dots){
