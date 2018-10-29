@@ -10,10 +10,45 @@ disk.frame <- function(path, ..., backend = "fst") {
   }
 }
 
+#' Add metadata to the disk.frame
+#' @import fs jsonlite
+#' @export
+add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
+  stopifnot("disk.frame" %in% class(df))
+  #\\
+  # create the metadata folder if not present
+  fs::dir_create(file.path(attr(df,"path"),".metadata"))
+  json_path = fs::file_create(file.path(attr(df,"path"),".metadata", "meta.json"))
+  
+  filesize = file.size("meta.json")
+  meta_out = NULL
+  if(is.na(filesize)) {
+    # the file is empty
+    meta_out = jsonlite::toJSON(
+        c(
+          list(
+            nchunks = nchunks, 
+            shardkey = shardkey, 
+            shardchunks = shardchunks), 
+          list(...)
+        )
+      )
+  } else {
+    meta_out = jsonlite::fromJSON(json_path)
+    meta_out$nchunks = nchunks
+    meta_out$shardkey = shardkey
+    meta_out$shardchunks = shardchunks
+    meta_out <- c(meta_out, list(...))
+  }
+  cat(meta_out, file = json_path)
+  df
+}
+
 #' Create a data frame pointed to a folder
 disk.frame_folder <- function(path, ....) {
   df <- list()
-  files <- list.files(path, full.names = T)
+  df$files <- list.files(path, full.names = T)
+  df$files_short <- list.files(path)
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
   class(df) <- c("disk.frame", "disk.frame.folder")

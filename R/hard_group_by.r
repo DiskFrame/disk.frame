@@ -91,7 +91,7 @@ if(F) {
 
 #' Output a data.frame into disk.frame
 #' @import glue fst fs
-output_disk.frame <- function(df, outdir, nchunks, overwrite, ...) {
+output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, ...) {
   #list.files(
   if(dir.exists(outdir)) {
     if(!overwrite) {
@@ -108,22 +108,23 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, ...) {
     }
     NULL
   }, .out.disk.frame.id]
-  disk.frame(outdir)
+  res = disk.frame(outdir)
+  add_meta(res, shardkey = shardkey, shardchunks = shardchunks)
 }
 
 #' Make a data.frame into a disk.frame
 #' @import data.table fst
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
+  #\\
   setDT(df)
   
   odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))
   odfi = odfi[1:nrow(df)]
   df[, .out.disk.frame.id := odfi]
   
-  output_disk.frame(df, outdir, nchunks, overwrite, ...)
+  output_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, ...)
 }
-
 
 #' Shard a data.frame/data.table into chunk and saves it into a disk.frame
 #' @param df A disk.frame
@@ -134,7 +135,7 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @import glue 
 #' @import fst
 #' @export
-shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), overwrite = F) {
+shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
   #list.files(
   setDT(df)
   if(length(shardby) == 1) {
@@ -146,7 +147,7 @@ shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), ove
   
   eval(parse(text=code))
   
-  output_disk.frame(df, outdir, nchunks, overwrite)
+  output_disk.frame(df, outdir, nchunks, overwrite, shardkey = shardby, shardchunks = nchunks)
 }
 
 #' Perform a group by and ensuring that every unique grouping of by is
@@ -154,7 +155,7 @@ shard <- function(df, shardby, outdir, ..., nchunks = recommend_nchunks(df), ove
 #' @param df a disk.frame
 #' @param by the columns to shard by
 #' @param outdir the output directory
-#' @param nchunks The number of chunks in the output. Defaults = nchunk.disk.frame(df)
+#' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
 #' @export
 hard_group_by <- function(...) {
   UseMethod("hard_group_by")
@@ -164,6 +165,7 @@ hard_group_by <- function(...) {
 #' @import purrr
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df)) {
+  
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
@@ -260,7 +262,7 @@ hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
         fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
         
         fst_tmp[,{
-          write_fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
+          fst::write_fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
         }, out.disk.frame.id]
         
         ## write file to inidcate stage 1 is done

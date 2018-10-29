@@ -51,22 +51,6 @@ do_.disk.frame <- function(.data, ..., .dots){
   record(.data, cmd)
 }
 
-#' @export
-semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
-  # note that x is named .data in the lazy evaluation
-  .data <- x
-  cmd <- lazyeval::lazy(semi_join(.data, y, by, copy, ...))
-  record(.data, cmd)
-}
-
-#' @export
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id){
-  # note that x is named .data in the lazy evaluation
-  .data <- x
-  cmd <- lazyeval::lazy(anti_join(.data, y, by, copy, ...))
-  record(.data, cmd)
-}
-
 #' 
 groups.disk.frame <- function(x){
   shardkey(x)
@@ -81,7 +65,7 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, hard = FALSE, outdir = 
   # get a list of variables to group by
   #list.files(
   dots <- dplyr:::compat_as_lazy_dots(...)
-  shardby = map_chr(dots, ~deparse(.x$expr))
+  shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
   if (hard == TRUE) {
     if(is.null(outdir)) {

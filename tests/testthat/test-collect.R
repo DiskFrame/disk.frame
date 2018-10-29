@@ -1,7 +1,7 @@
 context("test-collect")
 
 setup({
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_pls_delete")
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_pls_delete", overwrite=T)
 })
 
 test_that("collect works on simple data", {

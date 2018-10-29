@@ -3,6 +3,7 @@ context("test-group_by")
 setup({
   df = disk.frame:::gen_datatable_synthetic(1e3+11)
   data.table::fwrite(df, "tmp_pls_delete.csv")
+  data.table::fwrite(df, "tmp_pls_delete2.csv")
 })
 
 test_that("dplyr::group_by_hard=FALSE", {
@@ -22,7 +23,7 @@ test_that("dplyr::group_by_hard=FALSE", {
 })
 
 test_that("dplyr::group_by_hard=TRUE", {
-  dff = csv_to_disk.frame("tmp_pls_delete.csv", "tmp_pls_delete.df")
+  dff = csv_to_disk.frame("tmp_pls_delete2.csv", "tmp_pls_delete2.df")
   dff_res = dff %>% 
     collect %>% 
     group_by(id1, id2) %>% 
@@ -39,5 +40,7 @@ test_that("dplyr::group_by_hard=TRUE", {
 
 teardown({
   fs::file_delete("tmp_pls_delete.csv")
+  fs::file_delete("tmp_pls_delete2.csv")
   fs::dir_delete("tmp_pls_delete.df")
+  fs::dir_delete("tmp_pls_delete2.df")
 })
