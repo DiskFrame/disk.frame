@@ -65,7 +65,7 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, hard = FALSE, outdir = 
   # get a list of variables to group by
   #list.files(
   dots <- dplyr:::compat_as_lazy_dots(...)
-  shardby = map_chr(dots, ~deparse(.x$expr))
+  shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
   if (hard == TRUE) {
     if(is.null(outdir)) {

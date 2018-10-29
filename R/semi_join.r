@@ -4,7 +4,7 @@
 #' @param outdir output directory for disk.frame
 #' @rdname join 
 #' @export
-semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_id) {
+semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_semi_join"), merge_by_chunk_id = F) {
   stopifnot("disk.frame" %in% class(x))
   
   if("data.frame" %in% class(y)) {
@@ -13,7 +13,13 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_
     cmd <- lazyeval::lazy(semi_join(.data, y, by, copy, ...))
     return(record(.data, cmd))
   } else if("disk.frame" %in% class(y)) {
-    #list.files(
+    if(is.null(merge_by_chunk_id)) {
+      stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
+    }
+    if(is.null(by)) {
+      by <- intercept(names(x), names(y))
+    }
+    
     ncx = nchunks(x)
     ncy = nchunks(y)
     if (merge_by_chunk_id == F) {
@@ -21,7 +27,7 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_
       x = hard_group_by(x, by, nchunks = max(ncy,ncx))
       y = hard_group_by(y, by, nchunks = max(ncy,ncx))
       return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T))
-    } else if (merge_by_chunk_id) {
+    } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
         if(is.na(.y)) {
           return(data.table())
@@ -31,6 +37,9 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., merge_by_chunk_
         semi_join(.x, .y, by = by, copy = copy, ...)
       }, outdir = outdir)
       return(res)
+    } else {
+      # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine
+      stop("merge_by_chunk_id is TRUE but shardkey(x) does NOT equal to shardkey(y). You may want to perform a hard_group_by() on both x and/or y or set merge_by_chunk_id = FALSE")
     }
   }
 }

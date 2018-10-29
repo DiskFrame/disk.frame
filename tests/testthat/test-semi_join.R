@@ -1,4 +1,4 @@
-context("test-inner_join")
+context("test-semi_join")
 
 setup({
   a = data.frame(a = 1:100, b = 1:100)
@@ -10,41 +10,41 @@ setup({
   as.disk.frame(d, "tmp_d.df", overwrite = T)
 })
 
-test_that("testing inner_join where right is data.frame", {
+test_that("testing semi_join where right is data.frame", {
   a = disk.frame("tmp_a.df")
   b = disk.frame("tmp_b.df")
   d = disk.frame("tmp_d.df")
   bc = collect(b)
   dc = collect(d)
   
-  abc = inner_join(a, bc, by = "a") %>% collect
+  abc = semi_join(a, bc, by = "a") %>% collect
   expect_equal(nrow(abc), 50)
   
-  abc0 = inner_join(a, bc, by = c("a","b")) %>% collect
+  abc0 = semi_join(a, bc, by = c("a","b")) %>% collect
   expect_equal(nrow(abc0), 0)
   
-  abc100 = inner_join(a, bc, by = "b") %>% collect
+  abc100 = semi_join(a, bc, by = "b") %>% collect
   expect_equal(nrow(abc100), 100)
   
-  abd50 = inner_join(a, dc, by = "b") %>% collect
+  abd50 = semi_join(a, dc, by = "b") %>% collect
   expect_equal(nrow(abd50), 50)
 })
 
-test_that("testing inner_join where right is disk.frame", {
+test_that("testing semi_join where right is disk.frame", {
   a = disk.frame("tmp_a.df")
   b = disk.frame("tmp_b.df")
   d = disk.frame("tmp_d.df")
   
-  ab = inner_join(a, b, by = "a", merge_by_chunk_id = F) %>% collect
+  expect_warning({ab = semi_join(a, b, by = "a", merge_by_chunk_id = F) %>% collect})
   expect_equal(nrow(ab), 50)
   
-  ab0 = inner_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect
+  expect_warning({ab0 = semi_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect})
   expect_equal(nrow(ab0), 0)
   
-  ab100 = inner_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect
+  expect_warning({ab100 = semi_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect})
   expect_equal(nrow(ab100), 100)
   
-  ad50 = inner_join(a, d, by = "b", merge_by_chunk_id = F) %>% collect
+  expect_warning({ad50 = semi_join(a, d, by = "b", merge_by_chunk_id = F) %>% collect})
   expect_equal(nrow(ad50), 50)
 })
 

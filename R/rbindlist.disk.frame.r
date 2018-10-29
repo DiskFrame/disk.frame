@@ -4,16 +4,14 @@
 #' @param by_chunk_id If TRUE then only the chunks with the same chunk IDs will be bound
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
+#' @import data.table purrr future future.apply fs
 #' @export
-#' @import data.table
-#' @import purrr
-#' @import future
-#' @import future_apply
 rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50) {
-  if(!dir.exists(outdir)) dir.create(outdir)
+  fs::dir_create(outdir)
+  
   if(by_chunk_id) {
-    list_of_paths = map_chr(df_list, ~attr(.x,"path"))
-    list_of_chunks = map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = T)))
+    list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))
+    list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = T)))
     setDT(list_of_chunks)
     
     # split the list of chunks into lists for easy operation with future
@@ -23,25 +21,31 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
       system.time(future_lapply(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
         outfilename = names(slist[i])
-        write_fst(map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
+        fst::write_fst(purrr::map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
         NULL
       }))
     } else {
       system.time(lapply(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
         outfilename = names(slist[i])
-        write_fst(map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
+        fst::write_fst(purrr::map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
         NULL
       }))
     }
     
-    # list_of_chunks[,{
-    #   write_fst(map_dfr(full_path, ~read_fst(.x)),file.path(outdir,.BY))
-    #   NULL
-    #   }, path]
-    # 
-    return(disk.frame(outdir))
+    rbind_res = disk.frame(outdir)
+    
+    shardkeys <- map(df_list, shardkey)
+    
+    # if all the sharkeys are identical then
+    if(all(map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
+      return(add_meta(rbind_res, 
+               shardkey = shardkeys[[1]]$shardkey,
+               shardchunks = shardkeys[[1]]$shardchunks))
+    } else {
+      return(rbind_res)
+    }
   } else {
-    stop("not implemented yet")
+    stop("For rbindlist.disk.frame, only by_chunk_id = TRUE is implemented")
   }
 }
