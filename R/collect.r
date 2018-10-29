@@ -10,9 +10,3 @@ collect.disk.frame <- function(df, ...) {
     data.table()
   }
 }
-
-#' Bring the disk.frame into R
-#' @param df A disk.frame
-# collect <- function(df, ...) {
-#   UseMethod("collect")
-# }

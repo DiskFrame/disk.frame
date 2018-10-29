@@ -4,11 +4,7 @@
 #' @param outdir The output directory of the disk.frame
 #' @param merge_by_chunk_id If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise everychunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame
 #' @param compress The compression ratio for fst
-#' @import glue
-#' @import fst
-#' @import data.table
-#' @import future_apply
-#' @import future
+#' @import glue fst data.table future
 #' @export
 foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, compress=50) {
   if(!dir.exists(outdir)) dir.create(outdir)

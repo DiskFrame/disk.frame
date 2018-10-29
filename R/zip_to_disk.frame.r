@@ -2,7 +2,8 @@
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
 #' @import glue dplyr fst future future.apply
-#' TODO add all the options of fread into the ... as future may not be able to deal with it
+#' @export
+# TODO add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
   files = unzip(zipfile, list=T)
   
@@ -59,6 +60,8 @@ zip_to_disk.frame = function(zipfile, outdir, ..., col.names = NULL, colClasses 
   
   # validate 
   if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
+  
+  disk.frame(outdir)
 }
 
 # validate_zip_to_disk.frame(zipfile, outdir)
