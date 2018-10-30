@@ -292,8 +292,10 @@ delayed <- function(...) {
   UseMethod("delayed")
 }
 
+#' @export
+#' @rdname map
 delayed.disk.frame <- function(df, fn, ...) {
-  map.disk.frame(df, fn, lazy=T, ...)
+  map.disk.frame(df, fn, lazy = T, ...)
 }
  
 #' [ interface for disk.frame using fst backend
