@@ -297,7 +297,7 @@ delayed.disk.frame <- function(df, fn, ...) {
 }
  
 #' [ interface for disk.frame using fst backend
-#' @import data.table future fst future_lapply
+#' @import data.table future fst future.apply
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
   res <- NULL

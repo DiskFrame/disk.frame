@@ -1,3 +1,4 @@
+inst/doc
 .Rproj.user
 .Rhistory
 .RData
@@ -22,8 +23,5 @@ fm_perf/
 *.xlsx
 fmdf0
 Rplot\.png
-*.fst
 fmdf0/
-*.csv
-derby\.log
 *.png

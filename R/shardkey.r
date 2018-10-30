@@ -1,7 +1,7 @@
 #' Returns the shardkey (not implemented yet)
-#' TODO make this work
 #' @import jsonlite
 #' @export
+# TODO make this work
 shardkey <- function(df, ...) {
   meta_file = file.path(attr(df,"path"),".metadata", "meta.json")
   if(!file.exists(meta_file)) {

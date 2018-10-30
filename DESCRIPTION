@@ -17,7 +17,10 @@ Imports:
     Rcpp (>= 0.12.13),
     glue
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.0
+VignetteBuilder: knitr
