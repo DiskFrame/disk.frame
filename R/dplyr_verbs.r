@@ -61,7 +61,7 @@ groups.disk.frame <- function(x){
 #' @import pryr dplyr purrr
 #' @export
 #' @rdname group_by
-group_by.disk.frame <- function(.data, ..., add = FALSE, hard = FALSE, outdir = NULL) {
+group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = NULL) {
   # hard group_by requested, need to regroup these into 
   # get a list of variables to group by
   #list.files(

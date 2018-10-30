@@ -1,6 +1,6 @@
 Type: Package
 Package: disk.frame
-Title: Disk-based chunk-wise processing of gigabyte-sized
+Title: Disk-based chunk-wise processing of larger-than-RAM
     datasets
 Version: 0.1.0
 Date: 2018-10-25
@@ -16,6 +16,12 @@ Imports:
     fst (>= 0.8.0),
     Rcpp (>= 0.12.13),
     glue
+Depends:
+    dplyr,
+    data.table,
+    future,
+    future.apply,
+    dtplyr
 Suggests: 
     testthat,
     knitr,

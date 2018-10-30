@@ -1,5 +1,5 @@
 # disk.frame
-A simple data manipulation library utilising on-disk stored data structure (primarily fst) for batch processing of large files.
+A disk-based data manipulation framework for processing larger-than-RAM datasets.
 
 # Example usage
 ```r
@@ -8,18 +8,20 @@ A simple data manipulation library utilising on-disk stored data structure (prim
 if(!require(devtools)) install.packages("devtools")
 if(!require(disk.frame)) devtools::install_github("xiaodaigh/disk.frame")
 
-library(disk.frame)
-library(fst)
-library(future)
-library(future.apply)
-library(data.table)
-nworkers = parallel::detectCores(logical=F)
-#nworkers = parallel::detectCores()
-cat(nworkers," workers\n")
-plan(multiprocess, workers = nworkers, gc = T)
-options(future.globals.maxSize=Inf)
 
-rows_per_chunk = 1e7
+library(dplyr)
+library(disk.frame)
+library(data.table)
+library(fst)
+#library(future)
+#library(future.apply)
+#library(data.table)
+nworkers = parallel::detectCores(logical=F)
+cat(nworkers," workers\n")
+#plan(multiprocess, workers = nworkers, gc = T)
+#options(future.globals.maxSize=Inf)
+
+rows_per_chunk = 1e8
 # generate synthetic data
 tmpdir = file.path("tmpfst")
 fs::dir_create(tmpdir)
