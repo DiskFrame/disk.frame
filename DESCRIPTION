@@ -6,7 +6,7 @@ Version: 0.1.0
 Date: 2018-10-25
 Author: Dai ZJ
 Maintainer: Dai ZJ <dzj@analytixware.com>
-Description: Disk.frame allows the user process arbitrarily
+Description: Disk.frame allows the user to process arbitrarily
     large datasets on disk chunk-wise without loading the whole file into
     RAM. This enables large datasets to be processed and analysed.
 License: MIT
@@ -17,7 +17,10 @@ Imports:
     Rcpp (>= 0.12.13),
     glue
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.0
+VignetteBuilder: knitr

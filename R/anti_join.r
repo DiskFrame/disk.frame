@@ -3,6 +3,7 @@
 #' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
 #' @param outdir output directory for disk.frame
 #' @rdname join
+#' @return disk.frame
 #' @export
 anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F) {
   stopifnot("disk.frame" %in% class(x))

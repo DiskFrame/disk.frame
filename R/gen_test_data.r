@@ -1,5 +1,5 @@
 #' Generate synthetic dataset for testing
-#' @example 
+#' @examples
 #' #system.time(DT <- gen_datatable_synthetic())
 #' #system.time(fst::write.fst(DT,file.path(data_path, "DT.fst")))
 #' 
