@@ -35,10 +35,10 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     
     rbind_res = disk.frame(outdir)
     
-    shardkeys <- map(df_list, shardkey)
+    shardkeys <- purrr::map(df_list, shardkey)
     
     # if all the sharkeys are identical then
-    if(all(map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
+    if(all(purrr::map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
       return(add_meta(rbind_res, 
                shardkey = shardkeys[[1]]$shardkey,
                shardchunks = shardkeys[[1]]$shardchunks))

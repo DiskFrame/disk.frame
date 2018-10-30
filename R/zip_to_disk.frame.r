@@ -1,18 +1,17 @@
 #' Automatically read and convert every single file within the zip file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
-#' @import glue dplyr fst future future.apply
+#' @import glue dplyr fst future future.apply fs
 #' @export
 # TODO add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
   files = unzip(zipfile, list=T)
   
-  if(!dir.exists(outdir)) dir.create(outdir)
+  fs::dir_create(outdir)
   
   tmpdir = tempfile(pattern = "tmp_zip2csv")
   
   if(parallel) {
-    #list.files(
     system.time(future.apply::future_lapply(files$Name, function(fn) {
       print(fn)
       out_fst_file = file.path(outdir, paste0(fn,".fst"))

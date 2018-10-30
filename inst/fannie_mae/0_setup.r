@@ -1,20 +1,6 @@
-library(fst)
-library(data.table)
-library(future)
-library(future.apply)
-library(glue)
 library(disk.frame)
-library(magrittr)
-library(purrr)
-library(pryr)
-library(tidyr)
-#plan(multiprocess(workers= parallel::detectCores()/2)) # use only half the cores
-plan(multiprocess(workers = 3))
-#plan(sequential)
-sapply(dir("R",full.names = T),source)
-#source("R/zip_to_disk.frame.r")
 
-raw_perf_data_path = "d:/data/fannie_mae/Performance_All/"
+raw_perf_data_path = "d:/my dirve/data/fannie_mae/Performance_All/"
 
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 
@@ -33,6 +19,5 @@ Performance_Variables =
 dfiles = dir(raw_perf_data_path, full.names = T)
 short_dfiles = dir(raw_perf_data_path)
 
-if(!dir.exists("test_fm")) {
-  dir.create("test_fm")
-}
+
+fs::dir_create("test_fm")
