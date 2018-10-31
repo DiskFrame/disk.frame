@@ -9,9 +9,9 @@ That is `disk.frame` in a nutshell.
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
-## Common questions {#basics-1}
+## Common questions
 
-### a) What is `disk.frame` and why create it? {#what-is-`disk.frame`-1a}
+### a) What is `disk.frame` and why create it?
 
 `disk.frame` is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R; hence relaxing the assumption from "R can only deal with data that fits in RAM" to be being able to "deal with data that fits on disk". See the next section.
 
