@@ -92,7 +92,6 @@ if(F) {
 #' Output a data.frame into disk.frame
 #' @import glue fst fs
 output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, ...) {
-  #list.files(
   if(dir.exists(outdir)) {
     if(!overwrite) {
       stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
@@ -116,7 +115,14 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchu
 #' @import data.table fst
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
-  #\\
+  browser()
+  if(overwrite & fs::dir_exists(outdir)) {
+    fs::dir_delete(outdir)
+    fs::dir_create(outdir)
+  } else {
+    fs::dir_create(outdir)
+  }
+  
   setDT(df)
   
   odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))
@@ -136,7 +142,15 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @import fst
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
-  #list.files(
+  if(!is.null(outdir)) {
+    if(overwrite & fs::dir_exists(outdir)) {
+      fs::dir_delete(outdir)
+      fs::dir_create(outdir)
+    } else {
+      fs::dir_create(outdir)
+    }
+  }
+  
   setDT(df)
   if(length(shardby) == 1) {
     code = glue::glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i(as.character({shardby}), nchunks)]")
@@ -164,22 +178,31 @@ hard_group_by <- function(...) {
 #' @rdname hard_group_by
 #' @import purrr
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df)) {
+hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df), overwrite = T) {
+  if(!is.null(outdir)) {
+    if(overwrite & fs::dir_exists(outdir)) {
+      fs::dir_delete(outdir)
+      fs::dir_create(outdir)
+    } else {
+      fs::dir_create(outdir)
+    }
+  }
   
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
   tmp_df  = map.disk.frame(df, function(df1) {
     tmpdir = tempfile()
-    shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir)
+    shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
   }, lazy = F)
   
   # now rbindlist
-  res = rbindlist.disk.frame(tmp_df, outdir=outdir)
+  res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
 
   # clean up the tmp dir
   purrr::map(tmp_df, ~{
-    unlink(attr(.x, "path"))
+    fs::dir_delete(attr(.x, "path"))
+    #unlink()
   })
   
   res

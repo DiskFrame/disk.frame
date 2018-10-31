@@ -224,13 +224,10 @@ chunk_lapply <- function (...) {
 #' @param chunks The number of chunks to output
 #' @param lazy if TRUE then do this lazily
 #' @param compress 0-100 fst compression ratio
-#' @import fst
-#' @import future
-#' @import future.apply
-#' @import purrr
+#' @param overwrite if TRUE removes any existing chunks in the data
+#' @import fst future future.apply purrr
 #' @export
-map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchunks(df), compress = 50, lazy = T) {
-  #list.files(
+map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
   fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
@@ -238,10 +235,16 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   }
   
   if(!is.null(outdir)) {
-    fs::dir_create(outdir)
+    if(overwrite & fs::dir_exists(outdir)) {
+      fs::dir_delete(outdir)
+      fs::dir_create(outdir)
+    } else {
+      fs::dir_create(outdir)
+    }
   }
   
   stopifnot(is_ready(df))
+  
   keep1 = attr(df,"keep")
   
   if(is.null(keep)) {
@@ -251,23 +254,19 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep=NULL, chunks = nchun
   path <- attr(df, "path")
   files <- list.files(path, full.names = T)
   files_shortname <- list.files(path)
-  #list.files(
+  
   res = future.apply::future_lapply(1:length(files), function(ii) {
-    #res = fn(read_fst(files[ii], as.data.table=T, columns=keep), ...)
-    #list.files(
     ds = get_chunk.disk.frame(df, ii, keep=keep)
     res = fn(ds)
     if(!is.null(outdir)) {
-      fs::dir_create(outdir)
-      write_fst(res, file.path(outdir, files_shortname[ii]), compress)
+      fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
       return(ii)
     } else {
       return(res)
     }
   })
-  #list.files(
+  
   if(!is.null(outdir)) {
-    if(!dir.exists(outdir)) dir.create(outdir)
     return(disk.frame(outdir))
   } else {
     return(res)
