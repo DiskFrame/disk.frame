@@ -19,12 +19,12 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? `disk.frame` achieves this with two simple mechanisms:
+The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
+
+In a nutshell, `disk.frame` makes use of two simple ideas
 
 1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 
 2) provide a convenient API to manipulate these chunks
-
-That is `disk.frame` in a nutshell.
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
@@ -203,12 +203,13 @@ anit_join
 
 Like other distributed data manipulation frameworks `disk.frame` utilizes the *sharding* concept to distribute the data into chunks. For example "to shard by `cust_id`" means that all rows with the same `cust_id` will be stored in the same chunk. This enables `group_by` by `cust_id` to produce the same results as non-chunked data.
 
-### `shardkey`'s
-The `by` variables that were used to shard the dataset are called the `shardkey`s. Typically we would require that the `shardkey`s be granular (e.g. account id or customer id) and not too "lumpy" (skewed distribution).
+The `by` variables that were used to shard the dataset are called the `shardkey`s. The *sharding* is performed by computing a deterministic hash on the shard keys (the `by` variables) for each row. The hash function produces an integer between `1` and `n`, where `n` is the number of chunks. 
+
+
 
 ## Grouping
 
-The `disk.frame` implements the `group_by` operation with a significant caveat. In the `disk.frame` framework group-by requires the user to specify `hard = TRUE` or `FALSE`. To group by `hard = TRUE` means that **all rows with the same group keys will end up in the same file chunk**. However, the `hard group_by` operation can be **VERY TIME CONSUMING** computationally and should be **avoided** if possible.
+The `disk.frame` implements the `group_by` operation with a significant caveat. In the `disk.frame` framework, group-by requires the user to specify `hard = TRUE` or `FALSE`. To group by `hard = TRUE` means that **all rows with the same group keys will end up in the same file chunk**. However, the `hard group_by` operation can be **VERY TIME CONSUMING** computationally and should be **avoided** if possible.
 
 The `hard group_by` operation is best illustrated with an example, suppose a `disk.frame` has three chunks
 ```
@@ -290,7 +291,7 @@ Because this two-stage approach avoids the expensive `hard group_by` operation, 
 
 One can restrict which input columns to load into memory for each chunk; this can significantly increase the speed of data processing. To restrict the input columns, use the `keep` function which only accepts column names as a string vector.
 
-```{r,dependson='asdiskframe'}
+```{r, dependson='asdiskframe'}
 flights.df %>%
   keep(c("carrier","dep_delay")) %>% 
   group_by(carrier, hard = T) %>% # notice that hard = T needs to be set
@@ -353,12 +354,12 @@ collect_list(flights.df1) # returns number of rows for each data.frame in a list
 ```
 and to do the same with `map.disk.frame`
 
-```{r,dependson='asdiskframe'}
+```{r, dependson='asdiskframe'}
 map.disk.frame(flights.df, ~nrow(.x), lazy = F)
 ```
 The `map.disk.frame` function can also output the results to another disk.frame folder, e.g.
 
-```{r,dependson='asdiskframe'}
+```{r, dependson='asdiskframe'}
 # return the first 10 rows of each chunk
 flights.df2 <- map.disk.frame(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2")
 
@@ -371,7 +372,7 @@ Notice `disk.frame` supports the `purrr` syntax for defining a function using `~
 
 One can output a `disk.frame` by using the `write_disk.frame` function. E.g.
 
-```{r,dependson='asdiskframe'}
+```{r, dependson='asdiskframe'}
 write_disk.frame(flights.df, outdir="out")
 ```
 this will output a disk.frame to the folder "out"
