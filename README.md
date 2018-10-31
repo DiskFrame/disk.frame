@@ -1,11 +1,11 @@
 # Introduction
 
-The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? `disk.frame` has a two-part answer:
+The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
+
+In a nutshell, `disk.frame` makes use of two simple ideas
 
 1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 
 2) provide a convenient API to manipulate these chunks
-
-That is `disk.frame` in a nutshell.
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
