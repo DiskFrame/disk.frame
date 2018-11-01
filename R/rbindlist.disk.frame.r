@@ -6,8 +6,12 @@
 #' @param compress 0-100, 100 being the highest compression rate.
 #' @import data.table purrr future future.apply fs
 #' @export
-rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50) {
+rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = F) {
+  if(overwrite & fs::dir_exists(outdir)) {
+    fs::dir_delete(outdir)
+  }
   fs::dir_create(outdir)
+  
   
   if(by_chunk_id) {
     list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))

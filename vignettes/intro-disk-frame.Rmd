@@ -11,6 +11,18 @@ vignette: >
 
 ```{r setup, include = FALSE}
 require(disk.frame)
+library(fst)
+library(magrittr)
+library(nycflights13)
+library(dplyr)
+
+# fs::dir_delete("tmp_flights")
+# fs::file_delete("tmp_flights.csv")
+# fs::dir_delete("tmp_flights.df")
+# fs::dir_delete("tmp2")
+# fs::dir_delete("out")
+
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -100,14 +112,15 @@ You should now see a folder called `tmp_flights` with some files in it, namely `
 
 
 ### Creating a `disk.frame` from CSV
-```{r, dependson='asdiskframe'}
+```{r}
 # write a csv
 data.table::fwrite(nycflights13::flights, "tmp_flights.csv")
 
 # load the csv into a disk.frame
 flights.df <- csv_to_disk.frame(
   "tmp_flights.csv", 
-  outdir = "tmp_flights.df")
+  outdir = "tmp_flights.df",
+  overwrite = T)
   
 flights.df
 ```
@@ -132,7 +145,7 @@ flights.df
 `disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to `disk.frame`s.
 
 ### Simple `dplyr` verbs and lazy evaluation
-```{r dfselect, cache=TRUE}
+```{r dfselect, dependson='asdiskframe', cache=TRUE}
 flights.df1 <- select(flights.df, year:day, arr_delay, dep_delay)
 flights.df1
 ```
@@ -263,6 +276,7 @@ If `hard = FALSE` then `group_by` is performed WITHIN each chunk. This is not an
 The user must explicitly set `hard = TRUE/FALSE`  to avoid throwing an error; this ensures that the user is conscious of the choice they are making. In `sparklyr` the equivalent of a `hard` `group_by` is performed, which we should avoid, where possible, as it is time-consuming and expensive. Hence, `disk.frame` has chosen to explain the theory and allow the user to make a conscious choice when performing `group_by`.
 
 ```{r, dependson='asdiskframe'}
+flights.df
 flights.df %>%
   group_by(carrier, hard = T) %>% # notice that hard = T needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
@@ -361,7 +375,7 @@ The `map.disk.frame` function can also output the results to another disk.frame 
 
 ```{r, dependson='asdiskframe'}
 # return the first 10 rows of each chunk
-flights.df2 <- map.disk.frame(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2")
+flights.df2 <- map.disk.frame(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2", overwrite = T)
 
 flights.df2
 ```

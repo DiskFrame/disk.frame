@@ -11,10 +11,14 @@
 #' @param sep The delimiter of the CSV fle, otherwise known as the separator
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @export
-csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress=50,...) {
+csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, ...) {
-  #list.files(
-  #fs::dir_create(outdir)
+
+  if(overwrite & fs::dir_exists(outdir)) {
+    fs::dir_delete(outdir)
+  }
+  fs::dir_create(outdir)
+  
   
   l = length(list.files(outdir))
   if(is.null(shardby)) {

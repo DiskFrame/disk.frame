@@ -15,9 +15,10 @@ test_that("dplyr::group_by_hard=FALSE", {
     summarise(mv1 = mean(v1))
   
   dff1 = NULL
-  expect_warning({dff1 <- dff %>% 
-    group_by(id1, id2, hard = F) %>%
-    summarise(mv1 = mean(v1)) %>% collect
+  expect_warning({
+    dff1 <- dff %>% 
+      group_by(id1, id2, hard = F) %>%
+      summarise(mv1 = mean(v1)) %>% collect
   })
   
   expect_false(nrow(dff1) == nrow(dff_res))

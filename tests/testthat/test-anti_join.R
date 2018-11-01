@@ -40,13 +40,19 @@ test_that("testing anti_join where right is disk.frame", {
     })
   expect_equal(nrow(ab), 50)
   
-  expect_warning({ab0 = anti_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect})
+  expect_warning({
+    ab0 = anti_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect
+    })
   expect_equal(nrow(ab0), 100)
   
-  expect_warning({ab100 = anti_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect})
+  expect_warning({
+    ab100 = anti_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect
+    })
   expect_equal(nrow(ab100), 0)
   
-  expect_warning({ad50 = anti_join(a, d, by = "b", merge_by_chunk_id = F) %>% collect})
+  expect_warning({
+    ad50 = anti_join(a, d, by = "b", merge_by_chunk_id = F) %>% collect
+    })
   expect_equal(nrow(ad50), 50)
 })
 
