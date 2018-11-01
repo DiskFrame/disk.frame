@@ -6,7 +6,7 @@ setup({
 })
 
 test_that("csv2disk.frame works with no shard", {
-  dff = csv_to_disk.frame("tmp_pls_delete_csv2df.csv", "tmp_pls_delete_csv2df.df")
+  dff = csv_to_disk.frame("tmp_pls_delete_csv2df.csv", "tmp_pls_delete_csv2df.df", overwrite=T)
   dff1 = dff[,sum(v1), id1]
   dff2 = dff1[,sum(V1), id1]
   expect_false(nrow(dff1) == nrow(dff2))
@@ -15,7 +15,7 @@ test_that("csv2disk.frame works with no shard", {
 })
 
 test_that("csv2disk.frame works with shard", {
-  dff = csv_to_disk.frame("tmp_pls_delete_csv2df.csv", "tmp_pls_delete_csv2df2.df", shardby = "id1")
+  dff = csv_to_disk.frame("tmp_pls_delete_csv2df.csv", "tmp_pls_delete_csv2df2.df", shardby = "id1", overwrite = T)
   dff1 = dff[,sum(v1), id1]
   dff2 = dff1[,sum(V1), id1]
   expect_true(nrow(dff1) == nrow(dff2))
