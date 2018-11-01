@@ -121,7 +121,7 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
     fs::dir_create(outdir)
   } else if(!fs::dir_exists(outdir)) {
     stop("overwrite  = T but directory already exists")
-  } else
+  } else {
     fs::dir_create(outdir)
   }
   
