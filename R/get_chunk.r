@@ -41,6 +41,14 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F) {
       filename = file.path(path, n)
     }
   }
+  
+  # if the file you are looking for don't exist
+  if (!fs::file_exists(filename)) {
+    warning(glue("The chunk {filename} does not exist; returning a empty data.table"))
+    notbl <- data.table()
+    attr(notbl, "does not exist") <- T
+    return(notbl)
+  }
 
   if (is.null(cmds)) {
     if(typeof(keep)!="closure") {

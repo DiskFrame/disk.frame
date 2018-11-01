@@ -5,8 +5,17 @@
 #' @rdname join
 #' @return disk.frame
 #' @export
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F) {
+anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F, overwrite = T) {
   stopifnot("disk.frame" %in% class(x))
+  
+  if(!is.null(outdir)) {
+    if(overwrite & fs::dir_exists(outdir)) {
+      fs::dir_delete(outdir)
+      fs::dir_create(outdir)
+    } else {
+      fs::dir_create(outdir)
+    }
+  }
   
   if("data.frame" %in% class(y)) {
     # note that x is named .data in the lazy evaluation
@@ -26,9 +35,9 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     if (merge_by_chunk_id == F) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       #browser()
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx))
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx))
-      return(anti_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T))
+      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
+      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
+      return(anti_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
         if(is.na(.y)) {
@@ -36,7 +45,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
         } else if (is.na(.x)) {
           return(data.table())
         }
-        anti_join(.x, .y, by = by, copy = copy, ...)
+        anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
       }, outdir = outdir)
       return(res)
     } else {

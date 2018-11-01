@@ -115,7 +115,7 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchu
 #' @import data.table fst
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
-  browser()
+  #browser()
   if(overwrite & fs::dir_exists(outdir)) {
     fs::dir_delete(outdir)
     fs::dir_create(outdir)

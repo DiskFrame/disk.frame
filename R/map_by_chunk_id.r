@@ -21,10 +21,12 @@ get_chunk_ids <- function(df, full.names = F, ..., strip_extension = T) {
   })
 }
 
-#' Perform a function on both disk.frames
+#' Perform a function on both disk.frames x and y, each chunk of x and y gets run by fn(x.chunk, y.chunk)
+#' @param x a disk.frame
+#' @param y a disk.frame
+#' @param fn a function to be called on each chunk of x and y matched by chunk_id
 #' @import stringr purrr fst data.table
 map_by_chunk_id <- function(x, y, fn, outdir) {
-  #list.files(
   fn = purrr::as_mapper(fn)
   fs::dir_create(outdir)
   
