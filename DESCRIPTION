@@ -1,7 +1,6 @@
 Type: Package
 Package: disk.frame
-Title: Disk-based chunk-wise processing of larger-than-RAM
-    datasets
+Title: Fast disk-based data manipulation framework for larger-than-RAM structured tabular data
 Version: 0.1.0
 Date: 2018-10-25
 Author: Dai ZJ
@@ -11,16 +10,16 @@ Description: Disk.frame allows the user to process arbitrarily
     RAM. This enables large datasets to be processed and analysed.
 License: MIT
 Imports: 
-    data.table (>= 1.9.4),
-    dplyr (>= 0.3.0.2),
     fst (>= 0.8.0),
     Rcpp (>= 0.12.13),
-    glue
+    glue,
+    purrr,
+    furrr,
+    future.apply
 Depends:
     dplyr,
     data.table,
     future,
-    future.apply,
     dtplyr
 Suggests: 
     testthat,

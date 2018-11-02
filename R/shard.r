@@ -7,14 +7,7 @@
 #' @import glue fst
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
-  if(!is.null(outdir)) {
-    if(overwrite & fs::dir_exists(outdir)) {
-      fs::dir_delete(outdir)
-      fs::dir_create(outdir)
-    } else {
-      fs::dir_create(outdir)
-    }
-  }
+  overwrite_check(outdir, overwrite)
   
   setDT(df)
   if(length(shardby) == 1) {

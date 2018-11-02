@@ -6,6 +6,9 @@
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
   stopifnot("disk.frame" %in% class(x))
   
+  overwrite_check(outdir, overwrite)
+  
+  
   if(!is.null(outdir)) {
     if(overwrite & fs::dir_exists(outdir)) {
       fs::dir_delete(outdir)
