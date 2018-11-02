@@ -60,7 +60,8 @@ zip_to_disk.frame = function(zipfile, outdir, ..., col.names = NULL, colClasses 
   # validate 
   if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
   
-  disk.frame(outdir)
+  df = disk.frame(outdir)
+  add_meta(df, compress = compress)
 }
 
 # validate_zip_to_disk.frame(zipfile, outdir)

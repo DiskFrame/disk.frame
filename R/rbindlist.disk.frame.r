@@ -45,7 +45,8 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     if(all(purrr::map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
       return(add_meta(rbind_res, 
                shardkey = shardkeys[[1]]$shardkey,
-               shardchunks = shardkeys[[1]]$shardchunks))
+               shardchunks = shardkeys[[1]]$shardchunks, 
+               compress = compress))
     } else {
       return(rbind_res)
     }

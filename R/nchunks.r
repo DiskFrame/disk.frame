@@ -7,8 +7,8 @@ nchunks <- function(...) {
 }
 
 #' Returns the number of chunks in a disk.frame
-#' @export
 #' @rdname nchunks
+#' @export
 nchunk <- function(...) {
   UseMethod("nchunk")
 }
@@ -18,8 +18,8 @@ nchunk.disk.frame <- function(...) {
   nchunks.disk.frame(...)
 }
 
-#' @export
 #' @import fs
+#' @export
 nchunks.disk.frame <- function(df, skip.ready.check = F) {
   #if(!skip.ready.check) stopifnot(is_ready(df))
   fpath <- attr(df,"path")

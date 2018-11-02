@@ -78,6 +78,8 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       #list.files(
     }
   }
-  disk.frame(outdir)
+  #disk.frame(outdir)
+  df = disk.frame(outdir)
+  add_meta(df, nchunks=nrow(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
 }
 
