@@ -14,12 +14,13 @@ nchunk <- function(...) {
 }
 
 #' @export
-nchunk.disk.frame <- function(...) nchunks.disk.frame(...)
+nchunk.disk.frame <- function(...) {
+  nchunks.disk.frame(...)
+}
 
 #' @export
 #' @import fs
 nchunks.disk.frame <- function(df, skip.ready.check = F) {
-  #list.files(
   #if(!skip.ready.check) stopifnot(is_ready(df))
   fpath <- attr(df,"path")
   if(is.dir.disk.frame(df)) {

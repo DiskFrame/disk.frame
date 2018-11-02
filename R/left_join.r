@@ -19,7 +19,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
     }
     if(is.null(by)) {
-      by <- intercept(names(x), names(y))
+      by <- intersect(names(x), names(y))
     }
     
     ncx = nchunks(x)
