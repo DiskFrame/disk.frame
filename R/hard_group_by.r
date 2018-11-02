@@ -136,12 +136,14 @@ hard_group_by <- function(...) {
 #' @import purrr
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df), overwrite = T) {
+  #browser()
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
   tmp_df  = map.disk.frame(df, function(df1) {
+    #browser()
     tmpdir = tempfile()
     shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
   }, lazy = F)

@@ -37,6 +37,14 @@ transmute_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
+arrange_.disk.frame <- function(.data, ..., .dots){
+  warning("disk.frame only sorts (arange) WITHIN each chunk")
+  .dots <- lazyeval::all_dots(.dots, ...)
+  cmd <- lazyeval::lazy(arrange_(.data, .dots=.dots))
+  record(.data, cmd)
+}
+
+#' @export
 summarise_.disk.frame <- function(.data, ..., .dots){
   .data$.warn <- TRUE
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -62,9 +70,7 @@ groups.disk.frame <- function(x){
 #' @export
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = NULL) {
-  # hard group_by requested, need to regroup these into 
-  # get a list of variables to group by
-  #list.files(
+  #browser()
   dots <- dplyr:::compat_as_lazy_dots(...)
   shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   

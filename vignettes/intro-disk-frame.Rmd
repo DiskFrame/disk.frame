@@ -165,19 +165,32 @@ Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whol
 
 Some examples of other dplyr verbs applied:
 
-```r
-filter(flights.df, dep_delay > 1000)
-mutate(flights.df, speed = distance / air_time * 60)
+```{r, dependson='asdiskframe'}
+filter(flights.df, dep_delay > 1000) %>% collect
+```
+
+```{r, dependson='asdiskframe'}
+mutate(flights.df, speed = distance / air_time * 60) %>% collect
 ```
 
 ### Examples of NOT fully supported `dplyr` verbs
 
 The `arrange` function arranges (sort) each chunk but not the whole dataset. So use with caution. Similarly `summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard` `group_by`s.
 
-```r
-arrange(flights.df, desc(dep_delay)
-summarise(flights, mean_dep_delay = mean(dep_delay))
-do
+```{r, dependson='asdiskframe'}
+# this only sorts within each chunk
+arrange(flights.df, desc(dep_delay)) %>% collect
+```
+
+
+```{r, dependson='asdiskframe'}
+summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
+```
+
+The `do` function is also supported for performing abitrary computation on each chunk
+```{r, dependson='asdiskframe'}
+# get the first two rows of each chunk
+do(flights.df, head(., 2)) %>% collect
 ```
 
 ### Piping
@@ -185,14 +198,14 @@ do
 One can chain `dplyr` verbs together like with a `data.frame`
 
 ```{r, dependson='asdiskframe'}
-library(magrittr)
-library(dplyr)
-library(disk.frame)
+c4 <- flights %>%
+  filter(month == 5, day == 17, carrier %in% c('UA', 'WN', 'AA', 'DL')) %>%
+  select(carrier, dep_delay, air_time, distance) %>%
+  mutate(air_time_hours = air_time / 60) %>% 
+  collect %>% 
+  arrange(carrier)# arrange should occur after `collect`
 
-flights.df %>% 
-  select(year:day, arr_delay, dep_delay) %>% 
-  filter(dep_delay > 1000) %>% 
-  collect
+c4
 ```
 
 ### List of supported `dplyr` verbs
@@ -201,9 +214,9 @@ flights.df %>%
 select
 rename
 filter
-arrange
+arrange # within each chunk
 group_by # with hard = T options
-summarise/summarize
+summarise/summarize # within each chunk
 mutate
 transmute
 left_join
@@ -276,7 +289,6 @@ If `hard = FALSE` then `group_by` is performed WITHIN each chunk. This is not an
 The user must explicitly set `hard = TRUE/FALSE`  to avoid throwing an error; this ensures that the user is conscious of the choice they are making. In `sparklyr` the equivalent of a `hard` `group_by` is performed, which we should avoid, where possible, as it is time-consuming and expensive. Hence, `disk.frame` has chosen to explain the theory and allow the user to make a conscious choice when performing `group_by`.
 
 ```{r, dependson='asdiskframe'}
-flights.df
 flights.df %>%
   group_by(carrier, hard = T) %>% # notice that hard = T needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
@@ -332,11 +344,25 @@ However, if the right dataset is a `data.frame` then `hard_group_by`s are only p
 
 Note `disk.frame` does not support `right_join` the user should use `left_join` instead.
 
+The below joins are performed *lazily* because `airlines.dt` is a `data.table` not a `disk.frame`:
+
+```{r airlines_dt, dependson='asdiskframe', cache = T}
+# make airlines a data.table
+airlines.dt <- setDT(copy(airlines))
+# flights %>% left_join(airlines, by = "carrier") # 
+flights.df %>% left_join(airlines.dt) %>% collect
+```
+
+```{r, dependson='airlines_dt'}
+flights.df %>% left_join(airlines.dt, by = c("carrier", "carrier")) %>% collect
+```
+
 ## Window functions and arbitrary functions
 
 `disk.frame` supports all `data.frame` operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like `rank` are supported out of the box.
 
 ```{r, dependson='asdiskframe'}
+# Find the most and least delayed flight each day
 bestworst <- flights.df %>%
    keep(c("year","month","day", "dep_delay")) %>% 
    group_by(year, month, day, hard = TRUE) %>%
@@ -348,6 +374,7 @@ bestworst
 ```
 
 ```{r,dependson='asdiskframe'}
+# Rank each flight within a daily
 ranked <- flights.df %>%
   keep(c("year","month","day", "dep_delay")) %>% 
   group_by(year, month, day, hard = T) %>%
@@ -381,6 +408,14 @@ flights.df2
 ```
 
 Notice `disk.frame` supports the `purrr` syntax for defining a function using `~`.
+
+## Sampling
+
+In the `disk.frame` framework, sampling a proportion of rows. More sophisticated sampling scheme or method will be implemented in the future
+
+```{r, dependson='asdiskframe'}
+flights.df %>% sample_frac(0.01) %>% collect
+```
 
 ## Writing Data
 

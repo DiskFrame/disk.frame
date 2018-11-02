@@ -2,6 +2,7 @@
 
 S3method("[",disk.frame)
 S3method(anti_join,disk.frame)
+S3method(arrange_,disk.frame)
 S3method(as.data.frame,disk.frame)
 S3method(as.data.table,disk.frame)
 S3method(collect,disk.frame)
