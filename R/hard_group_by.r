@@ -110,6 +110,7 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchu
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
   overwrite_check(outdir, overwrite)
+
   
   setDT(df)
   
