@@ -91,26 +91,30 @@ if(F) {
 
 #' Output a data.frame into disk.frame
 #' @import glue fst fs
-output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, ...) {
+output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, compress = 50, ...) {
   overwrite_check(outdir, overwrite)
   
   df[,{
     if (base::nrow(.SD) > 0) {
-      fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")))
+      fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), compress = compress)
       NULL
     }
     NULL
   }, .out.disk.frame.id]
   res = disk.frame(outdir)
-  add_meta(res, shardkey = shardkey, shardchunks = shardchunks)
+  add_meta(res, shardkey = shardkey, shardchunks = shardchunks, compress = compress)
 }
 
 #' Make a data.frame into a disk.frame
+#' @param df a disk.frame
+#' @param outdir the output directory
+#' @param nchunks number of chunks
+#' @param overwrite if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty
+#' @param compress the compression level 0-100; 100 is highest
 #' @import data.table fst
 #' @export
-as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
+as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
   overwrite_check(outdir, overwrite)
-
   
   setDT(df)
   
@@ -118,7 +122,7 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
   odfi = odfi[1:nrow(df)]
   df[, .out.disk.frame.id := odfi]
   
-  output_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, ...)
+  output_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
 }
 
 #' Perform a group by and ensuring that every unique grouping of by is

@@ -14,11 +14,12 @@ disk.frame <- function(path, ..., backend = "fst") {
 #' @import fs jsonlite
 #' @export
 add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
+  #browser()
   stopifnot("disk.frame" %in% class(df))
-  #\\
+
   # create the metadata folder if not present
-  fs::dir_create(file.path(attr(df,"path"),".metadata"))
-  json_path = fs::file_create(file.path(attr(df,"path"),".metadata", "meta.json"))
+  fs::dir_create(file.path(attr(df,"path"), ".metadata"))
+  json_path = fs::file_create(file.path(attr(df,"path"), ".metadata", "meta.json"))
   
   filesize = file.size("meta.json")
   meta_out = NULL
