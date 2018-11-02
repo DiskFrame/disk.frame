@@ -8,6 +8,10 @@ setup({
   as.disk.frame(a, "tmp_a_ij.df", nchunks = 4, overwrite = T)
   as.disk.frame(b, "tmp_b_ij.df", nchunks = 5, overwrite = T)
   as.disk.frame(d, "tmp_d_ij.df", overwrite = T)
+
+  as.disk.frame(a, "tmp_a_ij2.df", nchunks = 4, overwrite = T)
+  as.disk.frame(b, "tmp_b_ij2.df", nchunks = 5, overwrite = T)
+  as.disk.frame(d, "tmp_d_ij2.df", overwrite = T)
 })
 
 test_that("testing inner_join where right is data.frame", {
@@ -31,9 +35,9 @@ test_that("testing inner_join where right is data.frame", {
 })
 
 test_that("testing inner_join where right is disk.frame", {
-  a = disk.frame("tmp_a_ij.df")
-  b = disk.frame("tmp_b_ij.df")
-  d = disk.frame("tmp_d_ij.df")
+  a = disk.frame("tmp_a_ij2.df")
+  b = disk.frame("tmp_b_ij2.df")
+  d = disk.frame("tmp_d_ij2.df")
   
   ab = inner_join(a, b, by = "a", merge_by_chunk_id = F) %>% collect
   expect_equal(nrow(ab), 50)
@@ -53,4 +57,7 @@ teardown({
   fs::dir_delete("tmp_a_ij.df")
   fs::dir_delete("tmp_b_ij.df")
   fs::dir_delete("tmp_d_ij.df")
+  fs::dir_delete("tmp_a_ij2.df")
+  fs::dir_delete("tmp_b_ij2.df")
+  fs::dir_delete("tmp_d_ij2.df")
 })

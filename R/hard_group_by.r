@@ -92,17 +92,11 @@ if(F) {
 #' Output a data.frame into disk.frame
 #' @import glue fst fs
 output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, ...) {
-  if(dir.exists(outdir)) {
-    if(!overwrite) {
-      stop(glue("outdir '{outdir}' already exists and overwrite is FALSE"))
-    }
-  } else {
-    fs::dir_create(outdir)
-  }
+  overwrite_check(outdir, overwrite)
   
   df[,{
     if (base::nrow(.SD) > 0) {
-      write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")))
+      fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")))
       NULL
     }
     NULL
@@ -115,15 +109,7 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchu
 #' @import data.table fst
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, ...) {
-  #browser()
-  if(overwrite & fs::dir_exists(outdir)) {
-    fs::dir_delete(outdir)
-    fs::dir_create(outdir)
-  } else if(!fs::dir_exists(outdir)) {
-    stop("overwrite  = T but directory already exists")
-  } else
-    fs::dir_create(outdir)
-  }
+  overwrite_check(outdir, overwrite)
   
   setDT(df)
   
@@ -149,14 +135,7 @@ hard_group_by <- function(...) {
 #' @import purrr
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df), overwrite = T) {
-  if(!is.null(outdir)) {
-    if(overwrite & fs::dir_exists(outdir)) {
-      fs::dir_delete(outdir)
-      fs::dir_create(outdir)
-    } else {
-      fs::dir_create(outdir)
-    }
-  }
+  overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   

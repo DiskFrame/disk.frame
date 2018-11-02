@@ -235,12 +235,7 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nch
   }
   
   if(!is.null(outdir)) {
-    if(overwrite & fs::dir_exists(outdir)) {
-      fs::dir_delete(outdir)
-      fs::dir_create(outdir)
-    } else {
-      fs::dir_create(outdir)
-    }
+    overwrite_check(outdir, overwrite)
   }
   
   stopifnot(is_ready(df))

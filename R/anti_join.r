@@ -8,14 +8,7 @@
 anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F, overwrite = T) {
   stopifnot("disk.frame" %in% class(x))
   
-  if(!is.null(outdir)) {
-    if(overwrite & fs::dir_exists(outdir)) {
-      fs::dir_delete(outdir)
-      fs::dir_create(outdir)
-    } else {
-      fs::dir_create(outdir)
-    }
-  }
+  overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(y)) {
     # note that x is named .data in the lazy evaluation
