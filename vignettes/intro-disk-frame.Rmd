@@ -310,6 +310,7 @@ flights.df %>%
 Because this two-stage approach avoids the expensive `hard group_by` operation, it is often significantly faster. However, it can be tedious to write; and this is a con of the `disk.frame` chunking mechanism.
 
 *Note1*: the same code without the `hard = F` would also work if `flight.df` is a data.frame
+
 *Note2*: this two-stage approach is similar to a map-reduce operation.
 
 
