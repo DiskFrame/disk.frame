@@ -136,7 +136,7 @@ data.table::fwrite(flights, "tmp_flights.csv")
 
 flights.df <- csv_to_disk.frame(
   "tmp_flights.csv", 
-  outdir = "tmp_flights.df",
+  outdir = "tmp_flights_too_large.df",
   in_chunk_size = 100000)
   
 flights.df
@@ -190,7 +190,7 @@ summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 The `do` function is also supported for performing abitrary computation on each chunk
 ```{r, dependson='asdiskframe'}
 # get the first two rows of each chunk
-do(flights.df, head(., 2)) %>% collect
+do(flights.df, head(., 2)) %>% select(year:day, arr_delay, dep_delay) %>% collect
 ```
 
 ### Piping
@@ -201,8 +201,8 @@ One can chain `dplyr` verbs together like with a `data.frame`
 c4 <- flights %>%
   filter(month == 5, day == 17, carrier %in% c('UA', 'WN', 'AA', 'DL')) %>%
   select(carrier, dep_delay, air_time, distance) %>%
-  mutate(air_time_hours = air_time / 60) %>% 
-  collect %>% 
+  mutate(air_time_hours = air_time / 60) %>%
+  collect %>%
   arrange(carrier)# arrange should occur after `collect`
 
 c4
@@ -303,7 +303,7 @@ flights.df %>%
   group_by(carrier, hard = F) %>% # that hard = F to aggregate within each chunk
   summarize(count = n()) %>%  # mean follows normal R rules
   collect %>%  # collect each individul chunks results and row-bind into a data.table
-  group_by(carrier) %>% 
+  group_by(carrier) %>%
   summarize(count = sum(count))
 ```
 
@@ -320,7 +320,7 @@ One can restrict which input columns to load into memory for each chunk; this ca
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
-  keep(c("carrier","dep_delay")) %>% 
+  keep(c("carrier","dep_delay")) %>%
   group_by(carrier, hard = T) %>% # notice that hard = T needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect
@@ -347,10 +347,10 @@ Note `disk.frame` does not support `right_join` the user should use `left_join` 
 
 The below joins are performed *lazily* because `airlines.dt` is a `data.table` not a `disk.frame`:
 
-```{r airlines_dt, dependson='asdiskframe', cache = T}
+```{r airlines_dt, dependson='asdiskframe', cache=TRUE}
 # make airlines a data.table
 airlines.dt <- setDT(copy(airlines))
-# flights %>% left_join(airlines, by = "carrier") # 
+# flights %>% left_join(airlines, by = "carrier") #
 flights.df %>% left_join(airlines.dt) %>% collect
 ```
 
@@ -365,22 +365,22 @@ flights.df %>% left_join(airlines.dt, by = c("carrier", "carrier")) %>% collect
 ```{r, dependson='asdiskframe'}
 # Find the most and least delayed flight each day
 bestworst <- flights.df %>%
-   keep(c("year","month","day", "dep_delay")) %>% 
+   keep(c("year","month","day", "dep_delay")) %>%
    group_by(year, month, day, hard = TRUE) %>%
-   select(dep_delay) %>% 
-   filter(dep_delay == min(dep_delay, na.rm = T) || dep_delay == max(dep_delay, na.rm = T)) %>% 
+   select(dep_delay) %>%
+   filter(dep_delay == min(dep_delay, na.rm = T) || dep_delay == max(dep_delay, na.rm = T)) %>%
    collect
 
 bestworst
 ```
 
-```{r,dependson='asdiskframe'}
+```{r, dependson='asdiskframe'}
 # Rank each flight within a daily
 ranked <- flights.df %>%
-  keep(c("year","month","day", "dep_delay")) %>% 
+  keep(c("year","month","day", "dep_delay")) %>%
   group_by(year, month, day, hard = T) %>%
-  select(dep_delay) %>% 
-  mutate(rank = rank(desc(dep_delay))) %>% 
+  select(dep_delay) %>%
+  mutate(rank = rank(desc(dep_delay))) %>%
   collect
 
 ranked
@@ -422,7 +422,7 @@ flights.df %>% sample_frac(0.01) %>% collect
 
 One can output a `disk.frame` by using the `write_disk.frame` function. E.g.
 
-```{r, dependson='asdiskframe'}
+```r
 write_disk.frame(flights.df, outdir="out")
 ```
 this will output a disk.frame to the folder "out"
