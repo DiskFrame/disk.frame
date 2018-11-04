@@ -3,7 +3,6 @@
 #' @export
 #' @rdname collect
 collect.disk.frame <- function(df, ..., parallel = F) {
-  #list.files(
   if(nchunks(df) > 0) {
     if(parallel) {
       furrr::future_map_dfr(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
@@ -19,10 +18,14 @@ collect.disk.frame <- function(df, ..., parallel = F) {
 #' @import purrr furrr
 #' @export
 #' @rdname collect
-collect_list <- function(df, ... , simplify = F) {
-  #list.files(
+collect_list <- function(df, ... , simplify = F, parallel = F) {
   if(nchunks(df) > 0) {
-    res = furrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+    res <- NULL
+    if (parallel) {
+      res = furrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+    } else {
+      res = purrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+    }
     if (simplify) {
       return(simplify2array(res))
     } else {
