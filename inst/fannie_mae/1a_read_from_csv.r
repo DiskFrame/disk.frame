@@ -1,41 +1,67 @@
 source("inst/fannie_mae/0_setup.r")
 
-kmeans(file.size(dir(raw_perf_data_path,full.names = T)),2)
-kmeans(file.size(dir(raw_perf_data_path,full.names = T)),3)
-res = kmeans(file.size(dir(raw_perf_data_path,full.names = T)),4)
-ok = data.table(short = short_dfiles, path = dfiles, cluster = res$cluster, size = file.size(dir(raw_perf_data_path,full.names = T)))
+# number of rows to read in
+nreadin = 1e7
+compress = 50
 
-ok[,msize:=mean(size), cluster]
+# how many chunks do we need?
+relative_file_path = dir(raw_perf_data_path)
+full_file_path = dir(raw_perf_data_path, full.names = T)
 
-setkey(ok, msize, size)
-ok[,newid:=rleid(cluster)]
+file_sizes = purrr::map_dbl(full_file_path, ~file.size(.x))
 
-if(T) {
-  ok = ok[!short %in% dir("test_fm"),]
-}
+# use the recommend_nchunks function to get a chunksize based on your RAM and
+# number of CPU cores
+nchunks = sum(file_sizes) %>% recommend_nchunks(type="csv")
 
-plan(multiprocess(workers = 3))
+relative_file_path = relative_file_path[order(file_sizes, decreasing = T)]
+full_file_path = full_file_path[order(file_sizes, decreasing = T)]
 
-# remove the contents of test_fm
-dir("test_fm", full.names = T)
+l = length(full_file_path)
 
-for(k in 1:2) {
-  files_to_do = ok[newid == k, path]
-  if(length(files_to_do) > 0) {
+pt <- proc.time()
+system.time(future_lapply(1:l, function(i) {
+#system.time(future_lapply(1:6, function(i) {
+  relative_file_pathi = relative_file_path[i]
+  full_file_path
+  csv_to_disk.frame(
+    full_file_path[i], 
+    glue("test_fm/{relative_file_path[i]}"), 
+    shardby="loan_id", 
+    nchunks=nchunks, 
+    colClasses = Performance_ColClasses, 
+    col.names = Performance_Variables, 
+    sep="|", 
+    compress=compress, 
+    in_chunk_size = nreadin, 
+    overwrite = T)
+}))
+print(timetaken(pt))
+
+
+if(F){
+  for(k in 4:3) {
+    files_to_do = ok[newid == k, path]
     short_files = ok[newid == k, short]
     system.time(future_lapply(1:length(files_to_do), function(i) {
       short_files = short_files
-      csv_to_disk.frame(files_to_do[i], glue("test_fm/{short_files[i]}"), shardby="loan_id", nchunks=500, colClasses = Performance_ColClasses, col.names = Performance_Variables, sep="|", compress=100, in_chunk_size = 1e7)
+      csv_to_disk.frame(files_to_do[i], glue("test_fm/{short_files[i]}"), shardby="loan_id", nchunks=nchunks, colClasses = Performance_ColClasses, col.names = Performance_Variables, sep="|", compress=compress, in_chunk_size = nreadin)
     }))
+    system.time(future_lapply(1:length(files_to_do), function(i) {
+      short_files = short_files
+      csv_to_disk.frame(files_to_do[i], glue("test_fm/{short_files[i]}"), shardby="loan_id", nchunks=nchunks, colClasses = Performance_ColClasses, col.names = Performance_Variables, sep="|", compress=compress, in_chunk_size = nreadin)
+    }))
+  }
+  
+  for(k in 2:1) {
+    files_to_do = ok[newid == k, path]
+    if(length(files_to_do) > 0) {
+      short_files = ok[newid == k, short]
+      system.time(future_lapply(1:length(files_to_do), function(i) {
+        short_files = short_files
+        csv_to_disk.frame(files_to_do[i], glue("test_fm/{short_files[i]}"), shardby="loan_id", nchunks=nchunks, colClasses = Performance_ColClasses, col.names = Performance_Variables, sep="|", compress=compress, in_chunk_size = nreadin)
+      }))
+    }
   }
 }
 
-#plan(sequential)
-for(k in 3:4) {
-  files_to_do = ok[newid == k, path]
-  short_files = ok[newid == k, short]
-  system.time(future_lapply(1:length(files_to_do), function(i) {
-    short_files = short_files
-    csv_to_disk.frame(files_to_do[i], glue("test_fm/{short_files[i]}"), shardby="loan_id", nchunks=500, colClasses = Performance_ColClasses, col.names = Performance_Variables, sep="|", compress=100, in_chunk_size = 1e7)
-  }))
-}

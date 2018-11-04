@@ -1,6 +1,18 @@
 library(disk.frame)
+library(glue)
+library(dplyr)
+library(data.table)
+library(dtplyr)
+library(purrr)
+library(fst)
+library(tidyr)
+library(ggplot2)
 
-raw_perf_data_path = "d:/my dirve/data/fannie_mae/Performance_All/"
+nworkers = parallel::detectCores(logical = F)
+plan(multiprocess, workers = nworkers)
+
+
+raw_perf_data_path = "C:/data/Performance_All/"
 
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 
@@ -18,6 +30,3 @@ Performance_Variables =
 
 dfiles = dir(raw_perf_data_path, full.names = T)
 short_dfiles = dir(raw_perf_data_path)
-
-
-fs::dir_create("test_fm")

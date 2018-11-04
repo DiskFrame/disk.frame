@@ -5,21 +5,37 @@ fmdf = disk.frame("fmdf")
 harp = disk.frame("harp.df")
 
 # harp contains the first date on which a loan enters into HARP
-system.time(
-  harp1 <- 
-    harp[,.(first_harp_date = min(as.Date(monthly.rpt.prd, "%m/%d/%Y"))), loan_id, 
-         keep=c("loan_id", "monthly.rpt.prd")])
+pt <- proc.time()
+harp1 <- harp %>% 
+  keep(c("loan_id","monthly.rpt.prd")) %>% 
+  group_by(loan_id, hard = F) %>% # the data is sharded by loan_id hence hard = F is fine
+  summarise(first_harp_date = min(as.Date(monthly.rpt.prd, "%m/%d/%Y"))) %>% 
+  collect(parallel = T) # performs the collection in parallel
+
+cat(glue("Creating first harp date took: {timetaken(pt)}"))
+
+if(F) {
+  # data.table syntax
+  harp[,.(first_harp_date = min(as.Date(monthly.rpt.prd, "%m/%d/%Y"))), loan_id, 
+       keep=c("loan_id", "monthly.rpt.prd")]
+}
 
 harp1[,before_12m_first_harp_date:=first_harp_date]
+# 164 seconds
 system.time(lubridate::month(harp1$before_12m_first_harp_date) <- lubridate::month(harp1$before_12m_first_harp_date) - 12)
 harp1[,harp_12m := TRUE]
 
 # break it out into smaller chunks for even faster merging
-system.time(harp2 <- shard(harp1, "loan_id", nchunk(fmdf), outdir = "first_harp_date.df", overwrite=T))
+# took 27
+pt <- proc.time()
+harp2 <- shard(harp1, "loan_id", nchunks = nchunks(fmdf), outdir = "first_harp_date.df", overwrite=T)
+cat(glue::glue("sharding HARP defaults took {timetaken(pt)}"))
 
 # no need to hard group by it's already sharded by loan_id
 # took about 503 seconds
-system.time(defaults <- chunk_lapply(fmdf, function(df) {
+# taook about 11:52
+pt <- proc.time()
+defaults <- map.disk.frame(fmdf, function(df) {
   # create the default flag
   df[,date:=as.Date(monthly.rpt.prd,"%m/%d/%Y")]
   setkey(df,loan_id, date)
@@ -44,8 +60,8 @@ system.time(defaults <- chunk_lapply(fmdf, function(df) {
   # create the hardship flag
   # whether the customer goes into in the next 12 months hardship 
   df3
-}, keep=c("monthly.rpt.prd", "delq.status", "loan_id"), outdir="defaults.df", lazy = F))
-
+}, keep=c("monthly.rpt.prd", "delq.status", "loan_id"), outdir="defaults.df", lazy = F, overwrite = T)
+cat(glue::glue("Creating forward looking default flag took {timetaken(pt)}"))
 
 # 
 # a = df[loan_id == "100513171914", ]

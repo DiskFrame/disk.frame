@@ -25,12 +25,9 @@ harp_uid = unique(harp_mapped$loan_id)
 def = intersect(uid, harp_uid)
 def
 
-system.time(harp.df <- shard(harp,"loan_id",500, "harp.df", overwrite = T, append = F))
+system.time(harp.df <- shard(harp,"loan_id", nchunks = nchunks(fmdf), outdir = "harp.df", overwrite = T))
 
 system.time(fmdfh <- rbindlist.disk.frame(list(fmdf, harp.df), outdir = "fmdf1_w_harp"))
 
 # nothing in the intersection
 # so either HARP ids were changed once there are in the harp program
-
-
-
