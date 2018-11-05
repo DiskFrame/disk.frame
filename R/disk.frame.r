@@ -7,6 +7,10 @@ disk.frame <- function(path, ..., backend = "fst") {
     disk.frame_folder(path)
   } else if (file.exists(path)) {
     disk.frame_fst(path)
+  } else {
+    # if neither exists then create it
+    fs::dir_create(path)
+    disk.frame(path)
   }
 }
 
@@ -135,7 +139,7 @@ is.file.disk.frame <- function(df, check.consistency = T) {
     if(!dir.exists(fpath) & file.exists(fpath)) {
       return(TRUE) 
     } else {
-      return(F)
+      return(FALSE)
     }
   }
   return("disk.frame.file" %in% class(df))
@@ -197,6 +201,9 @@ nrow.disk.frame <- function(df) {
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)
+    if(length(path2) == 0) {
+      return(0)
+    }
     tmpfstmeta = fst::fst.metadata(path2[1])
     if("nrOfRows" %in% names(tmpfstmeta)) {
       return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$nrOfRows)))
@@ -205,7 +212,7 @@ nrow.disk.frame <- function(df) {
     }
   } else {
     #return(fst::fst.metadata(path1)$NrOfRows)
-    stop("nrow error")
+    stop(glue::glue("nrow error: directory {} does not exist"))
   }
 }
 
@@ -252,7 +259,7 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nch
   files_shortname <- list.files(path)
   
   res = future.apply::future_lapply(1:length(files), function(ii) {
-    ds = get_chunk.disk.frame(df, ii, keep=keep)
+    ds = disk.frame::get_chunk(df, ii, keep=keep)
     res = fn(ds)
     if(!is.null(outdir)) {
       fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
@@ -356,7 +363,7 @@ ncol <- function(x) {
 #' @export
 #' @rdname ncol
 ncol.disk.frame <- function(df) {
-  length(colnames(df))
+  length(names(df))
 }
 
 #' @export

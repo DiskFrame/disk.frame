@@ -24,7 +24,7 @@ collect_list <- function(df, ... , simplify = F, parallel = F) {
     if (parallel) {
       res = furrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
     } else {
-      res = purrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+      res = purrr::map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
     }
     if (simplify) {
       return(simplify2array(res))
