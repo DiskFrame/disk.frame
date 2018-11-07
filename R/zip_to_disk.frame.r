@@ -1,11 +1,12 @@
 #' Automatically read and convert every single CSV file within the zip file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for the disk.frames
+#' @param ... passed to csv_to_disk.frame and data.table::fread
 #' @import glue dplyr fst future future.apply fs
 #' @export
 #' @return a list of disk.frames
 # TODO add all the options of fread into the ... as future may not be able to deal with it
-zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, parallel = T) {
+zip_to_disk.frame = function(zipfile, outdir, ..., parallel = T) {
   # obtain the list of files in the zipfile
   files = unzip(zipfile, list=T)
   
@@ -14,48 +15,36 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, paralle
   # create the output directory
   fs::dir_create(outdir)
   
-  # create a temporary directory
+  # create a temporary directory; this is where all the CSV files are extracted to
   tmpdir = tempfile(pattern = "tmp_zip2csv")
   
   if(parallel) {
     res = future.apply::future_lapply(files$Name, function(fn) {      
       out_dir_for_file = file.path(outdir, fn)
-      
-      if(!overwrite & file.exists(out_fst_file)) {
-        print("output already exists")
-        return(NULL)
-      }
-      
-      #pt = proc.time()
+        
       # unzip a file
       unzip(zipfile, files = fn, exdir = tmpdir)
-      #print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-      
-      # create disk.frame
+  
+      # create disk.frame from file
       res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
       add_meta(res)
     })
   } else {
     res = lapply(files$Name, function(fn) {      
       out_dir_for_file = file.path(outdir, fn)
-      
-      if(!overwrite & file.exists(out_fst_file)) {
-        print("output already exists")
-        return(NULL)
-      }
-      
-      #pt = proc.time()
+        
       # unzip a file
       unzip(zipfile, files = fn, exdir = tmpdir)
-      #print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
+  
       
       # create disk.frame
       res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
       add_meta(res)
     })
-  }  
+  }
+  
   # validate 
-  if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
+  #if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
   
   res
 }
