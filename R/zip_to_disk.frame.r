@@ -3,6 +3,7 @@
 #' @param outdir The output directory for the disk.frames
 #' @import glue dplyr fst future future.apply fs
 #' @export
+#' @return a list of disk.frames
 # TODO add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, parallel = T) {
   # obtain the list of files in the zipfile
