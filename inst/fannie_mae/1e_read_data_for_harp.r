@@ -2,8 +2,12 @@
 source("inst/fannie_mae/0_setup.r")
 
 pt <- proc.time()
-# load fmdf 
-fmdf <- disk.frame("fmdf")
+
+# rows to read in one go
+rows_to_read = 1e7
+
+# load the Fannie Mae disk.frame
+fmdf <- disk.frame(file.path(outpath, "fm.df"))
 
 #system.time(harp <- fread("C:/data/HARP_Files/Performance_HARP.txt", colClasses = Performance_ColClasses, col.names = Performance_Variables))
 harp_mapping <- fread("C:/data/HARP_Files/Loan_Mapping.txt", colClasses = "c", col.names = c("loan_id", "harp_id"))
@@ -23,9 +27,9 @@ system.time(
     merge(df, harp_mapping, by="harp_id")
   },
   nchunks = nchunks(fmdf),
-  in_chunk_size = 1e7,
+  in_chunk_size = rows_to_read,
   shardby = "loan_id",
-  outdir = "harp.df",
+  outdir = file.path(outpath, "harp.df"),
   colClasses = Performance_ColClasses,
   col.names = Performance_Variables,
   sep="|"))

@@ -18,7 +18,7 @@ overwrite_check <- function(outdir, overwrite) {
         fs::dir_delete(outdir)
       }, error = function(e) {
         print(e)
-        stop("Failed to delete the directory {outdir} in preparation for overwrite, this could be due to many reason and may be a geniune bug. Firstly, though, please ensure you do not have the folder open by Explorer (Windows) or other file management systems")
+        stop(glue::glue("Failed to delete the directory {outdir} in preparation for overwrite, this could be due to many reason and may be a genuine bug. Firstly, though, please ensure you do not have the folder open by Explorer (Windows) or other file management systems"))
       })
     }
     

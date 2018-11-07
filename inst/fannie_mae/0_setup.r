@@ -11,8 +11,10 @@ library(ggplot2)
 nworkers = parallel::detectCores(logical = F)
 plan(multiprocess, workers = nworkers)
 
-
 raw_perf_data_path = "C:/data/Performance_All/"
+
+# where the outputs go
+outpath = "c:/data/fannie_mae_disk_frame/"
 
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 

@@ -12,3 +12,9 @@ keep.disk.frame <- function(df, selections) {
   attr(df,"keep") = selections
   df
 }
+
+#' @rdname keep
+#' @export
+dfkeep <- function(...) {
+  keep.disk.frame(...)
+}

@@ -2,6 +2,7 @@
 #' @param dir a disk.frame or directory to check 
 #' @export
 is_disk.frame <- function(dir) {
+  #browser()
   if("disk.frame" %in% class(dir)) {
     dir = attr(dir, "path")
   }
@@ -19,7 +20,7 @@ is_disk.frame <- function(dir) {
   if(length(dirs) > 1) {
     return(F)
   } else if(length(dirs) == 1) {
-    if(dirs != file.path(dir, ".metadata")) {
+    if(substr(dirs, nchar(dirs)-8,nchar(dirs)) != ".metadata") {
       return(F)
     }
   }

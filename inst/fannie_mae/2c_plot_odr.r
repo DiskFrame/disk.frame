@@ -1,12 +1,12 @@
 # 2_exploratory.r
 source("inst/fannie_mae/0_setup.r")
 
-tmp4 = disk.frame("tmp4")
+fm_with_harp = disk.frame(file.path(outpath, "fm_with_harp"))
 
-head(tmp4)
+head(fm_with_harp)
 
 # need a two stage summary
-system.time(a_wh1 <- tmp4 %>% 
+system.time(a_wh1 <- fm_with_harp %>% 
   keep(c("default_12m","harp_12m","monthly.rpt.prd")) %>% 
   group_by(monthly.rpt.prd, hard = F) %>% 
   summarise(
