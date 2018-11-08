@@ -15,6 +15,6 @@ keep.disk.frame <- function(df, selections) {
 
 #' @rdname keep
 #' @export
-dfkeep <- function(...) {
+srckeep <- function(...) {
   keep.disk.frame(...)
 }

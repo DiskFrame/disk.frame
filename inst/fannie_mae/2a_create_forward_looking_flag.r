@@ -7,7 +7,7 @@ harp = disk.frame(file.path(outpath, "harp.df"))
 # harp contains the first date on which a loan enters into HARP
 pt <- proc.time()
 harp1 <- harp %>% 
-  dfkeep(c("loan_id","monthly.rpt.prd")) %>% 
+  srckeep(c("loan_id","monthly.rpt.prd")) %>% 
   group_by(loan_id, hard = F) %>% # the data is sharded by loan_id hence hard = F is fine
   summarise(first_harp_date = min(as.Date(monthly.rpt.prd, "%m/%d/%Y"))) %>% 
   collect(parallel = T) # performs the collection in parallel
