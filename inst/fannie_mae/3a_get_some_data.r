@@ -68,7 +68,7 @@ a6val2 <- for_write(a6val)
 a6dev2 <- for_write(a6dev)
 
 fwrite(a6val2[,.(id, worst_delq_l12m_capped = worst_delq_last_12m_capped, default_12m)], "val.csv")
-fwrite(a6dev2[,.(id, worst_delq_l12m_capped = worst_delq_last_12m_capped, default_12m)], "dev2.csv")
+fwrite(a6dev2[,.(id, worst_delq_l12m_capped = worst_delq_last_12m_capped, default_12m)], "dev.csv")
 
 
 auc <- function(a6val) {

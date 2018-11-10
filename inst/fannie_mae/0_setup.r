@@ -9,7 +9,7 @@ library(tidyr)
 library(ggplot2)
 
 nworkers = parallel::detectCores(logical = F)
-plan(multiprocess, workers = nworkers)
+future::plan(multiprocess, workers = nworkers)
 
 raw_perf_data_path = "C:/data/Performance_All/"
 
