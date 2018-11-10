@@ -326,7 +326,7 @@ delayed.disk.frame <- function(df, fn, ...) {
     } else {
       code = sprintf("a[%s,%s,%s]", i, j, dotdot)
     }
-    a = get_chunk.disk.frame(df, k)
+    a = get_chunk.disk.frame(df, k, keep = keep)
     
     aa <- eval(parse(text=code))
     #list.files(
