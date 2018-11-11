@@ -14,6 +14,7 @@ get_chunk <- function(...) {
 #' @import fst
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
+  #browser()
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")
@@ -22,19 +23,20 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
   cmds = attr(df,"lazyfn")
   filename = ""
   
-  if(!is.null(keep1) & !is.null(keep)) {
+  if (typeof(keep) == "closure") {
+    keep = keep1
+  } else if(!is.null(keep1) & !is.null(keep)) {
     keep = intersect(keep1, keep)
     if (!all(keep %in% keep1)) {
-      warning("some of the variables specified in keep is not available")
+      warning("some of the variables specified in keep = {keep} is not available")
     }
-  } else if (typeof(keep) == "closure") {
-    keep = NULL
-  } else {
+  } else if(is.null(keep)) {
     keep = keep1
   }
   
   if(is.numeric(n)) {
-    filename = list.files(path, full.names = T)[n]
+    #filename = list.files(path, full.names = T)[n]
+    filename = file.path(path, paste0(n,".fst"))
   } else {
     if (full.names) {
       filename = n
@@ -59,9 +61,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
     }
   } else {
     if(typeof(keep)!="closure") {
-      play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
+      disk.frame:::play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
     } else {
-      play(read_fst(filename, as.data.table = T,...), cmds)
+      disk.frame:::play(read_fst(filename, as.data.table = T,...), cmds)
     }
   }
 }

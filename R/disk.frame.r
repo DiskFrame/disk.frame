@@ -159,9 +159,9 @@ head.disk.frame <- function(df, n = 6L, ...) {
   cmds <- attr(df, "lazyfn")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)[1]
-    head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n), cmds), n = n, ...)
+    head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   } else {
-    head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n), cmds), n = n, ...)
+    head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   }
 }
 
@@ -236,6 +236,7 @@ chunk_lapply <- function (...) {
 #' @import fst future future.apply purrr
 #' @export
 map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
+  #browser()
   fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
@@ -258,8 +259,9 @@ map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nch
   files <- list.files(path, full.names = T)
   files_shortname <- list.files(path)
   
+  keep_future = keep
   res = future.apply::future_lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(df, ii, keep=keep)
+    ds = disk.frame::get_chunk(df, ii, keep=keep_future)
     res = fn(ds)
     if(!is.null(outdir)) {
       fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
@@ -313,6 +315,8 @@ delayed.disk.frame <- function(df, fn, ...) {
   j = deparse(substitute(j))
   dotdot = deparse(substitute(...))
   
+  keep_for_future = keep
+  
   res <- future.apply::future_lapply(ff, function(k,i,j,dotdot) {
     # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
     j = paste0(j,collapse="")
@@ -326,10 +330,10 @@ delayed.disk.frame <- function(df, fn, ...) {
     } else {
       code = sprintf("a[%s,%s,%s]", i, j, dotdot)
     }
-    a = get_chunk.disk.frame(df, k, keep = keep)
+    a = get_chunk.disk.frame(df, k, keep = keep_for_future)
     
     aa <- eval(parse(text=code))
-    #list.files(
+    
     rm(a); gc()
     aa
   }, i, j, dotdot)

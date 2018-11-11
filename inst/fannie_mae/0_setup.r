@@ -7,6 +7,9 @@ library(purrr)
 library(fst)
 library(tidyr)
 library(ggplot2)
+library(stringr)
+library(xgboost)
+library(lubridate)
 
 nworkers = parallel::detectCores(logical = F)
 future::plan(multiprocess, workers = nworkers)
@@ -32,3 +35,12 @@ Performance_Variables =
 
 dfiles = dir(raw_perf_data_path, full.names = T)
 short_dfiles = dir(raw_perf_data_path)
+
+Acquisitions_Variables = c("LOAN_ID", "ORIG_CHN", "Seller.Name", "ORIG_RT", "ORIG_AMT", "ORIG_TRM", "ORIG_DTE"
+                           ,"FRST_DTE", "OLTV", "OCLTV", "NUM_BO", "DTI", "CSCORE_B", "FTHB_FLG", "PURPOSE", "PROP_TYP"
+                           ,"NUM_UNIT", "OCC_STAT", "STATE", "ZIP_3", "MI_PCT", "Product.Type", "CSCORE_C", "MI_TYPE", "RELOCATION_FLG") %>% tolower()
+
+Acquisition_ColClasses = c("character", "character", "character", "numeric", "numeric", "integer", "character", "character", "numeric",
+                           "numeric", "character", "numeric", "numeric", "character", "character", "character", "character", "character",
+                           "character", "character", "numeric", "character", "numeric", "numeric", "character")
+
