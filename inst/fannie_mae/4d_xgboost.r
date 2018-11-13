@@ -6,9 +6,9 @@ system.time(xy <- fmdf_2yr[,.(dh12m, oltv),keep=c("dh12m","oltv")])
 
 
 # show how to binning -----------------------------------------------------
-system.time(xy <- fmdf_2yr[,.(dh12m, oltv),keep=c("dh12m","oltv")])
+system.time(xy <- fmdf_2yr[,c("dh12m", "oltv"), keep=c("dh12m","oltv")])
 
-dtrain <- xgb.DMatrix(label = xy$dh12m, data = as.matrix(xy$oltv))
+dtrain <- xgb.DMatrix(label = xy$dh12m, data = as.matrix(xy[,"oltv"]))
 
 pt = proc.time()
 m <- xgboost(
@@ -25,7 +25,7 @@ map_chr(xgb.dump(m), ~str_extract(.x,"\\[f0<[\\d]+\\.[\\d]+\\]")) %>%
   keep(~!is.na(.x)) %>% 
   map_dbl(~str_extract(.x, "[\\d]+\\.[\\d]+") %>% as.numeric) %>% 
   sort %>% 
-  floor -> bins
+  floor -> xy[,"oltv"]
 
 bb = xy[,sum(dh12m)/.N, .(bins = cut(oltv,c(-Inf,bins,Inf)))]
 

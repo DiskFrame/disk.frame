@@ -17,37 +17,37 @@ pt <- proc.time()
 acqall1 <- left_join(
   acqall, 
   defaults, 
-  by = "loan_id") %>% 
+  by = "loan_id") %>%
+  delayed(~{
+    library(lubridate)
+    .x[
+      !is.na(first_default_date), 
+      mths_to_1st_default := interval(
+        as.Date(paste0("01/", frst_dte),"%d/%m/%Y"), 
+        first_default_date) 
+      %/% months(1)]
+    
+    .x[,default_next_12m := F]
+    .x[!is.na(first_default_date), default_next_12m := mths_to_1st_default <= 12]
+    
+    res = .x[substr(frst_dte,4,7) < 2016, ]
+    
+    res
+  }) %>% 
   compute(outdir = file.path(outpath, "appl_mdl_data"), overwrite = T)
 timetaken(pt)
 
-acqall2 = acqall1 %>%
-  srckeep(c("orig_dte", "first_default_date")) %>% 
-  mutate(orig_yr = substr(orig_dte, 4,7), yr_1st_d = year(first_default_date)) %>% 
-  group_by(orig_yr, yr_1st_d, hard = F) %>% 
-  summarise(n=n()) %>% 
-  collect %>% 
-  group_by(orig_yr, yr_1st_d) %>% 
-  summarise(n = sum(n))
+# default rate by year of origination
+system.time(drbyyr <- acqall1 %>% 
+              srckeep(c("frst_dte", "default_next_12m")) %>% 
+              mutate(frst_yr = substr(frst_dte, 4, 7)) %>% 
+              group_by(frst_yr, hard = F) %>% 
+              summarise(ndef = sum(default_next_12m, na.rm=T), n = n()) %>% 
+              collect(parallel  = T) %>% 
+              group_by(frst_yr) %>% 
+              summarise(ndef = sum(ndef), n = sum(n)) %>% 
+              mutate(odr = ndef/n))
 
-acqall2[,tot_n := sum(n), orig_yr]
-
-acqall3 <- acqall2[!is.na(yr_1st_d),]
-
-acqall3[,dr := n/tot_n]
-
-acqall3 %>% 
-  filter(orig_yr > 1999) %>% 
-  mutate(`Origination Year` = orig_yr) %>% 
+drbyyr %>% 
   ggplot +
-  geom_line(aes(x = yr_1st_d, y = dr, colour = `Origination Year`)) +
-  xlab("Year of Observation") +
-  ylab("Ratio of defaulted accounts vs # of accts at orig") +
-  scale_x_continuous(breaks=2000:2017, labels=as.character(2000:2017)) + 
-  scale_y_continuous(expand = c(0, 0)) + 
-  ggtitle("Fannie Mae Single Family Loans: Ratio of defaults vs # of accounts in same year of origination")
-
-
-
-
-
+  geom_line(aes(x = frst_yr %>% as.numeric, y = odr))
