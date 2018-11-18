@@ -134,7 +134,7 @@ cat("group by took: ", timetaken(pt), "\n")
 # keep only one var is faster
 pt = proc.time()
 res1 <- df %>% 
-  keep("a") %>% #keeping only the column `a` from the input
+  srckeep("a") %>% #keeping only the column `a` from the input
   summarise(suma = sum(a), n = n()) %>% 
   collect
 cat("summarise keeping only one column ", timetaken(pt), "\n")
