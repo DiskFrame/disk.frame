@@ -1,7 +1,7 @@
 
 #' Convert a SAS file (.sas7bdat format) to disk.frame via CSVs
 #' @export
-convert2disk.frame = function(inpath, outpath, nchunks = disk.frame::recommend_nchunks(inpath)) {
+sas_to_disk.frame = function(inpath, outpath, nchunks = disk.frame::recommend_nchunks(inpath)) {
   files = file.path(outpath, paste0(1:nchunks,".fst"))
   ready = rep(F, nchunks) | file.exists(files)
   # ready = c(rep(T, 96), rep(F, 4))
