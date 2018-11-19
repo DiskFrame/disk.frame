@@ -18,3 +18,17 @@ timetaken(pt)
 
 acqall_dev = sample_frac(acqall_all, 0.7) %>% 
   write_disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
+
+#acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
+
+
+uid_dev = acqall_dev %>% 
+  srckeep("loan_id") %>% 
+  mutate(loan_id = unique(loan_id)) %>% 
+  collect(parallel = T) %>% 
+  mutate(loan_id = unique(loan_id))
+  
+
+acqall_val = acqall_all %>% 
+  anti_join(uid_dev, by = "loan_id") %>% 
+  write_disk.frame(file.path(outpath, "appl_mdl_data_sampled_val"))

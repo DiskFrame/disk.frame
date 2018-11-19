@@ -53,5 +53,5 @@ test_that("collect works on dplyr::select followed by lazy", {
 
 
 teardown({
-  fs::dir_delete("tmp_pls_delete")
+  #fs::dir_delete("tmp_pls_delete")
 })
