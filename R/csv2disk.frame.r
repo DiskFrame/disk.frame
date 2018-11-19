@@ -11,25 +11,21 @@
 #' @param sep The delimiter of the CSV fle, otherwise known as the separator
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @export
-csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
-#csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, ...) {
-
-  if(overwrite & fs::dir_exists(outdir)) {
-    fs::dir_delete(outdir)
-  }
-  fs::dir_create(outdir)
+#csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
+csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {
+  #browser()
+  overwrite_check(outdir, overwrite)
   
   
   l = length(list.files(outdir))
   if(is.null(shardby)) {
     #a = write_fst(inmapfn(fread(infile, colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
-    a = as.disk.frame(inmapfn(fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = T, ...)
+    a = as.disk.frame(inmapfn(fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
     return(a)
   } else { # so shard by some element
-    #list.files(
     if(is.null(in_chunk_size)) {
       #shard(inmapfn(fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
-      shard(inmapfn(fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T, compress = compress,...)
+      shard(inmapfn(fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
     } else {
       i <- 0
       tmpdir1 = tempfile(pattern="df_tmp")
@@ -48,7 +44,6 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
         skiprows = skiprows + in_chunk_size
         rows <- tmpdt[,.N]
         if(rows < in_chunk_size) {
-          #list.files(
           done <- T
         }
         
@@ -62,24 +57,19 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
         rm(tmpdt); gc()
       }
       
-      
-      # readr::read_delim_chunked(infile, delim = sep, chunk_size = in_chunk_size, col_names = col.names, col_types = ct, function(indf,...) {
-      #   i <<- i + 1
-      #   shard(indf, shardby = shardby, nchunks = nchunks, outdir = file.path(tmpdir1,i), overwrite = T, compress=compress,...)
-      # })
-      #list.files(
+
       print(glue("read {rows} rows from {infile}"))
       
       # do not run this in parallel as the level above this is likely in parallel
-      system.time(fnl_out <- rbindlist.disk.frame(lapply(list.files(tmpdir1,full.names = T), disk.frame), outdir = outdir, by_chunk_id = T, parallel=F))
+      system.time(fnl_out <- rbindlist.disk.frame(lapply(list.files(tmpdir1,full.names = T), disk.frame), outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite))
       
       # remove the files
-      unlink(tmpdir1, recursive = T, force = T)
-      #list.files(
+      fs::dir_delete(tmpdir1)
+      #unlink(tmpdir1, recursive = T, force = T)
     }
   }
   #disk.frame(outdir)
   df = disk.frame(outdir)
-  add_meta(df, nchunks=nrow(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
+  add_meta(df, nchunks=disk.frame::nchunks(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
 }
 

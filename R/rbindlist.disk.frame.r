@@ -6,11 +6,8 @@
 #' @param compress 0-100, 100 being the highest compression rate.
 #' @import data.table purrr future future.apply fs
 #' @export
-rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = F) {
-  if(overwrite & fs::dir_exists(outdir)) {
-    fs::dir_delete(outdir)
-  }
-  fs::dir_create(outdir)
+rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
+  overwrite_check(outdir, overwrite)
   
   
   if(by_chunk_id) {
@@ -32,7 +29,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
       system.time(lapply(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
         outfilename = names(slist[i])
-        fst::write_fst(purrr::map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
+        fst::write_fst(purrr::map_dfr(full_paths1, ~fst::read_fst(.x)),file.path(outdir,outfilename), compress = compress)
         NULL
       }))
     }
@@ -42,6 +39,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     shardkeys <- purrr::map(df_list, shardkey)
     
     # if all the sharkeys are identical then
+    #browser()
     if(all(purrr::map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
       return(add_meta(rbind_res, 
                shardkey = shardkeys[[1]]$shardkey,

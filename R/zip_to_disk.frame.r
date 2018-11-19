@@ -1,13 +1,51 @@
 #' Automatically read and convert every single CSV file within the zip file to disk.frame format
 #' @param zipfile The zipfile
-#' @param outdir The output directory for the disk.frames
-#' @param ... passed to csv_to_disk.frame and data.table::fread
+#' @param outdir The output directory for disk.frame
+#' @param col.names Columns names
+#' @param colClasses column classes
 #' @import glue dplyr fst future future.apply fs
 #' @export
-#' @return a list of disk.frames
+#' @return a list of disk.frame
 # TODO add all the options of fread into the ... as future may not be able to deal with it
-zip_to_disk.frame = function(zipfile, outdir, ..., parallel = T) {
-  # obtain the list of files in the zipfile
+zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwrite = T) {
+  files = unzip(zipfile, list=T)
+  
+  fs::dir_create(outdir)
+  
+  tmpdir = tempfile(pattern = "tmp_zip2csv")
+  
+  dotdotdots = list(...)
+  
+  dfs = future.apply::future_lapply(files$Name, function(fn) {
+  #dfs = lapply(files$Name, function(fn) {
+    outdfpath = file.path(outdir, fn)
+    overwrite_check(outdfpath, T)
+    unzip(zipfile, files = fn, exdir = tmpdir)
+    
+    
+    # lift the domain of csv_to_disk.frame so it accepts a list
+    cl = purrr::lift(csv_to_disk.frame)
+    
+    ok = c(
+      list(infile = file.path(tmpdir, fn), outdir = outdfpath, overwrite = overwrite),
+      dotdotdots)
+    
+    #csv_to_disk.frame(, outdfpath, overwrite = overwrite, ...)
+    cl(ok)
+  })
+
+  dfs  
+}
+
+
+#' Automatically read and convert every single file within the zip file to disk.frame format
+#' @param zipfile The zipfile
+#' @param outdir The output directory for disk.frame
+#' @import glue dplyr fst future future.apply fs
+#' @export
+#' @rdname zip_to_disk.frame
+# TODO add all the options of fread into the ... as future may not be able to deal with it
+zip_to_disk.frame2 = function(zipfile, outdir, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
   files = unzip(zipfile, list=T)
   
   # TODO sort the files by file size

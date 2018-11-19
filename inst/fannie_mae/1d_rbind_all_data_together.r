@@ -1,13 +1,8 @@
 source("inst/fannie_mae/0_setup.r")
 
-dir.create("fmdf")
+disk.frame_folders = dir(file.path(outpath, "raw_fannie_mae"),full.names = T)
+list_of_disk.frames <- purrr::map(disk.frame_folders, disk.frame)
 
-system.time(
-  rbindlist.disk.frame(
-    map(
-      dir("test_fm",full.names = T),
-      ~disk.frame(.x)
-      ),
-    "fmdf"
-  )
-)
+pt <- proc.time()
+fmdf = rbindlist.disk.frame(list_of_disk.frames, outdir = file.path(outpath, "fm.df"), overwrite = T)
+print(timetaken(pt))

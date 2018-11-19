@@ -1,4 +1,4 @@
-#' Shard a data.frame/data.table into chunk and saves it into a disk.frame
+#' Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame
 #' @param df A disk.frame
 #' @param shardby The column(s) to shard the data by.
 #' @param nchunks The number of chunks
@@ -7,6 +7,7 @@
 #' @import glue fst
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
+  #browser()
   overwrite_check(outdir, overwrite)
   
   setDT(df)
@@ -19,5 +20,5 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
   
   eval(parse(text=code))
   
-  output_disk.frame(df, outdir, nchunks, overwrite, shardkey = shardby, shardchunks = nchunks)
+  disk.frame:::output_disk.frame(df, outdir, nchunks, overwrite, shardkey = shardby, shardchunks = nchunks)
 }

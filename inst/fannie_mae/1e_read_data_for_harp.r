@@ -1,28 +1,42 @@
 #1c2
 source("inst/fannie_mae/0_setup.r")
 
-# load fmdf 
-fmdf <- disk.frame("fmdf")
+pt <- proc.time()
 
-#system.time(harp <- fread("D:/data/fannie_mae/HARP_Files/Performance_HARP.txt", colClasses = Performance_ColClasses, col.names = Performance_Variables))
-harp_mapping <- fread("D:/data/fannie_mae/HARP_Files/Loan_Mapping.txt", colClasses = "c", col.names = c("loan_id", "harp_id"))
+# rows to read in one go
+rows_to_read = 1e7
+
+# load the Fannie Mae disk.frame
+fmdf <- disk.frame(file.path(outpath, "fm.df"))
+
+#system.time(harp <- fread("C:/data/HARP_Files/Performance_HARP.txt", colClasses = Performance_ColClasses, col.names = Performance_Variables))
+harp_mapping <- fread("C:/data/HARP_Files/Loan_Mapping.txt", colClasses = "c", col.names = c("loan_id", "harp_id"))
 setkey(harp_mapping, harp_id)
-fst::write_fst(harp_mapping,"harp_mapping.fst")
+fst::write_fst(harp_mapping,"harp_mapping.fst.tmp")
+fs::file_move("harp_mapping.fst.tmp", "harp_mapping.fst")
+print("reading in and saving HARP mapping file took: ")
+print(data.table::timetaken(pt))
 
-# took about 438.65
+# took about 438.65 on laptop 500 chunks
+# took about 205 on desktop 56 chunks
+pt <- proc.time()
 system.time(
-  harp <- csv_to_disk.frame("D:/data/fannie_mae/HARP_Files/Performance_HARP.txt", inmapfn = function(df) {
+  harp <- csv_to_disk.frame("C:/data/HARP_Files/Performance_HARP.txt", inmapfn = function(df) {
     setnames(df, "loan_id", "harp_id")
     
     merge(df, harp_mapping, by="harp_id")
   },
-  nchunks = nchunk(fmdf),
-  in_chunk_size = 1e7,
+  nchunks = nchunks(fmdf),
+  in_chunk_size = rows_to_read,
   shardby = "loan_id",
-  outdir = "harp.df",
+  outdir = file.path(outpath, "harp.df"),
   colClasses = Performance_ColClasses,
   col.names = Performance_Variables,
   sep="|"))
+
+print("reading in and saving HARP mapping file took: ")
+print(data.table::timetaken(pt))
+
 
 if(F) {
   # it can be seen that some accounts can start n harp the month the same that it ends in the dataset
@@ -58,7 +72,7 @@ if(F) {
 
 # check if the harp_id -> loan_id is successful
 if(F) {
-  harp_acq <- fread("d:/data/fannie_mae/HARP_Files/Acquisition_HARP.txt")
+  harp_acq <- fread("C:/data/HARP_Files/Acquisition_HARP.txt")
   fst::write_fst(harp_mapping,"harp_mapping.fst")
   
   harp[,date:=as.Date(month,"%m/%d/%Y")]

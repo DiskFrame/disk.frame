@@ -84,12 +84,14 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = N
     .data = dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add)
     return(.data)
   } else if (hard == FALSE) {
-    #if(sort(shardkey(.data)) != sort(shardby)) {
-    warning("hard is set to FALSE but grouping don't match up between disk.frame and group by vars")
-    #}
+    shardinfo = shardkey(.data)
+    if(!identical(shardinfo[[1]], shardby)) {
+      warning(glue::glue(
+        "hard is set to FALSE but the shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can group_by(..., hard = TRUE) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
+    }
     return(dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add))
   } else {
-    stop("group_by for disk.frames must set hard to TRUE or FALSE")
+    stop("group_by operations for disk.frames must be set hard to TRUE or FALSE")
   }
 }
 

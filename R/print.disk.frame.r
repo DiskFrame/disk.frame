@@ -4,9 +4,9 @@
 print.disk.frame <- function(df) {
   a = paste(sep = "\n"
              ,glue::glue("path: \"{attr(df,'path')}\"")
-             ,glue::glue("nchunks: {nchunk(df)}")
-             ,glue::glue("nrow: {nrow(df)}")
-             ,glue::glue("ncol: {ncol(df)}")
+             ,glue::glue("nchunks: {disk.frame::nchunks(df)}")
+             ,glue::glue("nrow: {disk.frame::nrow(df)}")
+             ,glue::glue("ncol: {disk.frame::ncol(df)}")
   )
   cat(a)
 }
