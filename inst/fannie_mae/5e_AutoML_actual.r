@@ -6,6 +6,7 @@ acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
 
 # 5d develop a function to test all variables
 check_which_is_best <- function(df, target, features, monotone_constraints, format_fns, weight=NULL) {
+  #browser()
   prev_pred = NULL
   ws = NULL
   vars_scr = NULL
@@ -13,7 +14,7 @@ check_which_is_best <- function(df, target, features, monotone_constraints, form
   while(length(features) > 0) {
     # try every var
     #browser()
-    res = furrr::future_map(1:length(features), ~disk.frame::add_var_to_scorecard(
+    res = furrr::future_map(1:length(features), ~add_var_to_scorecard(
     #res = purrr::map(1:length(features), ~add_var_to_scorecard(
       df, 
       target,
@@ -21,7 +22,8 @@ check_which_is_best <- function(df, target, features, monotone_constraints, form
       monotone_constraints = monotone_constraints[.x],
       prev_pred = prev_pred,
       format_fn = format_fns[[.x]],
-      weight
+      weight,
+      save_model_fname = glue::glue("{features[.x]}.xgbm")
     ))
     
     # which has the best auc
@@ -43,7 +45,7 @@ check_which_is_best <- function(df, target, features, monotone_constraints, form
 }
 
 num_vars =     c("mi_pct", "orig_amt", "orig_rt", "ocltv", "mi_type", "cscore_c", "oltv", "dti", "orig_trm", "cscore_b", "num_bo", "num_unit", "orig_dte", "frst_dte")
-num_vars_mon = c(0       ,  1        , 1        , 1      , 0        ,  1        , 1     , 1    ,     1     , -1        ,  -1     , 0         ,       0   ,  0)
+num_vars_mon = c(0       ,  1        , 1        , 1      , 0        ,  -1        , 1     , 1    ,     1     ,  -1        ,  -1     , 0         ,       0   ,  0)
 num_var_fmt_fn = c(map(1:10, ~base::I), map(1:2, ~as.numeric), map(1:2, ~function(x) {
   as.numeric(substr(x, 4, 7))
 }))

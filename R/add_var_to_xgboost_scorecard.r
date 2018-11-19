@@ -5,9 +5,10 @@
 #' @param monotone_constraints 1 higher value of feature equals higher success, -1 = the opposite, 0 = neither
 #' @param prev_pred a vector of score equal to the nrow(df) which is the previous predictions used for hot-start
 #' @param format_fn a function to transform the feature vector before fitting a model
+#' @param save_model_fname the file name to save the xgboost model as
 #' @import xgboost
 #' @export
-add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL) {
+add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL, save_model_fname = "") {
   #browser()
   print(glue::glue("doing {feature}"))
   xy = df %>%
@@ -90,7 +91,11 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
     a5 = evalparseglue("a4[,.({feature} = max({feature})), score][order({feature}),]")
   }
   
-  res = list(model = m2, bins = a5, prev_pred = predict(m2, dtrain), bias = bias, format_fn = format_fn, auc = auc(xy[,target, with = F][[1]], predict(m2, dtrain)), weight_name = weight_name)
+  if(!is.null(save_model_fname) & save_model_fname != "") {
+    xgboost::xgb.save(m2, save_model_fname)
+  }
+  
+  res = list(feature = feature, model = save_model_fname, bins = a5, prev_pred = predict(m2, dtrain), bias = bias, format_fn = format_fn, auc = auc(xy[,target, with = F][[1]], predict(m2, dtrain)), weight_name = weight_name, monotone_constraints = monotone_constraints)
   class(res) <- "xgdf_scorecard"
   res
 }
@@ -98,5 +103,6 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
 #' Print 
 #' @export
 print.xgdf_scorecard <- function(res) {
-  cat(res$model)
+  print(glue::glue("AUC: {res$auc}; GINI: {2*res$auc-1}"))
+  print(res$bins)
 }
