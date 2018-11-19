@@ -7,17 +7,33 @@
 #' @param format_fn a function to transform the feature vector before fitting a model
 #' @import xgboost
 #' @export
-add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I) {
+add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL) {
   #browser()
+  print(glue::glue("doing {feature}"))
   xy = df %>%
-    srckeep(c(target, feature)) %>%
-    collect(parallel = T)
+    srckeep(c(target, feature, weight)) %>%
+    collect(parallel = F)
   
-  # evaluate
+  # format the input if necessary
   code = glue::glue("xy = xy %>% mutate({feature} = format_fn({feature}))")
   eval(parse(text = code))
   
-  dtrain <- xgboost::xgb.DMatrix(label = xy[,target, with = F][[1]], data = as.matrix(xy[,c(feature), with = F]))
+  not_numeric = !is.numeric(xy[1, feature, with = F][[1]])
+  
+  weight_name = weight
+  if(!is.null(weight)) {
+    weight = xy$weight
+  }
+  
+  if(not_numeric) {
+    # it must be character or factor. Now create a  default rate
+    monotone_constraints = 1
+    
+    eval(parse(text = glue::glue("xy[, feature_s := sum({target})/.N, {feature}]")))
+    dtrain <- xgboost::xgb.DMatrix(label = xy[,target, with = F][[1]], data = as.matrix(xy[,.(feature_s)]))
+  } else {
+    dtrain <- xgboost::xgb.DMatrix(label = xy[,target, with = F][[1]], data = as.matrix(xy[,c(feature), with = F]))
+  }
   
   if(is.null(prev_pred)) {
     pt = proc.time()
@@ -27,7 +43,8 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
       objective = "binary:logitraw", 
       tree_method="exact",
       monotone_constraints = monotone_constraints,
-      base_score = sum(xy[,target, with = F][[1]])/nrow(xy)
+      base_score = sum(xy[,target, with = F][[1]])/nrow(xy),
+      weigth = weight
     )
     timetaken(pt)
   } else {
@@ -38,30 +55,48 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
       nrounds = 1, 
       objective = "binary:logitraw", 
       tree_method="exact",
-      monotone_constraints = monotone_constraints
+      monotone_constraints = monotone_constraints,
+      weigth = weight
     )
     timetaken(pt)
   }
   
-  #browser()
-  
   # code to obtain the unique for merging
-  udtrain_df = eval(parse(text = glue::glue("xy[, .({feature} = unique({feature}))]")))
+  if(not_numeric) {
+    # in case where multiple categories have the same default rate
+    udtrain_df = evalparseglue("xy[, .({feature} = unique({feature})), feature_s]")
+    
+    # keep the categories separate because xgb.DMatrix can't convert categoricals
+    udtrain_df_cat = evalparseglue("udtrain_df[,.({feature})]")
+    udtrain_df = udtrain_df[,.(feature_s)]
+  } else {
+    udtrain_df = evalparseglue("xy[, .({feature} = unique({feature}))]")
+  }
+  
   udtrain = xgboost::xgb.DMatrix(as.matrix(udtrain_df))
   a3 = predict(m2, udtrain, predcontrib = T) %>% data.table
   
   setnames(a3, names(a3), c("score", "bias"))
   
-  
-  #if(is.null(prev_pred)) {
   stopifnot(length(unique(a3$bias)) == 1)
   bias = a3[1, bias]
-  #}
-  
-  a4 = cbind(udtrain_df, a3)
   
   # summarise a4 to get the cutting points
-  code = glue::glue("a5 = a4[,.({feature} = max({feature})), score][order({feature}),]")
-  eval(parse(text  = code))
-  list(model = m2, bins = a5, prev_pred = predict(m2, dtrain), bias = bias, auc = auc(xy[,target, with = F][[1]], predict(m2, dtrain)))
+  if(not_numeric) {
+    a4 = cbind(udtrain_df, udtrain_df_cat, a3)
+    a5 = a4
+  } else {
+    a4 = cbind(udtrain_df, a3)
+    a5 = evalparseglue("a4[,.({feature} = max({feature})), score][order({feature}),]")
+  }
+  
+  res = list(model = m2, bins = a5, prev_pred = predict(m2, dtrain), bias = bias, format_fn = format_fn, auc = auc(xy[,target, with = F][[1]], predict(m2, dtrain)), weight_name = weight_name)
+  class(res) <- "xgdf_scorecard"
+  res
+}
+
+#' Print 
+#' @export
+print.xgdf_scorecard <- function(res) {
+  cat(res$model)
 }
