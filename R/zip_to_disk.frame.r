@@ -1,4 +1,4 @@
-#' Automatically read and convert every single file within the zip file to disk.frame format
+#' Automatically read and convert every single CSV file within the zip file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
 #' @param col.names Columns names
@@ -48,61 +48,43 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
 zip_to_disk.frame2 = function(zipfile, outdir, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
   files = unzip(zipfile, list=T)
   
+  # TODO sort the files by file size
+  
+  # create the output directory
   fs::dir_create(outdir)
   
+  # create a temporary directory; this is where all the CSV files are extracted to
   tmpdir = tempfile(pattern = "tmp_zip2csv")
   
   if(parallel) {
-    system.time(future.apply::future_lapply(files$Name, function(fn) {
-      print(fn)
-      out_fst_file = file.path(outdir, paste0(fn,".fst"))
-      
-      if(!replace & file.exists(out_fst_file)) {
-        print("output already exists")
-        return(NULL)
-      }
-      
-      pt = proc.time()
+    res = future.apply::future_lapply(files$Name, function(fn) {      
+      out_dir_for_file = file.path(outdir, fn)
+        
+      # unzip a file
       unzip(zipfile, files = fn, exdir = tmpdir)
-      print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-      if(is.null(col.names)) {
-        write_fst(fread(file.path(tmpdir, fn),colClasses = colClasses), paste0(out_fst_file,".tmp"),compress)
-      } else {
-        write_fst(fread(file.path(tmpdir, fn),colClasses = colClasses, col.names =col.names), paste0(out_fst_file,".tmp"),compress)
-      }
-      
-      print(paste0("read: ", timetaken(pt)))
-      file.rename(paste0(out_fst_file,".tmp"), out_fst_file)
-      unlink(file.path(tmpdir, fn))
-      gc()
-    }))
+  
+      # create disk.frame from file
+      res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
+      add_meta(res)
+    })
   } else {
-    system.time(lapply(files$Name, function(fn) {
-      print(fn)
-      out_fst_file = file.path(outdir, paste0(fn,".fst"))
-      
-      if(file.exists(out_fst_file)) {
-        print("output already exists")
-        return(NULL)
-      }
-      
-      pt = proc.time()
+    res = lapply(files$Name, function(fn) {      
+      out_dir_for_file = file.path(outdir, fn)
+        
+      # unzip a file
       unzip(zipfile, files = fn, exdir = tmpdir)
-      print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-      write_fst(fread(file.path(tmpdir, fn)), paste0(out_fst_file,".tmp"),100)
-      print(paste0("read: ", timetaken(pt)))
-      file.rename(paste0(out_fst_file,".tmp"), out_fst_file)
-      unlink(file.path(tmpdir, fn))
-      gc()
-    }))
+  
+      
+      # create disk.frame
+      res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
+      add_meta(res)
+    })
   }
   
-  
   # validate 
-  if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
+  #if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
   
-  df = disk.frame(outdir)
-  add_meta(df, compress = compress)
+  res
 }
 
 # validate_zip_to_disk.frame(zipfile, outdir)
