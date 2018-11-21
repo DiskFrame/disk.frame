@@ -81,11 +81,13 @@ for_write <- function(a6val) {
 a6val2 <- for_write(a6val)
 a6dev2 <- for_write(a6dev)
 
+
 a6dev2[,.N, delq.statusn]
 a6val2[,.N, delq.statusn]
 
 fwrite(a6val2[,.(id, delq_status = delq.statusn, default_12m)], "val.csv")
 fwrite(a6dev2[,.(id, delq_status = delq.statusn, default_12m)], "dev.csv")
+
 
 
 gini <- function(a6val) {
