@@ -19,8 +19,6 @@ raw_perf_data_path = "C:/data/Performance_All/"
 # where the outputs go
 outpath = "c:/data/fannie_mae_disk_frame/"
 
-appl_path = "C:/data/"
-
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 
     "numeric", "character", "character", "character", "character", "character", "character", 
@@ -45,4 +43,3 @@ Acquisitions_Variables = c("LOAN_ID", "ORIG_CHN", "Seller.Name", "ORIG_RT", "ORI
 Acquisition_ColClasses = c("character", "character", "character", "numeric", "numeric", "integer", "character", "character", "numeric",
                            "numeric", "character", "numeric", "numeric", "character", "character", "character", "character", "character",
                            "character", "character", "numeric", "character", "numeric", "numeric", "character")
-
