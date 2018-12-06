@@ -1,13 +1,15 @@
 source("inst/fannie_mae/0_setup.r")
 library(disk.frame)
 
-acqall1 = disk.frame(file.path(outpath, "appl_mdl_data"))
+acqall1 = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 pt <- proc.time()
 firstm <- add_var_to_scorecard(acqall1, "default_next_12m", "oltv", monotone_constraints = 1, format_fn = function(v) {
   ceiling(v / 5) * 5
 })
 timetaken(pt)
+
+firstm
 
 # now add the second variable ---------------------------------------------
 pt <- proc.time()

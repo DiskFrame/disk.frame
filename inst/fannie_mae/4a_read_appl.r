@@ -18,7 +18,7 @@ fmdf <- disk.frame(file.path(outpath,"fm_with_harp"))
 
 pt = proc.time()
 acq <- zip_to_disk.frame(
-  "c:/data/Acquisition_All.zip", 
+  acqzip_file_path, 
   outdir =  file.path(outpath, "acq.df"),
   col.names = Acquisitions_Variables, 
   colClasses = Acquisition_ColClasses,
@@ -37,7 +37,7 @@ fmdf_all = left_join(
   acqall,
   by = "loan_id", 
   merge_by_chunk_id = T,
-  outdir = file.path(outdir, "fmdf_appl")
+  outdir = file.path(outpath, "fmdf_appl")
   )
 timetaken(pt)
 

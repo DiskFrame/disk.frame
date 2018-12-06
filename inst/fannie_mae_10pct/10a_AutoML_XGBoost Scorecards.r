@@ -1,7 +1,7 @@
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae_10pct/0_setup.r")
 library(disk.frame)
 
-acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
+acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled"))
   
 
 # 5d develop a function to test all variables
@@ -67,7 +67,7 @@ timetaken(pt)
 
 plot(map_dbl(res_all, ~.x$auc))
 
-saveRDS(res_all, "model.rds")
+#saveRDS(res_all, "model.rds")
 
 if(F) {
   rescat = check_which_is_best(

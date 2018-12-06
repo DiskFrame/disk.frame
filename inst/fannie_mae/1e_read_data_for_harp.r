@@ -10,7 +10,7 @@ rows_to_read = 1e7
 fmdf <- disk.frame(file.path(outpath, "fm.df"))
 
 #system.time(harp <- fread("C:/data/HARP_Files/Performance_HARP.txt", colClasses = Performance_ColClasses, col.names = Performance_Variables))
-harp_mapping <- fread("C:/data/HARP_Files/Loan_Mapping.txt", colClasses = "c", col.names = c("loan_id", "harp_id"))
+harp_mapping <- fread(file.path(raw_harp_data_path,"Loan_Mapping.txt"), colClasses = "c", col.names = c("loan_id", "harp_id"))
 setkey(harp_mapping, harp_id)
 fst::write_fst(harp_mapping,"harp_mapping.fst.tmp")
 fs::file_move("harp_mapping.fst.tmp", "harp_mapping.fst")
@@ -21,7 +21,7 @@ print(data.table::timetaken(pt))
 # took about 205 on desktop 56 chunks
 pt <- proc.time()
 system.time(
-  harp <- csv_to_disk.frame("C:/data/HARP_Files/Performance_HARP.txt", inmapfn = function(df) {
+  harp <- csv_to_disk.frame(file.path(raw_harp_data_path,"Performance_HARP.txt"), inmapfn = function(df) {
     setnames(df, "loan_id", "harp_id")
     
     merge(df, harp_mapping, by="harp_id")

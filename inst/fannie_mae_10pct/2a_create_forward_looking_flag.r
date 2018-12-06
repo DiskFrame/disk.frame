@@ -1,5 +1,5 @@
 # 2_exploratory.r
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae_10pct/0_setup.r")
 
 fmdf = disk.frame(file.path(outpath, "fm.df"))
 

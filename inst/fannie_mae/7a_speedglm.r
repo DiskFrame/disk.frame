@@ -1,7 +1,7 @@
 source("inst/fannie_mae/0_setup.r")
 library(disk.frame)
 
-acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
+acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 library(speedglm)
 
@@ -36,66 +36,6 @@ acqall_dev1 = acqall_dev %>% delayed(~{
   .x
 })
 
-build_model <- function() {
-  model <- keras_model_sequential() %>%
-    layer_dense(units = 2, activation = 'softmax')
-  
-  
-  model %>% compile(
-    loss = "categorical_crossentropy",
-    optimizer = 'sgd'
-  )
-  
-  model
-}
-
-
-for(i in 1:nchunks(acqall_dev1)) {
-  a = get_chunk(acqall_dev1, i)
-  a[,.(sum(default_next_12m), .N),oltv_band]
-  
-  a1 = 
-    cbind(
-      a[,keras::to_categorical(oltv_band %>% as.integer)]
-      a[,keras::to_categorical(dti_band %>% as.integer)]
-    )
-    
-  summary(a1)
-  at = a[!is.na(dti),default_next_12m*1]
-  Y_train = keras::to_categorical(at)
-  
-  model = build_model()
-  
-  hist = model %>% fit(
-    a1,
-    Y_train,
-    epochs = 1,
-    validation_split = 0.2,
-    verbose = 0
-  )
-  
-  plot(ok)
-  
-  get_weights(model)
-}
-
-model %>% predict(a1)
-
-
-boston_housing <- dataset_boston_housing()
-
-c(train_data, train_labels) %<-% boston_housing$train
-c(test_data, test_labels) %<-% boston_housing$test
-
-acqall_dev1 %>% 
-  srckeep(c("oltv", "dti", "default_next_12m")) %>% 
-  group_by(oltv_band, hard = F) %>% 
-  summarise(n = n(), ndef = sum(default_next_12m)) %>% 
-  collect %>% 
-  group_by(oltv_band) %>% 
-  summarise(n = sum(n), ndef = sum(ndef))
-
-streamacq = stream_shglm(acqall_dev1)
 library(speedglm)
 library(biglm)
 
