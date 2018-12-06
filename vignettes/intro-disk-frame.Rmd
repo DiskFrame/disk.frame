@@ -316,11 +316,11 @@ Because this two-stage approach avoids the expensive `hard group_by` operation, 
 
 ## Restrict input columns for faster processing
 
-One can restrict which input columns to load into memory for each chunk; this can significantly increase the speed of data processing. To restrict the input columns, use the `keep` function which only accepts column names as a string vector.
+One can restrict which input columns to load into memory for each chunk; this can significantly increase the speed of data processing. To restrict the input columns, use the `srckeep` function which only accepts column names as a string vector.
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
-  keep(c("carrier","dep_delay")) %>%
+  srckeep(c("carrier","dep_delay")) %>%
   group_by(carrier, hard = T) %>% # notice that hard = T needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect
@@ -365,7 +365,7 @@ flights.df %>% left_join(airlines.dt, by = c("carrier", "carrier")) %>% collect
 ```{r, dependson='asdiskframe'}
 # Find the most and least delayed flight each day
 bestworst <- flights.df %>%
-   keep(c("year","month","day", "dep_delay")) %>%
+   srckeep(c("year","month","day", "dep_delay")) %>%
    group_by(year, month, day, hard = TRUE) %>%
    select(dep_delay) %>%
    filter(dep_delay == min(dep_delay, na.rm = T) || dep_delay == max(dep_delay, na.rm = T)) %>%
@@ -377,7 +377,7 @@ bestworst
 ```{r, dependson='asdiskframe'}
 # Rank each flight within a daily
 ranked <- flights.df %>%
-  keep(c("year","month","day", "dep_delay")) %>%
+  srckeep(c("year","month","day", "dep_delay")) %>%
   group_by(year, month, day, hard = T) %>%
   select(dep_delay) %>%
   mutate(rank = rank(desc(dep_delay))) %>%
@@ -392,7 +392,7 @@ One can apply arbitrary transformations to each chunk of the `disk.frame` by usi
 
 ```{r, dependson='asdiskframe'}
 flights.df1 <- delayed(flights.df, ~nrow(.x))
-collect_list(flights.df1) # returns number of rows for each data.frame in a list
+collect_fildpllist(flights.df1) # returns number of rows for each data.frame in a list
 ```
 and to do the same with `map.disk.frame`
 
