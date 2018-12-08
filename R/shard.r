@@ -4,7 +4,8 @@
 #' @param nchunks The number of chunks
 #' @param outdir The output directory of the disk.frame
 #' @param overwrite If TRUE then the chunks are overwritten
-#' @import glue fst
+#' @import fst
+#' @importFrom glue glue
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
   #browser()

@@ -2,7 +2,7 @@ Type: Package
 Package: disk.frame
 Title: Fast disk-based data manipulation framework for larger-than-RAM structured tabular data
 Version: 0.1.0
-Date: 2018-10-25
+Date: 2018-12-08
 Author: Dai ZJ
 Maintainer: Dai ZJ <dzj@analytixware.com>
 Description: Disk.frame allows the user to process arbitrarily
@@ -10,13 +10,13 @@ Description: Disk.frame allows the user to process arbitrarily
     RAM. This enables large datasets to be processed and analysed.
 License: MIT
 Imports: 
-    fst (>= 0.8.0),
     Rcpp (>= 0.12.13),
     glue,
     purrr,
     furrr,
     future.apply
 Depends:
+    fst (>= 0.8.0),
     dplyr,
     data.table,
     future,
@@ -27,5 +27,6 @@ Suggests:
     rmarkdown
 LinkingTo: 
     Rcpp
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Encoding: UTF-8

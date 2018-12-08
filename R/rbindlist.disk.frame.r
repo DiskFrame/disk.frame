@@ -4,11 +4,12 @@
 #' @param by_chunk_id If TRUE then only the chunks with the same chunk IDs will be bound
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
-#' @import data.table purrr future future.apply fs
+#' @import purrr fs
+#' @importFrom data.table data.table setDT
+#' @importFrom future.apply future_lapply
 #' @export
 rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
   overwrite_check(outdir, overwrite)
-  
   
   if(by_chunk_id) {
     list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))
@@ -19,7 +20,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     slist = split(list_of_chunks$full_path,list_of_chunks$path)
     
     if(parallel) {
-      system.time(future_lapply(1:length(slist), function(i) {
+      system.time(future.apply::future_lapply(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
         outfilename = names(slist[i])
         fst::write_fst(purrr::map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)

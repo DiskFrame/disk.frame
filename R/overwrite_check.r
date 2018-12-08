@@ -1,7 +1,8 @@
 #' Check if the outdir exists or not
 #' @param outdir the output directory
 #' @param overwrite TRUE or FALSE if `outdir`` exists and overwrite = F then throw an error
-#' @import fs glue
+#' @import fs
+#' @importFrom glue glue
 #' @export
 overwrite_check <- function(outdir, overwrite) {
   if (is.null(outdir)) {

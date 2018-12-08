@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+tmp$
+\.png$
+NAMESPACE_ok$
+misc
+cran-comments.md$

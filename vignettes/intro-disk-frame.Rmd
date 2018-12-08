@@ -179,7 +179,7 @@ The `arrange` function arranges (sort) each chunk but not the whole dataset. So 
 
 ```{r, dependson='asdiskframe'}
 # this only sorts within each chunk
-arrange(flights.df, desc(dep_delay)) %>% collect
+arrange(flights.df, dplyr::desc(dep_delay)) %>% collect
 ```
 
 

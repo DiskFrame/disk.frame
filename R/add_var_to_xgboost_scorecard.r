@@ -6,7 +6,7 @@
 #' @param prev_pred a vector of score equal to the nrow(df) which is the previous predictions used for hot-start
 #' @param format_fn a function to transform the feature vector before fitting a model
 #' @param save_model_fname the file name to save the xgboost model as
-#' @import xgboost
+#' @importFrom xgboost xgb.DMatrix xgboost xgb.save
 #' @export
 add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL, save_model_fname = "") {
   #browser()

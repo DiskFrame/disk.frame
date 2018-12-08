@@ -3,7 +3,9 @@
 #' @param outdir The output directory for disk.frame
 #' @param col.names Columns names
 #' @param colClasses column classes
-#' @import glue dplyr fst future future.apply fs
+#' @import dplyr fst fs
+#' @importFrom glue glue
+#' @importFrom future.apply future_lapply
 #' @export
 #' @return a list of disk.frame
 # TODO add all the options of fread into the ... as future may not be able to deal with it
@@ -41,7 +43,9 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
 #' Automatically read and convert every single file within the zip file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
-#' @import glue dplyr fst future future.apply fs
+#' @import dplyr fst fs
+#' @importFrom glue glue
+#' @importFrom future.apply future_lapply
 #' @export
 #' @rdname zip_to_disk.frame
 # TODO add all the options of fread into the ... as future may not be able to deal with it
@@ -91,10 +95,9 @@ zip_to_disk.frame2 = function(zipfile, outdir, ..., col.names = NULL, colClasses
 #' Validate and auto-correct read and convert every single file within the zip file to df format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
-#' @import glue
+#' @importFrom glue glue
 #' @import dplyr
 #' @import fst
-#' @import future
 validate_zip_to_disk.frame = function(zipfile, outdir) {
   files = unzip(zipfile, list=T)
   

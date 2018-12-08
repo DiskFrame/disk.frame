@@ -90,7 +90,8 @@ if(F) {
 
 
 #' Output a data.frame into disk.frame
-#' @import glue fst fs
+#' @import fst fs
+#' @importFrom glue glue
 output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, compress = 50, ...) {
   overwrite_check(outdir, overwrite)
   
@@ -111,7 +112,8 @@ output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchu
 #' @param nchunks number of chunks
 #' @param overwrite if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty
 #' @param compress the compression level 0-100; 100 is highest
-#' @import data.table fst
+#' @import fst
+#' @importFrom data.table setDT
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
   overwrite_check(outdir, overwrite)
