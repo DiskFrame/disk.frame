@@ -1,10 +1,10 @@
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae_10pct/0_setup.r")
 
 # number of rows to read in from each file in one go
-nreadin = 1e7
+nreadin = 10e7
 
 # compression ratio, max = 100 for best compression but slower running speed
-compress = 50
+#compress = 50
 
 # set up some variable for future use
 relative_file_path = dir(raw_perf_data_path)
@@ -27,19 +27,18 @@ l = length(full_file_path)
 
 # convert CSV in parallel
 pt <- proc.time()
-future_lapply(1:l, function(i) {
-  relative_file_pathi = relative_file_path[i]
-  full_file_path
+res = future.apply::future_Map(function(relative_file_pathi, full_file_pathi) {
+  relative_file_pathi # for glue
   csv_to_disk.frame(
-    full_file_path[i], 
-    file.path(outpath, glue("raw_fannie_mae/{relative_file_path[i]}")), 
+    full_file_pathi, 
+    file.path(outpath, glue("raw_fannie_mae/{relative_file_pathi}")), 
     shardby = "loan_id", 
     nchunks = nchunks, 
     colClasses = Performance_ColClasses, 
     col.names = Performance_Variables, 
     sep = "|", 
-    compress = compress, 
+    #compress = compress, 
     in_chunk_size = nreadin, 
     overwrite = T)
-})
+}, relative_file_path, full_file_path)
 print(timetaken(pt))

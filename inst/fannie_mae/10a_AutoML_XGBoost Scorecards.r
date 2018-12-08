@@ -67,7 +67,7 @@ timetaken(pt)
 
 plot(map_dbl(res_all, ~.x$auc))
 
-saveRDS(res_all, "model.rds")
+#saveRDS(res_all, "model.rds")
 
 if(F) {
   rescat = check_which_is_best(

@@ -7,7 +7,7 @@ head(fm_with_harp)
 
 # need a two stage summary
 system.time(a_wh1 <- fm_with_harp %>% 
-  keep(c("default_12m","harp_12m","monthly.rpt.prd")) %>% 
+  srckeep(c("default_12m","harp_12m","monthly.rpt.prd")) %>% 
   group_by(monthly.rpt.prd, hard = F) %>% 
   summarise(
     N = n(), 
