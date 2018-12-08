@@ -3,7 +3,6 @@
 #' @param df a disk.frame
 #' @param parallel if TRUE the collection is performed in parallel. By default if there are delayed/lazy steps then it will be parallel, otherwise it will not be in parallel. This is because parallel requires transferring data from background R session to the current R session and if there is no computation then it's better to avoid tranferring data between session, hence parallel = F is a better choice
 #' @export
-#' @import data.table
 #' @importFrom data.table data.table as.data.table
 #' @importFrom furrr future_map_dfr
 #' @importFrom purrr map_dfr
