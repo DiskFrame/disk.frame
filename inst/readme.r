@@ -19,15 +19,12 @@ rows_per_chunk = 1e7
 tmpdir = "tmpfst"
 fs::dir_delete(tmpdir)
 
-# write out nworkers chunks
+# write out 2*nworkers chunks
 pt = proc.time()
-
 df = disk.frame(tmpdir)
-
-sapply(1:(nworkers*2), function(ii) {
+purrr::walk(1:(nworkers*2), function(ii) {
   system.time(ab <- data.table(a = runif(rows_per_chunk), b = runif(rows_per_chunk)) ) #102 seconds
   add_chunk(df, ab, ii)
-  NULL
 })
 cat("Generating data took: ", timetaken(pt), "\n")
 
@@ -80,10 +77,11 @@ res1 <- df %>%
   collect(parallel = T)
 cat("group by took: ", timetaken(pt), "\n")
 
+
 # keep only one var is faster
 pt = proc.time()
 res1 <- df %>% 
-  keep("a") %>% #keeping only the column `a` from the input
+  srckeep("a") %>% #keeping only the column `a` from the input
   summarise(suma = sum(a), n = n()) %>% 
   collect(parallel = T)
 cat("summarise keeping only one column ", timetaken(pt), "\n")

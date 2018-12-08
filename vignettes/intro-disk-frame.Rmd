@@ -392,7 +392,7 @@ One can apply arbitrary transformations to each chunk of the `disk.frame` by usi
 
 ```{r, dependson='asdiskframe'}
 flights.df1 <- delayed(flights.df, ~nrow(.x))
-collect_fildpllist(flights.df1) # returns number of rows for each data.frame in a list
+collect_list(flights.df1) # returns number of rows for each data.frame in a list
 ```
 and to do the same with `map.disk.frame`
 
@@ -412,7 +412,7 @@ Notice `disk.frame` supports the `purrr` syntax for defining a function using `~
 
 ## Sampling
 
-In the `disk.frame` framework, sampling a proportion of rows. More sophisticated sampling scheme or method will be implemented in the future
+In the `disk.frame` framework, sampling a proportion of rows within each chunk can be performed using `sample_frac`. 
 
 ```{r, dependson='asdiskframe'}
 flights.df %>% sample_frac(0.01) %>% collect
