@@ -1,4 +1,4 @@
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae_10pct/0_setup.r")
 
 # number of rows to read in from each file in one go
 nreadin = 10e7

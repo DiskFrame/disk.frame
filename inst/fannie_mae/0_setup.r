@@ -14,10 +14,15 @@ library(lubridate)
 nworkers = parallel::detectCores(logical = F)
 future::plan(multiprocess, workers = nworkers)
 
-raw_perf_data_path = "C:/data/Performance_All/"
+raw_harp_data_path = "D:/data/fannie_mae/harp_files"
+
+raw_perf_data_path = "d:/data/Performance_All/"
 
 # where the outputs go
-outpath = "c:/data/fannie_mae_disk_frame/"
+outpath = "d:/data/fannie_mae_disk_frame/"
+
+#acqzip_file_path = "c:/data/Acquisition_All.zip"
+acqzip_file_path = "d:/data/fannie_mae/Acquisition_All.zip"
 
 appl_path = "C:/data/"
 

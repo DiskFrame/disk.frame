@@ -1,5 +1,5 @@
 # 2_exploratory.r
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae_10pct/0_setup.r")
 
 fmdf = disk.frame(file.path(outpath, "fm.df"))
 tmp2 = disk.frame(file.path(outpath, "defaults.df"))
@@ -25,3 +25,5 @@ tmp3 <- foverlaps.disk.frame(
   overwrite = T
 )
 cat(glue::glue("time taken to merge on default flag {timetaken(pt)}"))
+
+head(tmp3)

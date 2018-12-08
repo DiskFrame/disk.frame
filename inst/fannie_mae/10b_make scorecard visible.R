@@ -1,8 +1,8 @@
 source("inst/fannie_mae/0_setup.r")
 library(disk.frame)
 
-acqall_val = disk.frame(file.path(outpath, "appl_mdl_data_sampled_val"))
-
+acqall_val = disk.frame(file.path(outpath, "appl_mdl_data_sampled_val2"))
+df = acqall_val
 #the model
 mdl = readRDS("model.rds")
 
@@ -80,15 +80,30 @@ plot_auc <- function(df) {
   abline(v=0)
 }
 
+
 system.time(plot_auc(acqall_val))
 
 # score on whole ----------------------------------------------------------
-acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
+acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 system.time(plot_auc(acqall_dev))
 
+scorecard = map_dfr(mdl, ~{
+  res = .x$bins
+  evalparseglue("res[,feature_lbl := as.character({.x$feature})]")
+  res[,variable := .x$feature]
+  res %>% 
+    select(variable, feature_lbl, score ) %>% 
+    mutate(score = round(-score*20/log(2)))
+})
+
+saveRDS(scorecard, "scorecard.rds")
+scorecard = readRDS("scorecard.rds")
+View(scorecard)
+
+DT::datatable(scorecard)
 
 # score on whole ----------------------------------------------------------
-acqall = disk.frame(file.path(outpath, "appl_mdl_data"))
-system.time(plot_auc(acqall))
+# acqall = disk.frame(file.path(outpath, "appl_mdl_data"))
+# system.time(plot_auc(acqall))
 
 

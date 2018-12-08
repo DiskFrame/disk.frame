@@ -6,3 +6,5 @@ fmdf <- disk.frame(file.path(outpath, "fm.df"))
 rechunk(fmdf, 24)
 
 nrow(fmdf)
+
+nchunks(fmdf)

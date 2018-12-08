@@ -2,7 +2,7 @@ source("inst/fannie_mae/0_setup.r")
 library(disk.frame)
 library(keras)
 
-acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
+acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 #' A streaming function for speedglm
 #' @param df a disk.frame
@@ -28,11 +28,19 @@ stream_shglm <- function(df) {
 }
 
 acqall_dev1 = acqall_dev %>% delayed(~{
-  .x[,oltv_band := cut(oltv, c(-Inf, seq(40,100,by=20)))]
-  .x[,dti_band := addNA(cut(dti, c(-Inf, seq(0,64,by=8))))]
+  .x[,oltv_band := cut(oltv, c(-Inf, 60,80, Inf))]
+  #.x[,scr_band := addNA(cut(cscore_b, c(-Inf, 627,700, Inf)), ifany=F)]
+  .x[,scr_band := addNA(cut(cscore_b, c(-Inf, 700,716,725,742,748,766,794, Inf)), ifany=F)]
+  
   .x
 })
 
+if(F) {
+  aa = acqall_dev1 %>% collect
+  glm(default_next_12m ~ oltv_band + scr_band - 1, data=aa)
+}
+
+head(acqall_dev1)
 
 build_model <- function() {
   model <- keras_model_sequential() %>%
@@ -49,11 +57,16 @@ build_model <- function() {
 
 model = build_model()
 
-ol = levels(acqall_dev1[,oltv_band, keep=c("oltv","dti")])
-dl = levels(acqall_dev1[,dti_band, keep=c("oltv","dti")])
+#ol = levels(acqall_dev1[,oltv_band, keep=c("oltv","cscore_b")])
+#dl = levels(acqall_dev1[,scr_band, keep=c("oltv","cscore_b")])
+
+ol = levels(get_chunk(acqall_dev1,1)[,oltv_band])
+dl = levels(get_chunk(acqall_dev1,1)[,scr_band])
+
 
 #for(i in 1:nchunks(acqall_dev1)) {
 kk <- function() {
+  #browser()
   j = 0
   done = F
   ii = 0
@@ -63,17 +76,18 @@ kk <- function() {
     osi = setdiff(1:nchunks(acqall_dev1), si)
     #browser()
     system.time(a <- map_dfr(si, ~{
+      #browser()
       ii <- ii + 1
       i = .x
       if(ii %% 20 == 0) print(glue::glue("{j}:{ii} {Sys.time()}"))
       
       a = get_chunk(acqall_dev1, i)
-      a[,.(sum(default_next_12m), .N),oltv_band]
+      #a[,.(sum(default_next_12m), .N),oltv_band]
       
       a1 = 
         cbind(
-          a[,keras::to_categorical(as.integer(oltv_band) - 1)]#,
-          #a[,keras::to_categorical(as.integer(dti_band) - 1)]
+          a[,keras::to_categorical(as.integer(oltv_band) - 1)]
+          #,a[,keras::to_categorical(as.integer(scr_band) - 1)]
         )
       
       at = a[,default_next_12m*1]
@@ -94,9 +108,9 @@ kk <- function() {
       gwdt$i =i
       gwdt$var = c(
         rep("oltv_band", length(ol))
-        #, rep("dti_band", length(dl)+1)
+        #, rep("scr_band", length(dl))
       )
-      gwdt$band = c(ol#,dl
+      gwdt$band = c(ol,dl
       )
       gwdt
     }))
@@ -108,7 +122,7 @@ kk <- function() {
       a1 = 
         cbind(
           a[,keras::to_categorical(as.integer(oltv_band) -1)]
-          #,a[,keras::to_categorical(dti_band %>% as.integer-1)]
+          #,a[,keras::to_categorical(as.integer(scr_band)-1)]
         )
       a1
     }) %>% reduce(rbind)
@@ -119,10 +133,13 @@ kk <- function() {
       a[,default_next_12m]
     }) %>% unlist
     
-    auc= auc(outcomes, predict(model, some_chunks)[,2])
+    auc = auc(outcomes, predict(model, some_chunks)[,2])
     
     # scores
-    p = predict(model, diag(4))[,2]
+    p = predict(model, diag(
+      length(ol)
+      #+length(dl)
+      ))[,2]
     a_b = log(p/(1-p))
     
     scalar = 20/log(2)
@@ -133,11 +150,12 @@ kk <- function() {
     done <- length(unique(sign(diff(b)))) == 1
     
     scrs = data.table(base_scr = round(a*scalar+intercept,0), scr = round(-b*scalar,0))
-    scrs$var = c(rep("oltv_band", length(ol))
-                 #, rep("dti_band", length(dl)+1)
+    scrs$var = c(
+      rep("oltv_band", length(ol))
+      #, rep("scr_band", length(dl))
     )
     scrs$band = c(ol
-                  #, dl
+                  , dl
     )
     scrs = scrs[band != "bias"]
     
@@ -145,9 +163,16 @@ kk <- function() {
     print(glue::glue("AUC: {auc}"))
     print(scrs)
   }  
+  scrs
 }
 
 pt = proc.time()
-kk()
+scrs = kk()
 timetaken(pt)
 View(scrs)
+
+#AUC: 0.599790504924901
+# var      band scr base_scr
+# 1: oltv_band (-Inf,60]  10      351
+# 2: oltv_band   (60,80]  10      351
+# 3: oltv_band (80, Inf] -21      351

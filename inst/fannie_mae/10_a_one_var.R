@@ -1,7 +1,7 @@
 source("inst/fannie_mae/0_setup.r")
 library(disk.frame)
 
-acqall1 = disk.frame(file.path(outpath, "appl_mdl_data"))
+acqall1 = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 # XGBoost on one var ------------------------------------------------------
 system.time(xy <- acqall1[,c("default_next_12m", "oltv"), keep=c("default_next_12m", "oltv")])
@@ -121,69 +121,71 @@ format_fn = base::I
 existing_model = prev_pred
 monotone_constraints = -1
 
-auc <- function(target, score) {
-  df = data.table(target, score)
-  
-  df1 = df[,.(nt = sum(target), n = .N, score)]
-  setkey(df1, score)
-}
-
-add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I) {
-  
-  xy = df %>% 
-    srckeep(c(target, feature)) %>%
-    collect(parallel = T)
-  
-  # evaluate
-  code = glue::glue("xy = xy %>% mutate({feature} = format_fn({feature}))")
-  eval(parse(text = code))
-  
-  dtrain <- xgb.DMatrix(label = xy[,target, with = F][[1]], data = as.matrix(xy[,c(feature), with = F]))
-  
-  if(is.null(prev_pred)) {
-    pt = proc.time()
-    m2 <- xgboost(
-      data=dtrain, 
-      nrounds = 1, 
-      objective = "binary:logitraw", 
-      tree_method="exact",
-      monotone_constraints = monotone_constraints
-    )
-    timetaken(pt)
-  } else {
-    setinfo(dtrain, "base_margin", prev_pred)
-    pt = proc.time()
-    m2 <- xgboost(
-      data=dtrain, 
-      nrounds = 1, 
-      objective = "binary:logitraw", 
-      tree_method="exact",
-      monotone_constraints = monotone_constraints
-    )
-    timetaken(pt)
-    
-    a2 = predict(m2, dtrain)
-    a3 = predict(m2, dtrain, predcontrib = T)
-  }
-  
-  map_chr(xgb.dump(m2), ~str_extract(.x,"\\[f0<[\\d]+[\\.]{0,1}[\\d]+\\]")) %>% 
-    keep(~!is.na(.x)) %>% 
-    map_dbl(~str_extract(.x, "[\\d]+[\\.]{0,1}[\\d]+") %>% as.numeric) %>% 
-    sort -> bins
-  
-  code = glue::glue("bb = xy[,.(ndef = sum({target}), .N, m1 = min({feature}), m2 = max({feature})), .(bins = cut({feature},c(-Inf,bins,Inf)))]")
-  eval(parse(text = code))
-  
-  new_bins = sort(unique(bb$m2))
-  code1 = glue::glue("bb = xy[,.(ndef = sum(default_next_12m), .N), .(bins = cut({feature},c(-Inf,new_bins,Inf)))][order(bins)]")
-  eval(parse(text = code1))
-  
-  setkey(bb, bins)
-  bb %>%
-    filter(!is.na(bins)) %>% 
-    mutate(`Orig LTV Band` = bins, `Default Rate%` = ndef/N) %>% 
-    ggplot +
-    geom_bar(aes(x = `Orig LTV Band`, y = `Default Rate%`), stat = 'identity') + 
-    coord_flip()
-}
+# auc <- function(target, score) {
+#   df = data.table(target, score)
+#   
+#   df1 = df[,.(nt = sum(target), n = .N, score)]
+#   setkey(df1, score)
+# }
+# 
+# add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I) {
+#   
+#   xy = df %>% 
+#     srckeep(c(target, feature)) %>%
+#     collect(parallel = T)
+#   
+#   # evaluate
+#   code = glue::glue("xy = xy %>% mutate({feature} = format_fn({feature}))")
+#   eval(parse(text = code))
+#   
+#   dtrain <- xgb.DMatrix(label = xy[,target, with = F][[1]], data = as.matrix(xy[,c(feature), with = F]))
+#   
+#   if(is.null(prev_pred)) {
+#     pt = proc.time()
+#     m2 <- xgboost(
+#       data=dtrain, 
+#       nrounds = 1, 
+#       objective = "binary:logitraw", 
+#       tree_method="exact",
+#       monotone_constraints = monotone_constraints
+#     )
+#     timetaken(pt)
+#   } else {
+#     setinfo(dtrain, "base_margin", prev_pred)
+#     pt = proc.time()
+#     m2 <- xgboost(
+#       data=dtrain, 
+#       nrounds = 1, 
+#       objective = "binary:logitraw", 
+#       tree_method="exact",
+#       monotone_constraints = monotone_constraints
+#     )
+#     timetaken(pt)
+#     
+#     a2 = predict(m2, dtrain)
+#     a3 = predict(m2, dtrain, predcontrib = T)
+#   }
+#   
+#   map_chr(xgb.dump(m2), ~str_extract(.x,"\\[f0<[\\d]+[\\.]{0,1}[\\d]+\\]")) %>% 
+#     keep(~!is.na(.x)) %>% 
+#     map_dbl(~str_extract(.x, "[\\d]+[\\.]{0,1}[\\d]+") %>% as.numeric) %>% 
+#     sort -> bins
+#   
+#   code = glue::glue("bb = xy[,.(ndef = sum({target}), .N, m1 = min({feature}), m2 = max({feature})), .(bins = cut({feature},c(-Inf,bins,Inf)))]")
+#   eval(parse(text = code))
+#   
+#   new_bins = sort(unique(bb$m2))
+#   code1 = glue::glue("bb = xy[,.(ndef = sum(default_next_12m), .N), .(bins = cut({feature},c(-Inf,new_bins,Inf)))][order(bins)]")
+#   eval(parse(text = code1))
+#   
+#   setkey(bb, bins)
+#   bb %>%
+#     filter(!is.na(bins)) %>% 
+#     mutate(`Orig LTV Band` = bins, `Default Rate%` = ndef/N) %>% 
+#     ggplot +
+#     geom_bar(aes(x = `Orig LTV Band`, y = `Default Rate%`), stat = 'identity') + 
+#     coord_flip()
+#   
+#   
+# }
 
