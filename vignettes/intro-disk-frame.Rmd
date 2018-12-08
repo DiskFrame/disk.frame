@@ -158,6 +158,7 @@ The class of `flights.df1` is also a `disk.frame` after the   `dplyr::select` tr
 
 For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect` can be used to bring the results from disk into R, e.g.
 ```{r, dependson='dfselect'}
+plan(multiprocess)
 collect(flights.df1)
 ```
 
