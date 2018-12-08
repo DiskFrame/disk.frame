@@ -1,7 +1,7 @@
 #' Add one variable to the XGBoost scorecard
 #' @param df a disk.frame
 #' @param target a character string indicating the variable name of the target
-#' @param feature a character string idnicating the variable name of the feature
+#' @param feature a character string indicating the variable name of the feature
 #' @param monotone_constraints 1 higher value of feature equals higher success, -1 = the opposite, 0 = neither
 #' @param prev_pred a vector of score equal to the nrow(df) which is the previous predictions used for hot-start
 #' @param format_fn a function to transform the feature vector before fitting a model

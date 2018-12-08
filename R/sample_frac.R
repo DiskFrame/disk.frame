@@ -1,6 +1,6 @@
 #' Sample n rows from a disk.frame
 #' @param df a disk.frame
-#' @param size the proportion/fractio of rows to sample
+#' @param size the proportion/fraction of rows to sample
 #' @param replace TRUE to sample with replacement; FALSE to sample without replacement
 #' @param weight weight of each row. NOT implemented
 #' @import dplyr
