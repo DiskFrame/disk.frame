@@ -1,13 +1,17 @@
 #' dplyr version implemented for disk.frame
 #' @export
 #' @import dplyr
+#' 
+#' @rdname dplyr_verbs
 select_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(select_(.data, .dots=.dots))
   record(.data, cmd)
 }
 
+
 #' @export
+#' @rdname dplyr_verbs
 rename_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
@@ -16,20 +20,25 @@ rename_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
+#' @rdname dplyr_verbs
 filter_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(filter_(.data, .dots=.dots))
   record(.data, cmd)
 }
 
+#' mutate
 #' @export
+#' @rdname dplyr_verbs
 mutate_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(mutate_(.data, .dots=.dots))
   record(.data, cmd)
 }
 
+#' transmuate
 #' @export
+#' @rdname dplyr_verbs
 transmute_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(transmute_(.data, .dots=.dots))
@@ -37,6 +46,7 @@ transmute_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
+#' @rdname dplyr_verbs
 arrange_.disk.frame <- function(.data, ..., .dots){
   warning("disk.frame only sorts (arange) WITHIN each chunk")
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -45,6 +55,7 @@ arrange_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
+#' @rdname dplyr_verbs
 summarise_.disk.frame <- function(.data, ..., .dots){
   .data$.warn <- TRUE
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -53,6 +64,7 @@ summarise_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' @export
+#' @rdname dplyr_verbs
 do_.disk.frame <- function(.data, ..., .dots){
   warning("applying `do` to each chunk of disk.frame; this may not work as expected")
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -60,13 +72,15 @@ do_.disk.frame <- function(.data, ..., .dots){
   record(.data, cmd)
 }
 
-#' 
+#' Group
+#' @export
+#' @rdname group_by
 groups.disk.frame <- function(x){
   shardkey(x)
 }
 
 #' Group by designed for disk.frames
-#' @import pryr dplyr purrr
+#' @import dplyr purrr
 #' @export
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = NULL) {
@@ -96,6 +110,7 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = N
 }
 
 #' @export
+#' @rdname group_by
 group_by_.disk.frame <- function(.data, ..., .dots, add=FALSE){
   .dots <- lazyeval::all_dots(.dots, ...)
   cmd <- lazyeval::lazy(group_by_(.data, .dots=.dots, add=add))
@@ -104,15 +119,18 @@ group_by_.disk.frame <- function(.data, ..., .dots, add=FALSE){
 
 #' Take a glimpse
 #' @export
+#' @rdname dplyr_verbs
 glimpse.disk.frame <- function(df, ...) {
   glimpse(head(df, ...), ...)
 }
 
+#' Internal methods
 record <- function(.data, cmd){
   attr(.data,"lazyfn") <- c(attr(.data,"lazyfn"), list(cmd))
   .data
 }
 
+#' Internal methods
 play <- function(.data, cmds=NULL){
   #list.files(
   for (cmd in cmds){

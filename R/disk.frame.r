@@ -15,7 +15,8 @@ disk.frame <- function(path, ..., backend = "fst") {
 }
 
 #' Add metadata to the disk.frame
-#' @import fs jsonlite
+#' @import fs
+#' @importFrom jsonlite toJSON fromJSON
 #' @export
 add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
   #browser()
@@ -233,7 +234,8 @@ chunk_lapply <- function (...) {
 #' @param lazy if TRUE then do this lazily
 #' @param compress 0-100 fst compression ratio
 #' @param overwrite if TRUE removes any existing chunks in the data
-#' @import fst future future.apply purrr
+#' @import fst purrr
+#' @importFrom future.apply future_lapply
 #' @export
 map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
   #browser()
@@ -303,7 +305,9 @@ delayed.disk.frame <- function(df, fn, ...) {
 }
  
 #' [ interface for disk.frame using fst backend
-#' @import data.table future fst future.apply
+#' @import fst 
+#' @importFrom future.apply future_lapply
+#' @importFrom data.table rbindlist 
 #' @export
 `[.disk.frame` <- function(df, i, j,..., keep = NULL) {
   res <- NULL

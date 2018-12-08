@@ -1,5 +1,5 @@
 #' Returns the shardkey (not implemented yet)
-#' @import jsonlite
+#' @importFrom jsonlite fromJSON
 #' @export
 # TODO make this work
 shardkey <- function(df, ...) {
