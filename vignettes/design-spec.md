@@ -8,4 +8,4 @@ If RAM is large enough then loading each chunk into RAM and row-binding all the 
 
 # The .metadata folder
 
-The .metadata folder is designed to hold arbitrary data regarding the data.frame. E.g. boomfilters can be implemented in the .metadata folder.
+The .metadata folder is designed to hold arbitrary data regarding the data.frame. E.g. bloomfilters can be implemented in the .metadata folder.

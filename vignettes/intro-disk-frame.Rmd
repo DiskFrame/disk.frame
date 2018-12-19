@@ -187,7 +187,7 @@ arrange(flights.df, dplyr::desc(dep_delay)) %>% collect
 summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 ```
 
-The `do` function is also supported for performing abitrary computation on each chunk
+The `do` function is also supported for performing arbitrary computation on each chunk
 ```{r, dependson='asdiskframe'}
 # get the first two rows of each chunk
 do(flights.df, head(., 2)) %>% select(year:day, arr_delay, dep_delay) %>% collect

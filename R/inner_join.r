@@ -1,8 +1,9 @@
-#' Perfomrs inner_join
+#' Join/merge for disk.frames
 #' @param x a disk.frame
 #' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
 #' @param outdir output directory for disk.frame
 #' @export
+#' @rdname join
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
   stopifnot("disk.frame" %in% class(x))
   

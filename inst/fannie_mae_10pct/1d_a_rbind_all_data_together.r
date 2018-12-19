@@ -14,3 +14,6 @@ print(timetaken(pt))
 nrow(fmdf)
 
 nchunks(fmdf)
+
+fmdf %>% delayed(~.x[,.(sum(is.na(prin_forg_upb_oth )))]
+) %>% dput
