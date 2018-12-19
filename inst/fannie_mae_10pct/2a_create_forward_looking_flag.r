@@ -58,6 +58,7 @@ defaults <- map.disk.frame(fmdf, function(df) {
   overwrite = T)
 cat(glue::glue("Creating forward looking default flag took {timetaken(pt)}"))
 
+head(defaults)
 
 defaults %>% 
   filter(loan_id == "107150255179") %>% 

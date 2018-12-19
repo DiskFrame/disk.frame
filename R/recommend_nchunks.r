@@ -2,7 +2,7 @@
 #' @param df a disk.frame or the file size in bytes of a CSV file holding the data
 #' @param type only = "csv" is supported. It indicates the file type corresponding to file size `df`
 #' @param minchunks the minimum number of chunks. Defaults to the number of CPU cores (without hyper-threading)
-#' @param conservatism a multiplier to the recommonded number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM
+#' @param conservatism a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM
 #' @importFrom pryr object_size
 #' @export
 recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = F), conservatism = 2) {
