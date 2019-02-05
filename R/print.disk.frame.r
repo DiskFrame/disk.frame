@@ -1,5 +1,6 @@
 #' a new print method for disk.frame
 #' @export
+#' @param df disk.frame
 #' @importFrom glue glue
 print.disk.frame <- function(df) {
   a = paste(sep = "\n"

@@ -4,6 +4,8 @@
 #' @param outdir The output directory of the disk.frame
 #' @param merge_by_chunk_id If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise every chunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame
 #' @param compress The compression ratio for fst
+#' @param overwrite overwrite existing directory
+#' @param ... passed to data.table::foverlaps and disk.frame::map.disk.frame
 #' @import fst
 #' @importFrom glue glue
 #' @importFrom data.table foverlaps data.table setDT

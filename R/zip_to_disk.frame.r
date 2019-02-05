@@ -1,8 +1,9 @@
 #' Automatically read and convert every single CSV file within the zip file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
-#' @param col.names Columns names
-#' @param colClasses column classes
+#' @param ... passed to fread
+#' @param validation.check should the function perform a check at the end to check for validatity of output. It can detect issues with conversion
+#' @param overwrite overwrite output directory
 #' @import dplyr fst fs
 #' @importFrom glue glue
 #' @importFrom future.apply future_lapply
@@ -39,65 +40,11 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
   dfs  
 }
 
-
-#' Automatically read and convert every single file within the zip file to disk.frame format
-#' @param zipfile The zipfile
-#' @param outdir The output directory for disk.frame
-#' @import dplyr fst fs
-#' @importFrom glue glue
-#' @importFrom future.apply future_lapply
-#' @export
-#' @rdname zip_to_disk.frame
-# TODO add all the options of fread into the ... as future may not be able to deal with it
-zip_to_disk.frame2 = function(zipfile, outdir, ..., col.names = NULL, colClasses = NULL, replace = F, validation.check = F, parallel = T, compress = 50) {
-  files = unzip(zipfile, list=T)
-  
-  # TODO sort the files by file size
-  
-  # create the output directory
-  fs::dir_create(outdir)
-  
-  # create a temporary directory; this is where all the CSV files are extracted to
-  tmpdir = tempfile(pattern = "tmp_zip2csv")
-  
-  if(parallel) {
-    res = future.apply::future_lapply(files$Name, function(fn) {      
-      out_dir_for_file = file.path(outdir, fn)
-        
-      # unzip a file
-      unzip(zipfile, files = fn, exdir = tmpdir)
-  
-      # create disk.frame from file
-      res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
-      add_meta(res)
-    })
-  } else {
-    res = lapply(files$Name, function(fn) {      
-      out_dir_for_file = file.path(outdir, fn)
-        
-      # unzip a file
-      unzip(zipfile, files = fn, exdir = tmpdir)
-  
-      
-      # create disk.frame
-      res = csv_to_disk.frame(file.path(tmpdir, fn), out_dir_for_file, ...)
-      add_meta(res)
-    })
-  }
-  
-  # validate 
-  #if(validation.check) validate_zip_to_disk.frame(zipfile, outdir)
-  
-  res
-}
-
-# validate_zip_to_disk.frame(zipfile, outdir)
 #' Validate and auto-correct read and convert every single file within the zip file to df format
-#' @param zipfile The zipfile
-#' @param outdir The output directory for disk.frame
 #' @importFrom glue glue
 #' @import dplyr
 #' @import fst
+#' @rdname zip_to_disk.frame
 validate_zip_to_disk.frame = function(zipfile, outdir) {
   files = unzip(zipfile, list=T)
   

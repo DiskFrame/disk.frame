@@ -7,7 +7,7 @@
 #' @importFrom furrr future_map_dfr
 #' @importFrom purrr map_dfr
 #' @rdname collect
-collect.disk.frame <- function(df, ..., parallel = !is.null(attr(df,"lazyfn"))) {
+collect.disk.frame <- function(df, parallel = !is.null(attr(df,"lazyfn"))) {
   #
   if(nchunks(df) > 0) {
     if(parallel) {
@@ -24,9 +24,10 @@ collect.disk.frame <- function(df, ..., parallel = !is.null(attr(df,"lazyfn"))) 
 
 #' Bring the disk.frame into R as list
 #' @import purrr furrr
+#' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
-collect_list <- function(df, ... , simplify = F, parallel = !is.null(attr(df,"lazyfn"))) {
+collect_list <- function(df, simplify = F, parallel = !is.null(attr(df,"lazyfn"))) {
   if(nchunks(df) > 0) {
     res <- NULL
     if (parallel) {

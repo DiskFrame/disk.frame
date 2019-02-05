@@ -3,9 +3,10 @@ Package: disk.frame
 Title: Fast disk-based data manipulation framework for larger-than-RAM structured tabular data
 Version: 0.1.0
 Date: 2018-12-08
-Author: Dai ZJ
-Maintainer: Dai ZJ <dzj@analytixware.com>
-Description: Disk.frame allows the user to process arbitrarily
+Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail..com",
+  role = c("aut", "cre"))
+Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
+Description: disk.frame allows the user to process arbitrarily
     large datasets on disk chunk-wise without loading the whole file into
     RAM. This enables large datasets to be processed and analysed.
 License: MIT
@@ -14,13 +15,17 @@ Imports:
     glue,
     purrr,
     furrr,
-    future.apply
+    future.apply,
+    dplyr,
+    dtplyr,
+    fs,
+    jsonlite,
+    pryr,
+    stringr
 Depends:
     fst (>= 0.8.0),
-    dplyr,
     data.table,
-    future,
-    dtplyr
+    future
 Suggests: 
     testthat,
     knitr,

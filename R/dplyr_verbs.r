@@ -1,7 +1,7 @@
 #' dplyr version implemented for disk.frame
 #' @export
 #' @import dplyr
-#' 
+#' @param ... Same as the dplyr functions
 #' @rdname dplyr_verbs
 select_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -73,14 +73,20 @@ do_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' Group
+#' @param .data a disk.frame
 #' @export
 #' @rdname group_by
-groups.disk.frame <- function(x){
-  shardkey(x)
+groups.disk.frame <- function(.data){
+  shardkey(.data)
 }
 
 #' Group by designed for disk.frames
 #' @import dplyr purrr
+#' @param .data a disk.frame
+#' @param ... same as the dplyr::group_by
+#' @param add same as dplyr::group_By
+#' @param hard whether to perform a group-by where the sharding is redone on the group by keys
+#' @param overwrite overwrite existing directory
 #' @export
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = NULL) {
@@ -125,12 +131,16 @@ glimpse.disk.frame <- function(df, ...) {
 }
 
 #' Internal methods
+#' @param .data the data
+#' @param cmd the function to record
 record <- function(.data, cmd){
   attr(.data,"lazyfn") <- c(attr(.data,"lazyfn"), list(cmd))
   .data
 }
 
 #' Internal methods
+#' @param .data the disk.frame
+#' @param cmds the list of function to play back
 play <- function(.data, cmds=NULL){
   #list.files(
   for (cmd in cmds){

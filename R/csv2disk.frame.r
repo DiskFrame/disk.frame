@@ -7,10 +7,9 @@
 #' @param nchunks Number of chunks to output
 #' @param in_chunk_size When reading in the file, how many lines to read in at once. This is different to nchunks which controls how many chunks are output
 #' @param shardby The column(s) to shard the data by. For example suppose `shardby = c("col1","col2")`  then every row where the values `col1` and `col2` are the same will end up in the same chunk; this will allow merging by `col1` and `col2` to be more efficient
-#' @param colClasses A vector containing the class of the columns. Valid values are "c", "n", "i", "d" for character, numeric, integer, and date respectively.
-#' @param col.names The names of the columns
-#' @param sep The delimiter of the CSV file, otherwise known as the separator
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
+#' @param overwrite Whether to overwrite the existing directory
+#' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
 #' @export
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {
@@ -62,7 +61,13 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       print(glue("read {rows} rows from {infile}"))
       
       # do not run this in parallel as the level above this is likely in parallel
-      system.time(fnl_out <- rbindlist.disk.frame(lapply(list.files(tmpdir1,full.names = T), disk.frame), outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite))
+      system.time(
+        fnl_out <- 
+          rbindlist.disk.frame(
+            lapply(
+              list.files(
+                tmpdir1,full.names = T), disk.frame), 
+            outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite))
       
       # remove the files
       fs::dir_delete(tmpdir1)

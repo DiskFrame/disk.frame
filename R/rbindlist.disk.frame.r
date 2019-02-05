@@ -4,6 +4,7 @@
 #' @param by_chunk_id If TRUE then only the chunks with the same chunk IDs will be bound
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
+#' @param overwrite overwrite the output directory
 #' @import purrr fs
 #' @importFrom data.table data.table setDT
 #' @importFrom future.apply future_lapply

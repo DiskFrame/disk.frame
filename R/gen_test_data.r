@@ -2,6 +2,8 @@
 #' @examples
 #' #system.time(DT <- gen_datatable_synthetic())
 #' #system.time(fst::write.fst(DT,file.path(data_path, "DT.fst")))
+#' @param N number of rows. Defaults to 200 million
+#' @param K controls the number of unique values for id. Some ids will have K distinct values while others have N/K distinct values
 #' 
 gen_datatable_synthetic <- function(N=2e8, K=100) {
   data.table(

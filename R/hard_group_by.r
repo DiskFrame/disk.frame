@@ -1,4 +1,5 @@
 #' Show a progress bar of the action being performed
+#' @param df a disk.frame
 progressbar <- function(df) {
   if(attr(df,"performing") == "hard_group_by") {
     # create progress bar
@@ -88,30 +89,13 @@ if(F) {
   2+2
 }
 
-
-#' Output a data.frame into disk.frame
-#' @import fst fs
-#' @importFrom glue glue
-output_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, compress = 50, ...) {
-  overwrite_check(outdir, overwrite)
-  
-  df[,{
-    if (base::nrow(.SD) > 0) {
-      fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), compress = compress)
-      NULL
-    }
-    NULL
-  }, .out.disk.frame.id]
-  res = disk.frame(outdir)
-  add_meta(res, shardkey = shardkey, shardchunks = shardchunks, compress = compress)
-}
-
 #' Make a data.frame into a disk.frame
 #' @param df a disk.frame
 #' @param outdir the output directory
 #' @param nchunks number of chunks
 #' @param overwrite if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty
 #' @param compress the compression level 0-100; 100 is highest
+#' @param ... passed to output_disk.frame
 #' @import fst
 #' @importFrom data.table setDT
 #' @export
@@ -124,7 +108,7 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
   odfi = odfi[1:nrow(df)]
   df[, .out.disk.frame.id := odfi]
   
-  output_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
+  write_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
 }
 
 #' Perform a group by and ensuring that every unique grouping of by is
@@ -133,6 +117,8 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @param by the columns to shard by
 #' @param outdir the output directory
 #' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
+#' @param overwrite overwrite the out put directory
+#' @param ... passed to hard_group_by.disk.frame
 #' @export
 hard_group_by <- function(...) {
   UseMethod("hard_group_by")
@@ -168,7 +154,9 @@ hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_har
 
 
 #' The nb stands for non-blocking
-#' TODO make it work!
+#' @param nworkers number of workers (processes)
+#' @rdname hard_group_by
+#TODO make it work!
 hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
   #list.files(
   if(is.null(nworkers)) {

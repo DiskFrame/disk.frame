@@ -2,6 +2,8 @@
 #' @param df the disk.frame to rechunk
 #' @param nchunks number of chunks
 #' @param shardby the shardkeys
+#' @param outdir the output directory
+#' @param overwrite overwrite the output directory
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
   #browser()

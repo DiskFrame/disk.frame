@@ -10,15 +10,20 @@ names.disk.frame <- function(df) {
   fst::metadata_fst(res[1])$columnNames
 }
 
+#' @param df a disk.frame
+#' @rdname colnames
 colnames.disk.frame <- function(df) {
   names.disk.frame(df)
 }
 
+#' Return the column names of the disk.frame
+#' @param ... passed to colnames
 #' @export
 colnames <- function(x, ...) {
   UseMethod("colnames")
 }
 
-colnames.default <- function(x, ...) {
-  Base::colnames(x, ...)
+#' @rdname colnames
+colnames.default <- function(df, ...) {
+  Base::colnames(df, ...)
 }
