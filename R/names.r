@@ -19,7 +19,7 @@ colnames.disk.frame <- function(df) {
 #' Return the column names of the disk.frame
 #' @param ... passed to colnames
 #' @export
-colnames <- function(x, ...) {
+colnames <- function(df, ...) {
   UseMethod("colnames")
 }
 

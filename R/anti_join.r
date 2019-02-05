@@ -1,5 +1,7 @@
 #' @param by join by
 #' @param copy same as dplyr::anti_join
+#' @param merge_by_chunk_id the merge is performed by chunk id
+#' @param overwrite overwrite output directory
 #' @rdname join
 #' @return disk.frame
 #' @export

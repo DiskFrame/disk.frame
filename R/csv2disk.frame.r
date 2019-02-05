@@ -10,6 +10,7 @@
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
+#' @import base
 #' @export
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {

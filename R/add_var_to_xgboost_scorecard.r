@@ -9,7 +9,10 @@
 #' @param weight The weight of each entry
 #' @importFrom xgboost xgb.DMatrix xgboost xgb.save
 add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL, save_model_fname = "") {
-  #browser()
+  if(!require("xgboost")) {
+    stop("you must install xgboost to use this function; e.g. install.packages('xgboost')")
+  }
+
   print(glue::glue("doing {feature}"))
   xy = df %>%
     srckeep(c(target, feature, weight)) %>%
@@ -100,7 +103,8 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
   res
 }
 
-#' Print 
+#' Print xgboost scorecard
+#' @param res the Xgboost modelling result
 #' @export
 print.xgdf_scorecard <- function(res) {
   print(glue::glue("AUC: {res$auc}; GINI: {2*res$auc-1}"))

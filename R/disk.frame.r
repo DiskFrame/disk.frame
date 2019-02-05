@@ -60,6 +60,7 @@ add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", s
 }
 
 #' Create a data frame pointed to a folder
+#' @rdname disk.frame_fst
 disk.frame_folder <- function(path) {
   df <- list()
   df$files <- list.files(path, full.names = T)
@@ -159,8 +160,8 @@ is.file.disk.frame <- function(df, check.consistency = T) {
 }
 
 #' @rdname is.file.disk.frame
-is.dir.disk.frame <- function(...) {
-  !is.file.disk.frame(...)
+is.dir.disk.frame <- function(df, check.consistency = T) {
+  !is.file.disk.frame(df, check.consistency = check.consistency)
 }
 
 #' Head of the disk.frame
@@ -236,7 +237,7 @@ nrow.disk.frame <- function(df) {
   }
 }
 
-#' do to all chunks
+#' @param ... passed to disk.frame::map.disk.frame
 #' @export
 #' @rdname map.disk.frame
 chunk_lapply <- function (...) {
@@ -300,12 +301,15 @@ map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(
 }
 
 #' Lazy chunk_lapply wrapper
+#' @param df a disk.frame
+#' @param ... passed to disk.frame::map.disk.frame
 #' @export
 #' @rdname map
 lazy <- function(df,...) {
   UseMethod("lazy")
 }
 
+#' @rdname lazy
 lazy.disk.frame <- function(df, fn, ...) {
   map.disk.frame(df, fn, lazy=T, ...)
 }

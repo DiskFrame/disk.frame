@@ -2,6 +2,8 @@
 #' @export
 #' @import dplyr
 #' @param ... Same as the dplyr functions
+#' @param .data disk.frame
+#' @param .dots this represents the ...
 #' @rdname dplyr_verbs
 select_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -73,7 +75,6 @@ do_.disk.frame <- function(.data, ..., .dots){
 }
 
 #' Group
-#' @param .data a disk.frame
 #' @export
 #' @rdname group_by
 groups.disk.frame <- function(.data){
@@ -85,29 +86,30 @@ groups.disk.frame <- function(.data){
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @param add same as dplyr::group_By
-#' @param hard whether to perform a group-by where the sharding is redone on the group by keys
+#' @param .hard whether to perform a group-by where the sharding is redone on the group by keys
+#' @param outdir output directory
 #' @param overwrite overwrite existing directory
 #' @export
 #' @rdname group_by
-group_by.disk.frame <- function(.data, ..., add = FALSE, hard = NULL, outdir = NULL) {
+group_by.disk.frame <- function(.data, ..., overwrite = !.hard, add = FALSE, .hard = NULL, outdir = NULL) {
   #browser()
   dots <- dplyr:::compat_as_lazy_dots(...)
   shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
-  if (hard == TRUE) {
+  if (.hard == TRUE) {
     if(is.null(outdir)) {
       outdir = tempfile("tmp_disk_frame")
     }
     
-    .data = hard_group_by(.data, by = shardby, outdir = outdir)
+    .data = hard_group_by(.data, by = shardby, outdir = outdir, overwrite)
     #list.files(
     .data = dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add)
     return(.data)
-  } else if (hard == FALSE) {
+  } else if (.hard == FALSE) {
     shardinfo = shardkey(.data)
     if(!identical(shardinfo[[1]], shardby)) {
       warning(glue::glue(
-        "hard is set to FALSE but the shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can group_by(..., hard = TRUE) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
+        ".hard is set to FALSE but the shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can group_by(..., hard = TRUE) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
     }
     return(dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add))
   } else {
@@ -126,8 +128,8 @@ group_by_.disk.frame <- function(.data, ..., .dots, add=FALSE){
 #' Take a glimpse
 #' @export
 #' @rdname dplyr_verbs
-glimpse.disk.frame <- function(df, ...) {
-  glimpse(head(df, ...), ...)
+glimpse.disk.frame <- function(.data, ...) {
+  glimpse(head(.data, ...), ...)
 }
 
 #' Internal methods
