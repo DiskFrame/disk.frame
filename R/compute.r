@@ -2,7 +2,6 @@
 #' @param df a disk.frame
 #' @param outdir the output directory
 #' @param overwrite if TRUE overwrite outdir if it's a disk.frame
-#' @importFrom base I
 #' @export
 compute.disk.frame <- function(df, outdir, overwrite = T) {
   #browser()

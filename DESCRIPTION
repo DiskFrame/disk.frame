@@ -23,15 +23,15 @@ Imports:
     pryr,
     stringr,
     fst (>= 0.8.0),
-    data.table
+    data.table,
+    xgboost
 Depends:
     future,
     base
 Suggests: 
     testthat,
     knitr,
-    rmarkdown,
-    xgboost
+    rmarkdown
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.1
