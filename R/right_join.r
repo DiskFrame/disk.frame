@@ -22,9 +22,9 @@
   #     return(right_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T))
   #   } else if (merge_by_chunk_id) {
   #     res = map_by_chunk_id(x, y, ~{
-  #       if(is.na(.y)) {
+  #       if(is.null(.y)) {
   #         return(.x)
-  #       } else if (is.na(.x)) {
+  #       } else if (is.null(.x)) {
   #         return(.y)
   #       }
   #       right_join(.x, .y, by = by, copy = copy, ...)

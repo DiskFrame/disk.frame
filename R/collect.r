@@ -11,7 +11,7 @@ collect.disk.frame <- function(df, parallel = !is.null(attr(df,"lazyfn"))) {
   #
   if(nchunks(df) > 0) {
     if(parallel) {
-      #browser()
+      ##browser
       furrr::future_map_dfr(1:nchunks(df), ~disk.frame::get_chunk(df, .x))
       #future.apply::future_lapply(1:nchunks(df), function(x) disk.frame::get_chunk(df, .x))
     } else {

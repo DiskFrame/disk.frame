@@ -1,10 +1,7 @@
 #' @rdname join
-#' @param x a disk.frame
-#' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
-#' @param outdir output directory for disk.frame
-#' @rdname join
 #' @export
 full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_full_join"), merge_by_chunk_id = F, overwrite = T) {
+  ##browser
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -33,9 +30,10 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
-        if(is.na(.y)) {
+        ##browser
+        if(is.null(.y)) {
           return(.x)
-        } else if (is.na(.x)) {
+        } else if (is.null(.x)) {
           return(.y)
         }
         full_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)

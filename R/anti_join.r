@@ -2,6 +2,7 @@
 #' @param copy same as dplyr::anti_join
 #' @param merge_by_chunk_id the merge is performed by chunk id
 #' @param overwrite overwrite output directory
+#' @param ... passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join
 #' @rdname join
 #' @return disk.frame
 #' @export
@@ -27,15 +28,15 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     ncy = nchunks(y)
     if (merge_by_chunk_id == F) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
-      #browser()
+      ##browser
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
       return(anti_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
-        if(is.na(.y)) {
+        if(is.null(.y)) {
           return(.x)
-        } else if (is.na(.x)) {
+        } else if (is.null(.x)) {
           return(data.table())
         }
         anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)

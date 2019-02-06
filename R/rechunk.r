@@ -6,7 +6,7 @@
 #' @param overwrite overwrite the output directory
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
-  #browser()
+  ##browser
   stopifnot("disk.frame" %in% class(df))
   user_had_not_set_shard_by = is.null(shardby)
   if(!is_disk.frame(outdir)) {
@@ -102,7 +102,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     list_of_sharded = c(bad_boys, oks)
     
     system.time(new_one <- rbindlist.disk.frame(list_of_sharded, outdir=outdir, by_chunk_id = T, overwrite = overwrite))
-    #browser()
+    ##browser
     res = add_meta(new_one, nchunks = nchunks(new_one), shardkey = shardby, shardchunks = nchunks)
     return(res)
   }

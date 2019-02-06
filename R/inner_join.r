@@ -1,7 +1,3 @@
-#' Join/merge for disk.frames
-#' @param x a disk.frame
-#' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
-#' @param outdir output directory for disk.frame
 #' @export
 #' @rdname join
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
@@ -40,9 +36,9 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
       return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
-        if(is.na(.y)) {
+        if(is.null(.y)) {
           return(data.table())
-        } else if (is.na(.x)) {
+        } else if (is.null(.x)) {
           return(data.table())
         }
         inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)

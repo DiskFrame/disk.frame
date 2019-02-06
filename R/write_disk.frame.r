@@ -11,6 +11,7 @@
 #' @import fst fs
 #' @importFrom glue glue
 write_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, compress = 50, ...) {
+  ##browser
   overwrite_check(outdir, overwrite)
 
   if(is.null(outdir)) {

@@ -4,7 +4,7 @@
 #' @param chunk_id a numeric number indicating the id of the chunk. If NULL it will be set to the largest chunk_id + 1
 #' @export
 add_chunk <- function(df, chunk, chunk_id = NULL) {
-  #browser()
+  ##browser
   stopifnot("disk.frame" %in% class(df))
   if(!is_disk.frame(df)) {
     stop("can not add_chunk as this is not a disk.frame")

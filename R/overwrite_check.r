@@ -5,6 +5,7 @@
 #' @importFrom glue glue
 #' @export
 overwrite_check <- function(outdir, overwrite) {
+  ##browser
   if (is.null(outdir)) {
     warning("outdir is NULL; no overwrite check is performed")
     return(NULL)
@@ -14,7 +15,7 @@ overwrite_check <- function(outdir, overwrite) {
     if(!is_disk.frame(outdir)) {
       stop(glue::glue("The directory is {outdir} is not a disk.frame folder. Execution has stopped to prevent accidental deletion of potentially important files"))
     }
-    if(length(dir_ls(outdir, all = T)) != 0) {
+    if(length(fs::dir_ls(outdir, all = T)) != 0) {
       tryCatch({
         fs::dir_delete(outdir)
       }, error = function(e) {

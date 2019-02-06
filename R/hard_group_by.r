@@ -120,22 +120,22 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @param overwrite overwrite the out put directory
 #' @param ... passed to hard_group_by.disk.frame
 #' @export
-hard_group_by <- function(...) {
+hard_group_by <- function(df, by, ...) {
   UseMethod("hard_group_by")
 }
 
 #' @rdname hard_group_by
 #' @import purrr
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = nchunk.disk.frame(df), overwrite = T) {
-  #browser()
+hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T) {
+  ##browser
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
   tmp_df  = map.disk.frame(df, function(df1) {
-    #browser()
+    ##browser
     tmpdir = tempfile()
     shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
   }, lazy = F)

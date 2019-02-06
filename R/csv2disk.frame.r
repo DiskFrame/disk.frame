@@ -10,23 +10,22 @@
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
-#' @import base
 #' @export
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {
-  #browser()
+  ##browser
   overwrite_check(outdir, overwrite)
   
   
   l = length(list.files(outdir))
   if(is.null(shardby)) {
-    #a = write_fst(inmapfn(fread(infile, colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
-    a = as.disk.frame(inmapfn(fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
+    #a = write_fst(inmapfn(data.table::fread(infile, colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
+    a = as.disk.frame(inmapfn(data.table::fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
     return(a)
   } else { # so shard by some element
     if(is.null(in_chunk_size)) {
-      #shard(inmapfn(fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
-      shard(inmapfn(fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
+      #shard(inmapfn(data.table::fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
+      shard(inmapfn(data.table::fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
     } else {
       i <- 0
       tmpdir1 = tempfile(pattern="df_tmp")
@@ -36,7 +35,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       done = F
       skiprows = 0
       while(!done) {
-        tmpdt = inmapfn(fread(
+        tmpdt = inmapfn(data.table::fread(
           infile,
           #colClasses = colClasses, 
           #col.names = col.names, 

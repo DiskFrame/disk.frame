@@ -31,6 +31,7 @@ get_chunk_ids <- function(df, ..., full.names = F, strip_extension = T) {
 #' @importFrom data.table data.table
 #' @export
 map_by_chunk_id <- function(x, y, fn, outdir) {
+  #browser
   fn = purrr::as_mapper(fn)
   fs::dir_create(outdir)
   

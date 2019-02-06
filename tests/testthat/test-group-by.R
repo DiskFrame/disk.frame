@@ -17,7 +17,7 @@ test_that("dplyr::group_by_hard=FALSE", {
   dff1 = NULL
   expect_warning({
     dff1 <- dff %>% 
-      group_by(id1, id2, hard = F) %>%
+      group_by(id1, id2, .hard = F) %>%
       summarise(mv1 = mean(v1)) %>% collect
   })
   
@@ -32,11 +32,11 @@ test_that("dplyr::group_by_hard=TRUE", {
     summarise(mv1 = mean(v1))
   
   dff1 <- dff %>% 
-    group_by(id1, id2, hard = T) %>% 
+    group_by(id1, id2, .hard = T) %>% 
     summarise(mv1 = mean(v1)) %>% 
     collect
   
-  expect_false(nrow(dff1) == nrow(dff_res))
+  expect_true(nrow(dff1) == nrow(dff_res))
 })
 
 

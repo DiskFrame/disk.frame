@@ -8,7 +8,7 @@
 #' @importFrom glue glue
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
-  #browser()
+  ##browser
   overwrite_check(outdir, overwrite)
   
   setDT(df)
@@ -21,5 +21,5 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
   
   eval(parse(text=code))
   
-  disk.frame:::output_disk.frame(df, outdir, nchunks, overwrite, shardkey = shardby, shardchunks = nchunks)
+  write_disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = overwrite, shardkey = shardby, shardchunks = nchunks)
 }

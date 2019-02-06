@@ -89,10 +89,11 @@ groups.disk.frame <- function(.data){
 #' @param .hard whether to perform a group-by where the sharding is redone on the group by keys
 #' @param outdir output directory
 #' @param overwrite overwrite existing directory
+#' @param .dots ... passed from  dplyr function
 #' @export
 #' @rdname group_by
-group_by.disk.frame <- function(.data, ..., overwrite = !.hard, add = FALSE, .hard = NULL, outdir = NULL) {
-  #browser()
+group_by.disk.frame <- function(.data, ..., overwrite = T, add = FALSE, .hard = NULL, outdir = NULL) {
+  ##browser
   dots <- dplyr:::compat_as_lazy_dots(...)
   shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
@@ -101,7 +102,7 @@ group_by.disk.frame <- function(.data, ..., overwrite = !.hard, add = FALSE, .ha
       outdir = tempfile("tmp_disk_frame")
     }
     
-    .data = hard_group_by(.data, by = shardby, outdir = outdir, overwrite)
+    .data = hard_group_by(.data, by = shardby, outdir = outdir, overwrite=overwrite)
     #list.files(
     .data = dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add)
     return(.data)

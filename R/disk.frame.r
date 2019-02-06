@@ -27,8 +27,8 @@ disk.frame <- function(path, backend = "fst") {
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
 #' @param ... another other metadata the user wishes to keep. 
 #' @export
-add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
-  #browser()
+add_meta <- function(df, ..., nchunks = disk.frame:::nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
+  ##browser
   stopifnot("disk.frame" %in% class(df))
 
   # create the metadata folder if not present
@@ -77,7 +77,7 @@ disk.frame_folder <- function(path) {
 #' Create a disk.frame from fst files
 #' @param path The path to store the output file or to a directory
 #' @import fst
-disk.frame_fst <- function(path, ...) {
+disk.frame_fst <- function(path) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
@@ -258,7 +258,7 @@ chunk_lapply <- function (...) {
 #' @importFrom future.apply future_lapply
 #' @export
 map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
-  #browser()
+  ##browser
   fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
@@ -302,6 +302,7 @@ map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(
 
 #' Lazy chunk_lapply wrapper
 #' @param df a disk.frame
+#' @param fn a function to apply to df i.e. fn(df) will be called
 #' @param ... passed to disk.frame::map.disk.frame
 #' @export
 #' @rdname map
@@ -309,7 +310,7 @@ lazy <- function(df,...) {
   UseMethod("lazy")
 }
 
-#' @rdname lazy
+#' @rdname map
 lazy.disk.frame <- function(df, fn, ...) {
   map.disk.frame(df, fn, lazy=T, ...)
 }

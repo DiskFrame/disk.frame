@@ -27,7 +27,7 @@ Imports:
     xgboost
 Depends:
     future,
-    base
+    dplyr
 Suggests: 
     testthat,
     knitr,

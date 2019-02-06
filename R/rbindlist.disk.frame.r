@@ -41,7 +41,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     shardkeys <- purrr::map(df_list, shardkey)
     
     # if all the sharkeys are identical then
-    #browser()
+    ##browser
     if(all(purrr::map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
       return(add_meta(rbind_res, 
                shardkey = shardkeys[[1]]$shardkey,
