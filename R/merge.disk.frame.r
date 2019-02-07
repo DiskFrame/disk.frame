@@ -8,7 +8,10 @@
 #' @importFrom data.table data.table setDT
 #' @import dtplyr
 #' @import dplyr
-merge.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F) {  
+merge.disk.frame <- function(x, y, outdir, ..., merge_by_chunk_id = F) {  
+  df1 = x
+  df2 = y
+  
   fs::dir_create(outdir)
   stopifnot("disk.frame" %in% class(df1))
   

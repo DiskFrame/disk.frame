@@ -118,7 +118,7 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
 #' @param outdir the output directory
 #' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
 #' @param overwrite overwrite the out put directory
-#' @param ... passed to hard_group_by.disk.frame
+#' @param ... not used
 #' @export
 hard_group_by <- function(df, by, ...) {
   UseMethod("hard_group_by")
@@ -127,7 +127,7 @@ hard_group_by <- function(df, by, ...) {
 #' @rdname hard_group_by
 #' @import purrr
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T) {
+hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T, ...) {
   ##browser
   overwrite_check(outdir, overwrite)
   

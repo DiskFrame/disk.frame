@@ -170,8 +170,10 @@ is.dir.disk.frame <- function(df, check.consistency = T) {
 #' @param ... as same base::head
 #' @export
 #' @import fst
+#' @importFrom utils head
 #' @rdname head_tail
-head.disk.frame <- function(df, n = 6L, ...) {
+head.disk.frame <- function(x, n = 6L, ...) {
+  df = x
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   cmds <- attr(df, "lazyfn")
@@ -186,8 +188,10 @@ head.disk.frame <- function(df, n = 6L, ...) {
 #' tail of disk.frame
 #' @export
 #' @import fst
+#' @importFrom utils tail
 #' @rdname head_tail
-tail.disk.frame <- function(df, n = 6L, ...) {
+tail.disk.frame <- function(x, n = 6L, ...) {
+  df = x
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
@@ -202,22 +206,22 @@ tail.disk.frame <- function(df, n = 6L, ...) {
 #' Number of rows of disk.frame
 #' @param ... S3 method ....
 #' @export
-nrow <- function(...) {
+nrow <- function(df,...) {
   UseMethod("nrow")
 }
 
 #' @rdname nrow
 #' @export
-nrow.default <- function(...) {
-  base::nrow(...)
+nrow.default <- function(df, ...) {
+  base::nrow(df, ...)
 }
-
 
 #' @export
 #' @param df a disk.frame
+#' @param ... not used
 #' @rdname nrow
 #' @import fst
-nrow.disk.frame <- function(df) {
+nrow.disk.frame <- function(df, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
@@ -339,7 +343,7 @@ ncol <- function(df) {
 #' @param df a disk.frame
 #' @rdname ncol
 ncol.disk.frame <- function(df) {
-  length(names(df))
+  length(colnames(df))
 }
 
 #' @export

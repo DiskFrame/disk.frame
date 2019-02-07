@@ -76,9 +76,10 @@ do_.disk.frame <- function(.data, ..., .dots){
 
 #' Group
 #' @export
+#' @param x a disk.frame
 #' @rdname group_by
-groups.disk.frame <- function(.data){
-  shardkey(.data)
+groups.disk.frame <- function(x){
+  shardkey(x)
 }
 
 #' Group by designed for disk.frames

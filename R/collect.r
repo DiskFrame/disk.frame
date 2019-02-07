@@ -1,13 +1,15 @@
 #' Bring the disk.frame into R as data.table/data.frame
 #' @import purrr furrr
-#' @param df a disk.frame
+#' @param x a disk.frame
 #' @param parallel if TRUE the collection is performed in parallel. By default if there are delayed/lazy steps then it will be parallel, otherwise it will not be in parallel. This is because parallel requires transferring data from background R session to the current R session and if there is no computation then it's better to avoid transferring data between session, hence parallel = F is a better choice
+#' @param ... not used
 #' @export
 #' @importFrom data.table data.table as.data.table
 #' @importFrom furrr future_map_dfr
 #' @importFrom purrr map_dfr
 #' @rdname collect
-collect.disk.frame <- function(df, parallel = !is.null(attr(df,"lazyfn"))) {
+collect.disk.frame <- function(x, ..., parallel = !is.null(attr(df,"lazyfn"))) {
+  df = x
   #
   if(nchunks(df) > 0) {
     if(parallel) {
@@ -27,7 +29,8 @@ collect.disk.frame <- function(df, parallel = !is.null(attr(df,"lazyfn"))) {
 #' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
-collect_list <- function(df, simplify = F, parallel = !is.null(attr(df,"lazyfn"))) {
+collect_list <- function(x, simplify = F, parallel = !is.null(attr(df,"lazyfn"))) {
+  df = x
   if(nchunks(df) > 0) {
     res <- NULL
     if (parallel) {
