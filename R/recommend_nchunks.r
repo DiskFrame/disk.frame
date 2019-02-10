@@ -27,6 +27,9 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   } else {
     ml = 128
   }
+  
+  # assume at least 1G of RAM
+  ml = max(ml, 1)
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
   nc = parallel::detectCores(logical = F)
