@@ -2,9 +2,12 @@
   
 }
 
+#' @importFrom future nbrOfWorkers
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Setting up disk.frame")
   setup_disk.frame()
+  
+  packageStartupMessage(
+    glue::glue("We have {future::nbrOfWorkers()} workers to use with disk.frame. To change that use setup_disk.frame(workers = n)"))
 }
 
 globalVariables(c(".",

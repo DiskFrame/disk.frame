@@ -9,4 +9,6 @@ setup_disk.frame <- function(future_backend = multiprocess, workers = parallel::
   future::plan(future_backend, workers = workers, gc = T, ...)
   options(future.globals.maxSize=Inf)
   options(disk.frame.nworkers = workers)
+  
+  
 }
