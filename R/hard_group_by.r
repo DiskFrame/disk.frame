@@ -1,5 +1,5 @@
 #' Show a progress bar of the action being performed
-#' @importFrom utils winProgressBar txtProgressBar setWinProgressBar setTxtProgressBar
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @param df a disk.frame
 progressbar <- function(df) {
   if(attr(df,"performing") == "hard_group_by") {
@@ -15,12 +15,12 @@ progressbar <- function(df) {
     l = length(list.files(fparent))
     pt_begin_split = proc.time()
     doprog <- function(pt_from, sleep = 1) {
-      tkpb = winProgressBar(title = sprintf("Hard Group By Stage 1(/2) - %s", shardby), label = "Checking completeness",
-                            min = 0, max = l*1.5, initial = 0, width = 500)
+      #tkpb = winProgressBar(title = sprintf("Hard Group By Stage 1(/2) - %s", shardby), label = "Checking completeness",
+      #                      min = 0, max = l*1.5, initial = 0, width = 500)
       pb <- txtProgressBar(min = 0, max = l*1.5, style = 3)
       
       on.exit(close(pb))
-      on.exit(close(tkpb))
+      # on.exit(close(tkpb))
       while(length(list.files(file.path(tmp,l))) < l) {
         wl = length(list.files(file.path(tmp,1:l)))/l
         tt <- proc.time()[3] - pt_from[3]
@@ -41,12 +41,12 @@ progressbar <- function(df) {
     
     pt_begin_collate = proc.time()
     doprog2 <- function(pt_from, sleep = 1) {
-      tkpb = winProgressBar(title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating", shardby), label = "Checking completeness",
-                            min = 0, max = l*1.5, initial = 0, width = 600)
+      # tkpb = winProgressBar(title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating", shardby), label = "Checking completeness",
+                            # min = 0, max = l*1.5, initial = 0, width = 600)
       pb <- txtProgressBar(min = 0, max = l*1.5, style = 3)
       
       on.exit(close(pb))
-      on.exit(close(tkpb))
+      # on.exit(close(tkpb))
       while(length(list.files("large_sorted")) < l) {
         wl = length(list.files("large_sorted"))
         tt <- proc.time()[3] - pt_from[3]
