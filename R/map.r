@@ -12,7 +12,7 @@
 #' @importFrom future.apply future_lapply
 #' @export
 map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
-  ##browser
+  #browser()
   fn = purrr::as_mapper(fn)
   if(lazy) {
     attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
@@ -37,6 +37,7 @@ map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(
   
   keep_future = keep
   res = future.apply::future_lapply(1:length(files), function(ii) {
+    #browser()
     ds = disk.frame::get_chunk(df, ii, keep=keep_future)
     res = fn(ds)
     if(!is.null(outdir)) {

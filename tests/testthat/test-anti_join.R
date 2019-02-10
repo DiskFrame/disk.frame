@@ -2,7 +2,7 @@ context("test-anti_join")
 
 setup({
   library(magrittr)
-  setup_disk.frame(1)
+  setup_disk.frame(workers = 1)
   
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
