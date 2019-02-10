@@ -2,6 +2,7 @@
 #' @param target the target
 #' @param score the score, the higher the score the less targets
 #' @importFrom data.table setkey shift data.table
+#' @import data.table
 auc <- function(target, score) {
   a = data.table::data.table(target, score = -score)
   data.table::setkey(a, score)

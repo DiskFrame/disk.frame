@@ -61,7 +61,6 @@ test_that("testing anti_join where right is disk.frame", {
   expect_equal(nrow(ad50), 50)
 })
 
-
 teardown({
   fs::dir_delete("tmp_a_aj.df")
   fs::dir_delete("tmp_b_aj.df")
