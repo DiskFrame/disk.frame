@@ -16,7 +16,6 @@ setup({
 })
 
 test_that("testing left_join where right is data.frame", {
-  library(dplyr)
   a = disk.frame("tmp_a_lj.df")
   b = disk.frame("tmp_b_lj.df")
   d = disk.frame("tmp_d_lj.df")

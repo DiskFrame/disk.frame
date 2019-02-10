@@ -16,7 +16,7 @@ test_that("group_by", {
   dff1 = NULL
   expect_warning({
     dff1 <- dff %>% 
-      group_by(id1, id2, .hard = F) %>%
+      group_by(id1, id2) %>%
       summarise(mv1 = mean(v1)) %>% collect
   })
   
