@@ -7,6 +7,7 @@
 #' @import dplyr fst fs
 #' @importFrom glue glue
 #' @importFrom future.apply future_lapply
+#' @importFrom utils unzip
 #' @export
 #' @return a list of disk.frame
 # TODO add all the options of fread into the ... as future may not be able to deal with it
@@ -42,6 +43,8 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
 
 #' Validate and auto-correct read and convert every single file within the zip file to df format
 #' @importFrom glue glue
+#' @importFrom utils unzip
+#' @importFrom data.table timetaken fread
 #' @import dplyr
 #' @import fst
 #' @rdname zip_to_disk.frame

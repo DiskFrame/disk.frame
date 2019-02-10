@@ -4,7 +4,7 @@
 #' #system.time(fst::write.fst(DT,file.path(data_path, "DT.fst")))
 #' @param N number of rows. Defaults to 200 million
 #' @param K controls the number of unique values for id. Some ids will have K distinct values while others have N/K distinct values
-#' 
+#' @importFrom stats runif
 gen_datatable_synthetic <- function(N=2e8, K=100) {
   data.table(
     id1 = sample(sprintf("id%03d",1:K), N, TRUE),      # large groups (char)
@@ -17,8 +17,4 @@ gen_datatable_synthetic <- function(N=2e8, K=100) {
     v2 =  sample(5, N, TRUE),                          # int in range [1,5]
     v3 =  sample(round(runif(100,max=100),4), N, TRUE) # numeric e.g. 23.5749
   )
-}
-
-dirty_work <- function() {
-  library(magrittr)
 }

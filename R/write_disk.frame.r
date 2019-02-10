@@ -8,7 +8,7 @@
 #' @param compress compression ratio for fst files
 #' @param ... passed to map.disk.frame
 #' @export
-#' @import fst fs
+#' @import fst fs data.table
 #' @importFrom glue glue
 write_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchunks, compress = 50, ...) {
   ##browser

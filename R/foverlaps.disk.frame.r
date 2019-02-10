@@ -10,6 +10,7 @@
 #' @importFrom glue glue
 #' @importFrom data.table foverlaps data.table setDT
 #' @importFrom future.apply future_lapply
+#' @importFrom pryr do_call
 #' @export
 foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, compress=50, overwrite = T) {
   stopifnot("disk.frame" %in% class(df1))
@@ -47,7 +48,7 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
       data2 = get_chunk.disk.frame(df2,chunk_id)
       dotdotdot$x = data1
       dotdotdot$y = data2
-      data3 = do_call(foverlaps, dotdotdot)
+      data3 = pryr::do_call(foverlaps, dotdotdot)
       rm(data1); rm(data2); #gc()
       outdir
       write_fst(data3, glue("{outdir}/{chunk_id}"), compress = compress)

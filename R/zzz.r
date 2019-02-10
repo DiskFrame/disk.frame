@@ -1,11 +1,7 @@
-# .onLoad <- function(libname, pkgname){
-#   library(future)
-#   library(future.apply)
-#   nworkers = parallel::detectCores(logical=F)
-#   plan(multiprocess, workers = nworkers, gc = T)
-#   options(future.globals.maxSize=Inf)
-#   options(disk.frame.nworkers = nworkers)
-# }
+.onLoad <- function(libname, pkgname){
+  print("Setting up disk.frame")
+  setup_disk.frame()
+}
 
 #' @useDynLib disk.frame
 #' @importFrom Rcpp evalCpp

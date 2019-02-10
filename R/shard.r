@@ -13,10 +13,10 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
   
   setDT(df)
   if(length(shardby) == 1) {
-    code = glue::glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i(as.character({shardby}), nchunks)]")
+    code = glue::glue("df[,.out.disk.frame.id := hashstr2i(as.character({shardby}), nchunks)]")
   } else {
     shardby_list = glue::glue("paste0({paste0(shardby,collapse=',')})")
-    code = glue::glue("df[,.out.disk.frame.id := disk.frame:::hashstr2i({shardby_list}, nchunks)]")
+    code = glue::glue("df[,.out.disk.frame.id := hashstr2i({shardby_list}, nchunks)]")
   }
   
   eval(parse(text=code))

@@ -4,6 +4,7 @@
 #' @param ... Same as the dplyr functions
 #' @param .data disk.frame
 #' @param .dots this represents the ...
+#' @importFrom lazyeval all_dots
 #' @rdname dplyr_verbs
 select_.disk.frame <- function(.data, ..., .dots){
   .dots <- lazyeval::all_dots(.dots, ...)
@@ -82,6 +83,17 @@ groups.disk.frame <- function(x){
   shardkey(x)
 }
 
+#' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
+compat_as_lazy_dots = function (...) {
+    structure(class = "lazy_dots", map(quos(...), compat_as_lazy))
+}
+
+#' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
+#' @importFrom rlang get_expr get_env
+compat_as_lazy = function (quo) {
+    structure(class = "lazy", list(expr = rlang::get_expr(quo), env = rlang::get_env(quo)))
+}
+
 #' Group by designed for disk.frames
 #' @import dplyr purrr
 #' @param .data a disk.frame
@@ -95,7 +107,7 @@ groups.disk.frame <- function(x){
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., overwrite = T, add = FALSE, .hard = NULL, outdir = NULL) {
   ##browser
-  dots <- dplyr:::compat_as_lazy_dots(...)
+  dots <- compat_as_lazy_dots(...)
   shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
   if (.hard == TRUE) {
@@ -105,7 +117,7 @@ group_by.disk.frame <- function(.data, ..., overwrite = T, add = FALSE, .hard = 
     
     .data = hard_group_by(.data, by = shardby, outdir = outdir, overwrite=overwrite)
     #list.files(
-    .data = dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add)
+    .data = dplyr::group_by_(.data, .dots = compat_as_lazy_dots(...), add = add)
     return(.data)
   } else if (.hard == FALSE) {
     shardinfo = shardkey(.data)
@@ -113,7 +125,7 @@ group_by.disk.frame <- function(.data, ..., overwrite = T, add = FALSE, .hard = 
       warning(glue::glue(
         ".hard is set to FALSE but the shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can group_by(..., hard = TRUE) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
     }
-    return(dplyr::group_by_(.data, .dots = dplyr:::compat_as_lazy_dots(...), add = add))
+    return(dplyr::group_by_(.data, .dots = compat_as_lazy_dots(...), add = add))
   } else {
     stop("group_by operations for disk.frames must be set hard to TRUE or FALSE")
   }
@@ -145,6 +157,7 @@ record <- function(.data, cmd){
 #' Internal methods
 #' @param .data the disk.frame
 #' @param cmds the list of function to play back
+#' @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
   #list.files(
   for (cmd in cmds){

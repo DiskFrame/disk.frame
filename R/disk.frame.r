@@ -27,8 +27,8 @@ disk.frame <- function(path, backend = "fst") {
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
 #' @param ... another other metadata the user wishes to keep. 
 #' @export
-add_meta <- function(df, ..., nchunks = disk.frame:::nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
-  ##browser
+add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
+  #browser()
   stopifnot("disk.frame" %in% class(df))
 
   # create the metadata folder if not present
@@ -165,7 +165,7 @@ is.dir.disk.frame <- function(df, check.consistency = T) {
 }
 
 #' Head of the disk.frame
-#' @param df a disk.frame
+#' @param x a disk.frame
 #' @param n number of rows to include
 #' @param ... as same base::head
 #' @export
@@ -173,15 +173,14 @@ is.dir.disk.frame <- function(df, check.consistency = T) {
 #' @importFrom utils head
 #' @rdname head_tail
 head.disk.frame <- function(x, n = 6L, ...) {
-  df = x
-  stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
-  cmds <- attr(df, "lazyfn")
+  stopifnot(is_ready(x))
+  path1 <- attr(x,"path")
+  cmds <- attr(x, "lazyfn")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)[1]
-    head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    head(play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   } else {
-    head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    head(play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   }
 }
 
@@ -191,9 +190,8 @@ head.disk.frame <- function(x, n = 6L, ...) {
 #' @importFrom utils tail
 #' @rdname head_tail
 tail.disk.frame <- function(x, n = 6L, ...) {
-  df = x
-  stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
+  stopifnot(is_ready(x))
+  path1 <- attr(x,"path")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)
     path2 <- path2[length(path2)]
@@ -218,7 +216,6 @@ nrow.default <- function(df, ...) {
 
 #' @export
 #' @param df a disk.frame
-#' @param ... not used
 #' @rdname nrow
 #' @import fst
 nrow.disk.frame <- function(df, ...) {

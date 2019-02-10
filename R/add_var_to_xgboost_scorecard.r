@@ -7,9 +7,11 @@
 #' @param format_fn a function to transform the feature vector before fitting a model
 #' @param save_model_fname the file name to save the xgboost model as
 #' @param weight The weight of each entry
-#' @importFrom xgboost xgb.DMatrix xgboost xgb.save
+#' @importFrom xgboost xgb.DMatrix xgboost xgb.save setinfo
+#' @importFrom data.table timetaken setnames
+#' @importFrom stats predict
 add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL, save_model_fname = "") {
-  if(!require("xgboost")) {
+  if(!requireNamespace("xgboost", quietly = T)) {
     stop("you must install xgboost to use this function; e.g. install.packages('xgboost')")
   }
 
@@ -104,9 +106,8 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
 }
 
 #' Print xgboost scorecard
-#' @param res the Xgboost modelling result
-#' @export
+#' @param x the Xgboost modelling result
 print.xgdf_scorecard <- function(x, ...) {
   print(glue::glue("AUC: {res$auc}; GINI: {2*res$auc-1}"))
-  print(res$bins)
+  print(x$bins)
 }

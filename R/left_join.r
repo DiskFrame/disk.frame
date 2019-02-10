@@ -1,7 +1,4 @@
 #' Performs join/merge for disk.frames
-#' @param x a disk.frame
-#' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
-#' @param outdir output directory for disk.frame
 #' @rdname join
 #' @export
 left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = F, overwrite = T) {

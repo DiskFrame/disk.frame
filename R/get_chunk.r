@@ -61,9 +61,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
     }
   } else {
     if(typeof(keep)!="closure") {
-      disk.frame:::play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
+      play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
     } else {
-      disk.frame:::play(read_fst(filename, as.data.table = T,...), cmds)
+      play(read_fst(filename, as.data.table = T,...), cmds)
     }
   }
 }

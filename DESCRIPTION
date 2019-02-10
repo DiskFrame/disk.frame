@@ -13,20 +13,22 @@ License: file LICENSE
 Imports:
     Rcpp (>= 0.12.13),
     glue,
+    lazyeval,
     purrr,
     furrr,
     future.apply,
-    dtplyr,
     fs,
     jsonlite,
     pryr,
     stringr,
     fst (>= 0.8.0),
-    data.table,
     xgboost
 Depends:
     future,
-    dplyr
+    future.apply,
+    dplyr,
+    data.table,
+    dtplyr
 Suggests: 
     testthat,
     knitr,

@@ -1,5 +1,5 @@
 #' convert a CSV file to disk.frame format
-#' @import fs
+#' @import fs data.table
 #' @importFrom glue glue
 #' @param infile The input CSV
 #' @param outdir The directory to output the disk.frame to

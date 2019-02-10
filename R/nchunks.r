@@ -1,7 +1,7 @@
 #' Return the number of chunks
 #' @param df a disk.frame
 #' @param skip.ready.check NOT implemented
-#' @param ... passed ...
+#' @param ... not used
 #' @export
 nchunks <- function(df, ...) {
   UseMethod("nchunks")
@@ -20,8 +20,7 @@ nchunk.disk.frame <- function(df, ...) {
   nchunks.disk.frame(df, ...)
 }
 
-#' @import fs
-#' @param ... not used
+#' @importFrom fs dir_ls
 #' @rdname nchunks
 #' @export
 nchunks.disk.frame <- function(df, skip.ready.check = F, ...) {
