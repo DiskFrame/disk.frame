@@ -27,3 +27,5 @@ fmdf0/
 *.png
 !disk.frame.png
 *.ws
+*.ws.RData
+tmp_*/

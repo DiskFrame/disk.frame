@@ -2,10 +2,12 @@ context("test-anti_join")
 
 setup({
   library(magrittr)
+  setup_disk.frame(1)
+  
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
-  
+
   as.disk.frame(a, "tmp_a_aj.df", nchunks = 4, overwrite = T)
   as.disk.frame(b, "tmp_b_aj.df", nchunks = 5, overwrite = T)
   as.disk.frame(d, "tmp_d_aj.df", overwrite = T)
@@ -13,9 +15,11 @@ setup({
   as.disk.frame(a, "tmp_a_aj2.df", nchunks = 4, overwrite = T)
   as.disk.frame(b, "tmp_b_aj2.df", nchunks = 5, overwrite = T)
   as.disk.frame(d, "tmp_d_aj2.df", overwrite = T)
+  
 })
 
 test_that("testing anti_join where right is data.frame", {
+  skip_on_cran()
   a = disk.frame("tmp_a_aj.df")
   b = disk.frame("tmp_b_aj.df")
   d = disk.frame("tmp_d_aj.df")
@@ -36,6 +40,7 @@ test_that("testing anti_join where right is data.frame", {
 })
 
 test_that("testing anti_join where right is disk.frame", {
+  skip_on_cran()
   a = disk.frame("tmp_a_aj2.df")
   b = disk.frame("tmp_b_aj2.df")
   d = disk.frame("tmp_d_aj2.df")

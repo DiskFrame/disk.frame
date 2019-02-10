@@ -26,4 +26,8 @@ tmp_pls_delete_gb2.csv$
 tmp_pls_delete$
 tmp_pls_delete.csv$
 .ws$
+.ws.RData$
+^tmp_
+tmp_col_delete$
+tmp_rn_delete$
 
