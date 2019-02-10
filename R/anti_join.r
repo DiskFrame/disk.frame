@@ -5,7 +5,6 @@
 #' @param ... passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join
 #' @rdname join
 #' @importFrom lazyeval lazy
-#' @import dplyr
 #' @return disk.frame
 #' @export
 anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F, overwrite = T) {

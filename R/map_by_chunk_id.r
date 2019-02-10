@@ -28,7 +28,7 @@ get_chunk_ids <- function(df, ..., full.names = F, strip_extension = T) {
 #' @param fn a function to be called on each chunk of x and y matched by chunk_id
 #' @param outdir output directory
 #' @import stringr fst
-#' @importFromm purrr as_mapper
+#' @importFrom purrr as_mapper
 #' @importFrom data.table data.table
 #' @export
 map_by_chunk_id <- function(x, y, fn, outdir) {
