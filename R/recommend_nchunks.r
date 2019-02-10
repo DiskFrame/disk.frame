@@ -21,8 +21,10 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   # the amount of memory available in gigabytes
   if (Sys.info()[["sysname"]] == "Windows") {
     ml = memory.limit() / 1024
-  } else {
+  } else if (attr(Sys.info(), "sysname") %in% c("Linux","Darwin")) {
     ml = system('grep MemTotal /proc/meminfo')
+  } else {
+    ml = 128
   }
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
