@@ -14,6 +14,7 @@ Imports:
     Rcpp (>= 0.12.13),
     glue,
     lazyeval,
+    rlang,
     purrr,
     furrr,
     future.apply,
@@ -25,7 +26,6 @@ Imports:
     xgboost
 Depends:
     future,
-    future.apply,
     dplyr,
     data.table,
     dtplyr

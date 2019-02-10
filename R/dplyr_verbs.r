@@ -84,12 +84,14 @@ groups.disk.frame <- function(x){
 }
 
 #' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
+#' @param ... passed to rlang::quos
 compat_as_lazy_dots = function (...) {
-    structure(class = "lazy_dots", map(quos(...), compat_as_lazy))
+    structure(class = "lazy_dots", purrr::map(rlang::quos(...), compat_as_lazy))
 }
 
 #' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
-#' @importFrom rlang get_expr get_env
+#' @importFrom rlang get_expr get_env quos
+#' @param quo a quote expression
 compat_as_lazy = function (quo) {
     structure(class = "lazy", list(expr = rlang::get_expr(quo), env = rlang::get_env(quo)))
 }
@@ -101,6 +103,7 @@ compat_as_lazy = function (quo) {
 #' @param add same as dplyr::group_By
 #' @param outdir output directory
 #' @param overwrite overwrite existing directory
+#' @param .dots Previous ... (dots)
 #' @export
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrite = T) {

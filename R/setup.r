@@ -1,6 +1,6 @@
 #' Set up disk.frame environment
 #' @param future_backend which future backend to use for parallelisation
-#' @param worker the number of worker (background R processes in the multiprocess environment)
+#' @param workers the number of worker (background R processes in the multiprocess environment)
 #' @param ... passed to `future::plan`
 #' @importFrom future plan multiprocess
 #' @export

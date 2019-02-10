@@ -107,6 +107,7 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
 
 #' Print xgboost scorecard
 #' @param x the Xgboost modelling result
+#' @param ... not used. Kept for compatibility
 print.xgdf_scorecard <- function(x, ...) {
   print(glue::glue("AUC: {res$auc}; GINI: {2*res$auc-1}"))
   print(x$bins)

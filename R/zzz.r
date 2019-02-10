@@ -1,5 +1,5 @@
 .onLoad <- function(libname, pkgname){
-  print("Setting up disk.frame")
+  packageStartupMessage("Setting up disk.frame")
   setup_disk.frame()
 }
 

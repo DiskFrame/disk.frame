@@ -24,6 +24,6 @@ test_that("dplyr::filter", {
 
 
 teardown({
-  fs::file_delete("tmp_pls_delete.csv")
-  fs::dir_delete("tmp_pls_delete.df")
+#  fs::file_delete("tmp_pls_delete.csv")
+#  fs::dir_delete("tmp_pls_delete.df")
 })

@@ -9,8 +9,10 @@ as.data.frame.disk.frame <- function(x, row.names, optional, ...) { # needs to r
 }
 
 #' Convert disk.frame to data.table by collecting all chunks
-#' @rdname as.data.frame.disk.frame
+#' @param x a disk.frame
+#' @param keep.rownames passed to as.data.table
+#' @param ... passed to as.data.table
 #' @export
-as.data.table.disk.frame <- function(x) {
-  setDT(collect(x))
+as.data.table.disk.frame <- function(x, keep.rownames = FALSE, ...) {
+  as.data.table(collect(x), keep.rownames = keep.rownames, ...)
 }

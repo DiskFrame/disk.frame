@@ -6,7 +6,7 @@ setup({
 
 test_that("collect works on simple data", {
   df = disk.frame("tmp_pls_delete")
-  dff = collect(df)
+  dff = dplyr::collect(df)
   expect_equal(nrow(dff), 1e5+11)
   expect_s3_class(dff, "data.frame")
   expect_s3_class(dff, "data.table")
@@ -17,7 +17,7 @@ test_that("collect works on lazy stream", {
   df = map.disk.frame(df, lazy = T, ~{
     .x[1:10, ]
   })
-  dff = collect(df)
+  dff = dplyr::collect(df)
   expect_equal(nrow(dff), nchunks(df)*10)
   expect_s3_class(dff, "data.frame")
   expect_s3_class(dff, "data.table")
@@ -29,7 +29,7 @@ test_that("collect works on lazy stream followed by dplyr", {
     .x[1:10, ]
   }) %>% select(id1, id4)
   
-  dff = collect(df)
+  dff = dplyr::collect(df)
   expect_equal(nrow(dff), nchunks(df)*10)
   expect_equal(ncol(dff), 2)
   expect_s3_class(dff, "data.frame")
@@ -44,7 +44,7 @@ test_that("collect works on dplyr::select followed by lazy", {
       .x[1:10, ]
     })
   
-  dff = collect(df)
+  dff = dplyr::collect(df)
   expect_equal(nrow(dff), nchunks(df)*10)
   expect_equal(ncol(dff), 2)
   expect_s3_class(dff, "data.frame")
@@ -53,5 +53,5 @@ test_that("collect works on dplyr::select followed by lazy", {
 
 
 teardown({
-  #fs::dir_delete("tmp_pls_delete")
+  fs::dir_delete("tmp_pls_delete")
 })
