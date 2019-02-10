@@ -22,7 +22,7 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   # the amount of memory available in gigabytes
   if (Sys.info()[["sysname"]] == "Windows") {
     ml = memory.limit() / 1024
-  } else if (attr(Sys.info(), "sysname") %in% c("Linux","Darwin")) {
+  } else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
     ml = system('grep MemTotal /proc/meminfo')
   } else {
     ml = 128
