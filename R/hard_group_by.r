@@ -29,9 +29,9 @@ progressbar <- function(df) {
         pred_speed = avg_speed*(l-wl) + avg_speed*l/2
         elapsed = round(tt/60,1)
         
-        setWinProgressBar(tkpb, wl, 
-                          title = sprintf("Hard Group By Stage 1(/2) - %s", shardby),
-                          label = sprintf("%.0f out of %d; avg speed %.2f mins; elapsed %.1f mins; another %.1f mins", wl,l, round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
+        #setWinProgressBar(tkpb, wl, 
+        #                  title = sprintf("Hard Group By Stage 1(/2) - %s", shardby),
+        #                  label = sprintf("%.0f out of %d; avg speed %.2f mins; elapsed %.1f mins; another %.1f mins", wl,l, round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
         setTxtProgressBar(pb, length(list.files(file.path(tmp,l))), 
                           title = sprintf("Group By - %s", shardby))
         Sys.sleep(sleep)
@@ -55,9 +55,9 @@ progressbar <- function(df) {
         pred_speed = avg_speed*(l-wl)
         elapsed = round(tt/60,1)
         
-        setWinProgressBar(tkpb, l + wl/2, 
-                          title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating -- %.0f out of %d chunks processed;", shardby, wl, l),
-                          label = sprintf("avg %.2f min/chunk; %.1f mins elapsed; %.1f mins remaining;", round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
+        # setWinProgressBar(tkpb, l + wl/2, 
+        #                   title = sprintf("Hard Group By - %s -- Stage 2 (of 2) collating -- %.0f out of %d chunks processed;", shardby, wl, l),
+        #                   label = sprintf("avg %.2f min/chunk; %.1f mins elapsed; %.1f mins remaining;", round(avg_speed/60,2), elapsed, round(pred_speed/60,2)))
         setTxtProgressBar(pb, length(list.files("large_sorted")), 
                           title = sprintf("Hard Group By - %s", shardby))
         Sys.sleep(sleep)

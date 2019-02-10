@@ -4,6 +4,7 @@
 #' @param minchunks the minimum number of chunks. Defaults to the number of CPU cores (without hyper-threading)
 #' @param conservatism a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM
 #' @importFrom pryr object_size
+#' @importFrom utils memory.limit
 #' @export
 recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = F), conservatism = 2) {
   dfsize = 0
