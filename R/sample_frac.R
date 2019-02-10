@@ -5,6 +5,7 @@
 #' @param weight weight of each row. NOT implemented
 #' @param .env for compatibility
 #' @export
+#' @importFrom dplyr sample_frac
 #' @rdname sample
 sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL) {
   if(!is.null(weight)) {

@@ -6,6 +6,7 @@
 #' @importFrom data.table data.table as.data.table
 #' @importFrom furrr future_map_dfr
 #' @importFrom purrr map_dfr
+#' @importFrom dplyr collect
 #' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(df,"lazyfn"))) {
   df = x
