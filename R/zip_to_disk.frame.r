@@ -4,7 +4,7 @@
 #' @param ... passed to fread
 #' @param validation.check should the function perform a check at the end to check for validatity of output. It can detect issues with conversion
 #' @param overwrite overwrite output directory
-#' @import dplyr fst fs
+#' @import fst fs
 #' @importFrom glue glue
 #' @importFrom future.apply future_lapply
 #' @importFrom utils unzip
@@ -45,7 +45,6 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
 #' @importFrom glue glue
 #' @importFrom utils unzip
 #' @importFrom data.table timetaken fread
-#' @import dplyr
 #' @import fst
 #' @rdname zip_to_disk.frame
 validate_zip_to_disk.frame = function(zipfile, outdir) {

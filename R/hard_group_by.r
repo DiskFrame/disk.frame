@@ -104,7 +104,7 @@ hard_group_by <- function(df, by, ...) {
 }
 
 #' @rdname hard_group_by
-#' @import purrr
+#' @importFrom purrr map
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T, ...) {
   ##browser

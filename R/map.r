@@ -7,7 +7,8 @@
 #' @param lazy if TRUE then do this lazily
 #' @param compress 0-100 fst compression ratio
 #' @param overwrite if TRUE removes any existing chunks in the data
-#' @import fst purrr
+#' @import fst
+#' @importFrom purrr as_mapper
 #' @importFrom future.apply future_lapply
 #' @export
 map.disk.frame <- function(df, fn, outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  

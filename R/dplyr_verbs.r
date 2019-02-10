@@ -1,6 +1,6 @@
 #' dplyr version implemented for disk.frame
 #' @export
-#' @import dplyr
+#' @importFrom dplyr select_ rename_ filter_ mutate_ transmute_
 #' @param ... Same as the dplyr functions
 #' @param .data disk.frame
 #' @param .dots this represents the ...
@@ -97,7 +97,7 @@ compat_as_lazy = function (quo) {
 }
 
 #' Group by designed for disk.frames
-#' @import dplyr purrr
+#' @importFrom dplyr group_by_
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @param add same as dplyr::group_By

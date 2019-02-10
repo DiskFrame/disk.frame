@@ -19,8 +19,8 @@ disk.frame <- function(path, backend = "fst") {
 }
 
 #' Add metadata to the disk.frame
-#' @import fs
 #' @importFrom jsonlite toJSON fromJSON
+#' @importFrom fs dir_create file_create
 #' @param df a disk.frame
 #' @param nchunks number of chunks
 #' @param shardkey the shard key

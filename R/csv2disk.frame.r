@@ -1,6 +1,6 @@
 #' convert a CSV file to disk.frame format
-#' @import fs data.table
 #' @importFrom glue glue
+#' @importFrom fs dir_delete
 #' @param infile The input CSV
 #' @param outdir The directory to output the disk.frame to
 #' @param inmapfn A function to be applied to the chunk read in from CSV before the chunk is being written out. Commonly used to perform simple transformations. Defaults to the identity function (ie. no transformation)

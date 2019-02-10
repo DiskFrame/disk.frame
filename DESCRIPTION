@@ -23,11 +23,11 @@ Imports:
     pryr,
     stringr,
     fst (>= 0.8.0),
-    xgboost,
-    data.table
+    xgboost
 Depends:
     future,
     dplyr,
+    data.table,
     dtplyr
 Suggests: 
     testthat,

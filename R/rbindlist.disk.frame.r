@@ -5,9 +5,10 @@
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
 #' @param overwrite overwrite the output directory
-#' @import purrr fs
+#' @import fs
 #' @importFrom data.table data.table setDT
 #' @importFrom future.apply future_lapply
+#' @importFrom purrr map_chr map_dfr map map_lgl
 #' @export
 rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
   overwrite_check(outdir, overwrite)
