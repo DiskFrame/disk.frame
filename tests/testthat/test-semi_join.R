@@ -61,7 +61,6 @@ test_that("testing semi_join where right is disk.frame", {
   expect_equal(nrow(ad50), 50)
 })
 
-
 teardown({
   fs::dir_delete("tmp_a_sj.df")
   fs::dir_delete("tmp_b_sj.df")
