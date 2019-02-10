@@ -8,7 +8,11 @@ setup({
 })
 
 test_that("csv2disk.frame works with no shard", {
-  dff = csv_to_disk.frame("tmp_pls_delete_csv2df.csv", "tmp_pls_delete_csv2df.df", overwrite=T)
+  dff = csv_to_disk.frame(
+    "tmp_pls_delete_csv2df.csv", 
+    "tmp_pls_delete_csv2df.df", 
+    overwrite=T, 
+    nchunks=max(2,recommend_nchunks(file.size("tmp_pls_delete_csv2df.csv"))))
   dff1 = dff[,sum(v1), id1]
   dff2 = dff1[,sum(V1), id1]
   expect_false(nrow(dff1) == nrow(dff2))
