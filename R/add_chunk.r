@@ -2,17 +2,22 @@
 #' @param df the disk.frame to add a chunk to
 #' @param chunk a data.frame to be added as a chunk
 #' @param chunk_id a numeric number indicating the id of the chunk. If NULL it will be set to the largest chunk_id + 1
+#' @param full.names whether the chunk_id name match should be to the full file path not just the file name
+#' @importFrom data.table data.table
 #' @export
-add_chunk <- function(df, chunk, chunk_id = NULL) {
-  #browser()
+add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
+  ##browser
   stopifnot("disk.frame" %in% class(df))
   if(!is_disk.frame(df)) {
     stop("can not add_chunk as this is not a disk.frame")
   }
-    # get the metadata for all chunks
-  files <- fs::dir_ls(attr(df,"path"), type="file")
-  path = attr(df,"path")
   
+  # get the metadata for all chunks
+  path = attr(df,"path")
+  files <- fs::dir_ls(path, type="file")
+  
+  
+  # if a chunk_id is not specified
   if(is.null(chunk_id)) {
     chunk_id = 1 + max(purrr::map_int(files, ~{
       s = stringr::str_extract(.x,"[:digit:]+\\.fst")
@@ -25,11 +30,11 @@ add_chunk <- function(df, chunk, chunk_id = NULL) {
     
     if(is.numeric(chunk_id)) {
       filename = file.path(path,glue::glue("{as.integer(chunk_id)}.fst"))
-    } else {
+    } else { # if the chunk_id is not numeric
       if (full.names) {
-        filename = chunk_id
-      } else {
         filename = file.path(path, chunk_id)
+      } else {
+        filename = chunk_id
       }
     }
     
@@ -46,7 +51,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL) {
     
     # need to ensure that all column names and types match
     metas_df = purrr::imap_dfr(metas, 
-                              ~data.table(
+                              ~data.table::data.table(
                                 colnames = .x$columnNames, 
                                 coltypes = types[.x$columnTypes],
                               chunk_id = .y))
@@ -54,7 +59,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL) {
     metas_df_summ = metas_df[,.N,.(colnames, coltypes)][order(N)]
     metas_df_summ[,existing_df := T]
     
-    new_chunk_meta = data.table(colnames = names(chunk), coltypes = purrr::map(chunk, typeof) %>% unlist, new_chunk = TRUE)
+    new_chunk_meta = data.table::data.table(colnames = names(chunk), coltypes = purrr::map(chunk, typeof) %>% unlist, new_chunk = TRUE)
     
     merged_meta = full_join(new_chunk_meta, metas_df_summ, by=c("colnames"))
     

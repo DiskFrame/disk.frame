@@ -1,5 +1,7 @@
 #' Convert a SAS file (.sas7bdat) format to CSV by chunks
-#' @export
+#' @param infile the SAS7BDAT file
+#' @param chunk which convert of nchunks to convert
+#' @param nchunks number of chunks
 sas_to_csv <- function(infile, chunk, nchunks = disk.frame::recommend_nchunks(fs::file_size(infile))) {  
   sas2csvpath = "sas2csv/sas2csv.exe"
   if(!file.exists(sas2csvpath)) {

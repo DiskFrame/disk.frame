@@ -1,7 +1,7 @@
 context("test-inner_join")
 
 setup({
-  library(magrittr)
+  #browser()
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
@@ -43,7 +43,8 @@ test_that("testing inner_join where right is disk.frame", {
   ab = inner_join(a, b, by = "a", merge_by_chunk_id = F) %>% collect
   expect_equal(nrow(ab), 50)
   
-  ab0 = inner_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect
+  # expecting a warning for some chunks being 0 rows
+  expect_warning(ab0 <- inner_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect)
   expect_equal(nrow(ab0), 0)
   
   ab100 = inner_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect

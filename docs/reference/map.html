@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>do to all chunks — chunk_lapply • disk.frame</title>
+<title>Lazy chunk_lapply wrapper — lazy • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="do to all chunks — chunk_lapply" />
+<meta property="og:title" content="Lazy chunk_lapply wrapper — lazy" />
 
-<meta property="og:description" content="do to all chunks
-Lazy chunk_lapply wrapper
+<meta property="og:description" content="Lazy chunk_lapply wrapper
 Lazy chunk_lapply wrapper" />
 <meta name="twitter:card" content="summary" />
 
@@ -108,33 +107,51 @@ Lazy chunk_lapply wrapper" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>do to all chunks</h1>
+    <h1>Lazy chunk_lapply wrapper</h1>
     
     <div class="hidden name"><code>map.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>do to all chunks</p>
-<p>Lazy chunk_lapply wrapper</p>
+    <p>Lazy chunk_lapply wrapper</p>
 <p>Lazy chunk_lapply wrapper</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>chunk_lapply</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>lazy</span>(<span class='no'>df</span>, <span class='no'>...</span>)
 
-<span class='fu'>lazy</span>(<span class='no'>df</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>lazy</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='no'>...</span>)
 
 <span class='fu'>delayed</span>(<span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>delayed</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='no'>...</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>df</th>
+      <td><p>a disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>passed to disk.frame::map.disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>fn</th>
+      <td><p>a function to apply to df i.e. fn(df) will be called</p></td>
+    </tr>
+    </table>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
                 </ul>
 
   </div>

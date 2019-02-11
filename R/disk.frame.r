@@ -2,7 +2,11 @@
 #' @param path The path to store the output file or to a directory
 #' @param backend The only available backend is fst at the moment
 #' @export
-disk.frame <- function(path, ..., backend = "fst") {
+disk.frame <- function(path, backend = "fst") {
+  
+  # only fst backend is implemented at the moment
+  stopifnot(backend == "fst")
+  
   if(dir.exists(path)) {
     disk.frame_folder(path)
   } else if (file.exists(path)) {
@@ -15,8 +19,13 @@ disk.frame <- function(path, ..., backend = "fst") {
 }
 
 #' Add metadata to the disk.frame
-#' @import fs
 #' @importFrom jsonlite toJSON fromJSON
+#' @importFrom fs dir_create file_create
+#' @param df a disk.frame
+#' @param nchunks number of chunks
+#' @param shardkey the shard key
+#' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
+#' @param ... another other metadata the user wishes to keep. 
 #' @export
 add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
   #browser()
@@ -51,7 +60,8 @@ add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", s
 }
 
 #' Create a data frame pointed to a folder
-disk.frame_folder <- function(path, ....) {
+#' @rdname disk.frame_fst
+disk.frame_folder <- function(path) {
   df <- list()
   df$files <- list.files(path, full.names = T)
   df$files_short <- list.files(path)
@@ -67,7 +77,7 @@ disk.frame_folder <- function(path, ....) {
 #' Create a disk.frame from fst files
 #' @param path The path to store the output file or to a directory
 #' @import fst
-disk.frame_fst <- function(path, ...) {
+disk.frame_fst <- function(path) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
   attr(df,"path") <- path
@@ -90,7 +100,8 @@ prepare_dir.disk.frame <- function(df, path, clean = F) {
 }
 
 
-#' is the disk.frame ready
+#' is the disk.frame ready from a long running non-blocking process
+#' @param df a disk.frame
 is_ready <- function(df) {
   return(TRUE)
   UseMethod("is_ready")  
@@ -134,6 +145,8 @@ is_ready.disk.frame <- function(df) {
 }
 
 #' Checks if the df is a single-file based disk.frame
+#' @param df a disk.frame
+#' @param check.consistency check for consistency e.g. if it's actually a file
 is.file.disk.frame <- function(df, check.consistency = T) {
   if(check.consistency) {
     fpath <- attr(df,"path")
@@ -147,31 +160,38 @@ is.file.disk.frame <- function(df, check.consistency = T) {
 }
 
 #' @rdname is.file.disk.frame
-is.dir.disk.frame <- function(...) {
-  !is.file.disk.frame(...)
+is.dir.disk.frame <- function(df, check.consistency = T) {
+  !is.file.disk.frame(df, check.consistency = check.consistency)
 }
 
 #' Head of the disk.frame
+#' @param x a disk.frame
+#' @param n number of rows to include
+#' @param ... as same base::head
 #' @export
 #' @import fst
-head.disk.frame <- function(df, n = 6L, ...) {
-  stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
-  cmds <- attr(df, "lazyfn")
+#' @importFrom utils head
+#' @rdname head_tail
+head.disk.frame <- function(x, n = 6L, ...) {
+  stopifnot(is_ready(x))
+  path1 <- attr(x,"path")
+  cmds <- attr(x, "lazyfn")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)[1]
-    head(disk.frame:::play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    head(play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   } else {
-    head(disk.frame:::play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    head(play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   }
 }
 
 #' tail of disk.frame
 #' @export
 #' @import fst
-tail.disk.frame <- function(df, n = 6L, ...) {
-  stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
+#' @importFrom utils tail
+#' @rdname head_tail
+tail.disk.frame <- function(x, n = 6L, ...) {
+  stopifnot(is_ready(x))
+  path1 <- attr(x,"path")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)
     path2 <- path2[length(path2)]
@@ -182,22 +202,23 @@ tail.disk.frame <- function(df, n = 6L, ...) {
 }
 
 #' Number of rows of disk.frame
+#' @param ... S3 method ....
 #' @export
-nrow <- function(...) {
+nrow <- function(df,...) {
   UseMethod("nrow")
 }
 
 #' @rdname nrow
 #' @export
-nrow.default <- function(...) {
-  base::nrow(...)
+nrow.default <- function(df, ...) {
+  base::nrow(df, ...)
 }
 
-#' @rdname nrow
 #' @export
 #' @param df a disk.frame
+#' @rdname nrow
 #' @import fst
-nrow.disk.frame <- function(df) {
+nrow.disk.frame <- function(df, ...) {
   stopifnot(is_ready(df))
   path1 <- attr(df,"path")
   if(dir.exists(path1)) {
@@ -217,76 +238,17 @@ nrow.disk.frame <- function(df) {
   }
 }
 
-#' do to all chunks
-#' @export
-#' @rdname map
-chunk_lapply <- function (...) {
-  warning("chunk_lapply is deprecated in favour of map.disk.frame")
-  map.disk.frame(...)
-}
-
-#' Apply the same function to all chunks
-#' @param df a disk.frame
-#' @param fn a function to apply to each of the chunks
-#' @param outdir the output directory
-#' @param keep the columns to keep from the input
-#' @param chunks The number of chunks to output
-#' @param lazy if TRUE then do this lazily
-#' @param compress 0-100 fst compression ratio
-#' @param overwrite if TRUE removes any existing chunks in the data
-#' @import fst purrr
-#' @importFrom future.apply future_lapply
-#' @export
-map.disk.frame <- function(df, fn, ..., outdir = NULL, keep = NULL, chunks = nchunks(df), compress = 50, lazy = T, overwrite = F) {  
-  #browser()
-  fn = purrr::as_mapper(fn)
-  if(lazy) {
-    attr(df, "lazyfn") = c(attr(df, "lazyfn"), fn)
-    return(df)
-  }
-  
-  if(!is.null(outdir)) {
-    overwrite_check(outdir, overwrite)
-  }
-  
-  stopifnot(is_ready(df))
-  
-  keep1 = attr(df,"keep")
-  
-  if(is.null(keep)) {
-    keep = keep1
-  }
-  
-  path <- attr(df, "path")
-  files <- list.files(path, full.names = T)
-  files_shortname <- list.files(path)
-  
-  keep_future = keep
-  res = future.apply::future_lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(df, ii, keep=keep_future)
-    res = fn(ds)
-    if(!is.null(outdir)) {
-      fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
-      return(ii)
-    } else {
-      return(res)
-    }
-  })
-  
-  if(!is.null(outdir)) {
-    return(disk.frame(outdir))
-  } else {
-    return(res)
-  }
-}
-
 #' Lazy chunk_lapply wrapper
+#' @param df a disk.frame
+#' @param fn a function to apply to df i.e. fn(df) will be called
+#' @param ... passed to disk.frame::map.disk.frame
 #' @export
 #' @rdname map
 lazy <- function(df,...) {
   UseMethod("lazy")
 }
 
+#' @rdname map
 lazy.disk.frame <- function(df, fn, ...) {
   map.disk.frame(df, fn, lazy=T, ...)
 }
@@ -305,6 +267,11 @@ delayed.disk.frame <- function(df, fn, ...) {
 }
  
 #' [ interface for disk.frame using fst backend
+#' @param df a disk.frame
+#' @param i same as data.table
+#' @param j same as data.table
+#' @param ... same as data.table
+#' @param keep the columns to srckeep
 #' @import fst 
 #' @importFrom future.apply future_lapply
 #' @importFrom data.table rbindlist 
@@ -355,6 +322,7 @@ delayed.disk.frame <- function(df, fn, ...) {
 
 #' Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard
 #' @export
+#' @param ... passed to shard
 #' @rdname shard
 distribute <- function(...) {
   UseMethod("shard")
@@ -363,18 +331,19 @@ distribute <- function(...) {
 #' Number of columns
 #' @import fst
 #' @export
-ncol <- function(x) {
+ncol <- function(df) {
   UseMethod("ncol")
 }
 
 #' @import fs
 #' @export
+#' @param df a disk.frame
 #' @rdname ncol
 ncol.disk.frame <- function(df) {
-  length(names(df))
+  length(colnames(df))
 }
 
 #' @export
-ncol.default <- function(x) {
-  base::ncol(x)
+ncol.default <- function(df) {
+  base::ncol(df)
 }

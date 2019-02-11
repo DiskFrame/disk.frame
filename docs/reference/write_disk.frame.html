@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write out a disk.frame to a location — write_disk.frame • disk.frame</title>
+<title>Write out a data.frame/disk.frame to a disk.frame location — write_disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Write out a disk.frame to a location — write_disk.frame" />
+<meta property="og:title" content="Write out a data.frame/disk.frame to a disk.frame location — write_disk.frame" />
 
-<meta property="og:description" content="Write out a disk.frame to a location" />
+<meta property="og:description" content="Write out a data.frame/disk.frame to a disk.frame location" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,18 +106,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write out a disk.frame to a location</h1>
+    <h1>Write out a data.frame/disk.frame to a disk.frame location</h1>
     
     <div class="hidden name"><code>write_disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Write out a disk.frame to a location</p>
+    <p>Write out a data.frame/disk.frame to a disk.frame location</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+    <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='no'>outdir</span>, <span class='no'>nchunks</span>, <span class='no'>overwrite</span>, <span class='no'>shardkey</span>, <span class='no'>shardchunks</span>,
+  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)
+
+<span class='fu'>output_disk.frame</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,6 +132,30 @@
     <tr>
       <th>outdir</th>
       <td><p>output directory for the disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>nchunks</th>
+      <td><p>number of chunks</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite output directory</p></td>
+    </tr>
+    <tr>
+      <th>shardkey</th>
+      <td><p>the columns to shard by</p></td>
+    </tr>
+    <tr>
+      <th>shardchunks</th>
+      <td><p>the number of chunks to shard to shard to. It is always greater than or equal to nchunks</p></td>
+    </tr>
+    <tr>
+      <th>compress</th>
+      <td><p>compression ratio for fst files</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>passed to map.disk.frame</p></td>
     </tr>
     </table>
     

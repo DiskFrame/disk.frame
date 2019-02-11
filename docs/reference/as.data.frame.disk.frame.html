@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert disk.frame to data.frame by collecint all chunks — as.data.frame.disk.frame • disk.frame</title>
+<title>Convert disk.frame to data.frame by collecting all chunks — as.data.frame.disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Convert disk.frame to data.frame by collecint all chunks — as.data.frame.disk.frame" />
+<meta property="og:title" content="Convert disk.frame to data.frame by collecting all chunks — as.data.frame.disk.frame" />
 
-<meta property="og:description" content="Convert disk.frame to data.frame by collecint all chunks" />
+<meta property="og:description" content="Convert disk.frame to data.frame by collecting all chunks" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,25 +106,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert disk.frame to data.frame by collecint all chunks</h1>
+    <h1>Convert disk.frame to data.frame by collecting all chunks</h1>
     
     <div class="hidden name"><code>as.data.frame.disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Convert disk.frame to data.frame by collecint all chunks</p>
+    <p>Convert disk.frame to data.frame by collecting all chunks</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>df</span>)</pre>
-        
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='no'>row.names</span>, <span class='no'>optional</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>row.names</th>
+      <td><p>NULL or a character vector giving the row names for the data frame. Missing values are not allowed.</p></td>
+    </tr>
+    <tr>
+      <th>optional</th>
+      <td><p>logical. If TRUE, setting row names and converting column names (to syntactic names: see make.names) is optional. Note that all of R's base package as.data.frame() methods use optional only for column names treatment, basically with the meaning of data.frame(*, check.names = !optional). See also the make.names argument of the matrix method.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments to be passed to or from methods.</p></td>
+    </tr>
+    </table>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
                 </ul>
 
   </div>

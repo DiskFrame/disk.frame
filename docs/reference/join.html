@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Performs anti_join — anti_join.disk.frame • disk.frame</title>
+<title>Performs join/merge for disk.frames — anti_join.disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Performs anti_join — anti_join.disk.frame" />
+<meta property="og:title" content="Performs join/merge for disk.frames — anti_join.disk.frame" />
 
-<meta property="og:description" content="Performs anti_join
-Performs full_join
-Perfomrs left join
+<meta property="og:description" content="Performs join/merge for disk.frames
 Performs semi join" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,16 +107,14 @@ Performs semi join" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Performs anti_join</h1>
+    <h1>Performs join/merge for disk.frames</h1>
     
     <div class="hidden name"><code>join.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Performs anti_join</p>
-<p>Performs full_join</p>
-<p>Perfomrs left join</p>
+    <p>Performs join/merge for disk.frames</p>
 <p>Performs semi join</p>
     
     </div>
@@ -132,6 +128,11 @@ Performs semi join" />
 <span class='fu'>full_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_full_join"</span>), <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>inner_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_inner_join"</span>),
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>left_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
@@ -155,44 +156,28 @@ Performs semi join" />
       <td><p>a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame</p></td>
     </tr>
     <tr>
-      <th>outdir</th>
-      <td><p>output directory for disk.frame</p></td>
+      <th>by</th>
+      <td><p>join by</p></td>
     </tr>
     <tr>
-      <th>x</th>
-      <td><p>a disk.frame</p></td>
+      <th>copy</th>
+      <td><p>same as dplyr::anti_join</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame</p></td>
-    </tr>
-    <tr>
-      <th>outdir</th>
-      <td><p>output directory for disk.frame</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>a disk.frame</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame</p></td>
+      <th>...</th>
+      <td><p>passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join</p></td>
     </tr>
     <tr>
       <th>outdir</th>
       <td><p>output directory for disk.frame</p></td>
     </tr>
     <tr>
-      <th>x</th>
-      <td><p>a disk.frame</p></td>
+      <th>merge_by_chunk_id</th>
+      <td><p>the merge is performed by chunk id</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame</p></td>
-    </tr>
-    <tr>
-      <th>outdir</th>
-      <td><p>output directory for disk.frame</p></td>
+      <th>overwrite</th>
+      <td><p>overwrite output directory</p></td>
     </tr>
     </table>
     

@@ -136,12 +136,20 @@
       <td><p>The output directory of the disk.frame</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>passed to data.table::foverlaps and disk.frame::map.disk.frame</p></td>
+    </tr>
+    <tr>
       <th>merge_by_chunk_id</th>
-      <td><p>If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise everychunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame</p></td>
+      <td><p>If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise every chunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame</p></td>
     </tr>
     <tr>
       <th>compress</th>
       <td><p>The compression ratio for fst</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite existing directory</p></td>
     </tr>
     </table>
     

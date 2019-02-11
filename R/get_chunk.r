@@ -2,7 +2,7 @@
 #' @param df a disk.frame
 #' @param n the chunk id. If numeric then matches by number, if character then returns the chunk with the same name as n
 #' @param keep the columns to keep
-#' @param full.name whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
+#' @param full.names whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
 #' @param ... passed to fst::read_fst or whichever read function is used in the backend
 #' @export
 get_chunk <- function(...) {
@@ -14,7 +14,7 @@ get_chunk <- function(...) {
 #' @import fst
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
-  #browser()
+  ##browser
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")
@@ -61,9 +61,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
     }
   } else {
     if(typeof(keep)!="closure") {
-      disk.frame:::play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
+      play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
     } else {
-      disk.frame:::play(read_fst(filename, as.data.table = T,...), cmds)
+      play(read_fst(filename, as.data.table = T,...), cmds)
     }
   }
 }

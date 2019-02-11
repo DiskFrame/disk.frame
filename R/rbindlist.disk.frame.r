@@ -4,9 +4,11 @@
 #' @param by_chunk_id If TRUE then only the chunks with the same chunk IDs will be bound
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
-#' @import purrr fs
+#' @param overwrite overwrite the output directory
+#' @import fs
 #' @importFrom data.table data.table setDT
 #' @importFrom future.apply future_lapply
+#' @importFrom purrr map_chr map_dfr map map_lgl
 #' @export
 rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
   overwrite_check(outdir, overwrite)
@@ -40,7 +42,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
     shardkeys <- purrr::map(df_list, shardkey)
     
     # if all the sharkeys are identical then
-    #browser()
+    ##browser
     if(all(purrr::map_lgl(shardkeys[-1], ~identical(.x, shardkeys[[1]])))) {
       return(add_meta(rbind_res, 
                shardkey = shardkeys[[1]]$shardkey,

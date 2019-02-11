@@ -1,10 +1,10 @@
 #' compute Area under the Curve (AUC)
 #' @param target the target
 #' @param score the score, the higher the score the less targets
-#' @export 
+#' @importFrom data.table setkey shift data.table
 auc <- function(target, score) {
-  a = data.table(target, score = -score)
-  setkey(a, score)
+  a = data.table::data.table(target, score = -score)
+  data.table::setkey(a, score)
   a1 = a[,.(h = sum(target), w = .N), score]
   
   

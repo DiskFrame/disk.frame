@@ -1,7 +1,7 @@
-source("inst/fannie_mae_10pct/0_setup.r")
+source("inst/fannie_mae_10pct/00_setup.r")
 
 # number of rows to read in from each file in one go
-nreadin = 10e7
+nreadin = 1e7
 
 # compression ratio, max = 100 for best compression but slower running speed
 #compress = 50
@@ -27,9 +27,10 @@ l = length(full_file_path)
 
 # convert CSV in parallel
 pt <- proc.time()
-res = future.apply::future_Map(function(relative_file_pathi, full_file_pathi) {
+res = future.apply::future_mapply(function(relative_file_pathi, full_file_pathi) {
+#res = mapply(function(relative_file_pathi, full_file_pathi) {
   relative_file_pathi # for glue
-  csv_to_disk.frame(
+  df = csv_to_disk.frame(
     full_file_pathi, 
     file.path(outpath, glue("raw_fannie_mae/{relative_file_pathi}")), 
     shardby = "loan_id", 
@@ -40,5 +41,7 @@ res = future.apply::future_Map(function(relative_file_pathi, full_file_pathi) {
     #compress = compress, 
     in_chunk_size = nreadin, 
     overwrite = T)
-}, relative_file_path, full_file_path)
+  #browser()
+  df
+}, relative_file_path, full_file_path, SIMPLIFY = F)
 print(timetaken(pt))

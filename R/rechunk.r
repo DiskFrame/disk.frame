@@ -2,8 +2,17 @@
 #' @param df the disk.frame to rechunk
 #' @param nchunks number of chunks
 #' @param shardby the shardkeys
+#' @param outdir the output directory
+#' @param overwrite overwrite the output directory
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
+  # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
+  # but if we do it too late then the folder could be empty
+  force(nchunks) 
+  if (nchunks < 1) {
+    stop(glue::glue("nchunks must be larger than 1"))
+  }
+  
   #browser()
   stopifnot("disk.frame" %in% class(df))
   user_had_not_set_shard_by = is.null(shardby)
@@ -15,25 +24,28 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
   if(outdir == attr(df,"path")) {
     back_up_tmp_dir <- tempfile("back_up_tmp_dir")
     fs::dir_create(back_up_tmp_dir)
-    print(glue::glue("files have been backed up to temporary dir {back_up_tmp_dir}. You can recover there files until you restart your R session"))
     
     fs::dir_copy(
       file.path(outdir, ".metadata"), #from
-      file.path(back_up_tmp_dir,".metadata") #to
-      )
-    
-    if(fs::dir_exists(file.path(outdir, ".metadata"))) {
-      fs::dir_delete(file.path(outdir, ".metadata"))
-    }
+      file.path(back_up_tmp_dir, ".metadata") #to
+    )
     
     # back-up the files first
     full_files = dir(outdir, full.names = T)
     short_files = dir(outdir)
     
     # move all files to the back up folder
-    purrr::map2(full_files, short_files, ~{
-      fs::file_move(.x, file.path(back_up_tmp_dir, .y))
+    purrr::map(full_files, ~{
+      fs::file_move(.x, back_up_tmp_dir)
     })
+    
+    if(fs::dir_exists(file.path(outdir, ".metadata"))) {
+      fs::dir_delete(file.path(outdir, ".metadata"))
+    }
+    
+    # TODO check for validity
+    
+    print(glue::glue("files have been backed up to temporary dir {back_up_tmp_dir}. You can recover there files until you restart your R session"))
     
     df = disk.frame(back_up_tmp_dir)
   }
@@ -100,7 +112,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     list_of_sharded = c(bad_boys, oks)
     
     system.time(new_one <- rbindlist.disk.frame(list_of_sharded, outdir=outdir, by_chunk_id = T, overwrite = overwrite))
-    #browser()
+    ##browser
     res = add_meta(new_one, nchunks = nchunks(new_one), shardkey = shardby, shardchunks = nchunks)
     return(res)
   }

@@ -13,7 +13,7 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 
 ## Vignette
 
-Please see this vignette [Introduction to disk.frame](https://rpubs.com/xiaodai/intro-disk-frame) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
+Please see this vignette [Introduction to disk.frame](https://rpubs.com/xiaodai/intro_disk_frame) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
 
 ## Common questions
 
@@ -62,10 +62,9 @@ library(fst)
 #library(future)
 #library(future.apply)
 #library(data.table)
-nworkers = parallel::detectCores(logical=F)
-cat(nworkers," workers\n")
-#plan(multiprocess, workers = nworkers, gc = T)
-#options(future.globals.maxSize=Inf)
+
+# this is run automatically, but you may want to use more or less workers with setup_disk.frame(workers = n)
+setup_disk.frame() # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
 
 rows_per_chunk = 1e7
 # generate synthetic data
@@ -123,17 +122,39 @@ system.time(df_filtered <- df %>%
               filter(a < 0.1))
 cat("filtering a < 0.1 took: ", timetaken(pt), "\n")
 nrow(df_filtered)
+```
 
-# group by
+### Group by
+Group-by in disk.frame are performed within each chunk, hence a two-stage group by is required to obtain the correct group by results. The two-stage approach is preferred for performance reasons too.
+
+```r
 pt = proc.time()
 res1 <- df %>% 
   filter(b < 0.1) %>% 
   mutate(blt005 = b < 0.05) %>% 
-  group_by(blt005, hard = T) %>% # hard group_by is slower but avoid a 2nd stage aggregation
+  group_by(blt005) %>% 
+  summarise(suma = sum(a), n = n()) %>% 
+  collect %>%
+  group_by(blt005) %>% 
+  summarise(suma = sum(suma), n = sum(n)) %>% 
+cat("group by took: ", timetaken(pt), "\n")
+```
+
+However, a one-stage `group_by` is possible with a `hard_group_by` to first rechunk the disk.frame. This **not** recommended for performance reasons, as it can quite slow.
+```r
+pt = proc.time()
+res1 <- df %>% 
+  filter(b < 0.1) %>% 
+  mutate(blt005 = b < 0.05) %>% 
+  hard_group_by("blt005") %>% # hard group_by is slower but avoid a 2nd stage aggregation
+  group_by(blt005) %>% 
   summarise(suma = sum(a), n = n()) %>% 
   collect(parallel = T)
 cat("group by took: ", timetaken(pt), "\n")
+```
 
+### Other dplyr verbs
+```r
 # keep only one var is faster
 pt = proc.time()
 res1 <- df %>% 

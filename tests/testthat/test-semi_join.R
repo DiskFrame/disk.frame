@@ -1,7 +1,7 @@
 context("test-semi_join")
 
 setup({
-  library(magrittr)
+  #browser()
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
@@ -60,7 +60,6 @@ test_that("testing semi_join where right is disk.frame", {
     })
   expect_equal(nrow(ad50), 50)
 })
-
 
 teardown({
   fs::dir_delete("tmp_a_sj.df")

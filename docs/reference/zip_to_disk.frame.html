@@ -33,7 +33,7 @@
 <meta property="og:title" content="Automatically read and convert every single CSV file within the zip file to disk.frame format — zip_to_disk.frame" />
 
 <meta property="og:description" content="Automatically read and convert every single CSV file within the zip file to disk.frame format
-Automatically read and convert every single file within the zip file to disk.frame format" />
+Validate and auto-correct read and convert every single file within the zip file to df format" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,16 +115,14 @@ Automatically read and convert every single file within the zip file to disk.fra
     <div class="ref-description">
     
     <p>Automatically read and convert every single CSV file within the zip file to disk.frame format</p>
-<p>Automatically read and convert every single file within the zip file to disk.frame format</p>
+<p>Validate and auto-correct read and convert every single file within the zip file to df format</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>validation.check</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>zip_to_disk.frame2</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>col.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>colClasses</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>validation.check</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>)</pre>
+<span class='fu'>validate_zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,20 +136,16 @@ Automatically read and convert every single file within the zip file to disk.fra
       <td><p>The output directory for disk.frame</p></td>
     </tr>
     <tr>
-      <th>col.names</th>
-      <td><p>Columns names</p></td>
+      <th>...</th>
+      <td><p>passed to fread</p></td>
     </tr>
     <tr>
-      <th>colClasses</th>
-      <td><p>column classes</p></td>
+      <th>validation.check</th>
+      <td><p>should the function perform a check at the end to check for validatity of output. It can detect issues with conversion</p></td>
     </tr>
     <tr>
-      <th>zipfile</th>
-      <td><p>The zipfile</p></td>
-    </tr>
-    <tr>
-      <th>outdir</th>
-      <td><p>The output directory for disk.frame</p></td>
+      <th>overwrite</th>
+      <td><p>overwrite output directory</p></td>
     </tr>
     </table>
     

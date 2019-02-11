@@ -2,8 +2,9 @@
 #' @param df a disk.frame
 #' @param full.names If TRUE returns the full path to the file, Defaults to F.
 #' @param strip_extension If TRUE then the file extentsion in the chunk_id is removed. Defaults to TRUE
+#' @param ... passed to list.files
 #' @import stringr
-get_chunk_ids <- function(df, full.names = F, ..., strip_extension = T) {
+get_chunk_ids <- function(df, ..., full.names = F, strip_extension = T) {
   lf = list.files(attr(df,"path"), full.names = full.names, ...)
   if(full.names) {
     return(lf)
@@ -25,10 +26,13 @@ get_chunk_ids <- function(df, full.names = F, ..., strip_extension = T) {
 #' @param x a disk.frame
 #' @param y a disk.frame
 #' @param fn a function to be called on each chunk of x and y matched by chunk_id
-#' @import stringr purrr fst
+#' @param outdir output directory
+#' @import stringr fst
+#' @importFrom purrr as_mapper
 #' @importFrom data.table data.table
 #' @export
 map_by_chunk_id <- function(x, y, fn, outdir) {
+  #browser
   fn = purrr::as_mapper(fn)
   fs::dir_create(outdir)
   

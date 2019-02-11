@@ -4,6 +4,7 @@
 #' @param minchunks the minimum number of chunks. Defaults to the number of CPU cores (without hyper-threading)
 #' @param conservatism a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM
 #' @importFrom pryr object_size
+#' @importFrom utils memory.limit
 #' @export
 recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = F), conservatism = 2) {
   dfsize = 0
@@ -19,8 +20,17 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   
 
   # the amount of memory available in gigabytes
-  ml = memory.limit() / 1024
+  if (Sys.info()[["sysname"]] == "Windows") {
+    ml = memory.limit() / 1024
+  } else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
+    ml = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = T) / 1024)
+  } else {
+    ml = 128
+  }
   
+  # assume at least 1G of RAM
+  ml = max(ml, 1)
+    
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
   nc = parallel::detectCores(logical = F)
   

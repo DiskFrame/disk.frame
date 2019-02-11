@@ -32,9 +32,9 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map_by_chunk_id(x, y, ~{
-        if(is.na(.y)) {
+        if(is.null(.y)) {
           return(data.table())
-        } else if (is.na(.x)) {
+        } else if (is.null(.x)) {
           return(data.table())
         }
         semi_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)

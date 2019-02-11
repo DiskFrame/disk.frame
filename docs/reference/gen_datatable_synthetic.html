@@ -118,20 +118,27 @@
     </div>
 
     <pre class="usage"><span class='fu'>gen_datatable_synthetic</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>2e+08</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>100</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>N</th>
+      <td><p>number of rows. Defaults to 200 million</p></td>
+    </tr>
+    <tr>
+      <th>K</th>
+      <td><p>controls the number of unique values for id. Some ids will have K distinct values while others have N/K distinct values</p></td>
+    </tr>
+    </table>
+    
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>#system.time(DT <- gen_datatable_synthetic())
-#system.time(fst::write.fst(DT,file.path(data_path, "DT.fst")))
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

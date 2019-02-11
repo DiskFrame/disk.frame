@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Convert a SAS file (.sas7bdat) format to CSV by chunks — sas_to_csv" />
 
-<meta property="og:description" content="Convert a SAS file (.sas7bdat) format to CSV by chunks" />
+<meta property="og:description" content="Convert a SAS file (.sas7bdat) format to CSV by chunks
+Convert a SAS file (.sas7bdat format) to disk.frame via CSVs" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,17 +115,47 @@
     <div class="ref-description">
     
     <p>Convert a SAS file (.sas7bdat) format to CSV by chunks</p>
+<p>Convert a SAS file (.sas7bdat format) to disk.frame via CSVs</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>sas_to_csv</span>(<span class='no'>infile</span>, <span class='no'>chunk</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'>file_size</span>(<span class='no'>infile</span>)))</pre>
-        
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'>file_size</span>(<span class='no'>infile</span>)))
+
+<span class='fu'>sas_to_disk.frame</span>(<span class='no'>inpath</span>, <span class='no'>outpath</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='no'>inpath</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>infile</th>
+      <td><p>the SAS7BDAT file</p></td>
+    </tr>
+    <tr>
+      <th>chunk</th>
+      <td><p>which convert of nchunks to convert</p></td>
+    </tr>
+    <tr>
+      <th>nchunks</th>
+      <td><p>number of chunks</p></td>
+    </tr>
+    <tr>
+      <th>inpath</th>
+      <td><p>input SAS7BDAT file</p></td>
+    </tr>
+    <tr>
+      <th>outpath</th>
+      <td><p>output disk.frame</p></td>
+    </tr>
+    </table>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
                 </ul>
 
   </div>

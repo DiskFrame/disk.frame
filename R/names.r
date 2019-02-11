@@ -1,8 +1,24 @@
+#' Return the column names of the disk.frame
+#' @param x a disk.frame
+#' @param ... not used
 #' @export
-#' @import fs
-#' @import fst
-names.disk.frame <- function(df) {
-  res = attr(df,"path") %>% 
+#' @importFrom fs dir_ls
+#' @importFrom fst metadata_fst
+#' @export
+colnames <- function(x, ...) {
+  UseMethod("colnames")
+}
+
+#' @rdname colnames
+#' @export
+names.disk.frame <- function(x, ...) {
+  colnames.disk.frame(x, ...)
+}
+
+#' @rdname colnames
+#' @export
+colnames.disk.frame <- function(x, ...) {
+  res = attr(x, "path") %>% 
     fs::dir_ls(type="file")
   if(length(res) == 0) {
     return(vector("character"))
@@ -10,15 +26,9 @@ names.disk.frame <- function(df) {
   fst::metadata_fst(res[1])$columnNames
 }
 
-colnames.disk.frame <- function(df) {
-  names.disk.frame(df)
-}
 
+#' @rdname colnames
 #' @export
-colnames <- function(x, ...) {
-  UseMethod("colnames")
-}
-
 colnames.default <- function(x, ...) {
-  Base::colnames(x, ...)
+  base::colnames(x, ...)
 }

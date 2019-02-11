@@ -26,3 +26,10 @@ Rplot\.png
 fmdf0/
 *.png
 !disk.frame.png
+*.ws
+*.ws.RData
+tmp_*/
+*.xgbm
+model.rds
+scorecard.rds
+first_harp_date.df

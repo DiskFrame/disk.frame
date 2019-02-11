@@ -6,10 +6,15 @@
 #' @param prev_pred a vector of score equal to the nrow(df) which is the previous predictions used for hot-start
 #' @param format_fn a function to transform the feature vector before fitting a model
 #' @param save_model_fname the file name to save the xgboost model as
-#' @importFrom xgboost xgb.DMatrix xgboost xgb.save
-#' @export
+#' @param weight The weight of each entry
+#' @importFrom xgboost xgb.DMatrix xgboost xgb.save setinfo
+#' @importFrom data.table timetaken setnames
+#' @importFrom stats predict
 add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, prev_pred = NULL, format_fn = base::I, weight = NULL, save_model_fname = "") {
-  #browser()
+  if(!requireNamespace("xgboost", quietly = T)) {
+    stop("you must install xgboost to use this function; e.g. install.packages('xgboost')")
+  }
+
   print(glue::glue("doing {feature}"))
   xy = df %>%
     srckeep(c(target, feature, weight)) %>%
@@ -49,7 +54,7 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
     )
     timetaken(pt)
   } else {
-    setinfo(dtrain, "base_margin", prev_pred)
+    xgboost::setinfo(dtrain, "base_margin", prev_pred)
     pt = proc.time()
     m2 <- xgboost::xgboost(
       data=dtrain, 
@@ -100,9 +105,10 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
   res
 }
 
-#' Print 
-#' @export
-print.xgdf_scorecard <- function(res) {
+#' Print xgboost scorecard
+#' @param x the Xgboost modelling result
+#' @param ... not used. Kept for compatibility
+print.xgdf_scorecard <- function(x, ...) {
   print(glue::glue("AUC: {res$auc}; GINI: {2*res$auc-1}"))
-  print(res$bins)
+  print(x$bins)
 }
