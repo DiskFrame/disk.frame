@@ -17,3 +17,15 @@ nchunks(fmdf)
 
 fmdf %>% delayed(~.x[,.(sum(is.na(prin_forg_upb_oth )))]
 ) %>% dput
+
+
+if(F) {
+  #239.44 
+  system.time(uid <- fmdf %>% 
+                srckeep("loan_id") %>% 
+                summarise(uid = unique(loan_id)) %>% 
+                collect)
+  # the sharding is correct
+  
+  n_distinct(uid$uid)
+}
