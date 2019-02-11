@@ -54,7 +54,7 @@ add_var_to_scorecard <- function(df, target, feature, monotone_constraints = 0, 
     )
     timetaken(pt)
   } else {
-    setinfo(dtrain, "base_margin", prev_pred)
+    xgboost::setinfo(dtrain, "base_margin", prev_pred)
     pt = proc.time()
     m2 <- xgboost::xgboost(
       data=dtrain, 

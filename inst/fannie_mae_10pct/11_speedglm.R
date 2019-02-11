@@ -16,7 +16,7 @@ stream_shglm <- function(df) {
   function(reset = F) {
     #browser()
     if(reset) {
-      print("you've reset")
+      print("reset")
       i <<- 0
     } else {
       i <<- i + 1
@@ -24,7 +24,7 @@ stream_shglm <- function(df) {
       if (i > nchunks(df)) {
         return(NULL)
       }
-      print(glue::glue("{i}/{nchunks(df)}"))
+      print(glue::glue("streaming: {i}/{nchunks(df)}"))
       return(get_chunk(df, is[i]))
       #return(get_chunk(df, i))
     }

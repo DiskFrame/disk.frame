@@ -29,3 +29,7 @@ fmdf0/
 *.ws
 *.ws.RData
 tmp_*/
+*.xgbm
+model.rds
+scorecard.rds
+first_harp_date.df
