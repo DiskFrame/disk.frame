@@ -19,7 +19,7 @@ write_disk.frame <- function(df, outdir, nchunks, overwrite, shardkey, shardchun
   }
   
   if(is_disk.frame(df)) {
-    map.disk.frame(df, ~.x, outdir = outdir, lazy = F, ..., overwrite = overwrite)
+    map.disk.frame(df, ~.x, outdir = outdir, lazy = F, ..., compress = compress, overwrite = overwrite)
   } else if ("data.frame" %in% class(df)) {
     df[,{
       if (base::nrow(.SD) > 0) {
