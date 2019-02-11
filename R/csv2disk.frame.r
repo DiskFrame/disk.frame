@@ -11,7 +11,6 @@
 #' @param overwrite Whether to overwrite the existing directory
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
 #' @export
-#csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {
   #browser()
   overwrite_check(outdir, overwrite)
@@ -19,12 +18,10 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
   
   l = length(list.files(outdir))
   if(is.null(shardby)) {
-    #a = write_fst(inmapfn(data.table::fread(infile, colClasses=colClasses, col.names = col.names, ...)), file.path(outdir,paste0(l+1,".fst")),compress=compress,...)
     a = as.disk.frame(inmapfn(data.table::fread(infile, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
     return(a)
   } else { # so shard by some element
     if(is.null(in_chunk_size)) {
-      #shard(inmapfn(data.table::fread(infile,colClasses = colClasses, col.names = col.names, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = T,compress=compress,...)
       shard(inmapfn(data.table::fread(infile, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
     } else {
       i <- 0
@@ -37,8 +34,6 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       while(!done) {
         tmpdt = inmapfn(data.table::fread(
           infile,
-          #colClasses = colClasses, 
-          #col.names = col.names, 
           skip = skiprows, nrows = in_chunk_size, ...))
         i <- i + 1
         skiprows = skiprows + in_chunk_size
@@ -57,7 +52,6 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
         rm(tmpdt); gc()
       }
       
-
       print(glue("read {rows} rows from {infile}"))
       
       # do not run this in parallel as the level above this is likely in parallel
@@ -67,17 +61,13 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
             lapply(
               list.files(
                 tmpdir1,full.names = T), disk.frame), 
-            outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite))
+            outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite, compress = compress))
       
       # remove the files
       fs::dir_delete(tmpdir1)
-      #unlink(tmpdir1, recursive = T, force = T)
     }
   }
-  #disk.frame(outdir)
   df = disk.frame(outdir)
   df = add_meta(df, nchunks=disk.frame::nchunks(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
-  #browser()
   df
 }
-

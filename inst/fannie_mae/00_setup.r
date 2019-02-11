@@ -17,6 +17,8 @@ raw_perf_data_path = "c:/data/Performance_All/"
 raw_harp_data_path = "c:/data/fannie_mae/harp_files"
 #raw_harp_data_path = "D:/data/fannie_mae/harp_files"
 
+# level of compression from 1 to 100 where 100 is the highest level
+compress = 100
 
 # where the outputs go
 outpath = "c:/data/fannie_mae_disk_frame/"
