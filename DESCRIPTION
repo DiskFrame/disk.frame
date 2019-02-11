@@ -25,6 +25,7 @@ Imports:
     fst (>= 0.8.0),
     xgboost
 Depends:
+    R (>= 3.5.0),
     future,
     dplyr,
     data.table,
@@ -38,3 +39,5 @@ LinkingTo:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+URL: http://daizj.me/disk.frame/
+BugReports: https://github.com/xiaodaigh/disk.frame/issues

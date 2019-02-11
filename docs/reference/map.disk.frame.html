@@ -32,7 +32,9 @@
 
 <meta property="og:title" content="Apply the same function to all chunks — map.disk.frame" />
 
-<meta property="og:description" content="Apply the same function to all chunks" />
+<meta property="og:description" content="Apply the same function to all chunks
+imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
+second is the chunk ID" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,11 +116,18 @@
     <div class="ref-description">
     
     <p>Apply the same function to all chunks</p>
+<p>imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
+second is the chunk ID</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>map.disk.frame</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='no'>...</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='fu'>map.disk.frame</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+
+<span class='fu'>imap.disk.frame</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+
+<span class='fu'>chunk_lapply</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,6 +163,10 @@
     <tr>
       <th>overwrite</th>
       <td><p>if TRUE removes any existing chunks in the data</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>passed to disk.frame::map.disk.frame</p></td>
     </tr>
     </table>
     

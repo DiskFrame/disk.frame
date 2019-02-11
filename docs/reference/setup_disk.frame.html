@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of columns — ncol • disk.frame</title>
+<title>Set up disk.frame environment — setup_disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Number of columns — ncol" />
+<meta property="og:title" content="Set up disk.frame environment — setup_disk.frame" />
 
-<meta property="og:description" content="Number of columns" />
+<meta property="og:description" content="Set up disk.frame environment" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,28 +106,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of columns</h1>
+    <h1>Set up disk.frame environment</h1>
     
-    <div class="hidden name"><code>ncol.Rd</code></div>
+    <div class="hidden name"><code>setup_disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Number of columns</p>
+    <p>Set up disk.frame environment</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ncol</span>(<span class='no'>df</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>ncol</span>(<span class='no'>df</span>)</pre>
+    <pre class="usage"><span class='fu'>setup_disk.frame</span>(<span class='kw'>future_backend</span> <span class='kw'>=</span> <span class='no'>multiprocess</span>,
+  <span class='kw'>workers</span> <span class='kw'>=</span> <span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='no'>F</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>a disk.frame</p></td>
+      <th>future_backend</th>
+      <td><p>which future backend to use for parallelisation</p></td>
+    </tr>
+    <tr>
+      <th>workers</th>
+      <td><p>the number of worker (background R processes in the multiprocess environment)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>passed to `future::plan`</p></td>
     </tr>
     </table>
     

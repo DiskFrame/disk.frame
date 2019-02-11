@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of columns — ncol • disk.frame</title>
+<title>Keep only the variables from the input listed in selections — srckeep • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Number of columns — ncol" />
+<meta property="og:title" content="Keep only the variables from the input listed in selections — srckeep" />
 
-<meta property="og:description" content="Number of columns" />
+<meta property="og:description" content="Keep only the variables from the input listed in selections" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,21 +106,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of columns</h1>
+    <h1>Keep only the variables from the input listed in selections</h1>
     
-    <div class="hidden name"><code>ncol.Rd</code></div>
+    <div class="hidden name"><code>srckeep.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Number of columns</p>
+    <p>Keep only the variables from the input listed in selections</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ncol</span>(<span class='no'>df</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>ncol</span>(<span class='no'>df</span>)</pre>
+    <pre class="usage"><span class='fu'>srckeep</span>(<span class='no'>df</span>, <span class='no'>selections</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,6 +125,10 @@
     <tr>
       <th>df</th>
       <td><p>a disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>selections</th>
+      <td><p>The list of variables to keep from the input source</p></td>
     </tr>
     </table>
     

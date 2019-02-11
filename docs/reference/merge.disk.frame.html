@@ -118,17 +118,17 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>df1</span>, <span class='no'>df2</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df1</th>
+      <th>x</th>
       <td><p>a disk.frame</p></td>
     </tr>
     <tr>
-      <th>df2</th>
+      <th>y</th>
       <td><p>a disk.frame or data.frame</p></td>
     </tr>
     <tr>
@@ -136,7 +136,11 @@
       <td><p>The output directory for the disk.frame</p></td>
     </tr>
     <tr>
-      <th>merge_by_chunkd_id</th>
+      <th>...</th>
+      <td><p>passed to merge and map.disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>merge_by_chunk_id</th>
       <td><p>if TRUE then only chunks in df1 and df2 with the same chunk id will get merged</p></td>
     </tr>
     </table>

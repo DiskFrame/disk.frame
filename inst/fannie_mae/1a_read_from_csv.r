@@ -1,7 +1,7 @@
 source("inst/fannie_mae/0_setup.r")
 
 # number of rows to read in from each file in one go
-nreadin = 1e7
+nreadin = 1e7 # 10 million
 
 # compression ratio, max = 100 for best compression but slower running speed
 compress = 50
@@ -16,6 +16,31 @@ file_sizes = purrr::map_dbl(full_file_path, ~file.size(.x))
 # number of CPU cores
 nchunks = sum(file_sizes) %>% recommend_nchunks(type="csv")
 
+if(F) {
+  file_sizes = sum(unzip("c:/data/Performance_All.zip", list = T)$Length)
+  nchunks = sum(file_sizes) %>% recommend_nchunks(type="csv")
+
+  system.time(
+    list_of_df <- zip_to_disk.frame(
+      "c:/data/Performance_All.zip",
+      "c:/data/p_all",
+      shardby = "loan_id",
+      nchunks = nchunks,
+      colClasses = Performance_ColClasses,
+      col.names = Performance_Variables,
+      sep = "|",
+      compress = compress,
+      in_chunk_size = nreadin,
+      overwrite = T
+      )
+  )
+
+  list_of_df <- lapply(dir("c:/data/p_all", full.names = T), disk.frame)
+}
+
+
+
+
 # order the order of conversion by prioritising the largest files first. Because
 # handling the largest files are the most difficult, and if an error occurs it
 # is more likely to occur when converting large files, hence this will allow us
@@ -27,7 +52,7 @@ l = length(full_file_path)
 
 # convert CSV in parallel
 pt <- proc.time()
-future_lapply(1:l, function(i) {
+future.apply::future_lapply(1:l, function(i) {
   relative_file_pathi = relative_file_path[i]
   full_file_path
   csv_to_disk.frame(

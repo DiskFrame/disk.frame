@@ -117,7 +117,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>add_chunk</span>(<span class='no'>df</span>, <span class='no'>chunk</span>, <span class='kw'>chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>add_chunk</span>(<span class='no'>df</span>, <span class='no'>chunk</span>, <span class='kw'>chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,6 +133,10 @@
     <tr>
       <th>chunk_id</th>
       <td><p>a numeric number indicating the id of the chunk. If NULL it will be set to the largest chunk_id + 1</p></td>
+    </tr>
+    <tr>
+      <th>full.names</th>
+      <td><p>whether the chunk_id name match should be to the full file path not just the file name</p></td>
     </tr>
     </table>
     

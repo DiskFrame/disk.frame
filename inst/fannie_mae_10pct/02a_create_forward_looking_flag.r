@@ -1,12 +1,12 @@
 # 2_exploratory.r
-source("inst/fannie_mae_10pct/0_setup.r")
+source("inst/fannie_mae_10pct/00_setup.r")
 
 fmdf = disk.frame(file.path(outpath, "fm.df"))
 
 pt = proc.time()
 eg = fmdf %>% 
   srckeep(c("loan_id", "delq.status")) %>% 
-  group_by(loan_id, hard = F) %>% 
+  group_by(loan_id) %>% 
   summarise(n = n(), max.delq.status = max(as.integer(delq.status))) %>% 
   filter(n >= 12, max.delq.status == 3) %>% 
   delayed(~.x[1,]) %>% 

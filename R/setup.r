@@ -5,10 +5,7 @@
 #' @importFrom future plan multiprocess
 #' @export
 setup_disk.frame <- function(future_backend = multiprocess, workers = parallel::detectCores(logical = F), ...) {    
-  #requireNamespace("data.table") # this is required for things like data.table
   future::plan(future_backend, workers = workers, gc = T, ...)
   options(future.globals.maxSize=Inf)
   options(disk.frame.nworkers = workers)
-  
-  
 }

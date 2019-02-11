@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of columns — ncol • disk.frame</title>
+<title>Return the column names of the disk.frame — colnames • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Number of columns — ncol" />
+<meta property="og:title" content="Return the column names of the disk.frame — colnames" />
 
-<meta property="og:description" content="Number of columns" />
+<meta property="og:description" content="Return the column names of the disk.frame" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,28 +106,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of columns</h1>
+    <h1>Return the column names of the disk.frame</h1>
     
-    <div class="hidden name"><code>ncol.Rd</code></div>
+    <div class="hidden name"><code>colnames.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Number of columns</p>
+    <p>Return the column names of the disk.frame</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ncol</span>(<span class='no'>df</span>)
+    <pre class="usage"><span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>ncol</span>(<span class='no'>df</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
+      <th>x</th>
       <td><p>a disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
     </tr>
     </table>
     

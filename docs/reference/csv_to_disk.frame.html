@@ -134,7 +134,7 @@
     </tr>
     <tr>
       <th>inmapfn</th>
-      <td><p>A function to be applied to the chunk read in from CSV before the chunk is being written out. Commonly used to perform simple transformtions. Defaults to the identity function (ie. no transformation)</p></td>
+      <td><p>A function to be applied to the chunk read in from CSV before the chunk is being written out. Commonly used to perform simple transformations. Defaults to the identity function (ie. no transformation)</p></td>
     </tr>
     <tr>
       <th>nchunks</th>
@@ -153,16 +153,12 @@
       <td><p>For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.</p></td>
     </tr>
     <tr>
-      <th>colClasses</th>
-      <td><p>A vector containing the class of the columns. Valid values are "c", "n", "i", "d" for character, numeric, integer, and date respectively.</p></td>
+      <th>overwrite</th>
+      <td><p>Whether to overwrite the existing directory</p></td>
     </tr>
     <tr>
-      <th>col.names</th>
-      <td><p>The names of the columns</p></td>
-    </tr>
-    <tr>
-      <th>sep</th>
-      <td><p>The delimiter of the CSV fle, otherwise known as the separator</p></td>
+      <th>...</th>
+      <td><p>passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard</p></td>
     </tr>
     </table>
     

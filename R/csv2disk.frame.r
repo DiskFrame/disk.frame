@@ -13,7 +13,7 @@
 #' @export
 #csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, colClasses = NULL, col.names = NULL, sep = "auto", compress = 50, overwrite = T,...) {
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = T, ...) {
-  ##browser
+  #browser()
   overwrite_check(outdir, overwrite)
   
   
@@ -29,7 +29,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
     } else {
       i <- 0
       tmpdir1 = tempfile(pattern="df_tmp")
-      dir.create(tmpdir1)
+      fs::dir_create(tmpdir1)
       print(tmpdir1)
       
       done = F
@@ -76,6 +76,8 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
   }
   #disk.frame(outdir)
   df = disk.frame(outdir)
-  add_meta(df, nchunks=disk.frame::nchunks(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
+  df = add_meta(df, nchunks=disk.frame::nchunks(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
+  #browser()
+  df
 }
 

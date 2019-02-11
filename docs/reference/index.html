@@ -144,13 +144,13 @@
         <td>
           <p><code><a href="as.data.frame.disk.frame.html">as.data.frame(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Convert disk.frame to data.frame by collecint all chunks</p></td>
+        <td><p>Convert disk.frame to data.frame by collecting all chunks</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="as.data.table.disk.frame.html">as.data.table(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Convert disk.frame to data.table by collecint all chunks</p></td>
+        <td><p>Convert disk.frame to data.table by collecting all chunks</p></td>
       </tr><tr>
         
         <td>
@@ -172,6 +172,24 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="colnames.html">colnames()</a></code> <code><a href="colnames.html">names(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Return the column names of the disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="compat_as_lazy.html">compat_as_lazy()</a></code> </p>
+        </td>
+        <td><p>Internal method replicating dplyr's compat_as_lazy_dots as it's not exported</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="compat_as_lazy_dots.html">compat_as_lazy_dots()</a></code> </p>
+        </td>
+        <td><p>Internal method replicating dplyr's compat_as_lazy_dots as it's not exported</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="compute.disk.frame.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Perform the computation</p></td>
@@ -190,15 +208,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="disk.frame_folder.html">disk.frame_folder()</a></code> </p>
+          <p><code><a href="disk.frame_fst.html">disk.frame_folder()</a></code> <code><a href="disk.frame_fst.html">disk.frame_fst()</a></code> </p>
         </td>
         <td><p>Create a data frame pointed to a folder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="disk.frame_fst.html">disk.frame_fst()</a></code> </p>
-        </td>
-        <td><p>Create a disk.frame from fst files</p></td>
       </tr><tr>
         
         <td>
@@ -251,22 +263,9 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="hard_group_by_nb.disk.frame.html">hard_group_by_nb.disk.frame()</a></code> </p>
-        </td>
-        <td><p>The nb stands for non-blocking
-TODO make it work!</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="head.disk.frame.html">head(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="head_tail.html">head(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="head_tail.html">tail(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Head of the disk.frame</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inner_join.disk.frame.html">inner_join(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Perfomrs inner_join</p></td>
       </tr><tr>
         
         <td>
@@ -284,31 +283,25 @@ TODO make it work!</p></td>
         <td>
           <p><code><a href="is_ready.html">is_ready()</a></code> </p>
         </td>
-        <td><p>is the disk.frame ready</p></td>
+        <td><p>is the disk.frame ready from a long running non-blocking process</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="join.html">anti_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">full_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">left_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">semi_join(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="join.html">anti_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">full_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">inner_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">left_join(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="join.html">semi_join(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Performs anti_join</p></td>
+        <td><p>Performs join/merge for disk.frames</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="keep.html">keep()</a></code> <code><a href="keep.html">srckeep()</a></code> </p>
-        </td>
-        <td><p>Keep only the variables from the input listed in selections</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map.disk.frame.html">map.disk.frame()</a></code> </p>
+          <p><code><a href="map.disk.frame.html">map.disk.frame()</a></code> <code><a href="map.disk.frame.html">imap.disk.frame()</a></code> <code><a href="map.disk.frame.html">chunk_lapply()</a></code> </p>
         </td>
         <td><p>Apply the same function to all chunks</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map.html">chunk_lapply()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> </p>
+          <p><code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> </p>
         </td>
-        <td><p>do to all chunks</p></td>
+        <td><p>Lazy chunk_lapply wrapper</p></td>
       </tr><tr>
         
         <td>
@@ -342,12 +335,6 @@ TODO make it work!</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="output_disk.frame.html">output_disk.frame()</a></code> </p>
-        </td>
-        <td><p>Output a data.frame into disk.frame</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="overwrite_check.html">overwrite_check()</a></code> </p>
         </td>
         <td><p>Check if the outdir exists or not</p></td>
@@ -368,7 +355,7 @@ TODO make it work!</p></td>
         <td>
           <p><code><a href="print.xgdf_scorecard.html">print(<i>&lt;xgdf_scorecard&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Print</p></td>
+        <td><p>Print xgboost scorecard</p></td>
       </tr><tr>
         
         <td>
@@ -414,15 +401,15 @@ TODO make it work!</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="sas_to_csv.html">sas_to_csv()</a></code> </p>
+          <p><code><a href="sas_to_csv.html">sas_to_csv()</a></code> <code><a href="sas_to_csv.html">sas_to_disk.frame()</a></code> </p>
         </td>
         <td><p>Convert a SAS file (.sas7bdat) format to CSV by chunks</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="sas_to_disk.frame.html">sas_to_disk.frame()</a></code> </p>
+          <p><code><a href="setup_disk.frame.html">setup_disk.frame()</a></code> </p>
         </td>
-        <td><p>Convert a SAS file (.sas7bdat format) to disk.frame via CSVs</p></td>
+        <td><p>Set up disk.frame environment</p></td>
       </tr><tr>
         
         <td>
@@ -438,31 +425,31 @@ TODO make it work!</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="srckeep.html">srckeep()</a></code> </p>
+        </td>
+        <td><p>Keep only the variables from the input listed in selections</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="sub-.disk.frame.html">`[`(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>[ interface for disk.frame using fst backend</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tail.disk.frame.html">tail(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="tbl_vars.disk.frame.html">tbl_vars(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>tail of disk.frame</p></td>
+        <td><p>Returns the names of the columns. Needed for RStudio to complete variable names</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="validate_zip_to_disk.frame.html">validate_zip_to_disk.frame()</a></code> </p>
+          <p><code><a href="write_disk.frame.html">write_disk.frame()</a></code> <code><a href="write_disk.frame.html">output_disk.frame()</a></code> </p>
         </td>
-        <td><p>Validate and auto-correct read and convert every single file within the zip file to df format</p></td>
+        <td><p>Write out a data.frame/disk.frame to a disk.frame location</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="write_disk.frame.html">write_disk.frame()</a></code> </p>
-        </td>
-        <td><p>Write out a disk.frame to a location</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="zip_to_disk.frame.html">zip_to_disk.frame()</a></code> <code><a href="zip_to_disk.frame.html">zip_to_disk.frame2()</a></code> </p>
+          <p><code><a href="zip_to_disk.frame.html">zip_to_disk.frame()</a></code> <code><a href="zip_to_disk.frame.html">validate_zip_to_disk.frame()</a></code> </p>
         </td>
         <td><p>Automatically read and convert every single CSV file within the zip file to disk.frame format</p></td>
       </tr>

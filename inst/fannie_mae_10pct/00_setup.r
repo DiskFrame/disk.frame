@@ -1,8 +1,4 @@
-library(disk.frame)
 library(glue)
-library(dplyr)
-library(data.table)
-library(dtplyr)
 library(purrr)
 library(fst)
 library(tidyr)
@@ -10,16 +6,16 @@ library(ggplot2)
 library(stringr)
 library(xgboost)
 library(lubridate)
+library(disk.frame)
 
-nworkers = parallel::detectCores(logical = F)
-future::plan(multiprocess, workers = nworkers)
 
-#raw_perf_data_path = "C:/data/Performance_All/"
-raw_perf_data_path = "d:/data/Performance_All"
+
+raw_perf_data_path = "C:/data/Performance_All/"
+# raw_perf_data_path = "d:/data/Performance_All"
 
 # where the outputs go
-#outpath = "c:/data/fannie_mae_disk_frame/"
-outpath = "d:/data/fannie_mae_disk_frame_small/"
+outpath = "c:/data/fannie_mae_disk_frame/"
+# outpath = "d:/data/fannie_mae_disk_frame_small/"
 
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 

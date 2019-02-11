@@ -3,8 +3,6 @@ source("inst/fannie_mae/0_setup.r")
 
 fm_with_harp = disk.frame(file.path(outpath, "fm_with_harp"))
 
-
-
 head(fm_with_harp)
 
 nrow(fm_with_harp)
@@ -12,7 +10,7 @@ nrow(fm_with_harp)
 # need a two stage summary
 system.time(a_wh1 <- fm_with_harp %>% 
   srckeep(c("default_12m","monthly.rpt.prd")) %>% 
-  group_by(monthly.rpt.prd, hard = F) %>% 
+  group_by(monthly.rpt.prd) %>% 
   summarise(
     N = n(), 
     n_defaults = sum(default_12m, na.rm = T)) %>% 
