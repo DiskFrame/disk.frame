@@ -1,9 +1,9 @@
-#' dplyr version implemented for disk.frame
+#' dplyr verbs implemented for disk.frame
 #' @export
 #' @importFrom dplyr select_ rename_ filter_ mutate_ transmute_ arrange_ do_ groups group_by group_by_ glimpse summarise_
 #' @param ... Same as the dplyr functions
-#' @param .data disk.frame
-#' @param .dots this represents the ...
+#' @param .data a disk.frame
+#' @param .dots this represents the ... from a higher level
 #' @importFrom lazyeval all_dots
 #' @rdname dplyr_verbs
 select_.disk.frame <- function(.data, ..., .dots){
