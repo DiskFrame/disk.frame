@@ -83,7 +83,7 @@
 <div id="vignette" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vignette" class="anchor"></a>Vignette</h2>
-<p>Please see this vignette <a href="https://rpubs.com/xiaodai/intro_disk_frame">Introduction to disk.frame</a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</p>
+<p>Please see this vignette <a href="http://daizj.me/disk.frame/articles/intro-disk-frame.html">Introduction to disk.frame</a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</p>
 </div>
 <div id="common-questions" class="section level2">
 <h2 class="hasAnchor">
@@ -110,7 +110,7 @@
 <h3 class="hasAnchor">
 <a href="#d-how-does-disk-frame-work" class="anchor"></a>d) How does <code>disk.frame</code> work?</h3>
 <p><code>disk.frame</code> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
-<p><code>disk.frame</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/map.disk.frame.html">map.disk.frame(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>disk.frame</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
+<p><code>disk.frame</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/map.html">map.disk.frame(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>disk.frame</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
 </div>
 <div id="e-how-is-disk-frame-different-from-spark-dask-and-juliadb-jl" class="section level3">
 <h3 class="hasAnchor">
@@ -159,7 +159,7 @@
 <a class="sourceLine" id="cb1-33" data-line-number="33"></a>
 <a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co"># read and output the disk.frame as it to assess "sequential" read-write performance</span></a>
 <a class="sourceLine" id="cb1-35" data-line-number="35">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">df2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/map.disk.frame.html">map.disk.frame</a></span>(df, <span class="op">~</span>.x, <span class="dt">outdir =</span> <span class="st">"tmpfst2"</span>, <span class="dt">lazy =</span> F, <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">df2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/map.html">map.disk.frame</a></span>(df, <span class="op">~</span>.x, <span class="dt">outdir =</span> <span class="st">"tmpfst2"</span>, <span class="dt">lazy =</span> F, <span class="dt">overwrite =</span> T)</a>
 <a class="sourceLine" id="cb1-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Read and write took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb1-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co"># get first few rows</span></a>

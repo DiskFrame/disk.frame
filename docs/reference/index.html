@@ -216,7 +216,7 @@
         <td>
           <p><code><a href="dplyr_verbs.html">select_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">do_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>dplyr version implemented for disk.frame</p></td>
+        <td><p>dplyr verbs implemented for disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -293,15 +293,9 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map.disk.frame.html">map.disk.frame()</a></code> <code><a href="map.disk.frame.html">imap.disk.frame()</a></code> <code><a href="map.disk.frame.html">chunk_lapply()</a></code> </p>
+          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">imap.disk.frame()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
         </td>
         <td><p>Apply the same function to all chunks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> </p>
-        </td>
-        <td><p>Lazy chunk_lapply wrapper</p></td>
       </tr><tr>
         
         <td>
@@ -413,9 +407,9 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="shard.html">distribute()</a></code> <code><a href="shard.html">shard()</a></code> </p>
+          <p><code><a href="shard.html">shard()</a></code> <code><a href="shard.html">distribute()</a></code> </p>
         </td>
-        <td><p>Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard</p></td>
+        <td><p>Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame</p></td>
       </tr><tr>
         
         <td>

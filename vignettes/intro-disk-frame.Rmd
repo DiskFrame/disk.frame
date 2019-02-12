@@ -193,7 +193,9 @@ summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 The `do` function is also supported for performing arbitrary computation on each chunk
 ```{r, dependson='asdiskframe'}
 # get the first two rows of each chunk
-do(flights.df, head(., 2)) %>% select(year:day, arr_delay, dep_delay) %>% collect
+do(flights.df, head(., 2)) %>% 
+  select(year:day, arr_delay, dep_delay) %>% 
+  collect
 ```
 
 ### Piping
@@ -356,7 +358,7 @@ The below joins are performed *lazily* because `airlines.dt` is a `data.table` n
 
 ```{r airlines_dt, dependson='asdiskframe', cache=TRUE}
 # make airlines a data.table
-airlines.dt <- setDT(copy(airlines))
+airlines.dt <- data.table(airlines)
 # flights %>% left_join(airlines, by = "carrier") #
 flights.df %>% 
   left_join(airlines.dt, by ="carrier") %>% 
@@ -411,13 +413,13 @@ collect_list(flights.df1) %>% head # returns number of rows for each data.frame 
 and to do the same with `map.disk.frame`
 
 ```{r, dependson='asdiskframe'}
-map.disk.frame(flights.df, ~nrow(.x), lazy = F) %>% head
+map(flights.df, ~nrow(.x), lazy = F) %>% head
 ```
 The `map.disk.frame` function can also output the results to another disk.frame folder, e.g.
 
 ```{r, dependson='asdiskframe'}
 # return the first 10 rows of each chunk
-flights.df2 <- map.disk.frame(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2", overwrite = T)
+flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2", overwrite = T)
 
 flights.df2 %>% head
 ```

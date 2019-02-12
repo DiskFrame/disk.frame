@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lazy chunk_lapply wrapper — lazy • disk.frame</title>
+<title>Apply the same function to all chunks — map • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Lazy chunk_lapply wrapper — lazy" />
+<meta property="og:title" content="Apply the same function to all chunks — map" />
 
-<meta property="og:description" content="Lazy chunk_lapply wrapper
+<meta property="og:description" content="Apply the same function to all chunks
+imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
+second is the chunk ID
+`lazy` is convenience function to apply `.f` to every chunk
 Lazy chunk_lapply wrapper" />
 <meta name="twitter:card" content="summary" />
 
@@ -107,42 +110,80 @@ Lazy chunk_lapply wrapper" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lazy chunk_lapply wrapper</h1>
+    <h1>Apply the same function to all chunks</h1>
     
     <div class="hidden name"><code>map.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Lazy chunk_lapply wrapper</p>
+    <p>Apply the same function to all chunks</p>
+<p>imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
+second is the chunk ID</p>
+<p>`lazy` is convenience function to apply `.f` to every chunk</p>
 <p>Lazy chunk_lapply wrapper</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>lazy</span>(<span class='no'>df</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>lazy</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='no'>...</span>)
+<span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
 
-<span class='fu'>delayed</span>(<span class='no'>...</span>)
+<span class='fu'>imap.disk.frame</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+
+<span class='fu'>lazy</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>delayed</span>(<span class='no'>df</span>, <span class='no'>fn</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>lazy</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+
+<span class='fu'>delayed</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>delayed</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+
+<span class='fu'>chunk_lapply</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
+      <th>.x</th>
       <td><p>a disk.frame</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>passed to disk.frame::map.disk.frame</p></td>
+      <th>.f</th>
+      <td><p>a function to apply to each of the chunks</p></td>
     </tr>
     <tr>
-      <th>fn</th>
-      <td><p>a function to apply to df i.e. fn(df) will be called</p></td>
+      <th>...</th>
+      <td><p>for compatibility with `purrr::map`</p></td>
+    </tr>
+    <tr>
+      <th>outdir</th>
+      <td><p>the output directory</p></td>
+    </tr>
+    <tr>
+      <th>keep</th>
+      <td><p>the columns to keep from the input</p></td>
+    </tr>
+    <tr>
+      <th>chunks</th>
+      <td><p>The number of chunks to output</p></td>
+    </tr>
+    <tr>
+      <th>compress</th>
+      <td><p>0-100 fst compression ratio</p></td>
+    </tr>
+    <tr>
+      <th>lazy</th>
+      <td><p>if TRUE then do this lazily</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>if TRUE removes any existing chunks in the data</p></td>
     </tr>
     </table>
     
