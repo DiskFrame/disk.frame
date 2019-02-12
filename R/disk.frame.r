@@ -192,6 +192,7 @@ head.disk.frame <- function(x, n = 6L, ...) {
 tail.disk.frame <- function(x, n = 6L, ...) {
   stopifnot(is_ready(x))
   path1 <- attr(x,"path")
+  cmds <- attr(x, "lazyfn")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)
     path2 <- path2[length(path2)]

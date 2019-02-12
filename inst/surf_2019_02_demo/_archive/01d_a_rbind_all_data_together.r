@@ -1,4 +1,4 @@
-source("inst/fannie_mae_10pct/00_setup.r")
+source("inst/surf_2019_02_demo/00_setup.r")
 
 disk.frame_folders = dir(file.path(outpath, "raw_fannie_mae"),full.names = T)
 list_of_disk.frames <- purrr::map(disk.frame_folders, disk.frame)

@@ -1,10 +1,39 @@
 # 2_exploratory.r
-source("inst/fannie_mae/0_setup.r")
-outpath
-fmdf = disk.frame(file.path(outpath, "fm_with_harp"))
+source("inst/fannie_mae_10pct/00_setup.r")
 
-nrow(fmdf)
+fmdf = disk.frame(file.path(outpath, "fm.df"))
 
+pt = proc.time()
+eg = fmdf %>% 
+  srckeep(c("loan_id", "delq.status")) %>% 
+  group_by(loan_id) %>% 
+  summarise(n = n(), max.delq.status = max(as.integer(delq.status))) %>% 
+  filter(n >= 12, max.delq.status == 3) %>% 
+  delayed(~.x[1,]) %>% 
+  collect
+timetaken(pt)
+
+pt = proc.time()
+fmdf_eg = fmdf        %>% 
+  
+  srckeep(c(
+    "monthly.rpt.prd", 
+    "loan_id", 
+    "delq.status"))   %>% 
+  
+  inner_join(
+    eg, 
+    by = "loan_id")   %>% 
+  
+  collect             %>%
+  
+  mutate(
+    monthly.rpt.prd = as.Date(monthly.rpt.prd, "%m/%d/%Y")
+    ) %>% 
+  arrange(loan_id, monthly.rpt.prd)
+timetaken(pt)
+
+View(fmdf_eg) # see 2nd account
 
 # no need to hard group by it's already sharded by loan_id
 pt <- proc.time()

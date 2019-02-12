@@ -1,4 +1,4 @@
-source("inst/fannie_mae_10pct/0_setup.r")
+source("inst/fannie_mae_10pct/00_setup.r")
 library(disk.frame)
 
 acqall1 = disk.frame(file.path(outpath, "appl_mdl_data"))
