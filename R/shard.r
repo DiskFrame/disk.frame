@@ -4,6 +4,7 @@
 #' @param nchunks The number of chunks
 #' @param outdir The output directory of the disk.frame
 #' @param overwrite If TRUE then the chunks are overwritten
+#' @param ... not used
 #' @import fst
 #' @importFrom glue glue
 #' @export
@@ -22,4 +23,11 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
   eval(parse(text=code))
   
   write_disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = overwrite, shardkey = shardby, shardchunks = nchunks)
+}
+
+#' `distribute` is an alias for `shard`
+#' @export
+#' @rdname shard
+distribute <- function(...) {
+  UseMethod("shard")
 }

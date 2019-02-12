@@ -16,5 +16,5 @@ if(F) {
     outdir = "fm2.df", 
     nchunks = nchunks(fmdf), 
     overwrite = T, 
-    compress = 100))  
+    compress = compress))  
 }
