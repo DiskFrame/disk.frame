@@ -39,7 +39,7 @@ Additionally, `disk.frame` supports parallel data operations using infrastructur
 
 `disk.frame` works by breaking large datasets into smaller individual chunks and storing the chunks in `fst` files inside a folder. Each chunk is a `fst` file containing a `data.frame/data.table`. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large `data.frame`. Of course, in practice this isn't always possible; hence why we store them as smaller individual chunks.
 
-`disk.frame` makes it easy to manipulate the underlying chunks by implementing `dplyr` functions/verbs and other convenient functions (e.g. the `map.disk.frame(a.disk.frame, fn, lazy = F)` function which applies the function `fn` to each chunk of `a.disk.frame` in parallel). So that `disk.frame` can be manipulated in a similar fashion to in-memory `data.frame`s.
+`disk.frame` makes it easy to manipulate the underlying chunks by implementing `dplyr` functions/verbs and other convenient functions (e.g. the `map(a.disk.frame, fn, lazy = F)` function which applies the function `fn` to each chunk of `a.disk.frame` in parallel). So that `disk.frame` can be manipulated in a similar fashion to in-memory `data.frame`s.
 
 ### e) How is `disk.frame` different from Spark, Dask, and JuliaDB.jl?
 
@@ -86,7 +86,7 @@ cat("Generating data took: ", timetaken(pt), "\n")
 
 # read and output the disk.frame as it to assess "sequential" read-write performance
 pt = proc.time()
-df2 <- map.disk.frame(df, ~.x, outdir = "tmpfst2", lazy = F, overwrite = T)
+df2 <- map(df, ~.x, outdir = "tmpfst2", lazy = F, overwrite = T)
 cat("Read and write took: ", timetaken(pt), "\n")
 
 # get first few rows
