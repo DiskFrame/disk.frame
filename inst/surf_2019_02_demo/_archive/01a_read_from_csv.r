@@ -1,4 +1,4 @@
-source("inst/fannie_mae_10pct/00_setup.r")
+source("inst/surf_2019_02_demo/00_setup.r")
 
 # number of rows to read in from each file in one go
 nreadin = 1e7

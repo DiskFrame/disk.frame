@@ -1,0 +1,105 @@
+---
+title: "Simple Fannie Mae Example"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+# 2_exploratory.r
+source("../fannie_mae/00_setup.r")
+```
+
+# Assign a `disk.frame`
+You use `disk.frame(path)` to assign a disk.frame
+
+```{r}
+dir(file.path(outpath, "fm_with_harp")) %>% 
+  head
+```
+
+Use the function `disk.frame` to assign a folder
+```{r}
+fm_with_harp = 
+  disk.frame(file.path(outpath, "fm_with_harp"))
+
+fm_with_harp
+```
+
+## Simple info about disk.frame
+```{r}
+nrow(fm_with_harp)
+
+ncol(fm_with_harp)
+```
+
+
+```{r}
+head(fm_with_harp)
+```
+
+```{r}
+tail(fm_with_harp)
+```
+
+## Simple group-by example
+
+I want create the `sum(default_12m)` group by month. The sql statement looks like
+
+```sql
+select
+  monthly.rpt.prd,
+  sum(default_12m) as n_defaults,
+  count(*) as cnt,
+  n_default/cnt as odr # observed default rate
+from
+  table;
+```
+This analysis only uses two columns, namely `default_12m` and `monthly.rpt.prd`. So I use `srckeep` to ensure that only those two columns are loaded.
+
+The backend for disk.frame is fst which allows **random access** to columns AKA load only what you need! This is importance for performance!
+```{r}
+system.time(a_wh1 <- fm_with_harp %>% 
+  srckeep(c("default_12m","monthly.rpt.prd")) %>% 
+  group_by(monthly.rpt.prd) %>% 
+  summarise(
+    N = n(), 
+    n_defaults = sum(default_12m, na.rm = T)))
+```
+The error recognises that the `shardkey` is `loan_id` which is not the group-by variable - `monthly.rpt.prd`.
+
+The operations returned almost instantly, this is because the computation was done lazily. For now operations are recorded. No computation will take place until `collect` or `compute` is called.
+
+Now **play** the recording by calling `collect`. This will take a minute. Back to the slides:
+
+```{r}
+system.time(a_wh2 <- a_wh1 %>% collect) # 60~70 plugged in
+
+a_wh2
+```
+
+once `collect` is called the resultant data is stored as a data.frame.
+
+However this is not the correct result, as the group by was performed within each chunk. Hence we need a second stage group by. The second group by takes no time at all, as everything was done in memory
+
+```{r}
+system.time(a_wh3 <- a_wh2 %>%
+  group_by(monthly.rpt.prd) %>% 
+  summarise(
+    odr = sum(n_defaults)/sum(N)
+  ) %>% 
+  rename(
+    Date = monthly.rpt.prd,
+    `Observed Default Rate%` = odr
+  ))
+```
+
+Manipulate the data and plot
+```{r}
+a_wh4 = a_wh3 %>% 
+  gather(key = type, value=rate, -Date)
+
+ggplot(a_wh4) + 
+  geom_line(aes(x=Date, y = rate, colour = type)) +
+  ggtitle("Fannie Mae Observed Default Rate over time & HARP Conversion Rate")
+```

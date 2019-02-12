@@ -1,7 +1,7 @@
 source("inst/fannie_mae_10pct/00_setup.r")
 library(disk.frame)
 library(xgboost)
-acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled"))
+acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev"))
   
 add_var_to_scorecard = disk.frame:::add_var_to_scorecard
 

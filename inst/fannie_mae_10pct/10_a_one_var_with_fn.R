@@ -4,7 +4,7 @@ library(disk.frame)
 acqall1 = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 pt <- proc.time()
-firstm <- add_var_to_scorecard(acqall1, "default_next_12m", "oltv", monotone_constraints = 1, format_fn = function(v) {
+firstm <- disk.frame:::add_var_to_scorecard(acqall1, "default_next_12m", "oltv", monotone_constraints = 1, format_fn = function(v) {
   ceiling(v / 5) * 5
 })
 timetaken(pt)
@@ -13,7 +13,7 @@ firstm
 
 # now add the second variable ---------------------------------------------
 pt <- proc.time()
-secondm <- add_var_to_scorecard(
+secondm <- disk.frame:::add_var_to_scorecard(
   acqall1, 
   "default_next_12m", 
   "dti", 
@@ -22,7 +22,7 @@ secondm <- add_var_to_scorecard(
 timetaken(pt)
 
 pt <- proc.time()
-thirdm <- add_var_to_scorecard(
+thirdm <- disk.frame:::add_var_to_scorecard(
   acqall1, 
   "default_next_12m", 
   "orig_trm", 
@@ -31,7 +31,7 @@ thirdm <- add_var_to_scorecard(
 timetaken(pt)
 
 pt <- proc.time()
-fourthm <- add_var_to_scorecard(
+fourthm <- disk.frame:::add_var_to_scorecard(
   acqall1, 
   "default_next_12m", 
   "num_bo", 
@@ -41,7 +41,7 @@ fourthm <- add_var_to_scorecard(
 timetaken(pt)
 
 pt <- proc.time()
-fifthm <- add_var_to_scorecard(
+fifthm <- disk.frame:::add_var_to_scorecard(
   acqall1, 
   "default_next_12m", 
   "cscore_b", 
