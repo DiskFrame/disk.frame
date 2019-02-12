@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard — distribute • disk.frame</title>
+<title>Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame — shard • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard — distribute" />
+<meta property="og:title" content="Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame — shard" />
 
-<meta property="og:description" content="Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard
-Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame" />
+<meta property="og:description" content="Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame
+`distribute` is an alias for `shard`" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -107,30 +107,26 @@ Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard</h1>
+    <h1>Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame</h1>
     
     <div class="hidden name"><code>shard.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard</p>
-<p>Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame</p>
+    <p>Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame</p>
+<p>`distribute` is an alias for `shard`</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>distribute</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_shard"</span>), <span class='no'>...</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
 
-<span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_shard"</span>), <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+<span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>passed to shard</p></td>
-    </tr>
     <tr>
       <th>df</th>
       <td><p>A disk.frame</p></td>
@@ -142,6 +138,10 @@ Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.
     <tr>
       <th>outdir</th>
       <td><p>The output directory of the disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
     </tr>
     <tr>
       <th>nchunks</th>

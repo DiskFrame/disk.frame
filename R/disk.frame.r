@@ -87,7 +87,6 @@ disk.frame_fst <- function(path) {
   df
 }
 
-
 prepare_dir.disk.frame <- function(df, path, clean = F) {
   fpath = attr(df, "path")
   fpath2 = file.path(fpath,path)
@@ -99,8 +98,8 @@ prepare_dir.disk.frame <- function(df, path, clean = F) {
   fpath2
 }
 
-
 #' is the disk.frame ready from a long running non-blocking process
+# TODO 
 #' @param df a disk.frame
 is_ready <- function(df) {
   return(TRUE)
@@ -112,7 +111,6 @@ status <- function(...) {
 }
 
 status.disk.frame <- function(df) {
-  #list.files(
   perf = attr(df,"performing")
   if(perf == "none") {
     nc = nchunk(df, skip.ready.check = T)
@@ -167,20 +165,22 @@ is.dir.disk.frame <- function(df, check.consistency = T) {
 #' Head of the disk.frame
 #' @param x a disk.frame
 #' @param n number of rows to include
-#' @param ... as same base::head
+#' @param ... passed to base::head or base::tail
 #' @export
 #' @import fst
 #' @importFrom utils head
+#' @importFrom glue glue
+#' @importFrom fs dir_exists
 #' @rdname head_tail
 head.disk.frame <- function(x, n = 6L, ...) {
   stopifnot(is_ready(x))
   path1 <- attr(x,"path")
   cmds <- attr(x, "lazyfn")
-  if(dir.exists(path1)) {
+  if(fs::dir_exists(path1)) {
     path2 <- list.files(path1,full.names = T)[1]
-    head(play(fst::read.fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    head(play(fst::read_fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
   } else {
-    head(play(fst::read.fst(path1, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    stop(glue::glue("dir {path1} does not exist"))
   }
 }
 
@@ -195,14 +195,14 @@ tail.disk.frame <- function(x, n = 6L, ...) {
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = T)
     path2 <- path2[length(path2)]
-    tail(fst::read.fst(path2, from = 1, to = n), n = n, ...)
+    tail(play(fst::read_fst(path2, as.data.table = T), cmds), n = n, ...)
   } else {
-    stop("tail failed: dir not exist")
+    stop(glue::glue("dir {path1} does not exist"))
   }
 }
 
 #' Number of rows of disk.frame
-#' @param ... S3 method ....
+#' @param ... passed to base::nrow
 #' @export
 nrow <- function(df,...) {
   UseMethod("nrow")
@@ -236,96 +236,6 @@ nrow.disk.frame <- function(df, ...) {
     #return(fst::fst.metadata(path1)$NrOfRows)
     stop(glue::glue("nrow error: directory {} does not exist"))
   }
-}
-
-#' Lazy chunk_lapply wrapper
-#' @param df a disk.frame
-#' @param fn a function to apply to df i.e. fn(df) will be called
-#' @param ... passed to disk.frame::map.disk.frame
-#' @export
-#' @rdname map
-lazy <- function(df,...) {
-  UseMethod("lazy")
-}
-
-#' @rdname map
-lazy.disk.frame <- function(df, fn, ...) {
-  map.disk.frame(df, fn, lazy=T, ...)
-}
-
-#' Lazy chunk_lapply wrapper
-#' @export
-#' @rdname map
-delayed <- function(...) {
-  UseMethod("delayed")
-}
-
-#' @export
-#' @rdname map
-delayed.disk.frame <- function(df, fn, ...) {
-  map.disk.frame(df, fn, lazy = T, ...)
-}
- 
-#' [ interface for disk.frame using fst backend
-#' @param df a disk.frame
-#' @param i same as data.table
-#' @param j same as data.table
-#' @param ... same as data.table
-#' @param keep the columns to srckeep
-#' @import fst 
-#' @importFrom future.apply future_lapply
-#' @importFrom data.table rbindlist 
-#' @export
-`[.disk.frame` <- function(df, i, j,..., keep = NULL) {
-  res <- NULL
-  fpath <- attr(df,"path")
-  
-  ff <- list.files(attr(df,"path"))
-  
-  i = deparse(substitute(i))
-  j = deparse(substitute(j))
-  dotdot = deparse(substitute(...))
-  
-  keep_for_future = keep
-  
-  res <- future.apply::future_lapply(ff, function(k,i,j,dotdot) {
-    # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-    j = paste0(j,collapse="")
-    dotdot = paste0(dotdot,collapse="")
-    i = paste0(i,collapse="")
-
-    if(dotdot == "NULL") {
-      code = sprintf("a[%s,%s]", i, j)
-    } else if (j == "NULL") {
-      code = sprintf("a[%s]", i)
-    } else {
-      code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-    }
-    a = get_chunk.disk.frame(df, k, keep = keep_for_future)
-    
-    aa <- eval(parse(text=code))
-    
-    rm(a); gc()
-    aa
-  }, i, j, dotdot)
-  
-  # sometimes the returned thing is a vetor e.g. df[,.N]
-  if("data.frame" %in% class(res[[1]])) {
-    return(rbindlist(res))
-  } else if(is.vector(res)) {
-    return(unlist(res, recursive = F))
-  } else {
-    warning("spooky")
-    return(res)
-  }
-}
-
-#' Distribute (chunk-up/break-up) a fst file into chunks into a folder; an alias for shard
-#' @export
-#' @param ... passed to shard
-#' @rdname shard
-distribute <- function(...) {
-  UseMethod("shard")
 }
 
 #' Number of columns
