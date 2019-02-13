@@ -1,38 +1,24 @@
-#' Get the chunk file names
-#' @param df a disk.frame
-#' @param full.names If TRUE returns the full path to the file, Defaults to F.
-#' @param strip_extension If TRUE then the file extentsion in the chunk_id is removed. Defaults to TRUE
-#' @param ... passed to list.files
-#' @import stringr
-get_chunk_ids <- function(df, ..., full.names = F, strip_extension = T) {
-  lf = list.files(attr(df,"path"), full.names = full.names, ...)
-  if(full.names) {
-    return(lf)
-  }
-  purrr::map_chr(lf, ~{
-    tmp = stringr::str_split(.x,stringr::fixed("."), simplify = T)
-    l = length(tmp)
-    if(l == 1) {
-      return(tmp)
-    } else if(strip_extension) {
-      paste0(tmp[-l], collapse="")
-    } else if (l==1) {
-      paste0(tmp[-l], collapse="")
-    }
-  })
-}
-
 #' Perform a function on both disk.frames x and y, each chunk of x and y gets run by fn(x.chunk, y.chunk)
-#' @param x a disk.frame
-#' @param y a disk.frame
-#' @param fn a function to be called on each chunk of x and y matched by chunk_id
+#' @param .x a disk.frame
+#' @param .y a disk.frame
+#' @param .f a function to be called on each chunk of x and y matched by chunk_id
+#' @param ... not used
 #' @param outdir output directory
 #' @import stringr fst
-#' @importFrom purrr as_mapper
+#' @importFrom purrr as_mapper map2
 #' @importFrom data.table data.table
 #' @export
-map_by_chunk_id <- function(x, y, fn, outdir) {
-  #browser
+map2 <- function(.x, .y, .f, ...){
+  UseMethod("map2")
+}
+
+#' @export
+map2.default <- function(.x, .y, .f, ...) {
+  purrr::map2(.x,.y,.f,...)
+}
+
+#' @export
+map2.disk.frame <- function(.x,.y,.f, ..., outdir) {
   fn = purrr::as_mapper(fn)
   fs::dir_create(outdir)
   
@@ -58,5 +44,11 @@ map_by_chunk_id <- function(x, y, fn, outdir) {
   }, xyc$xid, xyc$yid, xyc$cid)
   
   disk.frame(outdir)
+}
+
+#' @rdname map2
+map_by_chunk_id <- function(.x, .y, .f, ..., outdir) {
+  warning("map_by_chunk_id is deprecated. Use map2 instead")
+  map2.disk.frame(.x, .y, .f, ..., outdir)
 }
 
