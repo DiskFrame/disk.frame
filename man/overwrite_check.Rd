@@ -2,7 +2,7 @@
 % Please edit documentation in R/overwrite_check.r
 \name{overwrite_check}
 \alias{overwrite_check}
-\title{Check if the outdir exists or not}
+\title{Check if the outdir exists or not; and cleans it if it's not already there}
 \usage{
 overwrite_check(outdir, overwrite)
 }
@@ -12,5 +12,5 @@ overwrite_check(outdir, overwrite)
 \item{overwrite}{TRUE or FALSE if `outdir`` exists and overwrite = F then throw an error}
 }
 \description{
-Check if the outdir exists or not
+Check if the outdir exists or not; and cleans it if it's not already there
 }

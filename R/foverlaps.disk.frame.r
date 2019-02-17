@@ -44,8 +44,8 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
     future.apply::future_lapply(1:nrow(df3), function(row) {
       chunk_id = df3[row,chunk_id]
       
-      data1 = get_chunk.disk.frame(df1,chunk_id)
-      data2 = get_chunk.disk.frame(df2,chunk_id)
+      data1 = get_chunk.disk.frame(df1, chunk_id)
+      data2 = get_chunk.disk.frame(df2, chunk_id)
       dotdotdot$x = data1
       dotdotdot$y = data2
       data3 = pryr::do_call(foverlaps, dotdotdot)
@@ -57,6 +57,6 @@ foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, c
     })
     return(disk.frame(outdir))
   } else {
-    stop("this foverlaps.disk.frame branch is not implemented")
+    stop("only merge_by_chunk_id =T is implemented")
   }
 }

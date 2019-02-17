@@ -83,15 +83,15 @@ groups.disk.frame <- function(x){
   shardkey(x)
 }
 
-#' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
-#' @param ... passed to rlang::quos
+# Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
+# @param ... passed to rlang::quos
 compat_as_lazy_dots = function (...) {
     structure(class = "lazy_dots", purrr::map(rlang::quos(...), compat_as_lazy))
 }
 
-#' Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
-#' @importFrom rlang get_expr get_env quos
-#' @param quo a quote expression
+# Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
+# @importFrom rlang get_expr get_env quos
+# @param quo a quote expression
 compat_as_lazy = function (quo) {
     structure(class = "lazy", list(expr = rlang::get_expr(quo), env = rlang::get_env(quo)))
 }
@@ -107,7 +107,6 @@ compat_as_lazy = function (quo) {
 #' @export
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrite = T) {
-  ##browser
   dots <- compat_as_lazy_dots(...)
   shardby = purrr::map_chr(dots, ~deparse(.x$expr))
   
@@ -134,18 +133,18 @@ glimpse.disk.frame <- function(.data, ...) {
   glimpse(head(.data, ...), ...)
 }
 
-#' Internal methods
-#' @param .data the data
-#' @param cmd the function to record
+# Internal methods
+# @param .data the data
+# @param cmd the function to record
 record <- function(.data, cmd){
   attr(.data,"lazyfn") <- c(attr(.data,"lazyfn"), list(cmd))
   .data
 }
 
-#' Internal methods
-#' @param .data the disk.frame
-#' @param cmds the list of function to play back
-#' @importFrom lazyeval lazy_eval
+# Internal methods
+# @param .data the disk.frame
+# @param cmds the list of function to play back
+# @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
   #list.files(
   for (cmd in cmds){

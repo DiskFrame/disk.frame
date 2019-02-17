@@ -28,7 +28,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if(merge_by_chunk_id == T) {
     #} else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map_by_chunk_id(x, y, ~{
+      res = map2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(.x)
         } else if (is.null(.x)) {
