@@ -12,13 +12,14 @@
 #' @importFrom future.apply future_lapply
 #' @importFrom pryr do_call
 #' @export
-foverlaps.disk.frame <- function(df1, df2, outdir, ..., merge_by_chunk_id = F, compress=50, overwrite = T) {
+foverlaps.disk.frame <- function(df1, df2, ..., outdir, merge_by_chunk_id = F, compress=50, overwrite = T) {
+  browser()
   stopifnot("disk.frame" %in% class(df1))
   
   overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(df2)) {
-    map.disk.frame(df1, function(df1) foverlaps(df1, df2, ...), ..., compress = compress, overwrite = overwrite)
+    map.disk.frame(df1, ~foverlaps(.x, df2, ...), ..., lazy = F, compress = compress, overwrite = overwrite)
   } else if (merge_by_chunk_id | (identical(shardkey(df1), shardkey(df2)))) {
     # if the shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment

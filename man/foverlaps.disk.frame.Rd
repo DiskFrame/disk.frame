@@ -4,7 +4,7 @@
 \alias{foverlaps.disk.frame}
 \title{Apply data.table's foverlaps to the disk.frame}
 \usage{
-foverlaps.disk.frame(df1, df2, outdir, ..., merge_by_chunk_id = F,
+foverlaps.disk.frame(df1, df2, ..., outdir, merge_by_chunk_id = F,
   compress = 50, overwrite = T)
 }
 \arguments{
@@ -12,9 +12,9 @@ foverlaps.disk.frame(df1, df2, outdir, ..., merge_by_chunk_id = F,
 
 \item{df2}{A disk.frame or a data.frame}
 
-\item{outdir}{The output directory of the disk.frame}
-
 \item{...}{passed to data.table::foverlaps and disk.frame::map.disk.frame}
+
+\item{outdir}{The output directory of the disk.frame}
 
 \item{merge_by_chunk_id}{If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise every chunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame}
 
