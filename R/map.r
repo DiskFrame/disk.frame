@@ -24,7 +24,7 @@ map.default <- function(.x, .f, ...) {
 #' @rdname map
 #' @export
 map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F) {
-  browser()
+  #browser()
   .f = purrr::as_mapper(.f)
   if(lazy) {
     attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), .f)
@@ -49,7 +49,7 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   
   keep_future = keep
   res = future.apply::future_lapply(1:length(files), function(ii) {
-    browser()
+    #browser()
     ds = disk.frame::get_chunk(.x, ii, keep=keep_future)
     res = .f(ds)
     if(!is.null(outdir)) {

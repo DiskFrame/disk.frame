@@ -13,7 +13,7 @@
 #' @importFrom pryr do_call
 #' @export
 foverlaps.disk.frame <- function(df1, df2, ..., outdir, merge_by_chunk_id = F, compress=50, overwrite = T) {
-  browser()
+  #browser()
   stopifnot("disk.frame" %in% class(df1))
   
   overwrite_check(outdir, overwrite)

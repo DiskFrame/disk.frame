@@ -7,7 +7,7 @@
 #' @export
 #' @importFrom dplyr sample_frac
 #' @rdname sample
-sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL) {
+sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...) {
   if(!is.null(weight)) {
     stop("sample_frac(..., weight =) is not implemented yet")
   }
