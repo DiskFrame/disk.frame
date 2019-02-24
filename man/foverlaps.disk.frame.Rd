@@ -4,13 +4,21 @@
 \alias{foverlaps.disk.frame}
 \title{Apply data.table's foverlaps to the disk.frame}
 \usage{
-foverlaps.disk.frame(df1, df2, ..., outdir, merge_by_chunk_id = F,
+foverlaps.disk.frame(df1, df2, by.x = if
+  (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else
+  shardkey(df2)$shardkey, by.y = shardkey(df2)$shardkey, ...,
+  outdir = {     warning("temp dir create")    
+  tempfile("df_foverlaps_tmp", fileext = ".df") }, merge_by_chunk_id = F,
   compress = 50, overwrite = T)
 }
 \arguments{
 \item{df1}{A disk.frame}
 
 \item{df2}{A disk.frame or a data.frame}
+
+\item{by.x}{character/string vector. by.x used in foverlaps}
+
+\item{by.y}{character/string vector. by.x used in foverlaps}
 
 \item{...}{passed to data.table::foverlaps and disk.frame::map.disk.frame}
 

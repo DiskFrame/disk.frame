@@ -1,4 +1,4 @@
-context("test-delete")
+context("test-get_chunk")
 
 setup({
   #setup_disk.frame(workers = 1)
@@ -7,14 +7,11 @@ setup({
 
 test_that("data.table .N", {
   df = disk.frame("tmp_del_delete")
-  p = attr(df, "path")
-  expect_true(fs::dir_exists(p))
-  
-  delete(df)
-  
-  expect_false(fs::dir_exists(p))
+  expect_s3_class(get_chunk(df, 1), "data.frame")
+
+  expect_s3_class(get_chunk(df, "1.fst"), "data.frame")
 })
 
 teardown({
-  #fs::dir_delete("tmp_del_delete")
+  fs::dir_delete("tmp_del_delete")
 })

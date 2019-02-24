@@ -17,6 +17,8 @@
 \item{weight}{weight of each row. NOT implemented}
 
 \item{.env}{for compatibility}
+
+\item{...}{passed to dplyr}
 }
 \description{
 Sample n rows from a disk.frame

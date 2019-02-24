@@ -5,7 +5,7 @@
 \alias{collect_list}
 \title{Bring the disk.frame into R as data.table/data.frame}
 \usage{
-\method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(df,
+\method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x,
   "lazyfn")))
 
 collect_list(x, simplify = F, parallel = !is.null(attr(df, "lazyfn")))

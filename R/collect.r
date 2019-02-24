@@ -8,16 +8,18 @@
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect
 #' @rdname collect
-collect.disk.frame <- function(x, ..., parallel = !is.null(attr(df,"lazyfn"))) {
-  df = x
-  #
-  if(nchunks(df) > 0) {
+collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
+  #browser()
+  
+  chunk_ids = get_chunk_ids(x, strip_extension = F)
+  
+  if(nchunks(x) > 0) {
     if(parallel) {
-      ##browser
-      furrr::future_map_dfr(1:nchunks(df), ~disk.frame::get_chunk(df, .x))
-      #future.apply::future_lapply(1:nchunks(df), function(x) disk.frame::get_chunk(df, .x))
+      furrr::future_map_dfr(chunk_ids, ~disk.frame::get_chunk(x, .x))
+      #future.apply::future_lapply(chunk_ids, function(.x) disk.frame::get_chunk(x, .x))
+      #res = lapply(chunk_ids, function(chunk) get_chunk(x, chunk))
     } else {
-      purrr::map_dfr(1:nchunks(df), ~get_chunk(df, .x))
+      purrr::map_dfr(1:nchunks(x), ~get_chunk(x, .x))
     }
   } else {
     data.table()
