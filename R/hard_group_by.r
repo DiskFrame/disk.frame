@@ -115,7 +115,7 @@ hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_har
     #unlink()
   })
   
-  res %>% dplyr
+  res %>% dplyr::group_by(by)
 }
 
 
