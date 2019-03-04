@@ -67,28 +67,7 @@ progressbar <- function(df) {
   }
 }
 
-#' Make a data.frame into a disk.frame
-#' @param df a disk.frame
-#' @param outdir the output directory
-#' @param nchunks number of chunks
-#' @param overwrite if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty
-#' @param compress the compression level 0-100; 100 is highest
-#' @param ... passed to output_disk.frame
-#' @import fst
-#' @importFrom data.table setDT
-#' @export
-as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
-  #browser()
-  overwrite_check(outdir, overwrite)
-  
-  setDT(df)
-  
-  odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))
-  odfi = odfi[1:nrow(df)]
-  df[, .out.disk.frame.id := odfi]
-  
-  write_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
-}
+
 
 #' Perform a group by and ensuring that every unique grouping of by is
 #' in the same chunk
@@ -104,6 +83,14 @@ hard_group_by <- function(df, by, ...) {
 }
 
 #' @rdname hard_group_by
+#' @exprt
+#' @importFrom dplyr group_by
+hard_group_by.data.frame <- function(df, by, ...) {
+  dplyr::group_by(df, by, ...)
+}
+
+#' @rdname hard_group_by
+#' @importFrom purrr map
 #' @importFrom purrr map
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T, ...) {
@@ -128,7 +115,7 @@ hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_har
     #unlink()
   })
   
-  res
+  res %>% dplyr::group_by(by)
 }
 
 

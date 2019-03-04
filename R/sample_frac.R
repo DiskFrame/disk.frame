@@ -4,14 +4,15 @@
 #' @param replace TRUE to sample with replacement; FALSE to sample without replacement
 #' @param weight weight of each row. NOT implemented
 #' @param .env for compatibility
+#' @param ... passed to dplyr
 #' @export
 #' @importFrom dplyr sample_frac
 #' @rdname sample
-sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL) {
+sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...) {
   if(!is.null(weight)) {
     stop("sample_frac(..., weight =) is not implemented yet")
   }
   
-  delayed(tbl, ~sample_frac(.x, size, replace, weight, .env))
+  delayed(tbl, ~sample_frac(.x, size, replace, weight, .env, ...))
 }
 

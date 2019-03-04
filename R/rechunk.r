@@ -6,19 +6,19 @@
 #' @param overwrite overwrite the output directory
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
+  #browser()
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
+  
   force(nchunks) 
+  
   if (nchunks < 1) {
     stop(glue::glue("nchunks must be larger than 1"))
   }
   
-  #browser()
   stopifnot("disk.frame" %in% class(df))
+  
   user_had_not_set_shard_by = is.null(shardby)
-  if(!is_disk.frame(outdir)) {
-    stop(glue::glue("The folder {outdir} is not a disk.frame. Further actions stopped to prevent accidental deletion of important files"))
-  }
 
   # back up the files if writing to the same directory
   if(outdir == attr(df,"path")) {
@@ -88,7 +88,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     
     # using some maths we can cut down on the number of operations
     nc = nchunks(df)
-    # if the number of possible new chunk ids is one then on need to perform anything. just merge those
+    # if the number of possible new chunk ids is one then no need to perform anything. just merge those
     possibles_new_chunk_id = purrr::map(1:nc, ~unique((.x-1 + (0:(nchunks-1))*nc) %% nchunks)+1)
     lp = purrr::map_int(possibles_new_chunk_id,length)
     

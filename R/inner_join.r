@@ -35,7 +35,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
       return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map_by_chunk_id(x, y, ~{
+      res = map2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {

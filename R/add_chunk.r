@@ -6,7 +6,10 @@
 #' @importFrom data.table data.table
 #' @export
 add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
-  ##browser
+  #browser()
+  # sometimes chunk_id is defined in terms of itself
+  force(chunk_id)
+  
   stopifnot("disk.frame" %in% class(df))
   if(!is_disk.frame(df)) {
     stop("can not add_chunk as this is not a disk.frame")
@@ -14,7 +17,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
   
   # get the metadata for all chunks
   path = attr(df,"path")
-  files <- fs::dir_ls(path, type="file")
+  files <- fs::dir_ls(path, type="file", glob = "*.fst")
   
   
   # if a chunk_id is not specified
@@ -54,12 +57,16 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
                               ~data.table::data.table(
                                 colnames = .x$columnNames, 
                                 coltypes = types[.x$columnTypes],
-                              chunk_id = .y))
+                                chunk_id = .y))
     
     metas_df_summ = metas_df[,.N,.(colnames, coltypes)][order(N)]
     metas_df_summ[,existing_df := T]
     
-    new_chunk_meta = data.table::data.table(colnames = names(chunk), coltypes = purrr::map(chunk, typeof) %>% unlist, new_chunk = TRUE)
+    new_chunk_meta = 
+      data.table::data.table(
+        colnames = names(chunk), 
+        coltypes = purrr::map(chunk, typeof) %>% unlist, 
+        new_chunk = TRUE)
     
     merged_meta = full_join(new_chunk_meta, metas_df_summ, by=c("colnames"))
     
@@ -68,7 +75,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
     if(nrow(check_vars[is.na(new_chunk)]) > 0) {
       warning(
         glue::glue(
-          "these variables are in the disk.frame but not in the new chunk {paste0(check_vars[is.na(new_chunk), colnames], collapse=', ')}"))
+          "these variables are in the disk.frame but not in the new chunk:  \n {paste0(check_vars[is.na(new_chunk), colnames], collapse=',\n  ')}"))
     }
     if(nrow(check_vars[is.na(existing_df)]) > 0){
       warning(glue::glue("these variables are in the new chunk but not in the existing disk.frame: {paste0(check_vars[is.na(existing_df), colnames], collapse=', ')}"))
@@ -86,11 +93,12 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
     
     metas_df_summ2 = metas_df_summ1[incompatible_types == T,]
     
-    if(nrow(metas_df_summ2)) {
+    if(nrow(metas_df_summ2)>0) {
       print("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added")
       print(metas_df_summ2)
       stop("")
     }
   }
-  write_fst(chunk, file.path(attr(df,"path"),paste0(chunk_id,".fst")))
+  fst::write_fst(chunk, file.path(attr(df,"path"), paste0(chunk_id,".fst")))
+  disk.frame(attr(df,"path"))
 }
