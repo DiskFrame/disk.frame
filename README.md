@@ -203,3 +203,53 @@ pt = proc.time()
 system.time(df[,.(sum(a))][,sum(V1)]) #2.95
 cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
+
+## Limitations of `disk.frame`
+Currently, `disk.frame` does not correctly detect variables in the current environment. Therefore codes like this will not work and we need a workaround to manually pass variable to the disk.frame session. 
+
+**will NOT work**
+```r
+#--------- Disk.Frame way, doesn't work.
+DT <- as.disk.frame(
+  data.table(A = letters[1:24], B = 1:48),
+  outdir = "TEST",
+  overwrite = TRUE
+)
+
+X <- "x"
+DT[A == X]
+# Error in eval(stub[[3L]], x, enclos)
+# can't find object'X'
+
+DT[A %in% X] # still can't find object
+
+#---- Ordinary way, it works.
+
+DX <- data.table(A = letters[1:24], B = 1:48)
+DX[A == X]
+#    A  B
+# 1: x 24
+# 2: x 48
+```
+
+**work around**
+```r
+library(disk.frame)
+DT <- as.disk.frame(
+  data.table(A = letters[1:24], B = 1:48),
+  outdir = "TEST",
+  overwrite = TRUE
+)
+
+X <- "x"
+saveRDS(X, "tmpx.rds")
+DT_filtered = DT %>% 
+  delayed(~{
+    X =readRDS("tmpx.rds");
+    .x[A == X]
+  })
+
+DT_filtered[]
+```
+
+This will be addressed in a future version of `disk.frame`; however there will always be instances where environmemt variable detection isn't perfect. This is because disk.frame uses the mechanism provided by `future` (i.e. `gloabls` package) and therefore is bound by the same constraints; see https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html 
