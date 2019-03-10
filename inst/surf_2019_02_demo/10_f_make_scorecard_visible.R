@@ -7,8 +7,6 @@ df = acqall_val
 #the model
 mdl = readRDS("model.rds")
 
-plot(purrr::map_dbl(mdl, ~.x$auc))
-
 #' score one variable
 score_one_var <- function(feature, x, bins, bias, format_fn = base::I) {
   print(feature)
@@ -82,7 +80,7 @@ plot_auc <- function(df, line = F) {
     abline(v=0)
   } else {
     lines(cts[seq(1,.N, length.out=100),], lty = 3, col = "blue")
-    legend("topleft", c("val ROC", "random", "dev RoC"), lty=c(1,2,3))
+    legend("topleft", c("val AUC", "random", "dev AUC"), lty=c(1,2,3), col=c("black","blue","black"))
   }
 }
 
@@ -105,7 +103,13 @@ saveRDS(scorecard, "scorecard.rds")
 scorecard = readRDS("scorecard.rds")
 #View(scorecard)
 
-DT::datatable(scorecard)
+scorecard[,
+          low := c(-Inf, feature_lbl[-.N]), variable]
+setnames(scorecard, "feature_lbl", "high")
+
+scorecard=scorecard[,.(variable, low, high, score)]
+
+DT::datatable(scorecard, options = list(pageLength=20))
 
 # score on whole ----------------------------------------------------------
 # acqall = disk.frame(file.path(outpath, "appl_mdl_data"))
