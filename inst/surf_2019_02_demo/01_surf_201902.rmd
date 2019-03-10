@@ -82,22 +82,24 @@ a_wh2
 ```
 
 ```{r}
-a_wh1 %>% 
-  srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
-  map(function(chunk) {
-    chunk[1,]
-  }) %>% 
-  collect
+# temporary
+# a_wh1 %>% 
+#   srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
+#   map(function(chunk) {
+#     chunk[1,]
+#   }) %>% 
+#   collect
 ```
 
 
 ```{r}
-a_wh1 %>% 
-  srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
-  map(~{
-    .x[1,.SD]
-  }) %>% 
-  collect
+# temporary
+# a_wh1 %>% 
+#   srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
+#   map(~{
+#     .x[1,.SD]
+#   }) %>% 
+  # collect
 ```
 
 
