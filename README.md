@@ -146,8 +146,7 @@ pt = proc.time()
 res1 <- df %>% 
   filter(b < 0.1) %>% 
   mutate(blt005 = b < 0.05) %>% 
-  hard_group_by("blt005") %>% # hard group_by is slower but avoid a 2nd stage aggregation
-  group_by(blt005) %>% 
+  hard_group_by("blt005") %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
   summarise(suma = sum(a), n = n()) %>% 
   collect(parallel = T)
 cat("group by took: ", timetaken(pt), "\n")

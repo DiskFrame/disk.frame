@@ -94,13 +94,12 @@ hard_group_by.data.frame <- function(df, by, ...) {
 #' @importFrom purrr map
 #' @export
 hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T, ...) {
-  ##browser
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   
   # shard and create temporary diskframes
-  tmp_df  = map.disk.frame(df, function(df1) {
+  tmp_df  = map(df, function(df1) {
     ##browser
     tmpdir = tempfile()
     shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
@@ -110,12 +109,13 @@ hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_har
   res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
 
   # clean up the tmp dir
-  purrr::map(tmp_df, ~{
+  purrr::walk(tmp_df, ~{
     fs::dir_delete(attr(.x, "path"))
-    #unlink()
   })
   
-  res %>% dplyr::group_by(by)
+  res1 = res %>% dplyr::group_by(!!!syms(by))
+  
+  res1
 }
 
 

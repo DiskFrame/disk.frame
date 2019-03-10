@@ -4,6 +4,7 @@
 #' @param strip_extension If TRUE then the file extentsion in the chunk_id is removed. Defaults to TRUE
 #' @param ... passed to list.files
 #' @importFrom stringr fixed
+#' @export
 get_chunk_ids <- function(df, ..., full.names = F, strip_extension = T) {
   lf = list.files(attr(df,"path"), full.names = full.names, ...)
   if(full.names) {
