@@ -9,15 +9,13 @@
 #' @importFrom dplyr collect
 #' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
-  #browser()
-  
   chunk_ids = get_chunk_ids(x, strip_extension = F)
   
   if(nchunks(x) > 0) {
     if(parallel) {
       furrr::future_map_dfr(chunk_ids, ~disk.frame::get_chunk(x, .x))
       #future.apply::future_lapply(chunk_ids, function(.x) disk.frame::get_chunk(x, .x))
-      #res = lapply(chunk_ids, function(chunk) get_chunk(x, chunk))
+      #lapply(chunk_ids, function(chunk) get_chunk(x, chunk)) %>% rbindlist
     } else {
       purrr::map_dfr(1:nchunks(x), ~get_chunk(x, .x))
     }

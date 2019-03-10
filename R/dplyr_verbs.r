@@ -108,7 +108,14 @@ compat_as_lazy = function (quo) {
 #' @rdname group_by
 group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrite = T) {
   dots <- compat_as_lazy_dots(...)
-  shardby = purrr::map_chr(dots, ~deparse(.x$expr))
+  shardby = purrr::map_chr(dots, ~{
+    # sometimes the data is passed as c("by1","by2") and in that case just return it
+    if (typeof(.x$expr) == "character") {
+      return(.x$expr) 
+    } else {
+      deparse(.x$expr)
+    }
+  }) %>% as.vector
   
   shardinfo = shardkey(.data)
   if(!identical(shardinfo[[1]], shardby)) {

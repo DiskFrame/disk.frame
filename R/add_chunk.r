@@ -6,7 +6,6 @@
 #' @importFrom data.table data.table
 #' @export
 add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
-  #browser()
   # sometimes chunk_id is defined in terms of itself
   force(chunk_id)
   
@@ -69,9 +68,13 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
         new_chunk = TRUE)
     
     merged_meta = full_join(new_chunk_meta, metas_df_summ, by=c("colnames"))
+    setDT(merged_meta)
+    
     
     # find out which vars are matched
     check_vars = full_join(new_chunk_meta[,.(colnames, new_chunk)], metas_df[,.(colnames=unique(colnames), existing_df = TRUE)], by = "colnames")
+    
+    setDT(check_vars)
     if(nrow(check_vars[is.na(new_chunk)]) > 0) {
       warning(
         glue::glue(

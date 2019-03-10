@@ -28,8 +28,7 @@ Depends:
     R (>= 3.5.0),
     future,
     dplyr,
-    data.table,
-    dtplyr
+    data.table
 Suggests: 
     testthat,
     knitr,

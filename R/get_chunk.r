@@ -14,7 +14,6 @@ get_chunk <- function(...) {
 #' @import fst
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
-  ##browser
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")

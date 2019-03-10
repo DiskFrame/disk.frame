@@ -6,7 +6,6 @@
 #' @param merge_by_chunk_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
 #' @param ... passed to merge and map.disk.frame
 #' @importFrom data.table data.table setDT
-#' @import dtplyr
 merge.disk.frame <- function(x, y, outdir, ..., merge_by_chunk_id = F) {  
   fs::dir_create(outdir)
   stopifnot("disk.frame" %in% class(x))
