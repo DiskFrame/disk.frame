@@ -11,6 +11,10 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
+## Sponsor me on Patreon
+
+If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider [sponsoring me on Patreon](https://www.patreon.com/diskframe?alert=2).
+
 ## Vignette
 
 Please see this vignette [Introduction to disk.frame](http://daizj.me/disk.frame/articles/intro-disk-frame.html) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
