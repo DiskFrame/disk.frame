@@ -2,7 +2,7 @@ Type: Package
 Package: disk.frame
 Title: Fast disk-based data manipulation framework for larger-than-RAM structured tabular data
 Version: 0.1.0
-Date: 2018-12-08
+Date: 2019-03-31
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
@@ -22,8 +22,7 @@ Imports:
     jsonlite,
     pryr,
     stringr,
-    fst (>= 0.8.0),
-    xgboost
+    fst (>= 0.8.0)
 Depends:
     R (>= 3.5.0),
     future,
