@@ -67,7 +67,11 @@ res_all = check_which_is_best(
 timetaken(pt)
 
 aucs = map_dbl(res_all, ~.x$auc)
-plot(aucs, main = "Fannie Mae Application Scorecard AUC", ylab="AUC", xlab = "Number of features")
+plot(
+  aucs,
+  main = "Fannie Mae Application Scorecard AUC", 
+  ylab="AUC", 
+  xlab = "Number of features")
 
 if(F) {
   library(gganimate)

@@ -1,0 +1,54 @@
+---
+title: "Simple Fannie Mae Example"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r}
+source("../fannie_mae/00_setup.r")
+
+fm_with_harp = 
+  disk.frame(file.path(outpath, "fm_with_harp"))
+
+fm_with_harp
+```
+
+
+```{r}
+system.time(a_wh1 <- fm_with_harp %>% 
+  srckeep(c("default_12m","monthly.rpt.prd")) %>% 
+  group_by(monthly.rpt.prd) %>% 
+  summarise(
+    N = n(), 
+    n_defaults = sum(default_12m, na.rm = T)) %>% 
+  collect %>%
+  group_by(monthly.rpt.prd) %>% 
+  summarise(
+    odr = sum(n_defaults)/sum(N)
+  ) %>% 
+  rename(
+    Date = monthly.rpt.prd,
+    `Observed Default Rate%` = odr
+  ))
+```
+
+
+```{r}
+a_wh4 = a_wh1 %>% 
+  gather(key = type, value=rate, -Date)
+
+ggplot(a_wh4) + 
+  geom_line(aes(x=Date, y = rate, colour = type)) +
+  ggtitle("Fannie Mae Observed Default Rate over time & HARP Conversion Rate")
+```
+
+$$
+600 = a + b\times\log(\frac{1-p}{p}) = a + b\times\log(30)\\
+620 = a + b\times(\alpha + \vec{X}^T\vec{\beta}) = a + b\times\log(60)
+$$
+
+$$
+620 = a + b\times(\alpha + \vec{X}^T\vec{\beta}) = a + b\times\log(60)
+$$ 
