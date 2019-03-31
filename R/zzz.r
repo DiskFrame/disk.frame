@@ -10,7 +10,9 @@
     glue::glue("We have {future::nbrOfWorkers()} workers to use with disk.frame. To change that use setup_disk.frame(workers = n)"))
 }
 
-globalVariables(c(".",
+globalVariables(c(
+                  "syms", # needed by dplyr to treat something as a symbol
+                  ".",
                   ".BY",
                   ".N",
                   ".SD",

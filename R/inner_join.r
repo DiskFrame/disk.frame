@@ -1,6 +1,7 @@
 #' @export
 #' @rdname join
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
+  #browser()
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -35,13 +36,18 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
       return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
+      dotdotdot <- list(...)
+      
       res = map2.disk.frame(x, y, ~{
+        #browser()
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {
           return(data.table())
         }
-        inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        #inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        lij = purrr::lift(dplyr::inner_join)
+        lij(c(list(x = .x, y = .y, by = by, copy = copy), dotdotdot))
       }, outdir = outdir)
       return(res)
     } else {

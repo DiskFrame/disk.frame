@@ -19,6 +19,7 @@ map2.default <- function(.x, .y, .f, ...) {
 
 #' @export
 map2.disk.frame <- function(.x, .y, .f, ..., outdir) {
+  #browser()
   .f = purrr::as_mapper(.f)
   fs::dir_create(outdir)
   
@@ -32,9 +33,9 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir) {
   
   ddd = list(...)
   # apply the functions
-  #future.apply::future_mapply(function(xid, yid, outid) {
-  mapply(function(xid, yid, outid) {
-    #browser()
+  
+  future.apply::future_mapply(function(xid, yid, outid) {
+  #mapply(function(xid, yid, outid) {
     xch = disk.frame::get_chunk(.x, xid, full.names = T)
     ych = disk.frame::get_chunk(.y, yid, full.names = T)
     xych = .f(xch, ych)

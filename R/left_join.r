@@ -28,13 +28,16 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if(merge_by_chunk_id == T) {
     #} else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
+      dotdotdot = list(...)
       res = map2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(.x)
         } else if (is.null(.x)) {
           return(data.table())
         }
-        left_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        llj = purrr::lift(dplyr::left_join)
+        #left_join(.x, .y, by = by, copy = copy, ...)
+        llj(c(list(x=.x, y =.y, by = by, copy = copy), dotdotdot))
       }, outdir = outdir)
       return(res)
     } else {
