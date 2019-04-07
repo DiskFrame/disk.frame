@@ -1,6 +1,5 @@
 ![disk.frame logo](disk.frame.png?raw=true "disk.frame logo")
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
- [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
+
 # Introduction
 
 The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
@@ -15,6 +14,10 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 ## Sponsor me or contact me for consulting
 
 If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider [sponsoring me on Patreon](https://www.patreon.com/diskframe?alert=2).
+
+**Open Collective**
+[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+ [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
 
 **Do you need help with R?**
 [![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
