@@ -11,9 +11,14 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
-## Sponsor me on Patreon
+## Sponsor me or contact me for consulting
 
 If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider [sponsoring me on Patreon](https://www.patreon.com/diskframe?alert=2).
+
+**Do you need help with R?**
+[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
+
+I am available for R consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
 
 ## Vignette
 
