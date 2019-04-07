@@ -1,5 +1,6 @@
 ![disk.frame logo](disk.frame.png?raw=true "disk.frame logo")
-
+[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+ [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
 # Introduction
 
 The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
@@ -262,3 +263,33 @@ DT_filtered[]
 ```
 
 This will be addressed in a future version of `disk.frame`; however there will always be instances where environmemt variable detection isn't perfect. This is because disk.frame uses the mechanism provided by `future` (i.e. `gloabls` package) and therefore is bound by the same constraints; see https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html 
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/diskframe#backer)]
+
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
+
+<a href="https://opencollective.com/diskframe/sponsor/0/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/1/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/2/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/3/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/4/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/5/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/6/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/7/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/8/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/9/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/9/avatar.svg"></a>
+
+
