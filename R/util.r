@@ -1,3 +1,11 @@
+#' Helper function to evalparse some glue::glue string
+#' @param code the code in character(string) format to evaluate
+#' @param env the environment in which to evaluate the code
+#' @export
+evalparseglue <- function(code, env = parent.frame()) {
+  eval(parse(text = glue::glue(code, .envir = env)), envir = env)
+}
+
 #' Generate synthetic dataset for testing
 #' @param N number of rows. Defaults to 200 million
 #' @param K controls the number of unique values for id. Some ids will have K distinct values while others have N/K distinct values
