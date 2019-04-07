@@ -58,9 +58,9 @@ test_that("testing trans_mutate", {
 test_that("testing arrange", {
   b = disk.frame("tmp_b_dv.df")
   
-  df = b %>%
+  expect_warning(df <- b %>%
     mutate(random_unif = runif(dplyr::n())) %>% 
-    arrange(desc(random_unif))
+    arrange(desc(random_unif)))
   
   x = purrr::map_lgl(1:nchunks(df), ~{
     is.unsorted(.x) == FALSE
@@ -83,9 +83,10 @@ test_that("testing summarise", {
 test_that("testing do", {
   b = disk.frame("tmp_b_dv.df")
   
-  df = b %>%
-    do(mlm = lm(a~b, data = .)) %>% 
-    collect
+  expect_warning(  df <- b %>%
+                     do(mlm = lm(a~b, data = .)) %>% 
+                     collect
+  )
   
   x = purrr::map_chr(df$mlm, ~{
     class(.x)
@@ -95,5 +96,5 @@ test_that("testing do", {
 })
 
 teardown({
-  fs::dir_delete("tmp_d_dv.df")
+  fs::dir_delete("tmp_b_dv.df")
 })

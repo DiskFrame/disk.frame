@@ -8,12 +8,33 @@
 #' @param compress 0-100 fst compression ratio
 #' @param overwrite if TRUE removes any existing chunks in the data
 #' @param ... for compatibility with `purrr::map`
+#' @param use.names for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
+#' @param fill for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
+#' @param idcol for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @import fst
 #' @importFrom purrr as_mapper map
 #' @importFrom future.apply future_lapply
 #' @export
 map <- function(.x, .f, ...) {
   UseMethod("map")
+}
+
+#' @rdname map
+#' @param id not used
+map_dfr <- function(.x, .f, ..., .id = NULL) {
+  UseMethod("map_dfr")
+}
+
+map_dfr.default <- function(.x, .f, ..., .id = NULL) {
+  purrr::map(.x, .f, ..., id)
+}
+
+
+map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
+  if(!is.null(.id)) {
+    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
+  }
+  data.table::rbindlist(map.disk.frame(.x, .f, ...), use.names = use.names, fill = fill, idcol = idcol)
 }
 
 #' @export
