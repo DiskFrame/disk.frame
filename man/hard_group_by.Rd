@@ -7,20 +7,18 @@
 \title{Perform a group by and ensuring that every unique grouping of by is
 in the same chunk}
 \usage{
-hard_group_by(df, by, ...)
+hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
-\method{hard_group_by}{data.frame}(df, by, ...)
+\method{hard_group_by}{data.frame}(df, ..., add = FALSE, .drop = FALSE)
 
-\method{hard_group_by}{disk.frame}(df, by,
+\method{hard_group_by}{disk.frame}(df, ...,
   outdir = tempfile("tmp_disk_frame_hard_group_by"),
-  nchunks = disk.frame::nchunks(df), overwrite = T, ...)
+  nchunks = disk.frame::nchunks(df), overwrite = T)
 }
 \arguments{
 \item{df}{a disk.frame}
 
-\item{by}{the columns to shard by}
-
-\item{...}{not used}
+\item{...}{grouping variables}
 
 \item{outdir}{the output directory}
 

@@ -20,7 +20,7 @@ map <- function(.x, .f, ...) {
 }
 
 #' @rdname map
-#' @param id not used
+#' @param .id not used
 map_dfr <- function(.x, .f, ..., .id = NULL) {
   UseMethod("map_dfr")
 }
@@ -34,7 +34,7 @@ map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill =
   if(!is.null(.id)) {
     warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
   }
-  data.table::rbindlist(map.disk.frame(.x, .f, ...), use.names = use.names, fill = fill, idcol = idcol)
+  data.table::rbindlist(map.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
 }
 
 #' @export
@@ -87,6 +87,17 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   } else {
     return(res)
   }
+}
+
+
+imap_dfr <- function(.x, .f, ..., .id = NULL) {
+  
+}
+
+#' @export
+#' 
+imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL) {
+  
 }
 
 #' imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 

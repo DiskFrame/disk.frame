@@ -2,6 +2,7 @@
 % Please edit documentation in R/map.r
 \name{map}
 \alias{map}
+\alias{map_dfr}
 \alias{map.disk.frame}
 \alias{imap.disk.frame}
 \alias{lazy}
@@ -12,6 +13,8 @@
 \title{Apply the same function to all chunks}
 \usage{
 map(.x, .f, ...)
+
+map_dfr(.x, .f, ..., .id = NULL)
 
 \method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
   chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F)
@@ -36,6 +39,8 @@ chunk_lapply(...)
 
 \item{...}{for compatibility with `purrr::map`}
 
+\item{.id}{not used}
+
 \item{outdir}{the output directory}
 
 \item{keep}{the columns to keep from the input}
@@ -47,6 +52,12 @@ chunk_lapply(...)
 \item{lazy}{if TRUE then do this lazily}
 
 \item{overwrite}{if TRUE removes any existing chunks in the data}
+
+\item{use.names}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{fill}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{idcol}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 }
 \description{
 Apply the same function to all chunks

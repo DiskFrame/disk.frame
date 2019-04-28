@@ -14,7 +14,7 @@ test_that("collect works on simple data", {
 
 test_that("collect works on lazy stream", {
   df = disk.frame("tmp_col_delete")
-  df = map.disk.frame(df, lazy = T, ~{
+  df = map(df, lazy = T, ~{
     .x[1:10, ]
   })
   dff = dplyr::collect(df)
@@ -25,7 +25,7 @@ test_that("collect works on lazy stream", {
 
 test_that("collect works on lazy stream followed by dplyr", {
   df = disk.frame("tmp_col_delete")
-  df = map.disk.frame(df, lazy = T, ~{
+  df = map(df, lazy = T, ~{
     .x[1:10, ]
   }) %>% select(id1, id4)
   

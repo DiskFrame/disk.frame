@@ -39,6 +39,34 @@ test_that("testing delayed", {
   # return 1 row from each chunk
   df = b %>% delayed(~.x[1])
   
+  expect_s3_class(df, "data.frame")
+  
+  expect_equal(nrow(df), 5L)
+})
+
+
+test_that("testing map_dfr", {
+  b = disk.frame("tmp_map.df")
+  
+  # return 1 row from each chunk
+  df = b %>% map_dfr(~.x[1,])
+  
+  expect_s3_class(df, "disk.frame")
+  
+  df2 = df %>% collect
+  
+  expect_s3_class(df2, "data.frame")
+  
+  expect_equal(nrow(df2), 5L)
+})
+
+
+test_that("testing imap", {
+  b = disk.frame("tmp_map.df")
+  
+  # return 1 row from each chunk
+  df = b %>% imap_dfr(~.x[1,])
+  
   expect_s3_class(df, "disk.frame")
   
   df2 = df %>% collect
