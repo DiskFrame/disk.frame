@@ -9,7 +9,6 @@
 #' @importFrom glue glue
 #' @export
 shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
-  ##browser
   overwrite_check(outdir, overwrite)
   
   setDT(df)
@@ -20,7 +19,13 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
     code = glue::glue("df[,.out.disk.frame.id := hashstr2i({shardby_list}, nchunks)]")
   }
   
-  eval(parse(text=code))
+  tryCatch(
+    eval(parse(text=code)),
+    error = function(e) {
+    	print("error occurred in shard")
+    }
+  )
+  
   
   write_disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = overwrite, shardkey = shardby, shardchunks = nchunks)
 }
