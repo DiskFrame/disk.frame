@@ -78,7 +78,7 @@ progressbar <- function(df) {
 #' @importFrom data.table setDT
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
-  #browser()
+  #
   overwrite_check(outdir, overwrite)
   
   setDT(df)

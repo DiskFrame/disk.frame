@@ -147,12 +147,12 @@ record <- function(.data, cmd){
 #' @param cmds the list of function to play back
 #' @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
-  #list.files(
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
       #print(.data)
     } else {
+      
       .data <- lazyeval::lazy_eval(cmd, list(.data=.data)) 
     }
   }

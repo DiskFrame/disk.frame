@@ -72,7 +72,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
       }
       
       print(glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
-      #browser()
+      #
       # do not run this in parallel as the level above this is likely in parallel
       system.time(
         fnl_out <- 
