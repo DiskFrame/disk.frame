@@ -22,7 +22,7 @@ If you like disk.frame and want to speed up its development or perhaps you have 
 **Do you need help with R?**
 [![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
 
-I am available for R consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
+I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
 
 ## Vignette
 
