@@ -95,26 +95,53 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
   
   ff = list.files(attr(df, "path"))
   
-  # This will return the variable names
-  by = rlang::enquos(...) %>% 
-    substr(2, nchar(.))
+  # test if the unlist it will error
   
-  # shard and create temporary diskframes
-  tmp_df  = map(df, function(df1) {
-    ##browser
-    tmpdir = tempfile()
-    shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
-  }, lazy = F)
-  
-  # now rbindlist
-  res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
-
-  # clean up the tmp dir
-  purrr::walk(tmp_df, ~{
-    fs::dir_delete(attr(.x, "path"))
+  tryCatch({
+    # This will return the variable names
+    #browser()
+    by <- unlist(list(...))
+    
+    # shard and create temporary diskframes
+    tmp_df  = map(df, function(df1) {
+      tmpdir = tempfile()
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
+    }, lazy = F)
+    
+    # now rbindlist
+    res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
+    
+    # clean up the tmp dir
+    purrr::walk(tmp_df, ~{
+      fs::dir_delete(attr(.x, "path"))
+    })
+    
+    res1 = res %>% dplyr::group_by(!!!syms(by))
+    
+    res1
+  }, error = function(e) {
+    print(e)
+    # This will return the variable names
+    by = rlang::enquos(...) %>% 
+      substr(2, nchar(.))
+    
+    # shard and create temporary diskframes
+    tmp_df  = map(df, function(df1) {
+      ##browser
+      tmpdir = tempfile()
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
+    }, lazy = F)
+    
+    # now rbindlist
+    res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
+    
+    # clean up the tmp dir
+    purrr::walk(tmp_df, ~{
+      fs::dir_delete(attr(.x, "path"))
+    })
+    
+    res1 = res %>% dplyr::group_by(!!!syms(by))
+    
+    res1
   })
-  
-  res1 = res %>% dplyr::group_by(!!!syms(by))
-  
-  res1
 }

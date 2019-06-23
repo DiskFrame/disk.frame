@@ -26,7 +26,7 @@ map_dfr <- function(.x, .f, ..., .id = NULL) {
 }
 
 map_dfr.default <- function(.x, .f, ..., .id = NULL) {
-  purrr::map(.x, .f, ..., id)
+  purrr::map_dfr(.x, .f, ..., .id = .id)
 }
 
 
@@ -34,6 +34,7 @@ map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill =
   if(!is.null(.id)) {
     warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
   }
+  #browser()
   data.table::rbindlist(map.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
 }
 
@@ -45,7 +46,6 @@ map.default <- function(.x, .f, ...) {
 #' @rdname map
 #' @export
 map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F) {
-  #browser()
   .f = purrr::as_mapper(.f)
   if(lazy) {
     attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), .f)
@@ -89,15 +89,22 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   }
 }
 
-
+#' @export
 imap_dfr <- function(.x, .f, ..., .id = NULL) {
-  
+  UseMethod("imap_dfr")
+}
+
+imap_dfr.default <- function(.x, .f, ..., .id = NULL) {
+  purrr::imap_dfr(.x, .f, ..., .id = .id)
 }
 
 #' @export
 #' 
-imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL) {
-  
+imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
+  if(!is.null(.id)) {
+    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
+  }
+  data.table::rbindlist(imap.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
 }
 
 #' imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
@@ -105,7 +112,6 @@ imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL) {
 #' @export
 #' @rdname map
 imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F) {
-  ##browser
   .f = purrr::as_mapper(.f)
   
   if(lazy) {

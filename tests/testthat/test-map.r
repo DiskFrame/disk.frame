@@ -28,7 +28,7 @@ test_that("testing map eager", {
   expect_false("disk.frame" %in% class(df))
 
   # return 1 row from each chunk
-  df = b %>% map_dfr(~.x[1], lazy = F)
+  df = b %>% map_dfr(~.x[1])
   expect_false("disk.frame" %in% class(df))
   expect_true("data.frame" %in% class(df))
 })
@@ -39,9 +39,11 @@ test_that("testing delayed", {
   # return 1 row from each chunk
   df = b %>% delayed(~.x[1])
   
-  expect_s3_class(df, "data.frame")
+  expect_s3_class(df, "disk.frame")
   
-  expect_equal(nrow(df), 5L)
+  df1 = collect(df)
+  
+  expect_equal(nrow(df1), 5)
 })
 
 
@@ -51,13 +53,7 @@ test_that("testing map_dfr", {
   # return 1 row from each chunk
   df = b %>% map_dfr(~.x[1,])
   
-  expect_s3_class(df, "disk.frame")
-  
-  df2 = df %>% collect
-  
-  expect_s3_class(df2, "data.frame")
-  
-  expect_equal(nrow(df2), 5L)
+  expect_s3_class(df, "data.frame")
 })
 
 
@@ -65,18 +61,15 @@ test_that("testing imap", {
   b = disk.frame("tmp_map.df")
   
   # return 1 row from each chunk
-  df = b %>% imap_dfr(~.x[1,])
+  df = b %>% imap_dfr(~{
+    y = .x[1,]
+    y[,ok := .y]
+    y
+    })
   
-  expect_s3_class(df, "disk.frame")
-  
-  df2 = df %>% collect
-  
-  expect_s3_class(df2, "data.frame")
-  
-  expect_equal(nrow(df2), 5L)
+  expect_s3_class(df, "data.frame")
 })
 
-# TODO rest of the functions 
 
 teardown({
   fs::dir_delete("tmp_map.df")

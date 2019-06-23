@@ -6,7 +6,7 @@
 \usage{
 csv_to_disk.frame(infile, outdir, inmapfn = base::I,
   nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL,
-  shardby = NULL, compress = 50, overwrite = T, ...)
+  shardby = NULL, compress = 50, overwrite = T, header = T, ...)
 }
 \arguments{
 \item{infile}{The input CSV}

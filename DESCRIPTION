@@ -15,7 +15,6 @@ Imports:
     glue,
     lazyeval,
     rlang,
-    purrr,
     furrr,
     future.apply,
     fs,
@@ -27,7 +26,8 @@ Depends:
     R (>= 3.5.0),
     future,
     dplyr,
-    data.table
+    data.table,
+    purrr
 Suggests: 
     testthat,
     knitr,

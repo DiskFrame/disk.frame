@@ -8,7 +8,8 @@ output:
 
 ```{r}
 # 2_exploratory.r
-source("../fannie_mae/00_setup.r")
+#source("../fannie_mae/00_setup.r")
+source("00_setup.r")
 ```
 
 # Assign a `disk.frame`
