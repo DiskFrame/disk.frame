@@ -2,14 +2,15 @@
 % Please edit documentation in R/csv2disk.frame.r
 \name{csv_to_disk.frame}
 \alias{csv_to_disk.frame}
-\title{convert a CSV file to disk.frame format}
+\title{convert CSV file(s) to disk.frame format}
 \usage{
 csv_to_disk.frame(infile, outdir, inmapfn = base::I,
-  nchunks = recommend_nchunks(file.size(infile)), in_chunk_size = NULL,
-  shardby = NULL, compress = 50, overwrite = T, header = T, ...)
+  nchunks = recommend_nchunks(sum(file.size(infile))),
+  in_chunk_size = NULL, shardby = NULL, compress = 50,
+  overwrite = T, header = T, ...)
 }
 \arguments{
-\item{infile}{The input CSV}
+\item{infile}{The input CSV file or files}
 
 \item{outdir}{The directory to output the disk.frame to}
 
@@ -28,5 +29,5 @@ csv_to_disk.frame(infile, outdir, inmapfn = base::I,
 \item{...}{passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard}
 }
 \description{
-convert a CSV file to disk.frame format
+convert CSV file(s) to disk.frame format
 }
