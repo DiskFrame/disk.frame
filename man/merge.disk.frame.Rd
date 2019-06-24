@@ -4,7 +4,7 @@
 \alias{merge.disk.frame}
 \title{Merge function for disk.frames}
 \usage{
-\method{merge}{disk.frame}(x, y, outdir, ..., merge_by_chunk_id = F)
+\method{merge}{disk.frame}(x, y, by, outdir, ..., merge_by_chunk_id = F)
 }
 \arguments{
 \item{x}{a disk.frame}

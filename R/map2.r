@@ -19,7 +19,6 @@ map2.default <- function(.x, .y, .f, ...) {
 
 #' @export
 map2.disk.frame <- function(.x, .y, .f, ..., outdir) {
-  #browser()
   .f = purrr::as_mapper(.f)
   fs::dir_create(outdir)
   

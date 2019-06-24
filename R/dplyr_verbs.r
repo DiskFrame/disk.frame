@@ -153,7 +153,7 @@ record <- function(.data, cmd){
 # @param cmds the list of function to play back
 # @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
-  #list.files(
+  #browser()
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
