@@ -76,8 +76,10 @@ library(fst)
 #library(future.apply)
 #library(data.table)
 
+nworkers = parallel::detectCores(logical = F)
+
 # this is run automatically, but you may want to use more or less workers with setup_disk.frame(workers = n)
-setup_disk.frame() # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
+setup_disk.frame(workers = nworkers) # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
 
 rows_per_chunk = 1e7
 # generate synthetic data
