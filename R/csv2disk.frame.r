@@ -79,7 +79,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
           rm(tmpdt); gc()
         }
         
-        print(glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
+        print(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
         
         # remove the files
         fs::dir_delete(tmpdir1)
@@ -136,7 +136,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
           rm(tmpdt); gc()
         }
         
-        print(glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
+        print(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
         #
         # do not run this in parallel as the level above this is likely in parallel
         system.time(

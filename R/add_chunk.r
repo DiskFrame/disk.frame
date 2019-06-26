@@ -93,5 +93,5 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
       stop("")
     }
   }
-  write_fst(chunk, file.path(attr(df,"path"),paste0(chunk_id,".fst")))
+  fst::write_fst(chunk, file.path(attr(df,"path"),paste0(chunk_id,".fst")))
 }
