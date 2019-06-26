@@ -32,8 +32,58 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
   } else { # reading one file
     l = length(list.files(outdir))
     if(is.null(shardby)) {
-      a = as.disk.frame(inmapfn(data.table::fread(infile, header=header, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
-      return(a)
+      if(is.null(in_chunk_size)) {
+        a = as.disk.frame(inmapfn(data.table::fread(infile, header=header, ...)), outdir, compress=compress, nchunks = nchunks, overwrite = overwrite, ...)
+        return(a)
+      } else {
+        outdf = disk.frame(outdir)
+        i <- 0
+        tmpdir1 = tempfile(pattern="df_tmp")
+        fs::dir_create(tmpdir1)
+
+        done = F
+        skiprows = 0
+        column_names = ""
+        while(!done) {
+          if (identical(column_names, "")) {
+            tmpdt = inmapfn(data.table::fread(
+              infile,
+              skip = skiprows, nrows = in_chunk_size,...))
+            column_names = names(tmpdt)
+          } else {
+            ddd = list(...)
+            if ("col.names" %in% names(ddd)) {
+              tmpdt = inmapfn(data.table::fread(
+                infile,
+                skip = skiprows, nrows = in_chunk_size, 
+                header=F, ...))
+            } else {
+              tmpdt = inmapfn(data.table::fread(
+                infile,
+                skip = skiprows, nrows = in_chunk_size, 
+                header=F, col.names = column_names, ...))
+            }
+          }
+          
+          i <- i + 1
+          skiprows = skiprows + in_chunk_size + 
+            # skips the header as well but only at the first chunk
+            ifelse(i == 1 & header, 1, 0)
+          rows <- tmpdt[,.N]
+          if(rows < in_chunk_size) {
+            done <- T
+          }
+          
+          # add to chunk
+          add_chunk(outdf, tmpdt)
+          rm(tmpdt); gc()
+        }
+        
+        print(glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
+        
+        # remove the files
+        fs::dir_delete(tmpdir1)
+      }
     } else { # so shard by some element
       if(is.null(in_chunk_size)) {
         shard(inmapfn(data.table::fread(infile, header=header, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
