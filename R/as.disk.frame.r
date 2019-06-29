@@ -18,5 +18,5 @@ as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite
   odfi = odfi[1:nrow(df)]
   df[, .out.disk.frame.id := odfi]
   
-  write_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
+  write_disk.frame(df, outdir, nchunks, overwrite, shardby="", compress = compress, ...)
 }

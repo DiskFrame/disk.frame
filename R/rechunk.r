@@ -7,9 +7,9 @@
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
   #browser()
+  
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
-  
   force(nchunks) 
   
   if (nchunks < 1) {
@@ -60,27 +60,40 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     shardby = existing_shardkey[[1]]
   }
 
-  if (is.null(shardby)) {
+  if (identical(shardby, "") | is.null(shardby)) {
+    #browser()
     nr = nrow(df)
     nr_per_chunk = ceiling(nr/nchunks)
     used_so_far = 0
     done = F
-    i = 1
-    a = get_chunk(df,1)
-    used_so_far = used_so_far + nrow(a)
-    while(!done) {
-      if(nr_per_chunk <= used_so_far) {
-        fst::write_fst(a, file.path(dfp, paste0(i,".fst")))
+    chunks_read = 1
+    chunks_written = 0
+    res = disk.frame(outdir)
+    a = get_chunk(df, 1)
+    used_so_far = nrow(a)
+    while(chunks_read < nchunks(df)) {
+      if((nr_per_chunk <= used_so_far)) {
+        disk.frame::add_chunk(res, a[1:nr_per_chunk,])
+        chunks_written = chunks_written + 1
+        a = a[-(1:nr_per_chunk),]
+        used_so_far = nrow(a)
       } else {
-        i = i + 1
-        newa = get_chunk(df, i)
+        chunks_read = chunks_read + 1
+        newa = get_chunk(df, chunks_read)
         used_so_far = used_so_far + nrow(newa)
         a = rbindlist(list(a, newa))
         rm(newa)
       }
     }
-    res <- disk.frame(df)
-    return(add_meta(res))
+    
+    while(chunks_written < nchunks) {
+      rows_to_write = min(nr_per_chunk, nrow(a))
+      disk.frame::add_chunk(res, a[1:rows_to_write,])
+      a = a[-(1:rows_to_write),]
+      chunks_written = chunks_written + 1
+    }
+    
+    return(res)
   } else {
     if(user_had_not_set_shard_by) {
       warning("shardby = NULL; but there are already shardkey's defined for this disk.frame. Therefore a rechunk algorithm that preserves the shardkey's has been applied and this algorithm is slower than an algorithm that doesn't use a shardkey.")

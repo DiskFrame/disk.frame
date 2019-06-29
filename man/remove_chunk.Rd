@@ -9,7 +9,7 @@ remove_chunk(df, chunk_id, full.names = F)
 \arguments{
 \item{df}{a disk.frame}
 
-\item{chunk_id}{the chunk ID of the chunk to remove. If it's a number then}
+\item{chunk_id}{the chunk ID of the chunk to remove. If it's a number then return number.fst}
 
 \item{full.names}{TRUE or FALSE. Defaults to F. If true then chunk_id is the full path to the chunk otherwise it's the relative path}
 }

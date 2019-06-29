@@ -11,7 +11,7 @@ shard(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ...,
 distribute(...)
 }
 \arguments{
-\item{df}{A disk.frame}
+\item{df}{A data.frame/data.table or disk.frame. If disk.frame, then rechunk(df, ...) is run}
 
 \item{shardby}{The column(s) to shard the data by.}
 
