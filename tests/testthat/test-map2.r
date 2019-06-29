@@ -7,7 +7,7 @@ setup({
   as.disk.frame(d, "tmp_map2d.df", nchunks = 5, overwrite = T)
 })
 
-test_that("testing map2", {
+test_that("testing map2 .y is disk.frame", {
   b = disk.frame("tmp_map2.df")
   d = disk.frame("tmp_map2d.df")
   
@@ -23,9 +23,24 @@ test_that("testing map2", {
   expect_equal(nrow(df2), 10L)
 })
 
+test_that("testing map2 .y is not disk.frame", {
+  b = disk.frame("tmp_map2.df")
+  d = 1:nchunks(b)
+  
+  # return 1 row from each chunk
+  df = map2(b,d,~.x[1,.(y = .y)], outdir = "tmp_map2_out2.df")
+  
+  expect_type(df, "list")
+  
+  df2 = df %>% rbindlist
+  
+  expect_s3_class(df2, "data.frame")
+  
+  expect_equal(nrow(df2), 5L)
+})
 
 teardown({
-  #fs::dir_delete("tmp_map2.df")
-  #fs::dir_delete("tmp_map2d.df")
-  #fs::dir_delete("tmp_map2_out.df")
+  fs::dir_delete("tmp_map2.df")
+  fs::dir_delete("tmp_map2d.df")
+  fs::dir_delete("tmp_map2_out.df")
 })

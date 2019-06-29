@@ -36,3 +36,6 @@ first_harp_date.df
 a.df
 tmp81
 tmp82
+tmpdata/
+
+*.json

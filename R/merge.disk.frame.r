@@ -1,5 +1,4 @@
 #' Merge function for disk.frames
-# TODO remove ___really_bad_luck_
 #' @export
 #' @param x a disk.frame
 #' @param y a disk.frame or data.frame
@@ -13,17 +12,11 @@ merge.disk.frame <- function(x, y, by, outdir, ..., merge_by_chunk_id = F) {
   
   if("data.frame" %in% class(y)) {
     yby = c(list(y=y, by=by), list(...))
-    #saveRDS(yby, "___really_bad_luck_mate___")
     res = map(x, ~{
-      #yby = readRDS("___really_bad_luck_mate___")
-      #res = merge(.x, y, by = byby, ...)
       res = do.call(merge, c(list(x = .x), yby))
       res
       }, outdir=outdir, ...)
-    
-    #fs::file_delete("___really_bad_luck_mate___")
-    res
-  #} else if (merge_by_chunk_id | (all(shardkey(x) == shardkey(y)))) {
+    res  
   } else if (merge_by_chunk_id | (identical(shardkey(x), shardkey(y)))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
