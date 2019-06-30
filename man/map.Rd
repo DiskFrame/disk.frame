@@ -17,7 +17,9 @@ map(.x, .f, ...)
 map_dfr(.x, .f, ..., .id = NULL)
 
 \method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F)
+  chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F,
+  vars_and_pkgs = future::getGlobalsAndPackages(.f, envir =
+  parent.frame()))
 
 imap.disk.frame(.x, .f, outdir = NULL, keep = NULL,
   chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F)

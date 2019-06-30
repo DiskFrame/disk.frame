@@ -44,11 +44,13 @@ map.default <- function(.x, .f, ...) {
 }
 
 #' @rdname map
+#' @importFRom future getGlobalsAndPackages
 #' @export
-map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F) {
+map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
   .f = purrr::as_mapper(.f)
+
   if(lazy) {
-    attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), .f)
+    attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), list(list(func = .f, vars_and_pkgs = vars_and_pkgs)))
     return(.x)
   }
   

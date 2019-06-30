@@ -57,8 +57,6 @@ foverlaps.disk.frame <-
       #browser()
       chunk_id = df3[row, chunk_id]
       
-      #data1 = get_chunk.disk.frame(df1, chunk_id)
-      #data2 = get_chunk.disk.frame(df2, chunk_id)
       data1 = get_chunk(df1, chunk_id)
       data2 = get_chunk(df2, chunk_id)
       

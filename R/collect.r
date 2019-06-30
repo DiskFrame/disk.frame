@@ -28,14 +28,17 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
-collect_list <- function(x, simplify = F, parallel = !is.null(attr(df,"lazyfn"))) {
-  df = x
-  if(nchunks(df) > 0) {
+collect_list <- function(x, simplify = F, parallel = !is.null(attr(x,"lazyfn"))) {
+  #browser()
+  if(nchunks(x) > 0) {
     res <- NULL
     if (parallel) {
-      res = furrr::future_map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+      #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
+      res = future.apply::future_lapply(1:nchunks(x), function(.x) {
+        disk.frame::get_chunk(x, .x)
+      })
     } else {
-      res = purrr::map(1:nchunks(df), ~get_chunk.disk.frame(df, .x))
+      res = purrr::map(1:nchunks(x), ~get_chunk(x, .x))
     }
     if (simplify) {
       return(simplify2array(res))
@@ -46,4 +49,5 @@ collect_list <- function(x, simplify = F, parallel = !is.null(attr(df,"lazyfn"))
     list()
   }
 }
+
 

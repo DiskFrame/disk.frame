@@ -33,7 +33,7 @@
     } else {
       code = sprintf("a[%s,%s,%s]", i, j, dotdot)
     }
-    a = get_chunk.disk.frame(df, k, keep = keep_for_future)
+    a = get_chunk(df, k, keep = keep_for_future)
     
     aa <- eval(parse(text=code))
     

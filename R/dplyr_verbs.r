@@ -3,14 +3,22 @@
 #' @importFrom dplyr select_ rename_ filter_ mutate_ transmute_ arrange_ do_ groups group_by group_by_ glimpse summarise_
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
-#' @param .dots this represents the ... from a higher level
 #' @importFrom lazyeval all_dots
 #' @rdname dplyr_verbs
-select_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(select_(.data, .dots=.dots))
-  record(.data, cmd)
+select.disk.frame <- function(.data, ...) {
+  quo_dotdotdot = enquos(...)
+  map(.data, ~{
+    code = quo(select(.x, !!!quo_dotdotdot))
+    rlang::eval_tidy(code)
+  }, lazy = T)
 }
+# @param .dots this represents the ... from a higher level
+# select_.disk.frame <- function(.data, ..., .dots){
+#   .dots <- lazyeval::all_dots(.dots, ...)
+#   cmd <- lazyeval::lazy(select_(.data, .dots=.dots))
+#   record(.data, cmd)
+# }
+
 
 
 #' @export
@@ -159,8 +167,21 @@ play <- function(.data, cmds=NULL){
       .data <- cmd(.data)
       #print(.data)
     } else {
-      .data <- lazyeval::lazy_eval(cmd, list(.data=.data)) 
+      #.data <- lazyeval::lazy_eval(cmd, list(.data=.data)) 
+      # create a temporary environment 
+      an_env = new.env(parent = environment())
+      
+      ng = names(cmd$vars_and_pkgs$globals)
+      
+      for(i in 1:length(cmd$vars_and_pkgs$globals)) {
+        g = cmd$vars_and_pkgs$globals[[i]]
+        assign(ng[i], g, pos = an_env)
+      }
+      
+      .data <- do.call(cmd$func, list(.data), envir = an_env)
     }
   }
   .data
 }
+
+
