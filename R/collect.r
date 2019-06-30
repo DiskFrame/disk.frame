@@ -4,16 +4,16 @@
 #' @param ... not used
 #' @export
 #' @importFrom data.table data.table as.data.table
-#' @importFrom furrr future_map_dfr
+#' @importFrom furrr future_map_dfr future_options
 #' @importFrom purrr map_dfr
-#' @importFrom dplyr collect
+#' @importFrom dplyr collect select mutate
 #' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
   cids = get_chunk_ids(x, full.names = T)
   
   if(nchunks(x) > 0) {
     if(parallel) {
-      furrr::future_map_dfr(cids, ~get_chunk(x, .x, full.names = T))
+      furrr::future_map_dfr(cids, ~get_chunk(x, .x, full.names = T), .options = furrr::future_options(packages="dplyr"))
       #future.apply::future_lapply(chunk_ids, function(.x) disk.frame::get_chunk(x, .x))
       #lapply(chunk_ids, function(chunk) get_chunk(x, chunk)) %>% rbindlist
     } else {
@@ -36,7 +36,7 @@ collect_list <- function(x, simplify = F, parallel = !is.null(attr(x,"lazyfn")))
       #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
       res = future.apply::future_lapply(1:nchunks(x), function(.x) {
         disk.frame::get_chunk(x, .x)
-      })
+      }, future.packages = "dplyr")
     } else {
       res = purrr::map(1:nchunks(x), ~get_chunk(x, .x))
     }

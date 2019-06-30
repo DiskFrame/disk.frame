@@ -41,11 +41,20 @@ filter_.disk.frame <- function(.data, ..., .dots){
 #' mutate
 #' @export
 #' @rdname dplyr_verbs
-mutate_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(mutate_(.data, .dots=.dots))
-  record(.data, cmd)
+mutate.disk.frame <- function(.data, ...) {
+  #browser()
+  quo_dotdotdot = enquos(...)
+  map(.data, ~{
+    code = quo(mutate(.x, !!!quo_dotdotdot))
+    rlang::eval_tidy(code)
+  }, lazy = T)
 }
+
+# mutate_.disk.frame <- function(.data, ..., .dots){
+#   .dots <- lazyeval::all_dots(.dots, ...)
+#   cmd <- lazyeval::lazy(mutate_(.data, .dots=.dots))
+#   record(.data, cmd)
+# }
 
 #' transmuate
 #' @export

@@ -4,7 +4,7 @@
 \alias{select.disk.frame}
 \alias{rename_.disk.frame}
 \alias{filter_.disk.frame}
-\alias{mutate_.disk.frame}
+\alias{mutate.disk.frame}
 \alias{transmute_.disk.frame}
 \alias{arrange_.disk.frame}
 \alias{summarise_.disk.frame}
@@ -18,7 +18,7 @@
 
 \method{filter_}{disk.frame}(.data, ..., .dots)
 
-\method{mutate_}{disk.frame}(.data, ..., .dots)
+\method{mutate}{disk.frame}(.data, ...)
 
 \method{transmute_}{disk.frame}(.data, ..., .dots)
 
