@@ -133,6 +133,7 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrit
     warning(glue::glue(
       "The shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
   }
+  stop("fix this")
   return(dplyr::group_by_(.data, .dots = compat_as_lazy_dots(...), add = add))
 }
 
