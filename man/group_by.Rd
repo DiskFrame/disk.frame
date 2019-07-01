@@ -3,15 +3,12 @@
 \name{groups.disk.frame}
 \alias{groups.disk.frame}
 \alias{group_by.disk.frame}
-\alias{group_by_.disk.frame}
 \title{Group}
 \usage{
 \method{groups}{disk.frame}(x)
 
 \method{group_by}{disk.frame}(.data, ..., add = FALSE, outdir = NULL,
   overwrite = T)
-
-\method{group_by_}{disk.frame}(.data, ..., .dots, add = FALSE)
 }
 \arguments{
 \item{x}{a disk.frame}

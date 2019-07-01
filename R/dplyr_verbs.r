@@ -1,6 +1,6 @@
 #' dplyr verbs implemented for disk.frame
 #' @export
-#' @importFrom dplyr select_ rename_ filter_ mutate_ transmute_ arrange_ do_ groups group_by group_by_ glimpse summarise_
+#' @importFrom dplyr select rename filter mutate transmute arrange do groups group_by group_by glimpse summarise
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
 #' @importFrom lazyeval all_dots
@@ -19,99 +19,72 @@ select.disk.frame <- function(.data, ...) {
 #   record(.data, cmd)
 # }
 
+#' A map is a function
+#' @export
+create_dplyr_mapper <- function(dplyr_fn) {
+  return_func <- function(.data, ...) {
+    quo_dotdotdot = enquos(...)
+  
+    # this is designed to capture any global stuff
+    vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
+    data_for_eval_tidy = force(vars_and_pkgs$globals)
+    
+    res = map(.data, ~{
+      this_env = environment()
+      
+      if(length(data_for_eval_tidy) > 0) {
+        for(i in 1:length(data_for_eval_tidy)) {
+          assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos= this_env)
+        }
+      }
+      
+      lapply(quo_dotdotdot, function(x) {
+        attr(x, ".Environment") = this_env
+      })
+      
+      code = quo(dplyr_fn(.x, !!!quo_dotdotdot))
+      eval(parse(text=as_label(code)), envir = this_env)
+    }, lazy = T)
+  }
+  return_func
+}
 
 
 #' @export
 #' @rdname dplyr_verbs
-rename_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(rename_(.data, .dots=.dots))
-  record(.data, cmd)
-  #stop("not implemented rename!")
-}
+rename.disk.frame <- create_dplyr_mapper(rename)
 
 #' @export
 #' @rdname dplyr_verbs
-filter_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(filter_(.data, .dots=.dots))
-  record(.data, cmd)
-}
+filter.disk.frame <- create_dplyr_mapper(filter)
 
 #' mutate
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom future getGlobalsAndPackages
 #' @importFrom rlang eval_tidy quo enquos
-mutate.disk.frame <- function(.data, ...) {
-  #browser()
-  quo_dotdotdot = enquos(...)
-  
-  # this is designed to capture any global stuff
-  vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
-  data_for_eval_tidy = force(vars_and_pkgs$globals)
-  
-  res = map(.data, ~{
-    this_env = environment()
-    
-    if(length(data_for_eval_tidy) > 0) {
-      for(i in 1:length(data_for_eval_tidy)) {
-        assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos= this_env)
-      }
-    }
-  
-    lapply(quo_dotdotdot, function(x) {
-      attr(x, ".Environment") = this_env
-    })
-    
-    code = quo(mutate(.x, !!!quo_dotdotdot))
-    #return(list(code, data_for_eval_tidy, this_env))
-    eval(parse(text=as_label(code)), envir = this_env)
-    #rlang::eval_tidy(code)
-  }, lazy = T)
-}
-
-# mutate_.disk.frame <- function(.data, ..., .dots){
-#   .dots <- lazyeval::all_dots(.dots, ...)
-#   cmd <- lazyeval::lazy(mutate_(.data, .dots=.dots))
-#   record(.data, cmd)
-# }
-
-#' transmuate
-#' @export
-#' @rdname dplyr_verbs
-transmute_.disk.frame <- function(.data, ..., .dots){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(transmute_(.data, .dots=.dots))
-  record(.data, cmd)
-}
+mutate.disk.frame <- create_dplyr_mapper(mutate)
 
 #' @export
-#' @rdname dplyr_verbs
-arrange_.disk.frame <- function(.data, ..., .dots){
-  warning("disk.frame only sorts (arange) WITHIN each chunk")
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(arrange_(.data, .dots=.dots))
-  record(.data, cmd)
-}
+#' @importFrom dplyr transmute
+#' @rdname dp
+transmute.disk.frame <- create_dplyr_mapper(transmute)
 
 #' @export
-#' @rdname dplyr_verbs
-summarise_.disk.frame <- function(.data, ..., .dots){
-  .data$.warn <- TRUE
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(summarise_(.data, .dots=.dots))
-  record(.data, cmd)
-}
+#' @importFrom dplyr arrange
+#' @rdname dp
+arrange.disk.frame <- create_dplyr_mapper(arrange)
 
 #' @export
-#' @rdname dplyr_verbs
-do_.disk.frame <- function(.data, ..., .dots){
-  warning("applying `do` to each chunk of disk.frame; this may not work as expected")
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(do_(.data, .dots=.dots))
-  record(.data, cmd)
-}
+#' @importFrom dplyr summarise
+#' @rdname dp
+summarise.disk.frame <- create_dplyr_mapper(summarise)
+
+#' @export
+#' @importFrom dplyr do
+#' @rdname dp
+do.disk.frame <- create_dplyr_mapper(do)
+
 
 #' Group
 #' @export
@@ -161,14 +134,6 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrit
       "The shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
   }
   return(dplyr::group_by_(.data, .dots = compat_as_lazy_dots(...), add = add))
-}
-
-#' @export
-#' @rdname group_by
-group_by_.disk.frame <- function(.data, ..., .dots, add=FALSE){
-  .dots <- lazyeval::all_dots(.dots, ...)
-  cmd <- lazyeval::lazy(group_by_(.data, .dots=.dots, add=add))
-  record(.data, cmd)
 }
 
 #' Take a glimpse

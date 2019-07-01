@@ -2,31 +2,19 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{select.disk.frame}
 \alias{select.disk.frame}
-\alias{rename_.disk.frame}
-\alias{filter_.disk.frame}
+\alias{rename.disk.frame}
+\alias{filter.disk.frame}
 \alias{mutate.disk.frame}
-\alias{transmute_.disk.frame}
-\alias{arrange_.disk.frame}
-\alias{summarise_.disk.frame}
-\alias{do_.disk.frame}
 \alias{glimpse.disk.frame}
 \title{dplyr verbs implemented for disk.frame}
 \usage{
 \method{select}{disk.frame}(.data, ...)
 
-\method{rename_}{disk.frame}(.data, ..., .dots)
+\method{rename}{disk.frame}(.data, ...)
 
-\method{filter_}{disk.frame}(.data, ..., .dots)
+\method{filter}{disk.frame}(.data, ...)
 
 \method{mutate}{disk.frame}(.data, ...)
-
-\method{transmute_}{disk.frame}(.data, ..., .dots)
-
-\method{arrange_}{disk.frame}(.data, ..., .dots)
-
-\method{summarise_}{disk.frame}(.data, ..., .dots)
-
-\method{do_}{disk.frame}(.data, ..., .dots)
 
 \method{glimpse}{disk.frame}(.data, ...)
 }
@@ -39,8 +27,6 @@
 dplyr verbs implemented for disk.frame
 
 mutate
-
-transmuate
 
 Take a glimpse
 }
