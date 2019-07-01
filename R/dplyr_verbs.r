@@ -19,7 +19,7 @@ select.disk.frame <- function(.data, ...) {
 #   record(.data, cmd)
 # }
 
-#' A map is a function
+#' A function to make it easier to create dplyr function for disk.frame
 #' @export
 create_dplyr_mapper <- function(dplyr_fn) {
   return_func <- function(.data, ...) {
@@ -67,22 +67,22 @@ mutate.disk.frame <- create_dplyr_mapper(mutate)
 
 #' @export
 #' @importFrom dplyr transmute
-#' @rdname dp
+#' @rdname dplyr_verbs
 transmute.disk.frame <- create_dplyr_mapper(transmute)
 
 #' @export
 #' @importFrom dplyr arrange
-#' @rdname dp
+#' @rdname dplyr_verbs
 arrange.disk.frame <- create_dplyr_mapper(arrange)
 
 #' @export
 #' @importFrom dplyr summarise
-#' @rdname dp
+#' @rdname dplyr_verbs
 summarise.disk.frame <- create_dplyr_mapper(summarise)
 
 #' @export
 #' @importFrom dplyr do
-#' @rdname dp
+#' @rdname dplyr_verbs
 do.disk.frame <- create_dplyr_mapper(do)
 
 

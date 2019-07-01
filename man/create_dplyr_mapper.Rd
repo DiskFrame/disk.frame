@@ -2,10 +2,10 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{create_dplyr_mapper}
 \alias{create_dplyr_mapper}
-\title{A map is a function}
+\title{A function to make it easier to create dplyr function for disk.frame}
 \usage{
 create_dplyr_mapper(dplyr_fn)
 }
 \description{
-A map is a function
+A function to make it easier to create dplyr function for disk.frame
 }

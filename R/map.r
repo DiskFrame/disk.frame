@@ -21,21 +21,25 @@ map <- function(.x, .f, ...) {
 
 #' @rdname map
 #' @param .id not used
+#' @export
 map_dfr <- function(.x, .f, ..., .id = NULL) {
   UseMethod("map_dfr")
 }
 
+#' @export
 map_dfr.default <- function(.x, .f, ..., .id = NULL) {
   purrr::map_dfr(.x, .f, ..., .id = .id)
 }
 
-
+#' @export
 map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
   if(!is.null(.id)) {
     warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
   }
-  #browser()
-  data.table::rbindlist(map.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
+  
+  # TODO warn the user if outdir is map_dfr
+  
+  data.table::rbindlist(map.disk.frame(.x, .f, ..., outdir = NULL, lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
 }
 
 #' @export
@@ -76,7 +80,11 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
     ds = disk.frame::get_chunk(.x, ii, keep=keep_future)
     res = .f(ds)
     if(!is.null(outdir)) {
-      fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
+      if(nrow(res) == 0) {
+        warning(glue::glue("The output chunk has 0 row, therefore chunk {ii} NOT written"))
+      } else {
+        fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
+      }
       return(ii)
     } else {
       return(res)

@@ -5,6 +5,10 @@
 \alias{rename.disk.frame}
 \alias{filter.disk.frame}
 \alias{mutate.disk.frame}
+\alias{transmute.disk.frame}
+\alias{arrange.disk.frame}
+\alias{summarise.disk.frame}
+\alias{do.disk.frame}
 \alias{glimpse.disk.frame}
 \title{dplyr verbs implemented for disk.frame}
 \usage{
@@ -15,6 +19,14 @@
 \method{filter}{disk.frame}(.data, ...)
 
 \method{mutate}{disk.frame}(.data, ...)
+
+\method{transmute}{disk.frame}(.data, ...)
+
+\method{arrange}{disk.frame}(.data, ...)
+
+\method{summarise}{disk.frame}(.data, ...)
+
+\method{do}{disk.frame}(.data, ...)
 
 \method{glimpse}{disk.frame}(.data, ...)
 }
