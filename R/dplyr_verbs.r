@@ -41,12 +41,33 @@ filter_.disk.frame <- function(.data, ..., .dots){
 #' mutate
 #' @export
 #' @rdname dplyr_verbs
+#' @importFrom future getGlobalsAndPackages
+#' @importFrom rlang eval_tidy quo enquos
 mutate.disk.frame <- function(.data, ...) {
   #browser()
   quo_dotdotdot = enquos(...)
-  map(.data, ~{
+  
+  # this is designed to capture any global stuff
+  vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
+  data_for_eval_tidy = force(vars_and_pkgs$globals)
+  
+  res = map(.data, ~{
+    this_env = environment()
+    
+    if(length(data_for_eval_tidy) > 0) {
+      for(i in 1:length(data_for_eval_tidy)) {
+        assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos= this_env)
+      }
+    }
+  
+    lapply(quo_dotdotdot, function(x) {
+      attr(x, ".Environment") = this_env
+    })
+    
     code = quo(mutate(.x, !!!quo_dotdotdot))
-    rlang::eval_tidy(code)
+    #return(list(code, data_for_eval_tidy, this_env))
+    eval(parse(text=as_label(code)), envir = this_env)
+    #rlang::eval_tidy(code)
   }, lazy = T)
 }
 

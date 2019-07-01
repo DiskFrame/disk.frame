@@ -44,9 +44,10 @@ map.default <- function(.x, .f, ...) {
 }
 
 #' @rdname map
-#' @importFRom future getGlobalsAndPackages
+#' @importFrom future getGlobalsAndPackages
 #' @export
 map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
+  #browser()
   .f = purrr::as_mapper(.f)
 
   if(lazy) {
