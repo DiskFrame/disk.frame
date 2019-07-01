@@ -99,7 +99,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
   
   tryCatch({
     # This will return the variable names
-    browser()
+    
     # TODO use better ways to do NSE
     by <- unlist(list(...))
     
@@ -109,7 +109,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
       shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
     }, lazy = F)
     
-    browser()
+    
     # now rbindlist
     res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
     
@@ -118,7 +118,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
       fs::dir_delete(attr(.x, "path"))
     })
     
-    browser()
+    
     res1 = res %>% dplyr::group_by({{by}})
     
     res1

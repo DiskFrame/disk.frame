@@ -94,19 +94,6 @@ groups.disk.frame <- function(x){
   shardkey(x)
 }
 
-# Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
-# @param ... passed to rlang::quos
-compat_as_lazy_dots = function (...) {
-    structure(class = "lazy_dots", purrr::map(rlang::quos(...), compat_as_lazy))
-}
-
-# Internal method replicating dplyr's compat_as_lazy_dots as it's not exported
-# @importFrom rlang get_expr get_env quos
-# @param quo a quote expression
-compat_as_lazy = function (quo) {
-    structure(class = "lazy", list(expr = rlang::get_expr(quo), env = rlang::get_env(quo)))
-}
-
 #' Group by designed for disk.frames
 #' @importFrom dplyr group_by_
 #' @param .data a disk.frame
@@ -117,25 +104,8 @@ compat_as_lazy = function (quo) {
 #' @param .dots Previous ... (dots)
 #' @export
 #' @rdname group_by
-group_by.disk.frame <- function(.data, ..., add = FALSE, outdir = NULL, overwrite = T) {
-  dots <- compat_as_lazy_dots(...)
-  shardby = purrr::map_chr(dots, ~{
-    # sometimes the data is passed as c("by1","by2") and in that case just return it
-    if (typeof(.x$expr) == "character") {
-      return(.x$expr) 
-    } else {
-      deparse(.x$expr)
-    }
-  }) %>% as.vector
-  
-  shardinfo = shardkey(.data)
-  if(!identical(shardinfo[[1]], shardby)) {
-    warning(glue::glue(
-      "The shardkeys '{shardinfo[[1]]}' are NOT identical to shardby = '{shardby}'. The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result."))
-  }
-  stop("fix this")
-  return(dplyr::group_by_(.data, .dots = compat_as_lazy_dots(...), add = add))
-}
+#' function(.data, ..., add = FALSE, outdir = NULL, overwrite = T)
+group_by.disk.frame <- create_dplyr_mapper(group_by)
 
 #' Take a glimpse
 #' @export
@@ -157,7 +127,7 @@ record <- function(.data, cmd){
 # @param cmds the list of function to play back
 # @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
-  #browser()
+  #
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
