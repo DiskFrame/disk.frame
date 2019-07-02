@@ -32,7 +32,7 @@ Please see this vignette [Introduction to disk.frame](http://daizj.me/disk.frame
 
 ### a) What is `disk.frame` and why create it?
 
-`disk.frame` is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R; hence relaxing the assumption from "R can only deal with data that fits in RAM" to be being able to "deal with data that fits on disk". See the next section.
+`disk.frame` is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R. In other words, wo go from "R can only deal with data that fits in RAM" to "R can deal with any data that fits on disk". See the next section.
 
 ### b) How is it different to `data.frame` and `data.table`?
 
