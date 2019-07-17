@@ -38,8 +38,6 @@
 
 \item{copy}{same as dplyr::anti_join}
 
-\item{...}{passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join}
-
 \item{outdir}{output directory for disk.frame}
 
 \item{merge_by_chunk_id}{the merge is performed by chunk id}

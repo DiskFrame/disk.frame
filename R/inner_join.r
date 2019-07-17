@@ -17,9 +17,13 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
   }
   
   if("data.frame" %in% class(y)) {
-    # note that x is named .data in the lazy evaluation
-    .data <- x
-    cmd <- lazyeval::lazy(inner_join(.data, y, by, copy, ...))
+    quo_dotdotdot = enquos(...)
+    map_dfr(x, ~{
+      code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
+      rlang::eval_tidy(code)
+    })
+
+
     return(record(.data, cmd))
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {

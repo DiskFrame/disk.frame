@@ -2,9 +2,7 @@
 #' @param copy same as dplyr::anti_join
 #' @param merge_by_chunk_id the merge is performed by chunk id
 #' @param overwrite overwrite output directory
-#' @param ... passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join
 #' @rdname join
-#' @importFrom lazyeval lazy
 #' @importFrom rlang quo enquos
 #' @importFrom dplyr anti_join left_join full_join semi_join inner_join
 #' @return disk.frame
@@ -15,11 +13,9 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(y)) {
-    #browser()
     quo_dotdotdot = enquos(...)
     map_dfr(x, ~{
       code = quo(anti_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
-      #browser()
       rlang::eval_tidy(code)
     })
   } else if("disk.frame" %in% class(y)) {

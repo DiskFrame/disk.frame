@@ -8,9 +8,11 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   
   if("data.frame" %in% class(y)) {
     # note that x is named .data in the lazy evaluation
-    .data <- x
-    cmd <- lazyeval::lazy(left_join(.data, y, by, copy, ...))
-    return(record(.data, cmd))
+    quo_dotdotdot = enquos(...)
+    map_dfr(x, ~{
+      code = quo(left_joinleft(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
+      rlang::eval_tidy(code)
+    })
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")

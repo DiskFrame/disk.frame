@@ -2,31 +2,13 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{groups.disk.frame}
 \alias{groups.disk.frame}
-\alias{group_by.disk.frame}
 \title{Group}
 \usage{
 \method{groups}{disk.frame}(x)
-
-\method{group_by}{disk.frame}(.data, ..., add = FALSE, outdir = NULL,
-  overwrite = T)
 }
 \arguments{
 \item{x}{a disk.frame}
-
-\item{.data}{a disk.frame}
-
-\item{...}{same as the dplyr::group_by}
-
-\item{add}{same as dplyr::group_By}
-
-\item{outdir}{output directory}
-
-\item{overwrite}{overwrite existing directory}
-
-\item{.dots}{Previous ... (dots)}
 }
 \description{
 Group
-
-Group by designed for disk.frames
 }

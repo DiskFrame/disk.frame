@@ -13,8 +13,7 @@ License: file LICENSE
 Imports:
     Rcpp (>= 0.12.13),
     glue,
-    lazyeval,
-    rlang,
+    rlang (>= 0.4.0),
     furrr,
     future.apply,
     fs,

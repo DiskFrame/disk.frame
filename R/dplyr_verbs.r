@@ -3,7 +3,6 @@
 #' @importFrom dplyr select rename filter mutate transmute arrange do groups group_by group_by glimpse summarise
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
-#' @importFrom lazyeval all_dots
 #' @rdname dplyr_verbs
 select.disk.frame <- function(.data, ...) {
   quo_dotdotdot = enquos(...)
@@ -12,12 +11,6 @@ select.disk.frame <- function(.data, ...) {
     rlang::eval_tidy(code)
   }, lazy = T)
 }
-# @param .dots this represents the ... from a higher level
-# select_.disk.frame <- function(.data, ..., .dots){
-#   .dots <- lazyeval::all_dots(.dots, ...)
-#   cmd <- lazyeval::lazy(select_(.data, .dots=.dots))
-#   record(.data, cmd)
-# }
 
 #' A function to make it easier to create dplyr function for disk.frame
 #' @export
@@ -125,15 +118,12 @@ record <- function(.data, cmd){
 # Internal methods
 # @param .data the disk.frame
 # @param cmds the list of function to play back
-# @importFrom lazyeval lazy_eval
 play <- function(.data, cmds=NULL){
   #
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
-      #print(.data)
     } else {
-      #.data <- lazyeval::lazy_eval(cmd, list(.data=.data)) 
       # create a temporary environment 
       an_env = new.env(parent = environment())
       
