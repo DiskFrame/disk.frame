@@ -11,19 +11,6 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 
 `disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
-## Sponsor me or contact me for consulting
-
-If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider [sponsoring me on Patreon](https://www.patreon.com/diskframe?alert=2).
-
-**Open Collective**
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
- [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
-
-**Do you need help with R?**
-[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
-
-I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
-
 ## Vignette
 
 Please see this vignette [Introduction to disk.frame](http://daizj.me/disk.frame/articles/intro-disk-frame.html) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
@@ -61,6 +48,10 @@ Spark is primarily a distributed system that also works on a single machine. Das
 In R, one can access Spark via `sparklyr`, but that requires a Spark cluster to be set up. On the other hand `disk.frame` requires zero-setup apart from running `install.packages("disk.frame")` or `devtools::install_github("xiaodaigh/disk.frame")`. 
 
 Finally, Spark can only apply functions that are implemented for Spark, whereas `disk.frame` can use any function in R including user-defined functions.
+
+### f) How is `disk.frame` different from multidplyr, partools and distributedR?
+
+The packages [multidplyr](https://github.com/tidyverse/multidplyr) doesn't seem to be disk-focussed and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/], it seems to use it's own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package [`distributedR`](https://github.com/vertica/DistributedR) hasn't been updated for a few years and also seems to require its own functions and verbs.
 
 # Example usage
 ```r
@@ -275,16 +266,24 @@ This project exists thanks to all the people who contribute.
 <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
 
 
-## Backers
+## Open Collective 
+
+If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please considering sponsoring me on Open Collective
+
+### Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/diskframe#backer)]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
+[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
 
-## Sponsors
+
+### Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
+
+ [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
 
 <a href="https://opencollective.com/diskframe/sponsor/0/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/diskframe/sponsor/1/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/1/avatar.svg"></a>
@@ -297,4 +296,9 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/diskframe/sponsor/8/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/diskframe/sponsor/9/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/9/avatar.svg"></a>
 
+## Contact me for consulting
 
+**Do you need help with machine learning and data science in R, Python, or Julia?**
+[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
+
+I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
