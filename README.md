@@ -299,6 +299,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 ## Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
-[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/zhuojiadai?utm_source=github&utm_medium=button&utm_term=zhuojiadai&utm_campaign=github)
+[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/evalparse)
 
 I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
