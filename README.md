@@ -258,7 +258,7 @@ DT_filtered = DT %>%
 DT_filtered[]
 ```
 
-This will be addressed in a future version of `disk.frame`; however there will always be instances where environmemt variable detection isn't perfect. This is because disk.frame uses the mechanism provided by `future` (i.e. `gloabls` package) and therefore is bound by the same constraints; see https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html 
+This **has been** addressed in the development branch of `disk.frame`; however there will always be instances where environmemt variable detection isn't perfect. This is because disk.frame uses the mechanism provided by `future` (i.e. `gloabls` package) and therefore is bound by the same constraints; see https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html 
 
 ## Contributors
 
