@@ -13,7 +13,7 @@ In a nutshell, `disk.frame` makes use of two simple ideas
 
 ## Vignette
 
-Please see this vignette [Introduction to disk.frame](http://daizj.me/disk.frame/articles/intro-disk-frame.html) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
+Please see this vignette [Introduction to disk.frame](http://daizj.net/disk.frame/articles/intro-disk-frame.html) which replicates the `sparklyr` vignette for manipulating the `nycflights13` flights data.
 
 ## Common questions
 
