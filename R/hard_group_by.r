@@ -91,6 +91,7 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 #' @importFrom purrr map
 #' @export
 hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T) {
+  #browser()
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
@@ -118,8 +119,13 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
       fs::dir_delete(attr(.x, "path"))
     })
     
-    
-    res1 = res %>% dplyr::group_by({{by}})
+    #browser()
+    res1 <- NULL
+    if(length(by) == 1) {
+      res1 = res %>% dplyr::group_by({{by}}) 
+    } else {
+      eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))
+    }
     
     res1
   }, error = function(e) {
