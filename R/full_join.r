@@ -1,7 +1,6 @@
 #' @rdname join
 #' @export
 full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_full_join"), merge_by_chunk_id = F, overwrite = T) {
-  ##browser
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -29,15 +28,16 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
       return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map_by_chunk_id(x, y, ~{
-        ##browser
+      #browser()
+      res = map2(x, y, ~{
+        #browser()
         if(is.null(.y)) {
           return(.x)
         } else if (is.null(.x)) {
           return(.y)
         }
-        full_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
-      }, outdir = outdir)
+        full_join(.x, .y, by = by, copy = copy)
+      }, outdir = outdir, overwrite = overwrite)
       return(res)
     } else {
       # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine

@@ -2,17 +2,23 @@
 #' @export
 #' @param x a disk.frame
 #' @param y a disk.frame or data.frame
+#' @param by the merge by keys
 #' @param outdir The output directory for the disk.frame
 #' @param merge_by_chunk_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
 #' @param ... passed to merge and map.disk.frame
 #' @importFrom data.table data.table setDT
-merge.disk.frame <- function(x, y, outdir, ..., merge_by_chunk_id = F) {  
+merge.disk.frame <- function(x, y, by, outdir, ..., merge_by_chunk_id = FALSE) {  
   fs::dir_create(outdir)
   stopifnot("disk.frame" %in% class(x))
   
   if("data.frame" %in% class(y)) {
-    map.disk.frame(x, function(df1) merge(x, y, ...), ...)
-  } else if (merge_by_chunk_id | (all(shardkey(x) == shardkey(y)))) {
+    yby = c(list(y=y, by=by), list(...))
+    res = map(x, ~{
+      res = do.call(merge, c(list(x = .x), yby))
+      res
+      }, outdir=outdir, ...)
+    res  
+  } else if (merge_by_chunk_id | (identical(shardkey(x), shardkey(y)))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
     path1 = attr(x,"path")
@@ -32,7 +38,7 @@ merge.disk.frame <- function(x, y, outdir, ..., merge_by_chunk_id = F) {
     df3[,{
       data1 = read_fst(pathA,as.data.table = T)
       data2 = read_fst(pathB,as.data.table = T)
-      data3 = merge(data1, data2, ...)
+      data3 = force(merge(data1, data2, by = by))
       rm(data1); rm(data2); gc()
       write_fst(data3, glue("{outdir}/{.BY}"))
       NULL

@@ -13,7 +13,7 @@ nchunk(df, ...)
 
 \method{nchunk}{disk.frame}(df, ...)
 
-\method{nchunks}{disk.frame}(df, skip.ready.check = F, ...)
+\method{nchunks}{disk.frame}(df, skip.ready.check = FALSE, ...)
 }
 \arguments{
 \item{df}{a disk.frame}

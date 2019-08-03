@@ -4,17 +4,17 @@
 #' @param outdir output directory for disk.frame
 #' @rdname join 
 #' @export
-semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_semi_join"), merge_by_chunk_id = F, overwrite = T) {
+semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_semi_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
   
-  
   if("data.frame" %in% class(y)) {
-    # note that x is named .data in the lazy evaluation
-    .data <- x
-    cmd <- lazyeval::lazy(semi_join(.data, y, by, copy, ...))
-    return(record(.data, cmd))
+    quo_dotdotdot = enquos(...)
+    map_dfr(x, ~{
+      code = quo(semi_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
+      rlang::eval_tidy(code)
+    })
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
@@ -27,11 +27,11 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     ncy = nchunks(y)
     if (merge_by_chunk_id == F) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
+      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map_by_chunk_id(x, y, ~{
+      res = map2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {

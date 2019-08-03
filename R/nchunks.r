@@ -23,7 +23,7 @@ nchunk.disk.frame <- function(df, ...) {
 #' @importFrom fs dir_ls
 #' @rdname nchunks
 #' @export
-nchunks.disk.frame <- function(df, skip.ready.check = F, ...) {
+nchunks.disk.frame <- function(df, skip.ready.check = FALSE, ...) {
   #if(!skip.ready.check) stopifnot(is_ready(df))
   fpath <- attr(df,"path")
   if(is.dir.disk.frame(df)) {

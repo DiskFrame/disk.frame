@@ -11,10 +11,9 @@ get_chunk <- function(...) {
 
 
 #' @rdname get_chunk
-#' @import fst
+#' @importFrom fst read_fst
 #' @export
-get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
-  ##browser
+get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")
@@ -55,15 +54,15 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
 
   if (is.null(cmds)) {
     if(typeof(keep)!="closure") {
-      read_fst(filename, columns = keep, as.data.table = T,...)
+      fst::read_fst(filename, columns = keep, as.data.table = T,...)
     } else {
-      read_fst(filename, as.data.table = T,...)
+      fst::read_fst(filename, as.data.table = T,...)
     }
   } else {
     if(typeof(keep)!="closure") {
-      play(read_fst(filename, columns = keep, as.data.table = T,...), cmds)
+      play(fst::read_fst(filename, columns = keep, as.data.table = T,...), cmds)
     } else {
-      play(read_fst(filename, as.data.table = T,...), cmds)
+      play(fst::read_fst(filename, as.data.table = T,...), cmds)
     }
   }
 }

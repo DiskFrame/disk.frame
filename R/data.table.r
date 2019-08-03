@@ -1,53 +1,60 @@
 #' [ interface for disk.frame using fst backend
 #' @param df a disk.frame
-#' @param i same as data.table
-#' @param j same as data.table
 #' @param ... same as data.table
 #' @param keep the columns to srckeep
+#' @param rbind Whether to rbind the chunks. Defaults to TRUE
+#' @param use.names Same as in data.table::rbindlist
+#' @param fill Same as in data.table::rbindlist
+#' @param idcol Same as in data.table::rbindlist
 #' @import fst 
 #' @importFrom future.apply future_lapply
 #' @importFrom data.table rbindlist 
+#' @importFrom globals findGlobals
 #' @export
-`[.disk.frame` <- function(df, i, j,..., keep = NULL) {
-  res <- NULL
-  fpath <- attr(df,"path")
-  
-  ff <- list.files(attr(df,"path"))
-  
-  i = deparse(substitute(i))
-  j = deparse(substitute(j))
-  dotdot = deparse(substitute(...))
-  
+`[.disk.frame` <- function(df, ..., keep = NULL, rbind = T, use.names = TRUE, fill = FALSE, idcol = NULL) {
   keep_for_future = keep
   
-  res <- future.apply::future_lapply(ff, function(k,i,j,dotdot) {
-    # sometimes the i and j an dotdot comes in the form of a vector so need to paste them together
-    j = paste0(j,collapse="")
-    dotdot = paste0(dotdot,collapse="")
-    i = paste0(i,collapse="")
-    
-    if(dotdot == "NULL") {
-      code = sprintf("a[%s,%s]", i, j)
-    } else if (j == "NULL") {
-      code = sprintf("a[%s]", i)
-    } else {
-      code = sprintf("a[%s,%s,%s]", i, j, dotdot)
-    }
-    a = get_chunk.disk.frame(df, k, keep = keep_for_future)
-    
-    aa <- eval(parse(text=code))
-    
-    rm(a); gc()
-    aa
-  }, i, j, dotdot)
+  dotdotdot = substitute(...()) #this is an alist
   
-  # sometimes the returned thing is a vetor e.g. df[,.N]
-  if("data.frame" %in% class(res[[1]])) {
-    return(rbindlist(res))
-  } else if(is.vector(res)) {
-    return(unlist(res, recursive = F))
+  ag = globals::findGlobals(dotdotdot)
+  ag = setdiff(ag, "") # "" can cause issues with future
+  
+  res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+  #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+    chunk = get_chunk(df, chunk_id, keep = keep_for_future)
+    setDT(chunk)
+    expr <- quote(chunk)
+    expr <- c(expr, dotdotdot)
+    res <- do.call(`[`, expr)
+    res
+  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame"))
+  
+  if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
+    rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)
+  } else if(rbind)  {
+    unlist(res)
   } else {
-    warning("spooky")
-    return(res)
+    res
   }
 }
+
+# Solutions from https://stackoverflow.com/questions/57122960/how-to-use-non-standard-evaluation-nse-to-evaluate-arguments-on-data-table?answertab=active#tab-top
+# `[.dd` <- function(x, ...) {
+#   code <- rlang::enexprs(...)
+#   lapply(x, function(dt) {
+#     ex <- rlang::expr(dt[!!!code])
+#     rlang::eval_tidy(ex)
+#   })
+# }
+# 
+# 
+# `[.dd` <- function(x,...) {
+#   a <- substitute(...()) #this is an alist
+#   expr <- quote(x[[i]])
+#   expr <- c(expr, a)
+#   res <- list()
+#   for (i in seq_along(x)) {
+#     res[[i]] <- do.call(`[`, expr)
+#   }
+#   res
+# }

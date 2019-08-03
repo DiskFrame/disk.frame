@@ -9,13 +9,19 @@
 #' @importFrom data.table data.table setDT
 #' @importFrom future.apply future_lapply
 #' @importFrom purrr map_chr map_dfr map map_lgl
+#' @importFrom purrr map
+#' @importFrom assertthat assert_that
 #' @export
-rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
+rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE) {
   overwrite_check(outdir, overwrite)
+  
+  assertthat::assert_that(typeof(df_list) == "list")
+  
+  purrr::map(df_list, ~assertthat::assert_that("disk.frame" %in% class(.x), msg = "error running rbindlist.disk.frame: Not every element of df_list is a disk.frame"))
   
   if(by_chunk_id) {
     list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))
-    list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = T)))
+    list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = TRUE)))
     setDT(list_of_chunks)
     
     # split the list of chunks into lists for easy operation with future

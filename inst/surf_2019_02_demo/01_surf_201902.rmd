@@ -3,11 +3,13 @@ title: "Simple Fannie Mae Example"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r}
 # 2_exploratory.r
-source("../fannie_mae/00_setup.r")
+#source("../fannie_mae/00_setup.r")
+source("00_setup.r")
 ```
 
 # Assign a `disk.frame`
@@ -53,7 +55,9 @@ select
   count(*) as cnt,
   n_default/cnt as odr # observed default rate
 from
-  table;
+  table
+group by
+  monthly.rpt.prd;
 ```
 This analysis only uses two columns, namely `default_12m` and `monthly.rpt.prd`. So I use `srckeep` to ensure that only those two columns are loaded.
 
@@ -77,6 +81,28 @@ system.time(a_wh2 <- a_wh1 %>% collect) # 60~70 plugged in
 
 a_wh2
 ```
+
+```{r}
+# temporary
+# a_wh1 %>% 
+#   srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
+#   map(function(chunk) {
+#     chunk[1,]
+#   }) %>% 
+#   collect
+```
+
+
+```{r}
+# temporary
+# a_wh1 %>% 
+#   srckeep(c("monthly.rpt.prd", "default_12m")) %>% 
+#   map(~{
+#     .x[1,.SD]
+#   }) %>% 
+  # collect
+```
+
 
 once `collect` is called the resultant data is stored as a data.frame.
 

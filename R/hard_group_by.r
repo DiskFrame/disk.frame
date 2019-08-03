@@ -67,167 +67,92 @@ progressbar <- function(df) {
   }
 }
 
-#' Make a data.frame into a disk.frame
-#' @param df a disk.frame
-#' @param outdir the output directory
-#' @param nchunks number of chunks
-#' @param overwrite if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty
-#' @param compress the compression level 0-100; 100 is highest
-#' @param ... passed to output_disk.frame
-#' @import fst
-#' @importFrom data.table setDT
-#' @export
-as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
-  #
-  overwrite_check(outdir, overwrite)
-  
-  setDT(df)
-  
-  odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))
-  odfi = odfi[1:nrow(df)]
-  df[, .out.disk.frame.id := odfi]
-  
-  write_disk.frame(df, outdir, nchunks, overwrite, shardkey="", shardchunks=-1, compress = compress, ...)
-}
-
 #' Perform a group by and ensuring that every unique grouping of by is
 #' in the same chunk
 #' @param df a disk.frame
-#' @param by the columns to shard by
+#' @param ... grouping variables
 #' @param outdir the output directory
 #' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
 #' @param overwrite overwrite the out put directory
-#' @param ... not used
+#' @param add same as dplyr::group_by
+#' @param .drop same as dplyr::group_by
 #' @export
-hard_group_by <- function(df, by, ...) {
+hard_group_by <- function(df, ..., add = FALSE, .drop = FALSE) {
   UseMethod("hard_group_by")
 }
 
 #' @rdname hard_group_by
+#' @export
+#' @importFrom dplyr group_by
+hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
+  dplyr::group_by(df, ..., add = FALSE, .drop = FALSE)
+}
+
+#' @rdname hard_group_by
+#' @importFrom purrr map
 #' @importFrom purrr map
 #' @export
-hard_group_by.disk.frame <- function(df, by, outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T, ...) {
-  ##browser
+hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE) {
+  #browser()
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   
-  # shard and create temporary diskframes
-  tmp_df  = map.disk.frame(df, function(df1) {
-    ##browser
-    tmpdir = tempfile()
-    shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
-  }, lazy = F)
+  # test if the unlist it will error
   
-  # now rbindlist
-  res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
-
-  # clean up the tmp dir
-  purrr::map(tmp_df, ~{
-    fs::dir_delete(attr(.x, "path"))
-    #unlink()
+  tryCatch({
+    # This will return the variable names
+    
+    # TODO use better ways to do NSE
+    by <- unlist(list(...))
+    
+    # shard and create temporary diskframes
+    tmp_df  = map(df, function(df1) {
+      tmpdir = tempfile()
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+    }, lazy = FALSE)
+    
+    
+    # now rbindlist
+    res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
+    
+    # clean up the tmp dir
+    purrr::walk(tmp_df, ~{
+      fs::dir_delete(attr(.x, "path"))
+    })
+    
+    #browser()
+    res1 <- NULL
+    if(length(by) == 1) {
+      res1 = res %>% dplyr::group_by({{by}}) 
+    } else {
+      eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))
+    }
+    
+    res1
+  }, error = function(e) {
+    #print(e)
+    # This will return the variable names
+    by = rlang::enquos(...) %>% 
+      substr(2, nchar(.))
+    
+    # shard and create temporary diskframes
+    tmp_df  = map(df, function(df1) {
+      ##browser
+      tmpdir = tempfile()
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+    }, lazy = FALSE)
+    
+    # now rbindlist
+    res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)
+    
+    # clean up the tmp dir
+    purrr::walk(tmp_df, ~{
+      fs::dir_delete(attr(.x, "path"))
+    })
+    
+    res1 = res %>% dplyr::group_by(!!!syms(by))
+    
+    res1
   })
-  
-  res
 }
-
-
-#' The nb stands for non-blocking
-#' param nworkers number of workers (processes)
-#' importFrom future %<-%
-#' rdname hard_group_by
-# TODO make it work!
-# hard_group_by_nb.disk.frame <- function(df, by, outdir, nworkers = NULL) {
-  # if(is.null(nworkers)) {
-  #   nworkers = parallel::detectCores()
-  # }
-  # 
-  # fpath = attr(df, "path")
-  # 
-  # if(!dir.exists(outdir)) dir.create(outdir)
-  # 
-  # pt_begin_split <- proc.time()
-  # pt <- proc.time()
-  # l = nchunk(df)
-  # indexes = unique(round(seq(0, l, length.out = nworkers+1),0))
-  # fpath = attr(df,"path")
-  # a = list.files(fpath, full.names =T)
-  # 
-  # tmp = "tmphardgroupby2"
-  # if(dir.exists(tmp)) {
-  #   unlink(tmp,T,T)
-  #   dir.create(tmp)
-  # } else {
-  #   dir.create(tmp)
-  # }
-  # 
-  # sapply(file.path(tmp,1:l), dir.create)
-  # 
-  # fperf = prepare_dir.disk.frame(df, ".performing", T)
-  # fperfinchunks = prepare_dir.disk.frame(df, ".performing/inchunks", T)
-  # fperfoutchunks = prepare_dir.disk.frame(df, ".performing/outchunks", T)
-  # 
-  # # split the chunks into smaller chunks based on hash value
-  # tmp_throwaway = lapply(2:length(indexes), function(ii) {
-  #   tmp_throwaway1 %<-% {
-  #     inchunkindices = (indexes[ii-1]+1):indexes[ii]
-  #     lapply(inchunkindices, function(i) {
-  #       aa = a[i]
-  #       pt = proc.time()
-  #       print(i)
-  #       fst_tmp <- fst::read.fst(aa, as.data.table = T)
-  #       fst_tmp[,out.disk.frame.id := hashstr2i(acct_id, l)]
-  #       
-  #       fst_tmp[,{
-  #         fst::write_fst(.SD, file.path(tmp, .BY, paste0(i,".fst")), 100)
-  #       }, out.disk.frame.id]
-  #       
-  #       ## write file to inidcate stage 1 is done
-  #       ## stage 2 will check if all files are present and will start work on later
-  #       
-  #       file.create(file.path(fperfinchunks,i))
-  #       rm(fst_tmp)
-  #       gc()
-  #       print(timetaken(pt))
-  #       NULL
-  #     })
-  #     
-  #     # wait for next phase
-  #     while(length(list.files(fperfinchunks)) < nchunk(df)) {
-  #       Sys.sleep(0.5)
-  #     }
-  #     
-  #     pt_begin_collate <- proc.time()
-  #     fldrs = list.files(tmp,full.names = T)
-  #     l = length(fldrs)
-  #     tmp_throwaway <- NULL
-  #     lapply(inchunkindices, function(ii) {
-  #       #list.files(
-  #       dtfn = fldrs[ii]
-  #       
-  #       tmptmp2 = rbindlist(lapply(list.files(dtfn,full.names =  T), function(ddtfn) {
-  #         fst::read.fst(ddtfn, as.data.table=T)
-  #       }))
-  #       
-  #       setkey(tmptmp2, acct_id)
-  #       fst::write_fst(tmptmp2, file.path("large_sorted",sprintf("%d.fst",ii)), 100);
-  #       gc()
-  #       
-  #       file.create(file.path(fperfoutchunks,ii))
-  #       gc()
-  #       NULL
-  #     })
-  #     
-  #     print(paste0("collate files took: ", timetaken(pt))); pt <- proc.time()
-  #     timetaken(pt)
-  #   }
-  #   ii
-  # })
-  # res = disk.frame(outdir)
-  # attr(res,"performing") <- "hard_group_by"
-  # attr(res,"parent") <- attr(df, "path")
-  # res
-# }
-
-
-

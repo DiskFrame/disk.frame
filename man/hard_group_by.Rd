@@ -2,22 +2,27 @@
 % Please edit documentation in R/hard_group_by.r
 \name{hard_group_by}
 \alias{hard_group_by}
+\alias{hard_group_by.data.frame}
 \alias{hard_group_by.disk.frame}
 \title{Perform a group by and ensuring that every unique grouping of by is
 in the same chunk}
 \usage{
-hard_group_by(df, by, ...)
+hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
-\method{hard_group_by}{disk.frame}(df, by,
+\method{hard_group_by}{data.frame}(df, ..., add = FALSE, .drop = FALSE)
+
+\method{hard_group_by}{disk.frame}(df, ...,
   outdir = tempfile("tmp_disk_frame_hard_group_by"),
-  nchunks = disk.frame::nchunks(df), overwrite = T, ...)
+  nchunks = disk.frame::nchunks(df), overwrite = TRUE)
 }
 \arguments{
 \item{df}{a disk.frame}
 
-\item{by}{the columns to shard by}
+\item{...}{grouping variables}
 
-\item{...}{not used}
+\item{add}{same as dplyr::group_by}
+
+\item{.drop}{same as dplyr::group_by}
 
 \item{outdir}{the output directory}
 

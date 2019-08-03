@@ -4,7 +4,7 @@
 \alias{get_chunk_ids}
 \title{Get the chunk file names}
 \usage{
-get_chunk_ids(df, ..., full.names = F, strip_extension = T)
+get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 }
 \arguments{
 \item{df}{a disk.frame}
@@ -13,7 +13,7 @@ get_chunk_ids(df, ..., full.names = F, strip_extension = T)
 
 \item{full.names}{If TRUE returns the full path to the file, Defaults to F.}
 
-\item{strip_extension}{If TRUE then the file extentsion in the chunk_id is removed. Defaults to TRUE}
+\item{strip_extension}{If TRUE then the file extension in the chunk_id is removed. Defaults to TRUE}
 }
 \description{
 Get the chunk file names

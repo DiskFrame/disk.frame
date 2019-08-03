@@ -30,4 +30,10 @@ tmp_pls_delete.csv$
 ^tmp_
 tmp_col_delete$
 tmp_rn_delete$
-
+tmp81$
+tmp82$
+.fst$
+.csv$
+inst/surf_2019_02_demo/.ipynb_checkpoints$
+tests_manual$
+^README\.Rmd$

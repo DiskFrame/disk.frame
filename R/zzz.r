@@ -4,13 +4,15 @@
 
 #' @importFrom future nbrOfWorkers
 .onAttach <- function(libname, pkgname) {
-  setup_disk.frame()
+  #setup_disk.frame()
   
   packageStartupMessage(
-    glue::glue("We have {future::nbrOfWorkers()} workers to use with disk.frame. To change that use setup_disk.frame(workers = n)"))
+    glue::glue("We have {future::nbrOfWorkers()} workers to use with disk.frame. To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults"))
 }
 
-globalVariables(c(".",
+globalVariables(c(
+                  "syms", # needed by dplyr to treat something as a symbol
+                  ".",
                   ".BY",
                   ".N",
                   ".SD",

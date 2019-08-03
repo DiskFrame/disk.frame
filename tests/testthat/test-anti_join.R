@@ -15,7 +15,6 @@ setup({
   as.disk.frame(a, "tmp_a_aj2.df", nchunks = 4, overwrite = T)
   as.disk.frame(b, "tmp_b_aj2.df", nchunks = 5, overwrite = T)
   as.disk.frame(d, "tmp_d_aj2.df", overwrite = T)
-  
 })
 
 test_that("testing anti_join where right is data.frame", {

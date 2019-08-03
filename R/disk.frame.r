@@ -2,6 +2,15 @@
 #' @param path The path to store the output file or to a directory
 #' @param backend The only available backend is fst at the moment
 #' @export
+#' @examples
+#' path = file.path(tempdir(),"cars")
+#' as.disk.frame(cars, outdir=path, overwrite = TRUE, nchunks = 2)
+#' df = disk.frame(path)
+#' head(df)
+#' nchunks(df)
+#' # clean up
+#' delete(df)
+
 disk.frame <- function(path, backend = "fst") {
   
   # only fst backend is implemented at the moment
@@ -30,6 +39,10 @@ disk.frame <- function(path, backend = "fst") {
 add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
   #browser()
   stopifnot("disk.frame" %in% class(df))
+  
+  if(is.null(shardkey)) {
+    shardkey = ""
+  }
 
   # create the metadata folder if not present
   fs::dir_create(file.path(attr(df,"path"), ".metadata"))
@@ -87,7 +100,7 @@ disk.frame_fst <- function(path) {
   df
 }
 
-prepare_dir.disk.frame <- function(df, path, clean = F) {
+prepare_dir.disk.frame <- function(df, path, clean = FALSE) {
   fpath = attr(df, "path")
   fpath2 = file.path(fpath,path)
   if(!dir.exists(fpath2)) {
@@ -200,61 +213,4 @@ tail.disk.frame <- function(x, n = 6L, ...) {
   } else {
     stop(glue::glue("dir {path1} does not exist"))
   }
-}
-
-#' Number of rows of disk.frame
-#' @param ... passed to base::nrow
-#' @export
-nrow <- function(df,...) {
-  UseMethod("nrow")
-}
-
-#' @rdname nrow
-#' @export
-nrow.default <- function(df, ...) {
-  base::nrow(df, ...)
-}
-
-#' @export
-#' @param df a disk.frame
-#' @rdname nrow
-#' @import fst
-nrow.disk.frame <- function(df, ...) {
-  stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
-  if(dir.exists(path1)) {
-    path2 <- list.files(path1,full.names = T)
-    if(length(path2) == 0) {
-      return(0)
-    }
-    tmpfstmeta = fst::fst.metadata(path2[1])
-    if("nrOfRows" %in% names(tmpfstmeta)) {
-      return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$nrOfRows)))
-    } else {
-      return(sum(sapply(path2, function(p2) fst::fst.metadata(p2)$NrOfRows)))
-    }
-  } else {
-    #return(fst::fst.metadata(path1)$NrOfRows)
-    stop(glue::glue("nrow error: directory {} does not exist"))
-  }
-}
-
-#' Number of columns
-#' @import fst
-#' @export
-ncol <- function(df) {
-  UseMethod("ncol")
-}
-
-#' @import fs
-#' @export
-#' @param df a disk.frame
-#' @rdname ncol
-ncol.disk.frame <- function(df) {
-  length(colnames(df))
-}
-
-#' @export
-ncol.default <- function(df) {
-  base::ncol(df)
 }

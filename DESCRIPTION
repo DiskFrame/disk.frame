@@ -1,34 +1,33 @@
 Type: Package
 Package: disk.frame
-Title: Fast disk-based data manipulation framework for larger-than-RAM structured tabular data
+Title: Fast Disk-Based Data Manipulation Framework for Larger-than-RAM Structured Tabular Data
 Version: 0.1.0
-Date: 2018-12-08
+Date: 2019-08-03
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
-Description: disk.frame allows the user to process arbitrarily
-    large datasets on disk chunk-wise without loading the whole file into
-    RAM. This enables large datasets to be processed and analysed.
+Description: A disk-based data manipulation tool for working with arbitrarily
+    large datasets as long as they fit on disk.
 License: file LICENSE
 Imports:
     Rcpp (>= 0.12.13),
-    glue,
-    lazyeval,
-    rlang,
-    purrr,
-    furrr,
-    future.apply,
-    fs,
-    jsonlite,
-    pryr,
-    stringr,
+    glue (>= 1.3.1),
+    rlang (>= 0.4.0),
+    furrr (>= 0.1.0),
+    future.apply (>= 1.3.0),
+    fs (>= 1.3.1),
+    jsonlite (>= 1.6),
+    pryr (>= 0.1.4),
+    stringr (>= 1.4.0),
     fst (>= 0.8.0),
-    xgboost
+    assertthat (>= 0.2.1),
+    globals (>= 0.12.4)
 Depends:
     R (>= 3.5.0),
-    future,
-    dplyr,
-    data.table
+    future (>= 1.14.0),
+    dplyr (>= 0.8.3),
+    data.table (>= 1.12.2),
+    purrr (>= 0.3.2)
 Suggests: 
     testthat,
     knitr,
@@ -38,5 +37,5 @@ LinkingTo:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
-URL: http://daizj.me/disk.frame/
+URL: http://daizj.net/disk.frame/
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

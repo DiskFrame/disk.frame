@@ -4,18 +4,23 @@
 \alias{[.disk.frame}
 \title{[ interface for disk.frame using fst backend}
 \usage{
-\method{[}{disk.frame}(df, i, j, ..., keep = NULL)
+\method{[}{disk.frame}(df, ..., keep = NULL, rbind = T,
+  use.names = TRUE, fill = FALSE, idcol = NULL)
 }
 \arguments{
 \item{df}{a disk.frame}
 
-\item{i}{same as data.table}
-
-\item{j}{same as data.table}
-
 \item{...}{same as data.table}
 
 \item{keep}{the columns to srckeep}
+
+\item{rbind}{Whether to rbind the chunks. Defaults to TRUE}
+
+\item{use.names}{Same as in data.table::rbindlist}
+
+\item{fill}{Same as in data.table::rbindlist}
+
+\item{idcol}{Same as in data.table::rbindlist}
 }
 \description{
 [ interface for disk.frame using fst backend

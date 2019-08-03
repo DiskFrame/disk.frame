@@ -6,7 +6,7 @@ is_disk.frame <- function(df) {
   if("disk.frame" %in% class(df)) {
     df = attr(df, "path")
   } else if(!"character" %in% class(df)) { # character then check the path
-    return(F)
+    return(FALSE)
   }
   
   files <- fs::dir_ls(df, type="file", all  = TRUE)
@@ -14,19 +14,19 @@ is_disk.frame <- function(df) {
   if(length(files)>0) {
     if(any(purrr::map_lgl(files, ~length(grep(glob2rx("*.fst"), .x)) == 0))) {
       # some of the fiels do not have a .fst extension
-      return(F)
+      return(FALSE)
     }
   }
   
   dirs = fs::dir_ls(df, type="directory", all = TRUE)
   if(length(dirs) > 1) {
-    return(F)
+    return(FALSE)
   } else if(length(dirs) == 1) {
     if(substr(dirs, nchar(dirs)-8,nchar(dirs)) != ".metadata") {
-      return(F)
+      return(FALSE)
     }
   }
   
-  return(T)
+  return(TRUE)
 }
 

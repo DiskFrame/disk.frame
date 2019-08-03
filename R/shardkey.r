@@ -11,3 +11,4 @@ shardkey <- function(df) {
   meta = jsonlite::fromJSON(meta_file)
   list(shardkey = meta$shardkey, shardchunks = meta$shardchunks)
 }
+

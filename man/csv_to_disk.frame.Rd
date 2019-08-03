@@ -7,7 +7,7 @@
 csv_to_disk.frame(infile, outdir, inmapfn = base::I,
   nchunks = recommend_nchunks(sum(file.size(infile))),
   in_chunk_size = NULL, shardby = NULL, compress = 50,
-  overwrite = T, header = T, ...)
+  overwrite = TRUE, header = TRUE, ...)
 }
 \arguments{
 \item{infile}{The input CSV file or files}
@@ -25,6 +25,8 @@ csv_to_disk.frame(infile, outdir, inmapfn = base::I,
 \item{compress}{For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.}
 
 \item{overwrite}{Whether to overwrite the existing directory}
+
+\item{header}{Whether the files have header. Defaults to TRUE}
 
 \item{...}{passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard}
 }

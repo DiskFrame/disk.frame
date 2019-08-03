@@ -32,7 +32,10 @@ tmp_*/
 model.rds
 scorecard.rds
 first_harp_date.df
-
+.ipynb_checkpoints
+a.df
+tmp81
+tmp82
+tmpdata/
 flights_all_notsharded\.df/\.metadata/meta\.json
-
 *.json

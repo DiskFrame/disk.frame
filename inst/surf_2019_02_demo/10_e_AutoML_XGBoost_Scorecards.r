@@ -66,7 +66,28 @@ res_all = check_which_is_best(
 )
 timetaken(pt)
 
-plot(map_dbl(res_all, ~.x$auc))
+aucs = map_dbl(res_all, ~.x$auc)
+plot(
+  aucs,
+  main = "Fannie Mae Application Scorecard AUC", 
+  ylab="AUC", 
+  xlab = "Number of features")
+
+if(F) {
+  library(gganimate)
+  auc_dt = data.table(num_of_vars = 1:length(aucs), auc = aucs)
+  auc_dt %>% 
+    ggplot(aes(num_of_vars, auc)) + 
+    geom_point() +
+    transition_states(
+      num_of_vars,
+      transition_length  = 2,
+      state_length = 1
+    ) + 
+    enter_fade() +
+    exit_shrink() + 
+    ease_aes('sine-in-out') 
+}
 
 #saveRDS(res_all, "model.rds")
 

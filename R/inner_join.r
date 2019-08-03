@@ -1,6 +1,6 @@
 #' @export
 #' @rdname join
-inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
+inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -16,10 +16,12 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
   }
   
   if("data.frame" %in% class(y)) {
-    # note that x is named .data in the lazy evaluation
-    .data <- x
-    cmd <- lazyeval::lazy(inner_join(.data, y, by, copy, ...))
-    return(record(.data, cmd))
+    quo_dotdotdot = enquos(...)
+    res = map_dfr(x, ~{
+      code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
+      rlang::eval_tidy(code)
+    })
+    return(res)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
@@ -30,18 +32,23 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
     
     ncx = nchunks(x)
     ncy = nchunks(y)
-    if (merge_by_chunk_id == F) {
+    if (merge_by_chunk_id == FALSE) {
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
-      return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
+      return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map_by_chunk_id(x, y, ~{
+      dotdotdot <- list(...)
+      
+      res = map2.disk.frame(x, y, ~{
+        #browser()
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {
           return(data.table())
         }
-        inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        #inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        lij = purrr::lift(dplyr::inner_join)
+        lij(c(list(x = .x, y = .y, by = by, copy = copy), dotdotdot))
       }, outdir = outdir)
       return(res)
     } else {

@@ -5,12 +5,12 @@
 \title{Set up disk.frame environment}
 \usage{
 setup_disk.frame(future_backend = multiprocess,
-  workers = parallel::detectCores(logical = F), ...)
+  workers = parallel::detectCores(logical = FALSE), ...)
 }
 \arguments{
-\item{future_backend}{which future backend to use for parallelisation}
+\item{future_backend}{which future backend to use for parallelization}
 
-\item{workers}{the number of worker (background R processes in the multiprocess environment)}
+\item{workers}{the number of workers (background R processes in the multiprocess environment)}
 
 \item{...}{passed to `future::plan`}
 }

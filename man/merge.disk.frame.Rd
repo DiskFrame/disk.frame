@@ -4,12 +4,15 @@
 \alias{merge.disk.frame}
 \title{Merge function for disk.frames}
 \usage{
-\method{merge}{disk.frame}(x, y, outdir, ..., merge_by_chunk_id = F)
+\method{merge}{disk.frame}(x, y, by, outdir, ...,
+  merge_by_chunk_id = FALSE)
 }
 \arguments{
 \item{x}{a disk.frame}
 
 \item{y}{a disk.frame or data.frame}
+
+\item{by}{the merge by keys}
 
 \item{outdir}{The output directory for the disk.frame}
 

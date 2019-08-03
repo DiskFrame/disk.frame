@@ -12,7 +12,6 @@ test_that("nrow ncol", {
   expect_equal(ncol(dff), 9)
 })
 
-
 teardown({
   fs::file_delete("tmp_pls_delete.csv")
   fs::dir_delete("tmp_pls_delete.df")

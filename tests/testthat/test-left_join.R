@@ -61,7 +61,6 @@ test_that("testing left_join where right is disk.frame", {
   expect_equal(nrow(ad50), 100)
 })
 
-
 teardown({
   fs::dir_delete("tmp_a_lj.df")
   fs::dir_delete("tmp_b_lj.df")
