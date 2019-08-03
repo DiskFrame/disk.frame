@@ -11,6 +11,8 @@
 
 \item{y}{a disk.frame or data.frame}
 
+\item{by}{the merge by keys}
+
 \item{outdir}{The output directory for the disk.frame}
 
 \item{...}{passed to merge and map.disk.frame}

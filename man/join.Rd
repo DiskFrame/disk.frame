@@ -38,6 +38,8 @@
 
 \item{copy}{same as dplyr::anti_join}
 
+\item{...}{same as dplyr's joins}
+
 \item{outdir}{output directory for disk.frame}
 
 \item{merge_by_chunk_id}{the merge is performed by chunk id}

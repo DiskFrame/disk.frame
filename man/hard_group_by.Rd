@@ -20,6 +20,10 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
 \item{...}{grouping variables}
 
+\item{add}{same as dplyr::group_by}
+
+\item{.drop}{same as dplyr::group_by}
+
 \item{outdir}{the output directory}
 
 \item{nchunks}{The number of chunks in the output. Defaults = nchunks.disk.frame(df)}

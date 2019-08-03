@@ -10,7 +10,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     # note that x is named .data in the lazy evaluation
     quo_dotdotdot = enquos(...)
     map_dfr(x, ~{
-      code = quo(left_joinleft(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
+      code = quo(left_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
     })
   } else if("disk.frame" %in% class(y)) {

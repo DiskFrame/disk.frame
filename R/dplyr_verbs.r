@@ -13,9 +13,15 @@ select.disk.frame <- function(.data, ...) {
 }
 
 #' A function to make it easier to create dplyr function for disk.frame
+#' @param dplyr_fn The dplyr function to create a mapper for
+#' @param warning_msg The warning message to display when invoking the mapper
 #' @export
-create_dplyr_mapper <- function(dplyr_fn) {
+create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
   return_func <- function(.data, ...) {
+    if (!is.null(warning_msg)) {
+      warning(warning_msg)
+    }
+    
     quo_dotdotdot = enquos(...)
   
     # this is designed to capture any global stuff
@@ -66,23 +72,16 @@ transmute.disk.frame <- create_dplyr_mapper(transmute)
 #' @export
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
-arrange.disk.frame <- create_dplyr_mapper(arrange)
+arrange.disk.frame <- create_dplyr_mapper(arrange, "disk.frame only sorts (arange) WITHIN each chunk")
 
 #' @export
 #' @importFrom dplyr summarise
 #' @rdname dplyr_verbs
 summarise.disk.frame <- create_dplyr_mapper(summarise)
 
-#' @export
-#' @importFrom dplyr do
-#' @rdname dplyr_verbs
-do.disk.frame <- create_dplyr_mapper(do)
-
-
 #' Group
 #' @export
 #' @param x a disk.frame
-#' @rdname group_by
 groups.disk.frame <- function(x){
   shardkey(x)
 }
@@ -91,14 +90,10 @@ groups.disk.frame <- function(x){
 #' @importFrom dplyr group_by_
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
-#' @param add same as dplyr::group_By
-#' @param outdir output directory
-#' @param overwrite overwrite existing directory
-#' @param .dots Previous ... (dots)
 #' @export
 #' @rdname group_by
-#' function(.data, ..., add = FALSE, outdir = NULL, overwrite = T)
-group_by.disk.frame <- create_dplyr_mapper(group_by)
+group_by.disk.frame <- create_dplyr_mapper(group_by, "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
+# TODO check shardkey
 
 #' Take a glimpse
 #' @export
@@ -119,7 +114,6 @@ record <- function(.data, cmd){
 # @param .data the disk.frame
 # @param cmds the list of function to play back
 play <- function(.data, cmds=NULL){
-  #
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
@@ -129,9 +123,11 @@ play <- function(.data, cmds=NULL){
       
       ng = names(cmd$vars_and_pkgs$globals)
       
-      for(i in 1:length(cmd$vars_and_pkgs$globals)) {
-        g = cmd$vars_and_pkgs$globals[[i]]
-        assign(ng[i], g, pos = an_env)
+      if(length(ng) > 0) {
+        for(i in 1:length(cmd$vars_and_pkgs$globals)) {
+          g = cmd$vars_and_pkgs$globals[[i]]
+          assign(ng[i], g, pos = an_env)
+        }
       }
       
       .data <- do.call(cmd$func, list(.data), envir = an_env)

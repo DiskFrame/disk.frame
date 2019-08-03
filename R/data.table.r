@@ -1,12 +1,15 @@
 #' [ interface for disk.frame using fst backend
 #' @param df a disk.frame
-#' @param i same as data.table
-#' @param j same as data.table
 #' @param ... same as data.table
 #' @param keep the columns to srckeep
+#' @param rbind Whether to rbind the chunks. Defaults to TRUE
+#' @param use.names Same as in data.table::rbindlist
+#' @param fill Same as in data.table::rbindlist
+#' @param idcol Same as in data.table::rbindlist
 #' @import fst 
 #' @importFrom future.apply future_lapply
 #' @importFrom data.table rbindlist 
+#' @importFrom globals findGlobals
 #' @export
 `[.disk.frame` <- function(df, ..., keep = NULL, rbind = T, use.names = TRUE, fill = FALSE, idcol = NULL) {
   keep_for_future = keep
@@ -51,7 +54,7 @@
 #   expr <- c(expr, a)
 #   res <- list()
 #   for (i in seq_along(x)) {
-#     res[[i]] <- do.call(data.table:::`[.data.table`, expr)
+#     res[[i]] <- do.call(`[`, expr)
 #   }
 #   res
 # }

@@ -2,6 +2,7 @@
 #' @export
 #' @param x a disk.frame
 #' @param y a disk.frame or data.frame
+#' @param by the merge by keys
 #' @param outdir The output directory for the disk.frame
 #' @param merge_by_chunk_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
 #' @param ... passed to merge and map.disk.frame

@@ -33,3 +33,6 @@ tmp_rn_delete$
 tmp81$
 tmp82$
 .fst$
+.csv$
+inst/surf_2019_02_demo/.ipynb_checkpoints$
+tests_manual$

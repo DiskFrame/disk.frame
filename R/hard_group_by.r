@@ -74,6 +74,8 @@ progressbar <- function(df) {
 #' @param outdir the output directory
 #' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
 #' @param overwrite overwrite the out put directory
+#' @param add same as dplyr::group_by
+#' @param .drop same as dplyr::group_by
 #' @export
 hard_group_by <- function(df, ..., add = FALSE, .drop = FALSE) {
   UseMethod("hard_group_by")

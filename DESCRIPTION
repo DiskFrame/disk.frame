@@ -20,7 +20,9 @@ Imports:
     jsonlite,
     pryr,
     stringr,
-    fst (>= 0.8.0)
+    fst (>= 0.8.0),
+    assertthat,
+    globals
 Depends:
     R (>= 3.5.0),
     future,

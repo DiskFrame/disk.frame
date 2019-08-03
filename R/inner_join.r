@@ -1,7 +1,6 @@
 #' @export
 #' @rdname join
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = T) {
-  #browser()
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -18,13 +17,11 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
   
   if("data.frame" %in% class(y)) {
     quo_dotdotdot = enquos(...)
-    map_dfr(x, ~{
+    res = map_dfr(x, ~{
       code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
     })
-
-
-    return(record(.data, cmd))
+    return(res)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")

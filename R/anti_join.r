@@ -2,6 +2,7 @@
 #' @param copy same as dplyr::anti_join
 #' @param merge_by_chunk_id the merge is performed by chunk id
 #' @param overwrite overwrite output directory
+#' @param ... same as dplyr's joins
 #' @rdname join
 #' @importFrom rlang quo enquos
 #' @importFrom dplyr anti_join left_join full_join semi_join inner_join

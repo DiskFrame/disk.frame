@@ -3,7 +3,10 @@
 \name{map}
 \alias{map}
 \alias{map_dfr}
+\alias{map_dfr.default}
+\alias{map_dfr.disk.frame}
 \alias{map.disk.frame}
+\alias{imap_dfr}
 \alias{imap.disk.frame}
 \alias{lazy}
 \alias{lazy.disk.frame}
@@ -16,10 +19,17 @@ map(.x, .f, ...)
 
 map_dfr(.x, .f, ..., .id = NULL)
 
+\method{map_dfr}{default}(.x, .f, ..., .id = NULL)
+
+\method{map_dfr}{disk.frame}(.x, .f, ..., .id = NULL, use.names = fill,
+  fill = FALSE, idcol = NULL)
+
 \method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
   chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F,
   vars_and_pkgs = future::getGlobalsAndPackages(.f, envir =
   parent.frame()))
+
+imap_dfr(.x, .f, ..., .id = NULL)
 
 imap.disk.frame(.x, .f, outdir = NULL, keep = NULL,
   chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F)
@@ -43,6 +53,12 @@ chunk_lapply(...)
 
 \item{.id}{not used}
 
+\item{use.names}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{fill}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{idcol}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
 \item{outdir}{the output directory}
 
 \item{keep}{the columns to keep from the input}
@@ -55,11 +71,7 @@ chunk_lapply(...)
 
 \item{overwrite}{if TRUE removes any existing chunks in the data}
 
-\item{use.names}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
-\item{fill}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
-\item{idcol}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+\item{vars_and_pkgs}{variables and packages to send to a background session. This is typically automatically detected}
 }
 \description{
 Apply the same function to all chunks

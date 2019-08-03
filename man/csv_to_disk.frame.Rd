@@ -26,6 +26,8 @@ csv_to_disk.frame(infile, outdir, inmapfn = base::I,
 
 \item{overwrite}{Whether to overwrite the existing directory}
 
+\item{header}{TRUE/FALSE. Whether the input CSV(s) include a header}
+
 \item{...}{passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard}
 }
 \description{
