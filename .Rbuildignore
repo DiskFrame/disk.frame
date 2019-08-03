@@ -36,3 +36,4 @@ tmp82$
 .csv$
 inst/surf_2019_02_demo/.ipynb_checkpoints$
 tests_manual$
+^README\.Rmd$
