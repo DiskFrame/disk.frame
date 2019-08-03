@@ -10,6 +10,7 @@
 #' @param shardby The column(s) to shard the data by. For example suppose `shardby = c("col1","col2")`  then every row where the values `col1` and `col2` are the same will end up in the same chunk; this will allow merging by `col1` and `col2` to be more efficient
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
+#' @param header Whether the files have header. Defaults to TRUE
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
 #' @export
 csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
