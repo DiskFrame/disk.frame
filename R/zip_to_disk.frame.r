@@ -2,7 +2,7 @@
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
 #' @param ... passed to fread
-#' @param validation.check should the function perform a check at the end to check for validatity of output. It can detect issues with conversion
+#' @param validation.check should the function perform a check at the end to check for validity of output. It can detect issues with conversion
 #' @param overwrite overwrite output directory
 #' @import fst fs
 #' @importFrom glue glue

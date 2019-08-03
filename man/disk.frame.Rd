@@ -14,3 +14,10 @@ disk.frame(path, backend = "fst")
 \description{
 Create a disk.frame
 }
+\examples{
+path = outdir=file.path(tempdir(),"cars")
+as.disk.frame(cars, path, overwrite = T, nchunks = 2)
+df = disk.frame(path)
+head(df)
+nchunks(df)
+}

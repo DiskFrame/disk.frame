@@ -17,7 +17,7 @@ validate_zip_to_disk.frame(zipfile, outdir)
 
 \item{...}{passed to fread}
 
-\item{validation.check}{should the function perform a check at the end to check for validatity of output. It can detect issues with conversion}
+\item{validation.check}{should the function perform a check at the end to check for validity of output. It can detect issues with conversion}
 
 \item{overwrite}{overwrite output directory}
 }

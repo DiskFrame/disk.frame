@@ -8,7 +8,7 @@ setup_disk.frame(future_backend = multiprocess,
   workers = parallel::detectCores(logical = F), ...)
 }
 \arguments{
-\item{future_backend}{which future backend to use for parallelisation}
+\item{future_backend}{which future backend to use for parallelization}
 
 \item{workers}{the number of workers (background R processes in the multiprocess environment)}
 
