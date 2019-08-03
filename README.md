@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-![disk.frame logo](disk.frame.png?raw=true "disk.frame logo")
-<!-- badges: end -->
+![disk.frame logo](man/figures/disk.frame.png?raw=true
+"disk.frame logo") <!-- badges: end -->
 
 # Introduction
 

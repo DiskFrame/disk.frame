@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 # disk.frame
 
 <!-- badges: start -->
-![disk.frame logo](disk.frame.png?raw=true "disk.frame logo")
+![disk.frame logo](man/figures/disk.frame.png?raw=true "disk.frame logo")
 <!-- badges: end -->
 
 # Introduction
