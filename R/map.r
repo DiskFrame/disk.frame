@@ -53,7 +53,7 @@ map.default <- function(.x, .f, ...) {
 #' @rdname map
 #' @importFrom future getGlobalsAndPackages
 #' @export
-map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
+map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
   
   .f = purrr::as_mapper(.f)
 
@@ -82,7 +82,7 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   
   # TODO get the chunks using the chunk id
   
-  cid = get_chunk_ids(.x, full.names = T)
+  cid = get_chunk_ids(.x, full.names = TRUE)
   
   #res = future.apply::future_lapply(1:length(files), function(ii) {
   res = lapply(1:length(files), function(ii) {
@@ -130,7 +130,7 @@ imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill 
 #' second is the chunk ID
 #' @export
 #' @rdname map
-imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F) {
+imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE) {
   .f = purrr::as_mapper(.f)
   
   if(lazy) {
@@ -182,7 +182,7 @@ lazy <- function(.x, .f, ...) {
 
 #' @rdname map
 lazy.disk.frame <- function(.x, .f, ...) {
-  map.disk.frame(.x, .f, ..., lazy = T)
+  map.disk.frame(.x, .f, ..., lazy = TRUE)
 }
 
 #' Lazy chunk_lapply wrapper
@@ -195,7 +195,7 @@ delayed <- function(.x, .f, ...) {
 #' @export
 #' @rdname map
 delayed.disk.frame <- function(.x, .f, ...) {
-  map.disk.frame(.x, .f, ..., lazy = T)
+  map.disk.frame(.x, .f, ..., lazy = TRUE)
 }
   
 #' @export

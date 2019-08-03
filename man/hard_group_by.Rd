@@ -13,7 +13,7 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
 \method{hard_group_by}{disk.frame}(df, ...,
   outdir = tempfile("tmp_disk_frame_hard_group_by"),
-  nchunks = disk.frame::nchunks(df), overwrite = T)
+  nchunks = disk.frame::nchunks(df), overwrite = TRUE)
 }
 \arguments{
 \item{df}{a disk.frame}

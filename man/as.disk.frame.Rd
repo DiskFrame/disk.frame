@@ -5,7 +5,7 @@
 \title{Make a data.frame into a disk.frame}
 \usage{
 as.disk.frame(df, outdir, nchunks = recommend_nchunks(df),
-  overwrite = F, compress = 50, ...)
+  overwrite = FALSE, compress = 50, ...)
 }
 \arguments{
 \item{df}{a disk.frame}

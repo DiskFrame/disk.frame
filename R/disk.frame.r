@@ -2,12 +2,15 @@
 #' @param path The path to store the output file or to a directory
 #' @param backend The only available backend is fst at the moment
 #' @export
-#' @examples 
-#' path = outdir=file.path(tempdir(),"cars")
-#' as.disk.frame(cars, path, overwrite = T, nchunks = 2)
+#' @examples
+#' path = file.path(tempdir(),"cars")
+#' as.disk.frame(cars, outdir=path, overwrite = TRUE, nchunks = 2)
 #' df = disk.frame(path)
 #' head(df)
 #' nchunks(df)
+#' # clean up
+#' delete(df)
+
 disk.frame <- function(path, backend = "fst") {
   
   # only fst backend is implemented at the moment
@@ -97,7 +100,7 @@ disk.frame_fst <- function(path) {
   df
 }
 
-prepare_dir.disk.frame <- function(df, path, clean = F) {
+prepare_dir.disk.frame <- function(df, path, clean = FALSE) {
   fpath = attr(df, "path")
   fpath2 = file.path(fpath,path)
   if(!dir.exists(fpath2)) {

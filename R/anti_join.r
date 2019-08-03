@@ -8,7 +8,7 @@
 #' @importFrom dplyr anti_join left_join full_join semi_join inner_join
 #' @return disk.frame
 #' @export
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F, overwrite = T) {
+anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = T) {
   #browser()
   stopifnot("disk.frame" %in% class(x))
   
@@ -30,7 +30,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     
     ncx = nchunks(x)
     ncy = nchunks(y)
-    if (merge_by_chunk_id == F) {
+    if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)

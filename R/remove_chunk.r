@@ -3,7 +3,7 @@
 #' @param chunk_id the chunk ID of the chunk to remove. If it's a number then return number.fst
 #' @param full.names TRUE or FALSE. Defaults to F. If true then chunk_id is the full path to the chunk otherwise it's the relative path
 #' @export
-remove_chunk <- function(df, chunk_id, full.names = F) {
+remove_chunk <- function(df, chunk_id, full.names = FALSE) {
   filename = ""
   path = attr(df,"path")
   if(is.numeric(chunk_id)) {

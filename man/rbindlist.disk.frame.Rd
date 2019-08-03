@@ -4,8 +4,8 @@
 \alias{rbindlist.disk.frame}
 \title{rbindlist disk.frames together}
 \usage{
-rbindlist.disk.frame(df_list, outdir, by_chunk_id = T, parallel = T,
-  compress = 50, overwrite = T)
+rbindlist.disk.frame(df_list, outdir, by_chunk_id = TRUE,
+  parallel = TRUE, compress = 50, overwrite = TRUE)
 }
 \arguments{
 \item{df_list}{A list of disk.frames}

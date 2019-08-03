@@ -5,7 +5,7 @@
 \title{Perform the computation}
 \usage{
 \method{compute}{disk.frame}(x, name, outdir = tempfile("tmp_df_",
-  fileext = ".df"), overwrite = T, ...)
+  fileext = ".df"), overwrite = TRUE, ...)
 }
 \arguments{
 \item{x}{a disk.frame}

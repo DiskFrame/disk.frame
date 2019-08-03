@@ -44,7 +44,7 @@ csv_to_disk.frame <- function(infile, outdir, inmapfn = base::I, nchunks = recom
         fs::dir_create(tmpdir1)
         #print(tmpdir1)
         
-        done = F
+        done = FALSE
         skiprows = 0
         column_names = ""
         while(!done) {

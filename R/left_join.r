@@ -1,7 +1,7 @@
 #' Performs join/merge for disk.frames
 #' @rdname join
 #' @export
-left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = F, overwrite = T) {
+left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -23,12 +23,12 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     
     ncx = nchunks(x)
     ncy = nchunks(y)
-    if (merge_by_chunk_id == F) {
+    if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
-      return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
-    } else if(merge_by_chunk_id == T) {
+      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
+    } else if(merge_by_chunk_id == TRUE) {
     #} else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       dotdotdot = list(...)
       res = map2.disk.frame(x, y, ~{

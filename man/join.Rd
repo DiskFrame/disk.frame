@@ -10,8 +10,8 @@
 \title{Performs join/merge for disk.frames}
 \usage{
 \method{anti_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
-  outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = F,
-  overwrite = T)
+  outdir = tempfile("tmp_disk_frame_anti_join"),
+  merge_by_chunk_id = FALSE, overwrite = T)
 
 \method{full_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_full_join"), merge_by_chunk_id = F,
@@ -19,15 +19,15 @@
 
 \method{inner_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_inner_join"),
-  merge_by_chunk_id = NULL, overwrite = T)
+  merge_by_chunk_id = NULL, overwrite = TRUE)
 
 \method{left_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
-  outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = F,
-  overwrite = T)
+  outdir = tempfile("tmp_disk_frame_left_join"),
+  merge_by_chunk_id = FALSE, overwrite = TRUE)
 
 \method{semi_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
-  outdir = tempfile("tmp_disk_frame_semi_join"), merge_by_chunk_id = F,
-  overwrite = T)
+  outdir = tempfile("tmp_disk_frame_semi_join"),
+  merge_by_chunk_id = FALSE, overwrite = TRUE)
 }
 \arguments{
 \item{x}{a disk.frame}

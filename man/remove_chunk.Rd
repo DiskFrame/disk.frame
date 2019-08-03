@@ -4,7 +4,7 @@
 \alias{remove_chunk}
 \title{removes a chunk from the disk.frame}
 \usage{
-remove_chunk(df, chunk_id, full.names = F)
+remove_chunk(df, chunk_id, full.names = FALSE)
 }
 \arguments{
 \item{df}{a disk.frame}

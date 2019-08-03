@@ -6,7 +6,7 @@
 #' @importFrom pryr object_size
 #' @importFrom utils memory.limit
 #' @export
-recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = F), conservatism = 2) {
+recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = FALSE), conservatism = 2) {
   dfsize = 0
   if ("data.frame" %in% class(df)) {
     # the df's size in gigabytes
@@ -32,7 +32,7 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   ml = max(ml, 1)
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
-  nc = parallel::detectCores(logical = F)
+  nc = parallel::detectCores(logical = FALSE)
   
   
   max(round(dfsize/ml*nc)*nc*conservatism, minchunks)

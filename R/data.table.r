@@ -19,8 +19,8 @@
   ag = globals::findGlobals(dotdotdot)
   ag = setdiff(ag, "") # "" can cause issues with future
   
-  res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = F), function(chunk_id) {
-  #lapply(get_chunk_ids(df, strip_extension = F), function(chunk_id) {
+  res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+  #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
     chunk = get_chunk(df, chunk_id, keep = keep_for_future)
     setDT(chunk)
     expr <- quote(chunk)

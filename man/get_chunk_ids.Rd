@@ -4,7 +4,7 @@
 \alias{get_chunk_ids}
 \title{Get the chunk file names}
 \usage{
-get_chunk_ids(df, ..., full.names = F, strip_extension = T)
+get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 }
 \arguments{
 \item{df}{a disk.frame}

@@ -92,7 +92,7 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 #' @importFrom purrr map
 #' @importFrom purrr map
 #' @export
-hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = T) {
+hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE) {
   #browser()
   overwrite_check(outdir, overwrite)
   
@@ -109,8 +109,8 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     # shard and create temporary diskframes
     tmp_df  = map(df, function(df1) {
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
-    }, lazy = F)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+    }, lazy = FALSE)
     
     
     # now rbindlist
@@ -131,7 +131,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     
     res1
   }, error = function(e) {
-    print(e)
+    #print(e)
     # This will return the variable names
     by = rlang::enquos(...) %>% 
       substr(2, nchar(.))
@@ -140,8 +140,8 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     tmp_df  = map(df, function(df1) {
       ##browser
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = T)
-    }, lazy = F)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+    }, lazy = FALSE)
     
     # now rbindlist
     res = rbindlist.disk.frame(tmp_df, outdir=outdir, overwrite = overwrite)

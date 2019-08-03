@@ -8,7 +8,7 @@
 #' @import fst
 #' @importFrom data.table setDT
 #' @export
-as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = F, compress = 50, ...) {
+as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = FALSE, compress = 50, ...) {
   #browser()
   overwrite_check(outdir, overwrite)
   

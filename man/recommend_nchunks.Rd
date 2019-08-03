@@ -5,7 +5,7 @@
 \title{Computes the recommended number of chunks to break a data.frame into}
 \usage{
 recommend_nchunks(df, type = "csv",
-  minchunks = parallel::detectCores(logical = F), conservatism = 2)
+  minchunks = parallel::detectCores(logical = FALSE), conservatism = 2)
 }
 \arguments{
 \item{df}{a disk.frame or the file size in bytes of a CSV file holding the data}

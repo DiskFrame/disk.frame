@@ -8,7 +8,7 @@
 #' @importFrom data.table setDT
 #' @importFrom glue glue
 #' @export
-shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = F) {
+shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., nchunks = recommend_nchunks(df), overwrite = FALSE) {
   overwrite_check(outdir, overwrite)
   #browser()
   if("data.frame" %in% class(df)) {

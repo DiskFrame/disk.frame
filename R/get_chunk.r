@@ -13,7 +13,7 @@ get_chunk <- function(...) {
 #' @rdname get_chunk
 #' @importFrom fst read_fst
 #' @export
-get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = F, ...) {
+get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   stopifnot("disk.frame" %in% class(df))
   
   path = attr(df,"path")

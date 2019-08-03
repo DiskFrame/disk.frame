@@ -5,7 +5,7 @@
 #' @param full.names whether the chunk_id name match should be to the full file path not just the file name
 #' @importFrom data.table data.table
 #' @export
-add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
+add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
   # sometimes chunk_id is defined in terms of itself
   force(chunk_id)
   
@@ -85,7 +85,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = F) {
     }
     
     # find out which vars are matched but the types don't match
-    metas_df_summ1 = merged_meta[existing_df == T & new_chunk == T & coltypes.x != coltypes.y]
+    metas_df_summ1 = merged_meta[existing_df == TRUE & new_chunk == TRUE & coltypes.x != coltypes.y]
     # find incompatible types
     metas_df_summ1[, incompatible_types := {
       coltypes.x %in% c("integer", "double", "Date") & coltypes.y == "character" |

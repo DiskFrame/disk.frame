@@ -15,9 +15,11 @@ disk.frame(path, backend = "fst")
 Create a disk.frame
 }
 \examples{
-path = outdir=file.path(tempdir(),"cars")
-as.disk.frame(cars, path, overwrite = T, nchunks = 2)
+path = file.path(tempdir(),"cars")
+as.disk.frame(cars, outdir=path, overwrite = TRUE, nchunks = 2)
 df = disk.frame(path)
 head(df)
 nchunks(df)
+# clean up
+delete(df)
 }

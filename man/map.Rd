@@ -25,14 +25,15 @@ map_dfr(.x, .f, ..., .id = NULL)
   fill = FALSE, idcol = NULL)
 
 \method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F,
-  vars_and_pkgs = future::getGlobalsAndPackages(.f, envir =
-  parent.frame()))
+  chunks = nchunks(.x), compress = 50, lazy = TRUE,
+  overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f,
+  envir = parent.frame()))
 
 imap_dfr(.x, .f, ..., .id = NULL)
 
 imap.disk.frame(.x, .f, outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = T, overwrite = F)
+  chunks = nchunks(.x), compress = 50, lazy = TRUE,
+  overwrite = FALSE)
 
 lazy(.x, .f, ...)
 

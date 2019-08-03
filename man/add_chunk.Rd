@@ -4,7 +4,7 @@
 \alias{add_chunk}
 \title{Add a chunk to the disk.frame}
 \usage{
-add_chunk(df, chunk, chunk_id = NULL, full.names = F)
+add_chunk(df, chunk, chunk_id = NULL, full.names = FALSE)
 }
 \arguments{
 \item{df}{the disk.frame to add a chunk to}

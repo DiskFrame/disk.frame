@@ -12,7 +12,7 @@
 #' @importFrom purrr map
 #' @importFrom assertthat assert_that
 #' @export
-rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T, compress=50, overwrite = T) {
+rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE) {
   overwrite_check(outdir, overwrite)
   
   assertthat::assert_that(typeof(df_list) == "list")
@@ -21,7 +21,7 @@ rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = T, parallel = T,
   
   if(by_chunk_id) {
     list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))
-    list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = T)))
+    list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = TRUE)))
     setDT(list_of_chunks)
     
     # split the list of chunks into lists for easy operation with future

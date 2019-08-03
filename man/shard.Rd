@@ -6,7 +6,7 @@
 \title{Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame}
 \usage{
 shard(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ...,
-  nchunks = recommend_nchunks(df), overwrite = F)
+  nchunks = recommend_nchunks(df), overwrite = FALSE)
 
 distribute(...)
 }
