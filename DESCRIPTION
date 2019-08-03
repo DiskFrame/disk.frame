@@ -6,9 +6,8 @@ Date: 2019-08-03
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
-Description: This package allows the user to process arbitrarily
-    large datasets on disk chunk-wise without loading the whole file into
-    RAM. This enables large datasets to be processed and analyzed.
+Description: A disk-based data manipulation tool for working with arbitrarily
+    large datasets as long as they fit on disk.
 License: file LICENSE
 Imports:
     Rcpp (>= 0.12.13),
