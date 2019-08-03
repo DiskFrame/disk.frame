@@ -13,12 +13,11 @@ test_that("group_by", {
     group_by(id1) %>% 
     summarise(mv1 = mean(v1))
   
-  dff1 = NULL
-  expect_warning({
-    dff1 <- dff %>% 
-      group_by(id1, id2) %>%
-      summarise(mv1 = mean(v1)) %>% collect
-  })
+  dff1 <- dff %>% 
+    group_by(id1, id2) %>%
+    summarise(mv1 = mean(v1)) %>% 
+    collect
+
   
   expect_false(nrow(dff1) == nrow(dff_res))
 })

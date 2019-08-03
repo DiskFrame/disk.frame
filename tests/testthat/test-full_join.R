@@ -17,16 +17,16 @@ test_that("testing full_join where right is data.frame", {
   bc = collect(b)
   dc = collect(d)
   
-  abc = full_join(a, bc, by = "a") %>% collect
+  abc <- full_join(a, bc, by = "a") %>% collect
   expect_equal(nrow(abc), 150)
   
-  abc0 = full_join(a, bc, by = c("a","b")) %>% collect
+  abc0 <- full_join(a, bc, by = c("a","b")) %>% collect
   expect_equal(nrow(abc0), 200)
   
-  abc100 = full_join(a, bc, by = "b") %>% collect
+  abc100 <- full_join(a, bc, by = "b") %>% collect
   expect_equal(nrow(abc100), 100)
   
-  abd50 = full_join(a, dc, by = "b") %>% collect
+  abd50 <- full_join(a, dc, by = "b") %>% collect
   expect_equal(nrow(abd50), 100)
 })
 

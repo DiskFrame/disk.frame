@@ -5,9 +5,9 @@
 #' @param .data a disk.frame
 #' @rdname dplyr_verbs
 select.disk.frame <- function(.data, ...) {
-  quo_dotdotdot = enquos(...)
+  quo_dotdotdot = rlang::enquos(...)
   map(.data, ~{
-    code = quo(select(.x, !!!quo_dotdotdot))
+    code = rlang::quo(select(.x, !!!quo_dotdotdot))
     rlang::eval_tidy(code)
   }, lazy = T)
 }
@@ -15,6 +15,7 @@ select.disk.frame <- function(.data, ...) {
 #' A function to make it easier to create dplyr function for disk.frame
 #' @param dplyr_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
+#' @importFrom rlang enquos quo
 #' @export
 create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
   return_func <- function(.data, ...) {
@@ -22,7 +23,7 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
       warning(warning_msg)
     }
     
-    quo_dotdotdot = enquos(...)
+    quo_dotdotdot = rlang::enquos(...)
   
     # this is designed to capture any global stuff
     vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
@@ -33,7 +34,7 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
       
       if(length(data_for_eval_tidy) > 0) {
         for(i in 1:length(data_for_eval_tidy)) {
-          assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos= this_env)
+          assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos = this_env)
         }
       }
       
@@ -41,8 +42,8 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
         attr(x, ".Environment") = this_env
       })
       
-      code = quo(dplyr_fn(.x, !!!quo_dotdotdot))
-      eval(parse(text=as_label(code)), envir = this_env)
+      code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
+      eval(parse(text=rlang::as_label(code)), envir = this_env)
     }, lazy = T)
   }
   return_func
@@ -51,33 +52,39 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
 
 #' @export
 #' @rdname dplyr_verbs
-rename.disk.frame <- create_dplyr_mapper(rename)
+rename.disk.frame <- create_dplyr_mapper(dplyr::rename)
 
 #' @export
 #' @rdname dplyr_verbs
-filter.disk.frame <- create_dplyr_mapper(filter)
+filter.disk.frame <- create_dplyr_mapper(dplyr::filter)
 
 #' mutate
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom future getGlobalsAndPackages
 #' @importFrom rlang eval_tidy quo enquos
-mutate.disk.frame <- create_dplyr_mapper(mutate)
+#' @importFrom dplyr mutate
+mutate.disk.frame <- create_dplyr_mapper(dplyr::mutate)
 
 #' @export
 #' @importFrom dplyr transmute
 #' @rdname dplyr_verbs
-transmute.disk.frame <- create_dplyr_mapper(transmute)
+transmute.disk.frame <- create_dplyr_mapper(dplyr::transmute)
 
 #' @export
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
-arrange.disk.frame <- create_dplyr_mapper(arrange, "disk.frame only sorts (arange) WITHIN each chunk")
+arrange.disk.frame <- create_dplyr_mapper(dplyr::arrange, "disk.frame only sorts (arange) WITHIN each chunk")
 
 #' @export
 #' @importFrom dplyr summarise
 #' @rdname dplyr_verbs
-summarise.disk.frame <- create_dplyr_mapper(summarise)
+summarise.disk.frame <- create_dplyr_mapper(dplyr::summarise)
+
+#' @export
+#' @importFrom dplyr summarize
+#' @rdname dplyr_verbs
+summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
 
 #' Group
 #' @export
@@ -92,8 +99,34 @@ groups.disk.frame <- function(x){
 #' @param ... same as the dplyr::group_by
 #' @export
 #' @rdname group_by
-group_by.disk.frame <- create_dplyr_mapper(group_by, "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
 # TODO check shardkey
+group_by.disk.frame <- function(.data, ...) {
+  dplyr_fn = dplyr::group_by
+  
+  quo_dotdotdot = rlang::enquos(...)
+  
+  # this is designed to capture any global stuff
+  vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
+  data_for_eval_tidy = force(vars_and_pkgs$globals)
+  
+  res = map(.data, ~{
+    this_env = environment()
+    
+    if(length(data_for_eval_tidy) > 0) {
+      for(i in 1:length(data_for_eval_tidy)) {
+        assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos = this_env)
+      }
+    }
+    
+    lapply(quo_dotdotdot, function(x) {
+      attr(x, ".Environment") = this_env
+    })
+    
+    code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
+    eval(parse(text=rlang::as_label(code)), envir = this_env)
+  }, lazy = T)
+}
+#group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
 
 #' Take a glimpse
 #' @export

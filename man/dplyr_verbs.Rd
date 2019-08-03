@@ -8,6 +8,7 @@
 \alias{transmute.disk.frame}
 \alias{arrange.disk.frame}
 \alias{summarise.disk.frame}
+\alias{summarize.disk.frame}
 \alias{glimpse.disk.frame}
 \title{dplyr verbs implemented for disk.frame}
 \usage{
@@ -24,6 +25,8 @@
 \method{arrange}{disk.frame}(.data, ...)
 
 \method{summarise}{disk.frame}(.data, ...)
+
+\method{summarize}{disk.frame}(.data, ...)
 
 \method{glimpse}{disk.frame}(.data, ...)
 }

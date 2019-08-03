@@ -43,9 +43,31 @@ test_that("testing mutate", {
     collect
   
   expect_setequal(sum(df$d), sum(df$a, df$b))
+  
+  df = b %>% 
+    mutate(e = rank(desc(a))) %>%
+    collect
+  
+  expect_equal(nrow(df), 100)
 })
 
-test_that("testing trans_mutate", {
+# TODO figure out why it fails
+# test_that("testing mutate user-defined function", {
+#   b = disk.frame("tmp_b_dv.df")
+#   
+#   
+#   udf = function(a1, b1) {
+#     a1 + b1
+#   }
+#   
+#   df = b %>%
+#     mutate(d = udf(a,b)) %>%
+#     collect
+#   
+#   expect_setequal(sum(df$d), sum(df$a, df$b))
+# })
+
+test_that("testing transmute", {
   b = disk.frame("tmp_b_dv.df")
   
   df = b %>% 
@@ -78,21 +100,6 @@ test_that("testing summarise", {
     summarise(suma = sum(suma))
   
   expect_equal(df$suma, collect(b)$a %>% sum)
-})
-
-test_that("testing do", {
-  b = disk.frame("tmp_b_dv.df")
-  
-  expect_warning(  df <- b %>%
-                     do(mlm = lm(a~b, data = .)) %>% 
-                     collect
-  )
-  
-  x = purrr::map_chr(df$mlm, ~{
-    class(.x)
-  })
-    
-  expect_true(all(x == "lm"))
 })
 
 teardown({
