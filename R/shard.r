@@ -32,6 +32,15 @@ shard <- function(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ..., n
   } else if ("disk.frame" %in% class(df)){
     return(rechunk(df, shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite))
   }
+
+  tryCatch(
+    eval(parse(text=code)),
+    error = function(e) {
+    	print("error occurred in shard")
+    }
+  )
+  
+  write_disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = overwrite, shardkey = shardby, shardchunks = nchunks)
 }
 
 #' `distribute` is an alias for `shard`

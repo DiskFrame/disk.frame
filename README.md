@@ -45,7 +45,7 @@ devtools::install_github("xiaodaigh/disk.frame")
 ## Vignette
 
 Please see this vignette [Introduction to
-disk.frame](http://daizj.me/disk.frame/articles/intro-disk-frame.html)
+disk.frame](http://daizj.net/disk.frame/articles/intro-disk-frame.html)
 which replicates the `sparklyr` vignette for manipulating the
 `nycflights13` flights data.
 
@@ -56,9 +56,9 @@ which replicates the `sparklyr` vignette for manipulating the
 `disk.frame` is an R package that provides a framework for manipulating
 larger-than-RAM structured tabular data on disk efficiently. The reason
 one would want to manipulate data on disk is that it allows arbitrarily
-large datasets to be processed by R; hence relaxing the assumption from
-“R can only deal with data that fits in RAM” to be being able to “deal
-with data that fits on disk”. See the next section.
+large datasets to be processed by R. In other words, we go from “R can
+only deal with data that fits in RAM” to “R can deal with any data that
+fits on disk”. See the next section.
 
 ### b) How is it different to `data.frame` and `data.table`?
 
@@ -80,8 +80,7 @@ example, see [`chunkded`](https://github.com/edwindj/chunked)
 Furthermore, there is a row-limit of 2^31 for `data.frame`s in R; hence
 an alternate approach is needed to apply R to these large datasets. The
 chunking mechanism in `disk.frame` provides such an avenue to enable
-data manipulation beyond the 2^31 row
-limit.
+data manipulation beyond the 2^31 row limit.
 
 ### c) How is `disk.frame` different to previous “big” data solutions for R?
 
@@ -138,6 +137,19 @@ Finally, Spark can only apply functions that are implemented for Spark,
 whereas `disk.frame` can use any function in R including user-defined
 functions.
 
+### f) How is `disk.frame` different from multidplyr, partools and distributedR?
+
+The packages [multidplyr](https://github.com/tidyverse/multidplyr)
+doesn’t seem to be disk-focussed and hence does not allow arbitrarily
+large dataset to be manipulated; the focus on parallel processing is
+similar to disk.frame though. For partools
+\[<https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/>\],
+it seems to use it’s own verbs for aggregating data instead of relying
+on existing verbs provided by data.table and dplyr. The package
+[`distributedR`](https://github.com/vertica/DistributedR) hasn’t been
+updated for a few years and also seems to require its own functions and
+verbs.
+
 # Example usage
 
 ``` r
@@ -151,11 +163,9 @@ library(fst)
 #library(future.apply)
 #library(data.table)
 
-# use as many workers as there are CPU cores
-nworkers = parallel::detectCores(logical = FALSE)
-
-# this is run automatically, but you may want to use more or less workers with setup_disk.frame(workers = n)
-setup_disk.frame() # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
+# you need to run this to make multiple workers
+# this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
+setup_disk.frame() 
 
 rows_per_chunk = 1e7
 # generate synthetic data
@@ -304,3 +314,54 @@ pt = proc.time()
 system.time(df[,.(sum(a))][,sum(V1)]) #2.95
 cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
+
+## Contributors
+
+This project exists thanks to all the people who contribute.
+<a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
+
+## Open Collective
+
+If you like disk.frame and want to speed up its development or perhaps
+you have a feature request? Please considering sponsoring me on Open
+Collective
+
+### Backers
+
+Thank you to all our backers\! 🙏 \[[Become a
+backer](https://opencollective.com/diskframe#backer)\]
+
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
+
+[![Backers on Open
+Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+
+### Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here
+with a link to your website. \[[Become a
+sponsor](https://opencollective.com/diskframe#sponsor)\]
+
+[![Sponsors on Open
+Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
+
+<a href="https://opencollective.com/diskframe/sponsor/0/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/1/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/2/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/3/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/4/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/5/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/6/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/7/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/8/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/diskframe/sponsor/9/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/9/avatar.svg"></a>
+
+## Contact me for consulting
+
+**Do you need help with machine learning and data science in R, Python,
+or Julia?** [![Contact me on
+Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/evalparse)
+
+I am available for Machine Learning/Data Science/R/Python/Julia
+consulting\! [Email me](mailto:dzj@analytixware.com) to get 10% discount
+off the hourly rate.

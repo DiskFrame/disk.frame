@@ -7,7 +7,7 @@
 \usage{
 map2(.x, .y, .f, ...)
 
-map_by_chunk_id(.x, .y, .f, ..., outdir)
+map_by_chunk_id(x, y, fn, outdir)
 }
 \arguments{
 \item{.x}{a disk.frame}

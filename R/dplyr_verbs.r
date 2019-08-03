@@ -162,7 +162,6 @@ play <- function(.data, cmds=NULL){
           assign(ng[i], g, pos = an_env)
         }
       }
-      
       .data <- do.call(cmd$func, list(.data), envir = an_env)
     }
   }

@@ -70,7 +70,6 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     merged_meta = full_join(new_chunk_meta, metas_df_summ, by=c("colnames"))
     setDT(merged_meta)
     
-    
     # find out which vars are matched
     check_vars = full_join(new_chunk_meta[,.(colnames, new_chunk)], metas_df[,.(colnames=unique(colnames), existing_df = TRUE)], by = "colnames")
     
@@ -102,6 +101,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
       stop("")
     }
   }
+
   fst::write_fst(chunk, file.path(attr(df,"path"), paste0(chunk_id,".fst")))
   disk.frame(attr(df,"path"))
 }
