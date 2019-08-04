@@ -1,0 +1,57 @@
+---
+title: "Using data.table syntax with disk.frame"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{data-table-syntax}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## `disk.frame` supports `data.table` syntax
+
+
+```{r setup, cache=TRUE}
+library(disk.frame)
+
+# setup disk.frame to use multiple workers
+setup_disk.frame()
+
+library(nycflights13)
+
+# create a disk.frame
+flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"flights13"), overwrite = T)
+```
+
+In the following example, I will use the `.N` from the `data.table` package to count the unique combinations `year` and `month` within each chunk.
+
+```{r ok, dependson='setup'}
+
+flights.df = disk.frame(file.path(tempdir(),"flights13"))
+
+names(flights.df)
+
+flights.df[,.N, .(year, month), keep = c("year", "month")]
+```
+
+All `data.table` syntax supported. However, `disk.frame` adds the ability to load only those columns required for analysis using the `keep =` option. In the above analysis, only the `year` variable is required and hence `keep = c("year", "month")` was used. 
+
+### External variables are captured
+
+`disk.frame` sends the computaion to each background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out what variable you use and then send them to the background workers so they have access to the variables as well. E.g.
+
+```{r var_detect, dependson='setup'}
+y = 42 
+some_fn <- function(x) x
+
+
+flights.df[,some_fn(y)]
+```
+In the above example, neither `some_fn` nor `y` are defined on the background workers, but `disk.frame` still managers to evaluate this code `flights.df[,some_fn(y)]`.
+
