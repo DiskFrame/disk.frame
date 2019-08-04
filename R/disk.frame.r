@@ -35,8 +35,7 @@ disk.frame <- function(path, backend = "fst") {
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
 #' @param ... any other metadata the user wishes to keep.
 #' @export
-add_meta <- function(df, ..., nchunks = nchunks(df), shardkey = "", shardchunks = -1) {
-  #browser()
+add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
   stopifnot("disk.frame" %in% class(df))
   
   if(is.null(shardkey)) {
@@ -75,7 +74,7 @@ add_meta <- function(df, ..., nchunks = nchunks(df), shardkey = "", shardchunks 
 #' @rdname disk.frame_fst
 disk.frame_folder <- function(path) {
   df <- list()
-  df$files <- list.files(path, full.names = T)
+  df$files <- list.files(path, full.names = TRUE)
   df$files_short <- list.files(path)
   attr(df,"path") <- path
   attr(df,"backend") <- "fst"
@@ -105,7 +104,7 @@ prepare_dir.disk.frame <- function(df, path, clean = FALSE) {
   if(!dir.exists(fpath2)) {
     dir.create(fpath2)
   } else if(clean) {    
-    sapply(list.files(fpath2,full.names = T), unlink, recursive =T, force  = T)
+    sapply(list.files(fpath2, full.names = TRUE), unlink, recursive = TRUE, force  = TRUE)
   }
   fpath2
 }

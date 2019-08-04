@@ -27,17 +27,17 @@ merge.disk.frame <- function(x, y, by, outdir, ..., merge_by_chunk_id = FALSE) {
     df3 = merge(
       data.table(
         chunk_id = list.files(path1), 
-        pathA = list.files(path1,full.names = T)
+        pathA = list.files(path1,full.names = TRUE)
       ),
       data.table(
         chunk_id = list.files(path2), 
-        pathB = list.files(path2,full.names = T)
+        pathB = list.files(path2,full.names = TRUE)
       )
     )
     setDT(df3)
     df3[,{
-      data1 = read_fst(pathA,as.data.table = T)
-      data2 = read_fst(pathB,as.data.table = T)
+      data1 = read_fst(pathA,as.data.table = TRUE)
+      data2 = read_fst(pathB,as.data.table = TRUE)
       data3 = force(merge(data1, data2, by = by))
       rm(data1); rm(data2); gc()
       write_fst(data3, glue("{outdir}/{.BY}"))
