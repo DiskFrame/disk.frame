@@ -120,7 +120,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_shard"</span>), <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
     
@@ -129,7 +129,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df</th>
-      <td><p>A disk.frame</p></td>
+      <td><p>A data.frame/data.table or disk.frame. If disk.frame, then rechunk(df, ...) is run</p></td>
     </tr>
     <tr>
       <th>shardby</th>

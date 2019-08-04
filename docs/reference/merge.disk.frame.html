@@ -118,7 +118,8 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>by</span>, <span class='no'>outdir</span>, <span class='no'>...</span>,
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,6 +131,10 @@
     <tr>
       <th>y</th>
       <td><p>a disk.frame or data.frame</p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p>the merge by keys</p></td>
     </tr>
     <tr>
       <th>outdir</th>

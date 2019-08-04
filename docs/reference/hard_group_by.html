@@ -122,12 +122,15 @@ in the same chunk</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>by</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>by</span>,
+<span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_hard_group_by"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/nchunks'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/nchunks'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,12 +140,16 @@ in the same chunk</p>
       <td><p>a disk.frame</p></td>
     </tr>
     <tr>
-      <th>by</th>
-      <td><p>the columns to shard by</p></td>
+      <th>...</th>
+      <td><p>grouping variables</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>not used</p></td>
+      <th>add</th>
+      <td><p>same as dplyr::group_by</p></td>
+    </tr>
+    <tr>
+      <th>.drop</th>
+      <td><p>same as dplyr::group_by</p></td>
     </tr>
     <tr>
       <th>outdir</th>

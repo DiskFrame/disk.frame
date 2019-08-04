@@ -127,12 +127,26 @@ second is the chunk ID</p>
 
     <pre class="usage"><span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
 
+<span class='fu'>map_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>map_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>map_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='no'>fill</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>idcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>vars_and_pkgs</span> <span class='kw'>=</span> <span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/future/topics/getGlobalsAndPackages'>getGlobalsAndPackages</a></span>(<span class='no'>.f</span>,
+  <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>()))
+
+<span class='fu'>imap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>imap.disk.frame</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>F</span>)
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>lazy</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
 
@@ -162,6 +176,22 @@ second is the chunk ID</p>
       <td><p>for compatibility with `purrr::map`</p></td>
     </tr>
     <tr>
+      <th>.id</th>
+      <td><p>not used</p></td>
+    </tr>
+    <tr>
+      <th>use.names</th>
+      <td><p>for map_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>for map_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></td>
+    </tr>
+    <tr>
+      <th>idcol</th>
+      <td><p>for map_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></td>
+    </tr>
+    <tr>
       <th>outdir</th>
       <td><p>the output directory</p></td>
     </tr>
@@ -184,6 +214,10 @@ second is the chunk ID</p>
     <tr>
       <th>overwrite</th>
       <td><p>if TRUE removes any existing chunks in the data</p></td>
+    </tr>
+    <tr>
+      <th>vars_and_pkgs</th>
+      <td><p>variables and packages to send to a background session. This is typically automatically detected</p></td>
     </tr>
     </table>
     

@@ -120,7 +120,7 @@ Convert a SAS file (.sas7bdat format) to disk.frame via CSVs" />
     </div>
 
     <pre class="usage"><span class='fu'>sas_to_csv</span>(<span class='no'>infile</span>, <span class='no'>chunk</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'>file_size</span>(<span class='no'>infile</span>)))
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/file_info.html'>file_size</a></span>(<span class='no'>infile</span>)))
 
 <span class='fu'>sas_to_disk.frame</span>(<span class='no'>inpath</span>, <span class='no'>outpath</span>,
   <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/disk.frame/topics/recommend_nchunks'>recommend_nchunks</a></span>(<span class='no'>inpath</span>))</pre>

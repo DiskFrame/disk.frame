@@ -121,8 +121,8 @@ Performs semi join" />
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
 <span class='fu'>anti_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_anti_join"</span>), <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_anti_join"</span>),
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>full_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
@@ -132,17 +132,17 @@ Performs semi join" />
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>inner_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_inner_join"</span>),
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>left_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_left_join"</span>), <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_left_join"</span>),
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>semi_join</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_semi_join"</span>), <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_semi_join"</span>),
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,7 +165,7 @@ Performs semi join" />
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed to lazyeval::lazy if y is data.frame; otherwise passed to dplyr::anti_join</p></td>
+      <td><p>same as dplyr's joins</p></td>
     </tr>
     <tr>
       <th>outdir</th>

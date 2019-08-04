@@ -136,12 +136,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="add_var_to_scorecard.html">add_var_to_scorecard()</a></code> </p>
-        </td>
-        <td><p>Add one variable to the XGBoost scorecard</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="as.data.frame.disk.frame.html">as.data.frame(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Convert disk.frame to data.frame by collecting all chunks</p></td>
@@ -160,12 +154,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="auc.html">auc()</a></code> </p>
-        </td>
-        <td><p>compute Area under the Curve (AUC)</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> </p>
         </td>
         <td><p>Bring the disk.frame into R as data.table/data.frame</p></td>
@@ -178,27 +166,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="compat_as_lazy.html">compat_as_lazy()</a></code> </p>
-        </td>
-        <td><p>Internal method replicating dplyr's compat_as_lazy_dots as it's not exported</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compat_as_lazy_dots.html">compat_as_lazy_dots()</a></code> </p>
-        </td>
-        <td><p>Internal method replicating dplyr's compat_as_lazy_dots as it's not exported</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="compute.disk.frame.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Perform the computation</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="create_dplyr_mapper.html">create_dplyr_mapper()</a></code> </p>
+        </td>
+        <td><p>A function to make it easier to create dplyr function for disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="csv_to_disk.frame.html">csv_to_disk.frame()</a></code> </p>
         </td>
-        <td><p>convert a CSV file to disk.frame format</p></td>
+        <td><p>convert CSV file(s) to disk.frame format</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete.html">delete()</a></code> </p>
+        </td>
+        <td><p>delete a disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -214,7 +202,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="dplyr_verbs.html">select_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">do_(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>dplyr verbs implemented for disk.frame</p></td>
       </tr><tr>
@@ -250,9 +238,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="group_by.html">groups(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">group_by_(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="groups.disk.frame.html">groups(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Group</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Group by designed for disk.frames</p></td>
       </tr><tr>
         
         <td>
@@ -293,15 +287,15 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">imap.disk.frame()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
+          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">imap.disk.frame()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
         </td>
         <td><p>Apply the same function to all chunks</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map_by_chunk_id.html">map_by_chunk_id()</a></code> </p>
+          <p><code><a href="map2.html">map2()</a></code> <code><a href="map2.html">map_by_chunk_id()</a></code> </p>
         </td>
-        <td><p>Perform a function on both disk.frames x and y, each chunk of x and y gets run by fn(x.chunk, y.chunk)</p></td>
+        <td><p>Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)</p></td>
       </tr><tr>
         
         <td>
@@ -331,25 +325,13 @@ in the same chunk</p></td>
         <td>
           <p><code><a href="overwrite_check.html">overwrite_check()</a></code> </p>
         </td>
-        <td><p>Check if the outdir exists or not</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="play.html">play()</a></code> </p>
-        </td>
-        <td><p>Internal methods</p></td>
+        <td><p>Check if the outdir exists or not; and cleans it if it's not already there</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="print.disk.frame.html">print(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>a new print method for disk.frame</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="print.xgdf_scorecard.html">print(<i>&lt;xgdf_scorecard&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Print xgboost scorecard</p></td>
       </tr><tr>
         
         <td>
@@ -374,12 +356,6 @@ in the same chunk</p></td>
           <p><code><a href="recommend_nchunks.html">recommend_nchunks()</a></code> </p>
         </td>
         <td><p>Computes the recommended number of chunks to break a data.frame into</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="record.html">record()</a></code> </p>
-        </td>
-        <td><p>Internal methods</p></td>
       </tr><tr>
         
         <td>
@@ -439,7 +415,10 @@ in the same chunk</p></td>
         <td>
           <p><code><a href="write_disk.frame.html">write_disk.frame()</a></code> <code><a href="write_disk.frame.html">output_disk.frame()</a></code> </p>
         </td>
-        <td><p>Write out a data.frame/disk.frame to a disk.frame location</p></td>
+        <td><p>Write out a data.frame/disk.frame to a disk.frame location. If df is a
+data.frame, then df must contain the column .out.disk.frame.id. This is
+intended to be a low-level version of writing disk.frames. Using the
+as.disk.frame function is recommended for most cases</p></td>
       </tr><tr>
         
         <td>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>dplyr verbs implemented for disk.frame — select_.disk.frame • disk.frame</title>
+<title>dplyr verbs implemented for disk.frame — select.disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="dplyr verbs implemented for disk.frame — select_.disk.frame" />
+<meta property="og:title" content="dplyr verbs implemented for disk.frame — select.disk.frame" />
 
 <meta property="og:description" content="dplyr verbs implemented for disk.frame
 mutate
-transmuate
 Take a glimpse" />
 <meta name="twitter:card" content="summary" />
 
@@ -118,34 +117,33 @@ Take a glimpse" />
     
     <p>dplyr verbs implemented for disk.frame</p>
 <p>mutate</p>
-<p>transmuate</p>
 <p>Take a glimpse</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>select_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>select</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>rename_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>rename</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>filter_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>mutate_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>mutate</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>transmute_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>transmute</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>arrange_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>arrange</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>summarise_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>do_</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='no'>.dots</span>)
+<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>glimpse</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
@@ -160,10 +158,6 @@ Take a glimpse" />
     <tr>
       <th>...</th>
       <td><p>Same as the dplyr functions</p></td>
-    </tr>
-    <tr>
-      <th>.dots</th>
-      <td><p>this represents the ... from a higher level</p></td>
     </tr>
     </table>
     
