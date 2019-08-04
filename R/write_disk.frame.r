@@ -13,8 +13,6 @@
 #' @import fst fs
 #' @importFrom glue glue
 write_disk.frame <- function(df, outdir, nchunks, overwrite, shardby=NULL, compress = 50, ...) {
-  force(nchunks)
-  
   overwrite_check(outdir, overwrite)
 
   if(is.null(outdir)) {

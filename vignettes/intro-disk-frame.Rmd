@@ -1,10 +1,10 @@
 ---
-title: "Introduction to `disk.frame` - larger-than-RAM data manipulation framework"
+title: "Basic Data Operations - nycflights13"
 author: "ZJ"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Basic Data Operations}
+  %\VignetteIndexEntry{Basic Data Operations - nycflights13}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
