@@ -16,7 +16,10 @@ library(magrittr)
 library(nycflights13)
 library(dplyr)
 
-setup_disk.frame()
+
+# you need to run this for multi-worker support
+#setup_disk.frame()
+
 # if (!interactive()) {
 #setup_disk.frame(1)
 # }

@@ -20,8 +20,8 @@ knitr::opts_chunk$set(
 ```{r setup, cache=TRUE}
 library(disk.frame)
 
-# setup disk.frame to use multiple workers
-setup_disk.frame()
+# uncomment the below to setup disk.frame to use multiple workers
+# setup_disk.frame()
 
 library(nycflights13)
 
@@ -32,6 +32,7 @@ flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"
 In the following example, I will use the `.N` from the `data.table` package to count the unique combinations `year` and `month` within each chunk.
 
 ```{r ok, dependson='setup'}
+library(disk.frame)
 
 flights.df = disk.frame(file.path(tempdir(),"flights13"))
 
