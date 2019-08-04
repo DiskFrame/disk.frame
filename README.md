@@ -95,10 +95,10 @@ supports many `dplyr` verbs for manipulating `disk.frame`s.
 
 Additionally, `disk.frame` supports parallel data operations using
 infrastructures provided by the excellent [`future`
-package](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html)
-to take advantage of multi-core CPUs. Further, `disk.frame` uses
-state-of-the-art data storage techniques such as fast data compression,
-and random access to rows and columns provided by the [`fst`
+package](https://CRAN.R-project.org/package=future) to take advantage of
+multi-core CPUs. Further, `disk.frame` uses state-of-the-art data
+storage techniques such as fast data compression, and random access to
+rows and columns provided by the [`fst`
 package](http://www.fstpackage.org/) to provide superior data
 manipulation speeds.
 

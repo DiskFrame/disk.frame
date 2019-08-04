@@ -65,7 +65,7 @@ Furthermore, there is a row-limit of 2^31 for `data.frame`s in R; hence an alter
 
 R has many packages that can deal with larger-than-RAM datasets, including `ff` and `bigmemory`. However, `ff` and `bigmemory` restrict the user to primitive data types such as double, which means they do not support character (string) and factor types. In contrast, `disk.frame` makes use of `data.table::data.table` and `data.frame` directly, so all data types are supported. Also, `disk.frame` strives to provide an API that is as similar to `data.frame`'s where possible. `disk.frame` supports many `dplyr` verbs for manipulating `disk.frame`s.
 
-Additionally, `disk.frame` supports parallel data operations using infrastructures provided by the excellent [`future` package](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html) to take advantage of multi-core CPUs. Further, `disk.frame` uses state-of-the-art data storage techniques such as fast data compression, and random access to rows and columns provided by the [`fst` package](http://www.fstpackage.org/) to provide superior data manipulation speeds.
+Additionally, `disk.frame` supports parallel data operations using infrastructures provided by the excellent [`future` package](https://CRAN.R-project.org/package=future) to take advantage of multi-core CPUs. Further, `disk.frame` uses state-of-the-art data storage techniques such as fast data compression, and random access to rows and columns provided by the [`fst` package](http://www.fstpackage.org/) to provide superior data manipulation speeds.
 
 ### d) How does `disk.frame` work?
 
