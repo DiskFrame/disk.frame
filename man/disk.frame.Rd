@@ -2,7 +2,7 @@
 % Please edit documentation in R/disk.frame.r
 \name{disk.frame}
 \alias{disk.frame}
-\title{Create a disk.frame}
+\title{Create a disk.frame from a folder}
 \usage{
 disk.frame(path, backend = "fst")
 }
@@ -12,7 +12,7 @@ disk.frame(path, backend = "fst")
 \item{backend}{The only available backend is fst at the moment}
 }
 \description{
-Create a disk.frame
+Create a disk.frame from a folder
 }
 \examples{
 path = file.path(tempdir(),"cars")
