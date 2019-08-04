@@ -5,7 +5,7 @@
 #' @param outdir the output directory
 #' @param overwrite overwrite the output directory
 #' @export
-rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = T) {
+rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE) {
   #browser()
   
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
@@ -44,7 +44,6 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     }
     
     # TODO check for validity
-    
     print(glue::glue("files have been backed up to temporary dir {back_up_tmp_dir}. You can recover there files until you restart your R session"))
     
     df = disk.frame(back_up_tmp_dir)
@@ -110,7 +109,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     
     bad_boys = future.apply::future_lapply(nts, function(chunk_id) {
       df1 = disk.frame::get_chunk(df, chunk_id)
-      disk.frame::shard(df1, shardby, nchunks = nchunks, overwrite = T)
+      disk.frame::shard(df1, shardby, nchunks = nchunks, overwrite = TRUE)
     })
     
     # for those that don't need to be resharded
@@ -123,9 +122,8 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     })
     
     list_of_sharded = c(bad_boys, oks)
+    new_one <- rbindlist.disk.frame(list_of_sharded, outdir=outdir, by_chunk_id = TRUE, overwrite = overwrite)
     
-    system.time(new_one <- rbindlist.disk.frame(list_of_sharded, outdir=outdir, by_chunk_id = T, overwrite = overwrite))
-    ##browser
     res = add_meta(new_one, nchunks = nchunks(new_one), shardkey = shardby, shardchunks = nchunks)
     return(res)
   }

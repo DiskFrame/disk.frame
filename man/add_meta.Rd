@@ -4,13 +4,13 @@
 \alias{add_meta}
 \title{Add metadata to the disk.frame}
 \usage{
-add_meta(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "",
+add_meta(df, ..., nchunks = nchunks(df), shardkey = "",
   shardchunks = -1)
 }
 \arguments{
 \item{df}{a disk.frame}
 
-\item{...}{another other metadata the user wishes to keep.}
+\item{...}{any other metadata the user wishes to keep.}
 
 \item{nchunks}{number of chunks}
 

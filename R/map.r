@@ -54,7 +54,6 @@ map.default <- function(.x, .f, ...) {
 #' @importFrom future getGlobalsAndPackages
 #' @export
 map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
-  
   .f = purrr::as_mapper(.f)
 
   if(lazy) {
@@ -75,18 +74,16 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   }
   
   path <- attr(.x, "path")
-  files <- list.files(path, full.names = T)
+  files <- list.files(path, full.names = TRUE)
   files_shortname <- list.files(path)
   
   keep_future = keep
-  
-  # TODO get the chunks using the chunk id
   
   cid = get_chunk_ids(.x, full.names = TRUE)
   
   #res = future.apply::future_lapply(1:length(files), function(ii) {
   res = lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = T)
+    ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
     res = .f(ds)
     if(!is.null(outdir)) {
       if(nrow(res) == 0) {

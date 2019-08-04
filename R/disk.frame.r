@@ -1,4 +1,4 @@
-#' Create a disk.frame
+#' Create a disk.frame from a folder
 #' @param path The path to store the output file or to a directory
 #' @param backend The only available backend is fst at the moment
 #' @export
@@ -10,7 +10,6 @@
 #' nchunks(df)
 #' # clean up
 #' delete(df)
-
 disk.frame <- function(path, backend = "fst") {
   
   # only fst backend is implemented at the moment
@@ -34,9 +33,9 @@ disk.frame <- function(path, backend = "fst") {
 #' @param nchunks number of chunks
 #' @param shardkey the shard key
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
-#' @param ... another other metadata the user wishes to keep. 
+#' @param ... any other metadata the user wishes to keep.
 #' @export
-add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
+add_meta <- function(df, ..., nchunks = nchunks(df), shardkey = "", shardchunks = -1) {
   #browser()
   stopifnot("disk.frame" %in% class(df))
   
