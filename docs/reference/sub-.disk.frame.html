@@ -118,7 +118,8 @@
     </div>
 
     <pre class="usage"># S3 method for disk.frame
-[(df, i, j, ..., keep = NULL)</pre>
+[(df, ..., keep = NULL, rbind = T,
+  use.names = TRUE, fill = FALSE, idcol = NULL)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,20 +129,28 @@
       <td><p>a disk.frame</p></td>
     </tr>
     <tr>
-      <th>i</th>
-      <td><p>same as data.table</p></td>
-    </tr>
-    <tr>
-      <th>j</th>
-      <td><p>same as data.table</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>same as data.table</p></td>
     </tr>
     <tr>
       <th>keep</th>
       <td><p>the columns to srckeep</p></td>
+    </tr>
+    <tr>
+      <th>rbind</th>
+      <td><p>Whether to rbind the chunks. Defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>use.names</th>
+      <td><p>Same as in data.table::rbindlist</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>Same as in data.table::rbindlist</p></td>
+    </tr>
+    <tr>
+      <th>idcol</th>
+      <td><p>Same as in data.table::rbindlist</p></td>
     </tr>
     </table>
     

@@ -104,6 +104,8 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     # This will return the variable names
     
     # TODO use better ways to do NSE
+    # the below will fail if indeed ... can not be list-ed
+    # there should be a better way to do this
     by <- unlist(list(...))
     
     # shard and create temporary diskframes

@@ -117,7 +117,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>foverlaps.disk.frame</span>(<span class='no'>df1</span>, <span class='no'>df2</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
+    <pre class="usage"><span class='fu'>foverlaps.disk.frame</span>(<span class='no'>df1</span>, <span class='no'>df2</span>, <span class='kw'>by.x</span> <span class='kw'>=</span> <span class='kw'>if</span>
+  (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df1</span>)$<span class='no'>shardkey</span>, <span class='st'>""</span>)) <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df1</span>)$<span class='no'>shardkey</span> <span class='kw'>else</span>
+  <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df2</span>)$<span class='no'>shardkey</span>, <span class='kw'>by.y</span> <span class='kw'>=</span> <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df2</span>)$<span class='no'>shardkey</span>, <span class='no'>...</span>,
+  <span class='kw'>outdir</span> <span class='kw'>=</span> {     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>warning</a></span>(<span class='st'>"temp dir create"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"df_foverlaps_tmp"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>) }, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -132,12 +136,20 @@
       <td><p>A disk.frame or a data.frame</p></td>
     </tr>
     <tr>
-      <th>outdir</th>
-      <td><p>The output directory of the disk.frame</p></td>
+      <th>by.x</th>
+      <td><p>character/string vector. by.x used in foverlaps</p></td>
+    </tr>
+    <tr>
+      <th>by.y</th>
+      <td><p>character/string vector. by.x used in foverlaps</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>passed to data.table::foverlaps and disk.frame::map.disk.frame</p></td>
+    </tr>
+    <tr>
+      <th>outdir</th>
+      <td><p>The output directory of the disk.frame</p></td>
     </tr>
     <tr>
       <th>merge_by_chunk_id</th>

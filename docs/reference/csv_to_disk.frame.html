@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>convert a CSV file to disk.frame format — csv_to_disk.frame • disk.frame</title>
+<title>convert CSV file(s) to disk.frame format — csv_to_disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="convert a CSV file to disk.frame format — csv_to_disk.frame" />
+<meta property="og:title" content="convert CSV file(s) to disk.frame format — csv_to_disk.frame" />
 
-<meta property="og:description" content="convert a CSV file to disk.frame format" />
+<meta property="og:description" content="convert CSV file(s) to disk.frame format" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,27 +106,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>convert a CSV file to disk.frame format</h1>
+    <h1>convert CSV file(s) to disk.frame format</h1>
     
     <div class="hidden name"><code>csv_to_disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>convert a CSV file to disk.frame format</p>
+    <p>convert CSV file(s) to disk.frame format</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>csv_to_disk.frame</span>(<span class='no'>infile</span>, <span class='no'>outdir</span>, <span class='kw'>inmapfn</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.info'>file.size</a></span>(<span class='no'>infile</span>)), <span class='kw'>in_chunk_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.info'>file.size</a></span>(<span class='no'>infile</span>))),
+  <span class='kw'>in_chunk_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>infile</th>
-      <td><p>The input CSV</p></td>
+      <td><p>The input CSV file or files</p></td>
     </tr>
     <tr>
       <th>outdir</th>
@@ -155,6 +156,10 @@
     <tr>
       <th>overwrite</th>
       <td><p>Whether to overwrite the existing directory</p></td>
+    </tr>
+    <tr>
+      <th>header</th>
+      <td><p>Whether the files have header. Defaults to TRUE</p></td>
     </tr>
     <tr>
       <th>...</th>

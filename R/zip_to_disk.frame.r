@@ -10,7 +10,7 @@
 #' @importFrom utils unzip
 #' @export
 #' @return a list of disk.frame
-# TODO add all the options of fread into the ... as future may not be able to deal with it
+# TODO do NSE better here. add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwrite = T) {
   files = unzip(zipfile, list=T)
   

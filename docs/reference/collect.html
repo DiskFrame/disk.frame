@@ -120,10 +120,10 @@ Bring the disk.frame into R as list" />
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>collect</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>df</span>,
+<span class='fu'>collect</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>x</span>,
   <span class='st'>"lazyfn"</span>)))
 
-<span class='fu'>collect_list</span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>df</span>, <span class='st'>"lazyfn"</span>)))</pre>
+<span class='fu'>collect_list</span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NULL'>is.null</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>x</span>, <span class='st'>"lazyfn"</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,7 +138,12 @@ Bring the disk.frame into R as list" />
     </tr>
     <tr>
       <th>parallel</th>
-      <td><p>if TRUE the collection is performed in parallel. By default if there are delayed/lazy steps then it will be parallel, otherwise it will not be in parallel. This is because parallel requires transferring data from background R session to the current R session and if there is no computation then it's better to avoid transferring data between session, hence parallel = F is a better choice</p></td>
+      <td><p>if TRUE the collection is performed in parallel. By default
+if there are delayed/lazy steps then it will be parallel, otherwise it will
+not be in parallel. This is because parallel requires transferring data
+from background R session to the current R session and if there is no
+computation then it's better to avoid transferring data between session,
+hence parallel = FALSE is a better choice</p></td>
     </tr>
     <tr>
       <th>simplify</th>

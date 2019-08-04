@@ -5,7 +5,7 @@
 \title{Increase or decrease the number of chunks in the disk.frame}
 \usage{
 rechunk(df, nchunks, outdir = attr(df, "path"), shardby = NULL,
-  overwrite = T)
+  overwrite = TRUE)
 }
 \arguments{
 \item{df}{the disk.frame to rechunk}
