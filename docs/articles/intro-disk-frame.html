@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to <code>disk.frame</code> - larger-than-RAM data manipulation framework • disk.frame</title>
+<title>Basic Data Operations - nycflights13 • disk.frame</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to &lt;code&gt;disk.frame&lt;/code&gt; - larger-than-RAM data manipulation framework">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Basic Data Operations - nycflights13">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -53,7 +53,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro-disk-frame.html">Introduction to `disk.frame` - larger-than-RAM data manipulation framework</a>
+      <a href="../articles/common-questions.html">Common Questions</a>
+    </li>
+    <li>
+      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
 </li>
@@ -70,7 +73,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introduction to <code>disk.frame</code> - larger-than-RAM data manipulation framework</h1>
+      <h1>Basic Data Operations - nycflights13</h1>
                         <h4 class="author">ZJ</h4>
             
             <h4 class="date">2019-08-04</h4>
@@ -120,7 +123,7 @@
 <a class="sourceLine" id="cb3-7" title="7">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(</a>
 <a class="sourceLine" id="cb3-8" title="8">  flights, </a>
 <a class="sourceLine" id="cb3-9" title="9">  <span class="dt">outdir =</span> <span class="st">"tmp_flights"</span>, </a>
-<a class="sourceLine" id="cb3-10" title="10">  <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-11" title="11">flights.df</a>
 <a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; path: "tmp_flights"</span></a>
 <a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; nchunks: 6</span></a>
@@ -630,26 +633,26 @@
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">flights.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_frac</span>(<span class="fl">0.01</span>) <span class="op">%&gt;%</span><span class="st"> </span>collect <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb28-2" title="2"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013     1   2       NA           1420        NA       NA           1644</span></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013    12  10       NA           1740        NA       NA           1956</span></a>
-<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013    11  24     1632           1520        72     1816           1723</span></a>
-<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013    10   2     2051           2054        -3     2357           2359</span></a>
-<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013     1  30     1343           1345        -2     1627           1656</span></a>
-<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013    12   1     1057           1059        -2     1342           1428</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013    11   3      929            929         0     1232           1234</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013    12   1      904            905        -1     1211           1219</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013     1  10     1043           1050        -7     1212           1227</span></a>
+<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013     1  15     1329           1330        -1     1606           1617</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013    11  17      909            915        -6     1203           1235</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013     1  26     1605           1605         0     1906           1924</span></a>
 <a class="sourceLine" id="cb28-9" title="9"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></a>
-<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1        NA      EV   4935  N759EV    EWR  ATL       NA      746   14</span></a>
-<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2        NA      EV   4113  N21537    EWR  IND       NA      645   17</span></a>
-<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3        53      EV   4572  N11565    EWR  GSP       89      594   15</span></a>
-<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4        -2      B6    523  N653JB    JFK  LAX      327     2475   20</span></a>
-<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5       -29      B6     83  N559JB    JFK  SEA      326     2422   13</span></a>
-<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6       -46      UA   1479  N33292    EWR  LAX      324     2454   10</span></a>
+<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1        -2      AA   1223  N578AA    EWR  DFW      200     1372    9</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2        -8      B6    229  N317JB    JFK  RSW      168     1074    9</span></a>
+<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3       -15      EV   4662  N13133    EWR  RDU       72      416   10</span></a>
+<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4       -11      B6    525  N353JB    EWR  MCO      141      937   13</span></a>
+<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5       -32      DL    874  N369NB    LGA  MIA      146     1096    9</span></a>
+<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6       -18      9E   3325  N905XJ    JFK  DFW      196     1391   16</span></a>
 <a class="sourceLine" id="cb28-16" title="16"><span class="co">#&gt;   minute            time_hour</span></a>
-<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     20 2013-01-02T19:00:00Z</span></a>
-<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2     40 2013-12-10T22:00:00Z</span></a>
-<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     20 2013-11-24T20:00:00Z</span></a>
-<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4     54 2013-10-03T00:00:00Z</span></a>
-<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     45 2013-01-30T18:00:00Z</span></a>
-<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6     59 2013-12-01T15:00:00Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     29 2013-11-03T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2      5 2013-12-01T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     50 2013-01-10T15:00:00Z</span></a>
+<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4     30 2013-01-15T18:00:00Z</span></a>
+<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     15 2013-11-17T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6      5 2013-01-26T21:00:00Z</span></a></code></pre></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">
