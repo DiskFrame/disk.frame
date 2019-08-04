@@ -6,8 +6,6 @@
 #' @param overwrite overwrite the output directory
 #' @export
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE) {
-  #browser()
-  
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
   force(nchunks) 

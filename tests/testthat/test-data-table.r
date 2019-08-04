@@ -7,8 +7,6 @@ setup({
 
 test_that("data.table .N", {
   df = disk.frame("tmp_col_delete")
-  # TODO investigate why there is the warning "In serialize(data, node$con) :
-  # 'package:data.table' may not be available when loading"
   expect_warning(res <- sum(unlist(df[,.N])))
   expect_equal(res , 1e5+11)
 })
@@ -23,7 +21,7 @@ test_that("data.table .N+y V1", {
     
     expect_equal(a$n_plus_y, b$N + y)
   } else {
-    # TODO figure out why it fails
+    # TODO figure out why the above fails
     expect_equal(2L, 2L)
   }
 })

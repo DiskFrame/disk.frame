@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to <code>disk.frame</code> - larger-than-RAM data manipulation framework • disk.frame</title>
+<title>Basic Data Operations - nycflights13 • disk.frame</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to &lt;code&gt;disk.frame&lt;/code&gt; - larger-than-RAM data manipulation framework">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Basic Data Operations - nycflights13">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -53,7 +53,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro-disk-frame.html">Introduction to `disk.frame` - larger-than-RAM data manipulation framework</a>
+      <a href="../articles/common-questions.html">Common Questions</a>
+    </li>
+    <li>
+      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
 </li>
@@ -70,7 +73,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introduction to <code>disk.frame</code> - larger-than-RAM data manipulation framework</h1>
+      <h1>Basic Data Operations - nycflights13</h1>
                         <h4 class="author">ZJ</h4>
             
             <h4 class="date">2019-08-04</h4>
@@ -101,41 +104,6 @@
 <p>or</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"xiaodaigh/disk.frame"</span>)</a></code></pre></div>
 </div>
-<div id="common-questions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#common-questions" class="anchor"></a>Common questions</h2>
-<div id="a-what-is-disk-frame-and-why-create-it" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-what-is-disk-frame-and-why-create-it" class="anchor"></a>a) What is <code>disk.frame</code> and why create it?</h3>
-<p><code>disk.frame</code> is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R; hence relaxing the assumption from “R can only deal with data that fits in RAM” to be being able to “deal with data that fits on disk”. See the next section.</p>
-</div>
-<div id="b-how-is-it-different-to-data-frame-and-data-table" class="section level3">
-<h3 class="hasAnchor">
-<a href="#b-how-is-it-different-to-data-frame-and-data-table" class="anchor"></a>b) How is it different to <code>data.frame</code> and <code>data.table</code>?</h3>
-<p>A <code>data.frame</code> in R is an in-memory data structure, which means that R must load the data in its entirety into RAM. A corollary of this is that only data that can fit into RAM can be processed using <code>data.frame</code>s. This places significant restrictions on what R can process with minimal hassle.</p>
-<p>In contrast, <code>disk.frame</code> provides a framework to store and manipulate data on the hard drive. It does this by loading only a small part of the data, called a chunk, into RAM; process the chunk, write out the results and repeat with the next chunk. This chunking strategy is widely applied in other packages to enable processing large amounts of data in R, for example, see <a href="https://github.com/edwindj/chunked"><code>chunkded</code></a> <a href="https://github.com/ropensci/arkdb"><code>arkdb</code></a>, and <a href="https://github.com/s-u/iotools"><code>iotools</code></a>.</p>
-<p>Furthermore, there is a row-limit of 2^31 for <code>data.frame</code>s in R; hence an alternate approach is needed to apply R to these large datasets. The chunking mechanism in <code>disk.frame</code> provides such an avenue to enable data manipulation beyond the 2^31 row limit.</p>
-</div>
-<div id="c-how-is-disk-frame-different-to-previous-big-data-solutions-for-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#c-how-is-disk-frame-different-to-previous-big-data-solutions-for-r" class="anchor"></a>c) How is <code>disk.frame</code> different to previous “big” data solutions for R?</h3>
-<p>R has many packages that can deal with larger-than-RAM datasets, including <code>ff</code> and <code>bigmemory</code>. However, <code>ff</code> and <code>bigmemory</code> restrict the user to primitive data types such as double, which means they do not support character (string) and factor types. In contrast, <code>disk.frame</code> makes use of <code><a href="https://www.rdocumentation.org/packages/data.table/topics/data.table">data.table::data.table</a></code> and <code>data.frame</code> directly, so all data types are supported. Also, <code>disk.frame</code> strives to provide an API that is as similar to <code>data.frame</code>’s where possible. <code>disk.frame</code> supports many <code>dplyr</code> verbs for manipulating <code>disk.frame</code>s.</p>
-<p>Additionally, <code>disk.frame</code> supports parallel data operations using infrastructures provided by the excellent <a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html"><code>future</code> package</a> to take advantage of multi-core CPUs. Further, <code>disk.frame</code> uses state-of-the-art data storage techniques such as fast data compression, and random access to rows and columns provided by the <a href="http://www.fstpackage.org/"><code>fst</code> package</a> to provide superior data manipulation speeds.</p>
-</div>
-<div id="d-how-does-disk-frame-work" class="section level3">
-<h3 class="hasAnchor">
-<a href="#d-how-does-disk-frame-work" class="anchor"></a>d) How does <code>disk.frame</code> work?</h3>
-<p><code>disk.frame</code> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
-<p><code>disk.frame</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="../reference/map.html">map.disk.frame(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>disk.frame</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
-</div>
-<div id="e-how-is-disk-frame-different-from-spark-dask-and-juliadb-jl" class="section level3">
-<h3 class="hasAnchor">
-<a href="#e-how-is-disk-frame-different-from-spark-dask-and-juliadb-jl" class="anchor"></a>e) How is <code>disk.frame</code> different from Spark, Dask, and JuliaDB.jl?</h3>
-<p>Spark is primarily a distributed system that also works on a single machine. Dask is a Python package that is most similar to <code>disk.frame</code>, and JuliaDB.jl is a Julia package. All three can distribute work over a cluster of computers. However, <code>disk.frame</code> currently cannot distribute data processes over many computers, and is, therefore, single machine focused.</p>
-<p>In R, one can access Spark via <code>sparklyr</code>, but that requires a Spark cluster to be set up. On the other hand <code>disk.frame</code> requires zero-setup apart from running <code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("disk.frame")</a></code> or <code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("xiaodaigh/disk.frame")</a></code>.</p>
-<p>Finally, Spark can only apply functions that are implemented for Spark, whereas <code>disk.frame</code> can use any function in R including user-defined functions.</p>
-</div>
-</div>
 <div id="basic-data-operations-with-disk-frame" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-data-operations-with-disk-frame" class="anchor"></a>Basic Data Operations with <code>disk.frame</code>
@@ -155,7 +123,7 @@
 <a class="sourceLine" id="cb3-7" title="7">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(</a>
 <a class="sourceLine" id="cb3-8" title="8">  flights, </a>
 <a class="sourceLine" id="cb3-9" title="9">  <span class="dt">outdir =</span> <span class="st">"tmp_flights"</span>, </a>
-<a class="sourceLine" id="cb3-10" title="10">  <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-11" title="11">flights.df</a>
 <a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; path: "tmp_flights"</span></a>
 <a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; nchunks: 6</span></a>
@@ -665,26 +633,26 @@
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">flights.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_frac</span>(<span class="fl">0.01</span>) <span class="op">%&gt;%</span><span class="st"> </span>collect <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb28-2" title="2"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013    10  21      826            830        -4      959           1007</span></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013     1  28     2039           1945        54     2145           2105</span></a>
-<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013    11  19     1608           1610        -2     1826           1820</span></a>
-<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013     1  29     1754           1800        -6     2027           2043</span></a>
-<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013     1   3      941            945        -4     1153           1258</span></a>
-<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013    10   9      618            620        -2      757            810</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013    11   3      929            929         0     1232           1234</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013    12   1      904            905        -1     1211           1219</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013     1  10     1043           1050        -7     1212           1227</span></a>
+<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013     1  15     1329           1330        -1     1606           1617</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013    11  17      909            915        -6     1203           1235</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013     1  26     1605           1605         0     1906           1924</span></a>
 <a class="sourceLine" id="cb28-9" title="9"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></a>
-<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1        -8      9E   3521  N903XJ    JFK  ORD      121      740    8</span></a>
-<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2        40      EV   4108  N18556    EWR  IAD       41      212   19</span></a>
-<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3         6      DL   2231  N915DE    LGA  DTW       82      502   16</span></a>
-<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4       -16      DL   1047  N669DN    LGA  ATL      125      762   18</span></a>
-<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5       -65      B6    679  N789JB    JFK  LAX      297     2475    9</span></a>
-<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6       -13      MQ   3351  N6EAMQ    LGA  DTW       77      502    6</span></a>
+<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1        -2      AA   1223  N578AA    EWR  DFW      200     1372    9</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2        -8      B6    229  N317JB    JFK  RSW      168     1074    9</span></a>
+<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3       -15      EV   4662  N13133    EWR  RDU       72      416   10</span></a>
+<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4       -11      B6    525  N353JB    EWR  MCO      141      937   13</span></a>
+<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5       -32      DL    874  N369NB    LGA  MIA      146     1096    9</span></a>
+<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6       -18      9E   3325  N905XJ    JFK  DFW      196     1391   16</span></a>
 <a class="sourceLine" id="cb28-16" title="16"><span class="co">#&gt;   minute            time_hour</span></a>
-<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     30 2013-10-21T12:00:00Z</span></a>
-<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2     45 2013-01-29T00:00:00Z</span></a>
-<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     10 2013-11-19T21:00:00Z</span></a>
-<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4      0 2013-01-29T23:00:00Z</span></a>
-<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     45 2013-01-03T14:00:00Z</span></a>
-<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6     20 2013-10-09T10:00:00Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     29 2013-11-03T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2      5 2013-12-01T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     50 2013-01-10T15:00:00Z</span></a>
+<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4     30 2013-01-15T18:00:00Z</span></a>
+<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     15 2013-11-17T14:00:00Z</span></a>
+<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6      5 2013-01-26T21:00:00Z</span></a></code></pre></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">
@@ -704,7 +672,6 @@
 <li>
 <a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#installation">Installation</a></li>
-      <li><a href="#common-questions">Common questions</a></li>
       <li><a href="#basic-data-operations-with-disk-frame">Basic Data Operations with <code>disk.frame</code></a></li>
       <li><a href="#sharding-and-distribution-of-chunks">Sharding and distribution of chunks</a></li>
       <li><a href="#grouping">Grouping</a></li>

@@ -4,7 +4,7 @@
 \alias{add_meta}
 \title{Add metadata to the disk.frame}
 \usage{
-add_meta(df, ..., nchunks = nchunks(df), shardkey = "",
+add_meta(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "",
   shardchunks = -1)
 }
 \arguments{

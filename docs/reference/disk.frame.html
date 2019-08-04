@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a disk.frame — disk.frame • disk.frame</title>
+<title>Create a disk.frame from a folder — disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Create a disk.frame — disk.frame" />
+<meta property="og:title" content="Create a disk.frame from a folder — disk.frame" />
 
-<meta property="og:description" content="Create a disk.frame" />
+<meta property="og:description" content="Create a disk.frame from a folder" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,7 +86,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro-disk-frame.html">Introduction to `disk.frame` - larger-than-RAM data manipulation framework</a>
+      <a href="../articles/common-questions.html">Common Questions</a>
+    </li>
+    <li>
+      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
 </li>
@@ -106,14 +109,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a disk.frame</h1>
+    <h1>Create a disk.frame from a folder</h1>
     
     <div class="hidden name"><code>disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create a disk.frame</p>
+    <p>Create a disk.frame from a folder</p>
     
     </div>
 
@@ -135,7 +138,10 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(),<span class='st'>"cars"</span>)
-<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in force(x): promise already under evaluation: recursive default argument reference or earlier problems?</span></div><div class='input'><span class='no'>df</span> <span class='kw'>=</span> <span class='fu'>disk.frame</span>(<span class='no'>path</span>)
+<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpWs3Wj6/cars"
+#&gt; nchunks: 2
+#&gt; nrow: 50
+#&gt; ncol: 2</div><div class='input'><span class='no'>df</span> <span class='kw'>=</span> <span class='fu'>disk.frame</span>(<span class='no'>path</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:     4   10

@@ -7,8 +7,8 @@ setup({
 test_that("testing add chunk without naming chunk_id", {
   a = data.frame(a = 1:100, b = 1:100)
   
-  as.disk.frame(a, "tmp_a.df", overwrite = T)
-  as.disk.frame(a, "tmp_a1.df", overwrite = T)
+  as.disk.frame(a, "tmp_a.df", overwrite = TRUE)
+  as.disk.frame(a, "tmp_a1.df", overwrite = TRUE)
   
   a = disk.frame("tmp_a.df")
   

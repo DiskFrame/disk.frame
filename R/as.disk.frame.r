@@ -9,7 +9,7 @@
 #' @importFrom data.table setDT
 #' @export
 as.disk.frame <- function(df, outdir, nchunks = recommend_nchunks(df), overwrite = FALSE, compress = 50, ...) {
-  #browser()
+  stopifnot("data.frame" %in% class(df))
   overwrite_check(outdir, overwrite)
   
   setDT(df)
