@@ -8,7 +8,7 @@ Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
 Description: A disk-based data manipulation tool for working with arbitrarily
     large datasets as long as they fit on disk.
-License: file LICENSE
+License: MIT
 Imports:
     Rcpp (>= 0.12.13),
     glue (>= 1.3.1),

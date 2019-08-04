@@ -39,3 +39,5 @@ tmp82
 tmpdata/
 flights_all_notsharded\.df/\.metadata/meta\.json
 *.json
+doc
+Meta

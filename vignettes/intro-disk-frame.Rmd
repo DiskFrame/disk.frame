@@ -190,14 +190,6 @@ arrange(flights.df, dplyr::desc(dep_delay)) %>% collect
 summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 ```
 
-The `do` function is also supported for performing arbitrary computation on each chunk
-```{r, dependson='asdiskframe'}
-# get the first two rows of each chunk
-do(flights.df, head(., 2)) %>% 
-  select(year:day, arr_delay, dep_delay) %>% 
-  collect
-```
-
 ### Piping
 
 One can chain `dplyr` verbs together like with a `data.frame`
@@ -295,8 +287,7 @@ By forcing the user to choose `group_by` (within each chunk) and `hard_group_by`
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
-  hard_group_by("carrier") %>% # notice that hard_group_by needs to be set
-  group_by(carrier) %>% 
+  hard_group_by(carrier) %>% # notice that hard_group_by needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect %>% 
   arrange(carrier)
@@ -307,10 +298,10 @@ For most group-by tasks, the user can achieve the desired result WITHOUT using `
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
-  group_by(carrier) %>% # that hard = F to aggregate within each chunk
+  group_by(carrier) %>% # `group_by` aggregates within each chunk
   summarize(count = n()) %>%  # mean follows normal R rules
   collect %>%  # collect each individul chunks results and row-bind into a data.table
-  group_by(carrier) %>%
+  group_by(carrier) %>% 
   summarize(count = sum(count)) %>% 
   arrange(carrier)
 ```
@@ -329,8 +320,7 @@ One can restrict which input columns to load into memory for each chunk; this ca
 ```{r, dependson='asdiskframe'}
 flights.df %>%
   srckeep(c("carrier","dep_delay")) %>%
-  hard_group_by("carrier") %>% 
-  group_by(carrier) %>% # notice that hard = T needs to be set
+  hard_group_by(carrier) %>% 
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect
 ```
@@ -396,6 +386,7 @@ ranked <- flights.df %>%
   srckeep(c("year","month","day", "dep_delay")) %>%
   group_by(year, month, day) %>%
   select(dep_delay) %>%
+  # TODO add desc as a test case
   mutate(rank = rank(desc(dep_delay))) %>%
   collect
 

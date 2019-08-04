@@ -345,18 +345,7 @@ sponsor](https://opencollective.com/diskframe#sponsor)\]
 [![Sponsors on Open
 Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 
-<a href="https://opencollective.com/diskframe/sponsor/0/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/1/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/2/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/3/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/4/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/5/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/6/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/7/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/8/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/diskframe/sponsor/9/website" target="_blank"><img src="https://opencollective.com/diskframe/sponsor/9/avatar.svg"></a>
-
-## Contact me for consulting
+\<\# Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python,
 or Julia?** [![Contact me on
