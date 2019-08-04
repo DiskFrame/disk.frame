@@ -116,8 +116,9 @@ You should now see a folder called `tmp_flights` with some files in it, namely `
 
 ### Creating a `disk.frame` from CSV
 ```{r}
+library(nycflights13)
 # write a csv
-data.table::fwrite(nycflights13::flights, "tmp_flights.csv")
+data.table::fwrite(flights, "tmp_flights.csv")
 
 # load the csv into a disk.frame
 flights.df <- csv_to_disk.frame(
@@ -161,7 +162,7 @@ The class of `flights.df1` is also a `disk.frame` after the   `dplyr::select` tr
 
 For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect` can be used to bring the results from disk into R, e.g.
 ```{r, dependson='dfselect'}
-collect(flights.df1)
+collect(flights.df1) %>% head
 ```
 
 Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whole `disk.frame` (because why would you need `disk.frame` otherwise). More likely, one would call `collect` on a `filter`ed dataset or one summarised with `group_by`.
@@ -169,11 +170,11 @@ Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whol
 Some examples of other dplyr verbs applied:
 
 ```{r, dependson='asdiskframe'}
-filter(flights.df, dep_delay > 1000) %>% collect
+filter(flights.df, dep_delay > 1000) %>% collect %>% head
 ```
 
 ```{r, dependson='asdiskframe'}
-mutate(flights.df, speed = distance / air_time * 60) %>% collect
+mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head
 ```
 
 ### Examples of NOT fully supported `dplyr` verbs
@@ -182,7 +183,7 @@ The `arrange` function arranges (sort) each chunk but not the whole dataset. So 
 
 ```{r, dependson='asdiskframe'}
 # this only sorts within each chunk
-arrange(flights.df, dplyr::desc(dep_delay)) %>% collect
+arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head
 ```
 
 
@@ -202,7 +203,7 @@ c4 <- flights %>%
   collect %>%
   arrange(carrier)# arrange should occur after `collect`
 
-c4
+c4  %>% head
 ```
 
 ### List of supported `dplyr` verbs
@@ -227,8 +228,6 @@ anit_join
 Like other distributed data manipulation frameworks `disk.frame` utilizes the *sharding* concept to distribute the data into chunks. For example "to shard by `cust_id`" means that all rows with the same `cust_id` will be stored in the same chunk. This enables `group_by` by `cust_id` to produce the same results as non-chunked data.
 
 The `by` variables that were used to shard the dataset are called the `shardkey`s. The *sharding* is performed by computing a deterministic hash on the shard keys (the `by` variables) for each row. The hash function produces an integer between `1` and `n`, where `n` is the number of chunks. 
-
-
 
 ## Grouping
 
@@ -422,7 +421,7 @@ Notice `disk.frame` supports the `purrr` syntax for defining a function using `~
 In the `disk.frame` framework, sampling a proportion of rows within each chunk can be performed using `sample_frac`. 
 
 ```{r, dependson='asdiskframe'}
-flights.df %>% sample_frac(0.01) %>% collect
+flights.df %>% sample_frac(0.01) %>% collect %>% head
 ```
 
 ## Writing Data
