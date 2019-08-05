@@ -80,7 +80,8 @@ example, see [`chunkded`](https://github.com/edwindj/chunked)
 Furthermore, there is a row-limit of 2^31 for `data.frame`s in R; hence
 an alternate approach is needed to apply R to these large datasets. The
 chunking mechanism in `disk.frame` provides such an avenue to enable
-data manipulation beyond the 2^31 row limit.
+data manipulation beyond the 2^31 row
+limit.
 
 ### c) How is `disk.frame` different to previous “big” data solutions for R?
 
