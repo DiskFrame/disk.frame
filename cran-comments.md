@@ -1,5 +1,9 @@
+## Resubmission 3
+Fixed the note
+- non-canonical URL to CRAN package which I had missed in resubmission 2
+
 ## Resubmission
-Fixed the notes 
+previously fixed notes 
 * Non-FOSS package license (file LICENSE): now using MIT + file LICENSE in correct format
 * Package has a VignetteBuilder field but no prebuilt vignette index: also added Vignette
 * Also removed invalid URLs from README
