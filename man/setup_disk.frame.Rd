@@ -5,14 +5,21 @@
 \title{Set up disk.frame environment}
 \usage{
 setup_disk.frame(future_backend = multiprocess,
-  workers = parallel::detectCores(logical = FALSE), ...)
+  workers = parallel::detectCores(logical = FALSE),
+  future.globals.maxSize = Inf, ..., gui = FALSE)
 }
 \arguments{
 \item{future_backend}{which future backend to use for parallelization}
 
-\item{workers}{the number of workers (background R processes in the multiprocess environment)}
+\item{workers}{the number of workers (background R processes in the
+multiprocess environment)}
+
+\item{future.globals.maxSize}{The amount of memory that is allowed to be
+transferred between workers. Defaults to Inf for no limit.}
 
 \item{...}{passed to `future::plan`}
+
+\item{gui}{Whether to use a Graphical User Interface (GUI) for selecting the options. Defaults to FALSE}
 }
 \description{
 Set up disk.frame environment
