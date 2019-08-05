@@ -2,6 +2,10 @@
 Fixed the note
 - non-canonical URL to CRAN package which I had missed in resubmission 2
 
+## Resubmission 2
+Fixed note
+* CRAN URL not in canonical form
+
 ## Resubmission
 previously fixed notes 
 * Non-FOSS package license (file LICENSE): now using MIT + file LICENSE in correct format
