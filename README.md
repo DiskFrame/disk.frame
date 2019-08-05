@@ -346,7 +346,7 @@ sponsor](https://opencollective.com/diskframe#sponsor)\]
 [![Sponsors on Open
 Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 
-\<\# Contact me for consulting
+## Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python,
 or Julia?** [![Contact me on
