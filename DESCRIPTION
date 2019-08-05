@@ -33,7 +33,8 @@ Suggests:
     knitr,
     rmarkdown,
     nycflights13,
-    magrittr
+    magrittr,
+    shiny
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.1
