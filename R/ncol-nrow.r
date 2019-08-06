@@ -1,19 +1,28 @@
 #' Number of rows of disk.frame
 #' @param ... passed to base::nrow
 #' @export
+#' @rdname ncol_nrow
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # return total number of column and rows
+#' ncol(cars.df)
+#' nrow(cars.df)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 nrow <- function(df,...) {
   UseMethod("nrow")
 }
 
-#' @rdname nrow
+#' @rdname ncol_nrow
 #' @export
 nrow.default <- function(df, ...) {
   base::nrow(df, ...)
 }
 
 #' @export
-#' @param df a disk.frame
-#' @rdname nrow
+#' @rdname ncol_nrow
 #' @import fst
 nrow.disk.frame <- function(df, ...) {
   stopifnot(is_ready(df))
@@ -38,6 +47,7 @@ nrow.disk.frame <- function(df, ...) {
 #' Number of columns
 #' @import fst
 #' @export
+#' @rdname ncol_nrow
 ncol <- function(df) {
   UseMethod("ncol")
 }
@@ -45,7 +55,7 @@ ncol <- function(df) {
 #' @import fs
 #' @export
 #' @param df a disk.frame
-#' @rdname ncol
+#' @rdname ncol_nrow
 ncol.disk.frame <- function(df) {
   length(colnames(df))
 }

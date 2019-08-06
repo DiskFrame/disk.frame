@@ -1,17 +1,31 @@
 #' Set up disk.frame environment
+#' @param workers the number of workers (background R processes in the
 #' @param future_backend which future backend to use for parallelization
 #' @param future.globals.maxSize The amount of memory that is allowed to be
 #'   transferred between workers. Defaults to Inf for no limit.
-#' @param workers the number of workers (background R processes in the
 #'   multiprocess environment)
 #' @param gui Whether to use a Graphical User Interface (GUI) for selecting the options. Defaults to FALSE
 #' @param ... passed to `future::plan`
-#' @importFrom future plan multiprocess nbrOfWorkers
+#' @importFrom future plan multiprocess nbrOfWorkers sequential
 #' @export
-setup_disk.frame <- function(future_backend = multiprocess, workers = parallel::detectCores(logical = FALSE), future.globals.maxSize = Inf, ..., gui = FALSE) {
+#' @examples 
+#' \dontrun{
+#' # use a Shiny GUI to adjust settings
+#' setup_disk.frame(gui = TRUE)
+#' 
+#' # setup disk.frame to use multiple workers
+#' setup_disk.frame()
+#' 
+#' # set the number workers to 2
+#' setup_disk.frame(2)
+#' 
+#' # set the future backend to sequential
+#' setup_disk.frame(future_backend = future::sequential)
+#' }
+setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), future_backend = multiprocess, future.globals.maxSize = Inf, ..., gui = FALSE) {
   if(!gui) {
     future::plan(future_backend, workers = workers, gc = TRUE, ...)
-    cat(sprintf("The number of workers available for disk.frame is %d\n", future::nbrOfWorkers()))
+    print(sprintf("The number of workers available for disk.frame is %d", future::nbrOfWorkers()))
     options(future.globals.maxSize = future.globals.maxSize) # do not limit the amount of transfers to other workers
     options(disk.frame.nworkers = workers)
   } else if(gui) {

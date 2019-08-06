@@ -5,11 +5,22 @@
 #' @param by the merge by keys
 #' @param outdir The output directory for the disk.frame
 #' @param merge_by_chunk_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
+#' @param overwrite overwrite the outdir or not
 #' @param ... passed to merge and map.disk.frame
 #' @importFrom data.table data.table setDT
-merge.disk.frame <- function(x, y, by, outdir, ..., merge_by_chunk_id = FALSE) {  
-  fs::dir_create(outdir)
+#' @examples
+#' b = as.disk.frame(data.frame(a = 51:150, b = 1:100))
+#' d = as.disk.frame(data.frame(a = 151:250, b = 1:100))
+#' bd.df = merge(b, d, by = "b")
+#' 
+#' # clean up cars.df
+#' delete(b)
+#' delete(d)
+#' delete(bd.df)
+merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., merge_by_chunk_id = FALSE, overwrite = FALSE) {  
   stopifnot("disk.frame" %in% class(x))
+  overwrite_check(outdir, overwrite = T)
+  #fs::dir_create(outdir)
   
   if("data.frame" %in% class(y)) {
     yby = c(list(y=y, by=by), list(...))

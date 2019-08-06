@@ -13,6 +13,13 @@
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
 #' @rdname collect
+#' @examples 
+#' cars.df = as.disk.frame(cars)
+#' # use collect to bring the data into RAM as a data.table/data.frame
+#' collect(cars.df)
+#' 
+#' # clean up
+#' delete(cars.df)
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
   #cids = get_chunk_ids(x, full.names = T)
   cids = as.integer(get_chunk_ids(x))
@@ -37,8 +44,15 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # returns the result as a list
+#' collect_list(map(cars.df, ~1))
+#' 
+#' # clean up
+#' delete(cars.df)
 collect_list <- function(x, simplify = F, parallel = !is.null(attr(x,"lazyfn"))) {
-  #browser()
   if(nchunks(x) > 0) {
     res <- NULL
     if (parallel) {

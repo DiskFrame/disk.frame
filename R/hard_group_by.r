@@ -77,6 +77,18 @@ progressbar <- function(df) {
 #' @param add same as dplyr::group_by
 #' @param .drop same as dplyr::group_by
 #' @export
+#' @examples
+#' iris.df = as.disk.frame(iris, nchunks = 2)
+#' 
+#' # group_by iris.df by specifies and ensure rows with the same specifies are in the same chunk
+#' iris_hard.df = hard_group_by(iris.df, Species)
+#' 
+#' get_chunk(iris_hard.df, 1)
+#' get_chunk(iris_hard.df, 2)
+#' 
+#' # clean up cars.df
+#' delete(iris.df)
+#' delete(iris_hard.df)
 hard_group_by <- function(df, ..., add = FALSE, .drop = FALSE) {
   UseMethod("hard_group_by")
 }
@@ -125,7 +137,9 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     
     #browser()
     res1 <- NULL
-    if(length(by) == 1) {
+    if(typeof(by) == "character") {
+      eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))
+    } else if(length(by) == 1) {
       res1 = res %>% dplyr::group_by({{by}}) 
     } else {
       eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))

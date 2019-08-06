@@ -10,25 +10,19 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-require(disk.frame)
+library(disk.frame)
 library(fst)
 library(magrittr)
 library(nycflights13)
 library(dplyr)
 
-
 # you need to run this for multi-worker support
-#setup_disk.frame()
-
-# if (!interactive()) {
-#setup_disk.frame(1)
-# }
-# fs::dir_delete("tmp_flights")
-# fs::file_delete("tmp_flights.csv")
-# fs::dir_delete("tmp_flights.df")
-# fs::dir_delete("tmp2")
-# fs::dir_delete("out")
-
+# limit to 2 cores if not running interactively; most likely on CRAN
+if(interactive()) {
+  setup_disk.frame()
+} else {
+  setup_disk.frame(2)
+}
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -77,7 +71,7 @@ library(disk.frame)
 # "tmp_flights" and overwrite any content if needed
 flights.df <- as.disk.frame(
   flights, 
-  outdir = "tmp_flights", 
+  outdir = file.path(tempdir(), "tmp_flights.df"),
   overwrite = TRUE)
 flights.df
 ```
@@ -88,12 +82,14 @@ You should now see a folder called `tmp_flights` with some files in it, namely `
 ```{r}
 library(nycflights13)
 # write a csv
-data.table::fwrite(flights, "tmp_flights.csv")
+csv_path = file.path(tempdir(), "tmp_flights.csv")
+data.table::fwrite(flights, csv_path)
 
 # load the csv into a disk.frame
+df_path = file.path(tempdir(), "tmp_flights.df")
 flights.df <- csv_to_disk.frame(
-  "tmp_flights.csv", 
-  outdir = "tmp_flights.df",
+  csv_path, 
+  outdir = df_path,
   overwrite = T)
   
 flights.df
@@ -106,11 +102,15 @@ library(nycflights13)
 library(disk.frame)
 
 # write a csv
-data.table::fwrite(flights, "tmp_flights.csv")
+csv_path = file.path(tempdir(), "tmp_flights.csv")
+
+data.table::fwrite(flights, csv_path)
+
+df_path = file.path(tempdir(), "tmp_flights.df")
 
 flights.df <- csv_to_disk.frame(
-  "tmp_flights.csv", 
-  outdir = "tmp_flights_too_large.df",
+  csv_path, 
+  outdir = df_path, 
   in_chunk_size = 100000)
   
 flights.df
@@ -135,7 +135,7 @@ For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect
 collect(flights.df1) %>% head
 ```
 
-Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whole `disk.frame` (because why would you need `disk.frame` otherwise). More likely, one would call `collect` on a `filter`ed dataset or one summarised with `group_by`.
+Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whole `disk.frame` (because why would you need `disk.frame` otherwise). More likely, one would call `collect` on a `filter`ed dataset or one summarized with `group_by`.
 
 Some examples of other dplyr verbs applied:
 
@@ -158,7 +158,7 @@ arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head
 
 
 ```{r, dependson='asdiskframe'}
-summarise(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
+summarize(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 ```
 
 ### Piping
@@ -277,9 +277,7 @@ flights.df %>%
 
 Because this two-stage approach avoids the expensive `hard group_by` operation, it is often significantly faster. However, it can be tedious to write; and this is a con of the `disk.frame` chunking mechanism.
 
-*Note1*: the same code without the `hard = F` would also work if `flight.df` is a data.frame
-
-*Note2*: this two-stage approach is similar to a map-reduce operation.
+*Note*: this two-stage approach is similar to a map-reduce operation.
 
 
 ## Restrict input columns for faster processing
@@ -355,7 +353,6 @@ ranked <- flights.df %>%
   srckeep(c("year","month","day", "dep_delay")) %>%
   group_by(year, month, day) %>%
   select(dep_delay) %>%
-  # TODO add desc as a test case
   mutate(rank = rank(desc(dep_delay))) %>%
   collect
 
@@ -375,11 +372,11 @@ and to do the same with `map.disk.frame`
 ```{r, dependson='asdiskframe'}
 map(flights.df, ~nrow(.x), lazy = F) %>% head
 ```
-The `map.disk.frame` function can also output the results to another disk.frame folder, e.g.
+The `map` function can also output the results to another disk.frame folder, e.g.
 
 ```{r, dependson='asdiskframe'}
 # return the first 10 rows of each chunk
-flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = "tmp2", overwrite = T)
+flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = file.path(tempdir(), "tmp2"), overwrite = T)
 
 flights.df2 %>% head
 ```
@@ -402,3 +399,9 @@ One can output a `disk.frame` by using the `write_disk.frame` function. E.g.
 write_disk.frame(flights.df, outdir="out")
 ```
 this will output a disk.frame to the folder "out"
+
+```{r cleanup}
+fs::dir_delete(file.path(tempdir(), "tmp_flights.df"))
+fs::dir_delete(file.path(tempdir(), "tmp2"))
+fs::file_delete(file.path(tempdir(), "tmp_flights.csv"))
+```

@@ -1,6 +1,14 @@
 #' Checks if a folder is a disk.frame
 #' @param df a disk.frame or directory to check 
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' is_disk.frame(cars) # FALSE
+#' is_disk.frame(cars.df) # TRUE
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 is_disk.frame <- function(df) {
   ##browser
   if("disk.frame" %in% class(df)) {

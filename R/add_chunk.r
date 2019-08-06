@@ -5,6 +5,34 @@
 #' @param full.names whether the chunk_id name match should be to the full file path not just the file name
 #' @importFrom data.table data.table
 #' @export
+#' @return disk.frame
+#' @examples 
+#' # create a disk.frame
+#' df_path = file.path(tempdir(), "tmp_add_chunk")
+#' diskf = disk.frame(df_path)
+#' 
+#' # add a chunk to diskf
+#' add_chunk(diskf, cars)
+#' add_chunk(diskf, cars)
+#' 
+#' nchunks(diskf) # 2
+#' 
+#' df2 = disk.frame(file.path(tempdir(), "tmp_add_chunk2"))
+#' 
+#' # add chunks by specifying the chunk_id number; this is especially useful if
+#' # you wish to add multiple chunk in parralel
+#' 
+#' add_chunk(df2, data.frame(chunk=1), 1)
+#' add_chunk(df2, data.frame(chunk=2), 3)
+#' 
+#' nchunks(df2) # 2
+#' 
+#' dir(attr(df2, "path"))
+#' # [1] "1.fst" "3.fst"
+#' 
+#' # clean up
+#' delete(diskf)
+#' delete(df2)
 add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
   # sometimes chunk_id is defined in terms of itself
   force(chunk_id)

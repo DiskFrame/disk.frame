@@ -21,3 +21,12 @@ add_meta(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "",
 \description{
 Add metadata to the disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+# adding some useless metadata to the repo
+add_meta(cars.df, useless = TRUE)
+
+# clean up
+delete(cars.df)
+}

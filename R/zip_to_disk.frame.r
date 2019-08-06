@@ -10,6 +10,13 @@
 #' @importFrom utils unzip
 #' @export
 #' @return a list of disk.frame
+#' @examples 
+#' \dontrun{
+#' path_to_zip_file_containing_csv = "some/path/file.zip"
+#' 
+#' # read every file and convert it to a disk.frame
+#' zip_to_disk.frame(path_to_zip_file_containing_csv, tempfile(fileext = ".df"))
+#' }
 # TODO do NSE better here. add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwrite = T) {
   files = unzip(zipfile, list=T)

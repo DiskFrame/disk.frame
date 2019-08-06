@@ -6,9 +6,23 @@
 #' @rdname join
 #' @importFrom rlang quo enquos
 #' @importFrom dplyr anti_join left_join full_join semi_join inner_join
-#' @return disk.frame
+#' @return disk.frame or data.frame/data.table
 #' @export
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = T) {
+#' @examples
+#' df.df = as.disk.frame(data.frame(x = 1:3, y = 4:6), overwrite = TRUE)
+#' df2.df = as.disk.frame(data.frame(x = 1:2, z = 10:11), overwrite = TRUE)
+#' 
+#' anti_joined.df = anti_join(df.df, df2.df) 
+#' 
+#' anti_joined.df %>% collect
+#' 
+#' anti_joined.data.frame = anti_join(df.df, data.frame(x = 1:2, z = 10:11))
+#' 
+#' # clean up
+#' delete(df.df)
+#' delete(df2.df)
+#' delete(anti_joined.df)
+anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
   #browser()
   stopifnot("disk.frame" %in% class(x))
   
@@ -33,9 +47,9 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
-      return(anti_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
+      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      return(anti_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       #res = map2.disk.frame(x, y, ~{
       res = map2(x, y, ~{

@@ -5,6 +5,21 @@
 #' @param outdir the output directory
 #' @param overwrite overwrite the output directory
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars, nchunks = 2)
+#' 
+#' # re-chunking cars.df to 3 chunks, done "in-place"
+#' \dontrun{
+#' rechunk(cars.df, 3)
+#' }
+#' 
+#' new_path = tempfile(fileext = ".df")
+#' # re-chunking cars.df to 4 chunks, shardby speed, done "out-of-place"
+#' cars2.df = rechunk(cars.df, 4, new_path, shardby = "speed")
+#'
+#' # clean up cars.df
+#' delete(cars.df)
+#' delete(cars2.df)
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE) {
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty

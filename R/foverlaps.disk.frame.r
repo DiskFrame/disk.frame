@@ -14,6 +14,22 @@
 #' @importFrom future.apply future_lapply
 #' @importFrom pryr do_call
 #' @export
+#' @examples
+#' ## simple example:
+#' x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
+#' y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))
+#' xy.df = foverlaps.disk.frame(
+#'   x, 
+#'   y, 
+#'   by.x = c("val1", "start", "end"), 
+#'   by.y = c("val1", "start", "end"), 
+#'   merge_by_chunk_id = TRUE, 
+#'   overwrite = TRUE)
+#' 
+#' # clean up
+#' delete(x)
+#' delete(y)
+#' delete(xy.df)
 foverlaps.disk.frame <-
   function(
     df1, 
@@ -22,7 +38,7 @@ foverlaps.disk.frame <-
     by.y = shardkey(df2)$shardkey,
     ..., 
     outdir = {warning("temp dir create"); tempfile("df_foverlaps_tmp", fileext = ".df")}, 
-    merge_by_chunk_id = F, compress=50, overwrite = T) {
+    merge_by_chunk_id = FALSE, compress=50, overwrite = TRUE) {
   
   stopifnot("disk.frame" %in% class(df1))
   
@@ -52,7 +68,8 @@ foverlaps.disk.frame <-
     
     dotdotdot = list(...)
     
-    future.apply::future_lapply(1:nrow(df3), function(row) {
+    furrr::future_map(1:nrow(df3), function(row) {
+    #future.apply::future_lapply(1:nrow(df3), function(row) {
     #lapply(1:nrow(df3), function(row) {
       #browser()
       chunk_id = df3[row, chunk_id]

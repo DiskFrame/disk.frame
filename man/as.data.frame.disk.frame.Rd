@@ -18,3 +18,10 @@
 \description{
 Convert disk.frame to data.frame by collecting all chunks
 }
+\examples{
+cars.df = as.disk.frame(cars)
+as.data.frame(cars.df)
+
+# clean up
+delete(cars.df)
+}

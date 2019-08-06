@@ -16,3 +16,22 @@ remove_chunk(df, chunk_id, full.names = FALSE)
 \description{
 removes a chunk from the disk.frame
 }
+\examples{
+# TODO add these to tests
+cars.df = as.disk.frame(cars, nchunks = 4)
+
+# removes 3rd chunk
+remove_chunk(cars.df, 3)
+nchunks(cars.df) # 3
+
+# removes 4th chunk
+remove_chunk(cars.df, "4.fst")
+nchunks(cars.df) # 3
+
+# removes 2nd chunk
+remove_chunk(cars.df, file.path(attr(cars.df, "path"), "2.fst"), full.names = TRUE)
+nchunks(cars.df) # 1
+
+# clean up cars.df
+delete(cars.df)
+}

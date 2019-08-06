@@ -4,6 +4,22 @@
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
 #' @rdname dplyr_verbs
+#' @examples
+#' library(dplyr)
+#' library(magrittr)
+#' cars.df = as.disk.frame(cars)
+#' mult = 2
+#' 
+#' # use all any of the supported dplyr
+#' cars2 = cars.df %>% 
+#'   select(speed) %>% 
+#'   mutate(speed2 = speed * mult) %>% 
+#'   filter(speed < 50) %>% 
+#'   rename(speed1 = speed) %>% 
+#'   collect
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 select.disk.frame <- function(.data, ...) {
   quo_dotdotdot = rlang::enquos(...)
   map(.data, ~{

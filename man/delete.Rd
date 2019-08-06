@@ -12,3 +12,7 @@ delete(df)
 \description{
 delete a disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+delete(cars.df)
+}

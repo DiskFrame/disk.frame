@@ -26,7 +26,7 @@ library(disk.frame)
 library(nycflights13)
 
 # create a disk.frame
-flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"flights13"), overwrite = T)
+flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"flights13"), overwrite = TRUE)
 ```
 
 In the following example, I will use the `.N` from the `data.table` package to count the unique combinations `year` and `month` within each chunk.
@@ -41,11 +41,11 @@ names(flights.df)
 flights.df[,.N, .(year, month), keep = c("year", "month")]
 ```
 
-All `data.table` syntax supported. However, `disk.frame` adds the ability to load only those columns required for analysis using the `keep =` option. In the above analysis, only the `year` variable is required and hence `keep = c("year", "month")` was used. 
+All `data.table` syntax are supported. However, `disk.frame` adds the ability to load only those columns required for the analysis using the `keep =` option. In the above analysis, only the `year` and `month` variables are required and hence `keep = c("year", "month")` was used. 
 
 ### External variables are captured
 
-`disk.frame` sends the computaion to each background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out what variable you use and then send them to the background workers so they have access to the variables as well. E.g.
+`disk.frame` sends the computaion to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in the other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.
 
 ```{r var_detect, dependson='setup'}
 y = 42 
@@ -54,5 +54,9 @@ some_fn <- function(x) x
 
 flights.df[,some_fn(y)]
 ```
-In the above example, neither `some_fn` nor `y` are defined on the background workers, but `disk.frame` still managers to evaluate this code `flights.df[,some_fn(y)]`.
 
+In the above example, neither `some_fn` nor `y` are defined in the background workers' environments, but `disk.frame` still manages to evaluate this code `flights.df[,some_fn(y)]`.
+
+```{r clean_up, include=FALSE}
+fs::dir_delete(file.path(tempdir(),"flights13"))
+```

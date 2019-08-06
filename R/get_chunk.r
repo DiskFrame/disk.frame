@@ -5,6 +5,17 @@
 #' @param full.names whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
 #' @param ... passed to fst::read_fst or whichever read function is used in the backend
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars, nchunks = 2)
+#' get_chunk(cars.df, 1)
+#' get_chunk(cars.df, 2)
+#' get_chunk(cars.df, 1, keep = "speed")
+#' 
+#' # if full.names = TRUE then the full path to the chunk need to be provided
+#' get_chunk(cars.df, file.path(attr(cars.df, "path"), "1.fst"), full.names = TRUE)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 get_chunk <- function(...) {
   UseMethod("get_chunk")
 }

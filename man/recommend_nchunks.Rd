@@ -19,3 +19,10 @@ recommend_nchunks(df, type = "csv",
 \description{
 Computes the recommended number of chunks to break a data.frame into
 }
+\examples{
+# recommend nchunks based on data.frame
+recommend_nchunks(cars)
+
+# recommend nchunks based on file size ONLY CSV is implemented at the moment
+recommend_nchunks(1024^3)
+}

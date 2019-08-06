@@ -1,6 +1,14 @@
 #' Performs join/merge for disk.frames
 #' @rdname join
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' join.df = left_join(cars.df, cars.df)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+#' delete(join.df)
 left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
   stopifnot("disk.frame" %in% class(x))
   

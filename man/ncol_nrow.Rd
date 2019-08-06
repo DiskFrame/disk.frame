@@ -4,6 +4,8 @@
 \alias{nrow}
 \alias{nrow.default}
 \alias{nrow.disk.frame}
+\alias{ncol}
+\alias{ncol.disk.frame}
 \title{Number of rows of disk.frame}
 \usage{
 nrow(df, ...)
@@ -11,6 +13,10 @@ nrow(df, ...)
 \method{nrow}{default}(df, ...)
 
 \method{nrow}{disk.frame}(df, ...)
+
+ncol(df)
+
+\method{ncol}{disk.frame}(df)
 }
 \arguments{
 \item{df}{a disk.frame}
@@ -19,4 +25,16 @@ nrow(df, ...)
 }
 \description{
 Number of rows of disk.frame
+
+Number of columns
+}
+\examples{
+cars.df = as.disk.frame(cars)
+
+# return total number of column and rows
+ncol(cars.df)
+nrow(cars.df)
+
+# clean up cars.df
+delete(cars.df)
 }

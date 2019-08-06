@@ -35,6 +35,14 @@ disk.frame <- function(path, backend = "fst") {
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
 #' @param ... any other metadata the user wishes to keep.
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # adding some useless metadata to the repo
+#' add_meta(cars.df, useless = TRUE)
+#' 
+#' # clean up
+#' delete(cars.df)
 add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", shardchunks = -1) {
   stopifnot("disk.frame" %in% class(df))
   
@@ -183,6 +191,13 @@ is.dir.disk.frame <- function(df, check.consistency = T) {
 #' @importFrom glue glue
 #' @importFrom fs dir_exists
 #' @rdname head_tail
+#' @examples 
+#' cars.df = as.disk.frame(cars)
+#' head(cars.df)
+#' tail(cars.df)
+#'
+#' # clean up 
+#' delete(cars.df)
 head.disk.frame <- function(x, n = 6L, ...) {
   stopifnot(is_ready(x))
   path1 <- attr(x,"path")

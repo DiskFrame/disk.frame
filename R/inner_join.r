@@ -1,5 +1,13 @@
 #' @export
 #' @rdname join
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' join.df = inner_join(cars.df, cars.df, merge_by_chunk_id = TRUE)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+#' delete(join.df)
 inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE) {
   stopifnot("disk.frame" %in% class(x))
   
@@ -33,8 +41,8 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
     ncx = nchunks(x)
     ncy = nchunks(y)
     if (merge_by_chunk_id == FALSE) {
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = T)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = T)
+      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       dotdotdot <- list(...)

@@ -11,11 +11,11 @@
 \usage{
 \method{anti_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_anti_join"),
-  merge_by_chunk_id = FALSE, overwrite = T)
+  merge_by_chunk_id = FALSE, overwrite = TRUE)
 
 \method{full_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
-  outdir = tempfile("tmp_disk_frame_full_join"), merge_by_chunk_id = F,
-  overwrite = T)
+  outdir = tempfile("tmp_disk_frame_full_join"), overwrite = TRUE,
+  merge_by_chunk_id)
 
 \method{inner_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_inner_join"),
@@ -47,10 +47,53 @@
 \item{overwrite}{overwrite output directory}
 }
 \value{
-disk.frame
+disk.frame or data.frame/data.table
 }
 \description{
 Performs join/merge for disk.frames
 
 Performs semi join
+}
+\examples{
+df.df = as.disk.frame(data.frame(x = 1:3, y = 4:6), overwrite = TRUE)
+df2.df = as.disk.frame(data.frame(x = 1:2, z = 10:11), overwrite = TRUE)
+
+anti_joined.df = anti_join(df.df, df2.df) 
+
+anti_joined.df \%>\% collect
+
+anti_joined.data.frame = anti_join(df.df, data.frame(x = 1:2, z = 10:11))
+
+# clean up
+delete(df.df)
+delete(df2.df)
+delete(anti_joined.df)
+cars.df = as.disk.frame(cars)
+
+join.df = full_join(cars.df, cars.df, merge_by_chunk_id = TRUE)
+
+# clean up cars.df
+delete(cars.df)
+delete(join.df)
+cars.df = as.disk.frame(cars)
+
+join.df = inner_join(cars.df, cars.df, merge_by_chunk_id = TRUE)
+
+# clean up cars.df
+delete(cars.df)
+delete(join.df)
+cars.df = as.disk.frame(cars)
+
+join.df = left_join(cars.df, cars.df)
+
+# clean up cars.df
+delete(cars.df)
+delete(join.df)
+cars.df = as.disk.frame(cars)
+
+join.df = semi_join(cars.df, cars.df)
+
+# clean up cars.df
+delete(cars.df)
+delete(join.df)
 }
