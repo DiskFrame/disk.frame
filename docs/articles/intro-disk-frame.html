@@ -79,7 +79,7 @@
       <h1>Basic Data Operations - nycflights13</h1>
                         <h4 class="author">ZJ</h4>
             
-            <h4 class="date">2019-08-05</h4>
+            <h4 class="date">2019-08-06</h4>
       
       
       <div class="hidden name"><code>intro-disk-frame.Rmd</code></div>
@@ -91,13 +91,13 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>The <code>disk.frame</code> package aims to be the answer to the question: how do I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
+<p>The <a href="https://github.com/xiaodaigh/disk.frame"><code>disk.frame</code> package</a> aims to be the answer to the question: how do I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
 <p>In a nutshell, <code>disk.frame</code> makes use of two simple ideas</p>
 <ol style="list-style-type: decimal">
 <li>split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and</li>
 <li>provide a convenient API to manipulate these chunks</li>
 </ol>
-<p><code>disk.frame</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em> that require distributing processing over many computers to be effective.</p>
+<p><code>disk.frame</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em>.</p>
 <p>In this tutorial, we introduce <code>disk.frame</code>, address some common questions, and replicate the <a href="https://spark.rstudio.com/dplyr/">sparklyr data manipulation tutorial</a> using <code>disk.frame</code> constructs.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -125,10 +125,10 @@
 <a class="sourceLine" id="cb3-6" title="6"><span class="co"># "tmp_flights" and overwrite any content if needed</span></a>
 <a class="sourceLine" id="cb3-7" title="7">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(</a>
 <a class="sourceLine" id="cb3-8" title="8">  flights, </a>
-<a class="sourceLine" id="cb3-9" title="9">  <span class="dt">outdir =</span> <span class="st">"tmp_flights"</span>, </a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="dt">outdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>),</a>
 <a class="sourceLine" id="cb3-10" title="10">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-11" title="11">flights.df</a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; path: "tmp_flights"</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpMxRMr3/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; nchunks: 6</span></a>
 <a class="sourceLine" id="cb3-14" title="14"><span class="co">#&gt; nrow: 336776</span></a>
 <a class="sourceLine" id="cb3-15" title="15"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
@@ -139,37 +139,43 @@
 <a href="#creating-a-disk-frame-from-csv" class="anchor"></a>Creating a <code>disk.frame</code> from CSV</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nycflights13)</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="co"># write a csv</span></a>
-<a class="sourceLine" id="cb4-3" title="3">data.table<span class="op">::</span><span class="kw">fwrite</span>(flights, <span class="st">"tmp_flights.csv"</span>)</a>
-<a class="sourceLine" id="cb4-4" title="4"></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co"># load the csv into a disk.frame</span></a>
-<a class="sourceLine" id="cb4-6" title="6">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
-<a class="sourceLine" id="cb4-7" title="7">  <span class="st">"tmp_flights.csv"</span>, </a>
-<a class="sourceLine" id="cb4-8" title="8">  <span class="dt">outdir =</span> <span class="st">"tmp_flights.df"</span>,</a>
-<a class="sourceLine" id="cb4-9" title="9">  <span class="dt">overwrite =</span> T)</a>
-<a class="sourceLine" id="cb4-10" title="10">  </a>
-<a class="sourceLine" id="cb4-11" title="11">flights.df</a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; path: "tmp_flights.df"</span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; nchunks: 6</span></a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-3" title="3">csv_path =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.csv"</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4">data.table<span class="op">::</span><span class="kw">fwrite</span>(flights, csv_path)</a>
+<a class="sourceLine" id="cb4-5" title="5"></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co"># load the csv into a disk.frame</span></a>
+<a class="sourceLine" id="cb4-7" title="7">df_path =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>)</a>
+<a class="sourceLine" id="cb4-8" title="8">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
+<a class="sourceLine" id="cb4-9" title="9">  csv_path, </a>
+<a class="sourceLine" id="cb4-10" title="10">  <span class="dt">outdir =</span> df_path,</a>
+<a class="sourceLine" id="cb4-11" title="11">  <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb4-12" title="12">  </a>
+<a class="sourceLine" id="cb4-13" title="13">flights.df</a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpMxRMr3/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; nchunks: 6</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; nrow: 336776</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
 <p>If the CSV is too large to read in, then we can also use the <code>in_chunk_size</code> option to control how many rows to read in at once. For example to read in the data 100,000 rows at a time.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nycflights13)</a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb5-3" title="3"></a>
 <a class="sourceLine" id="cb5-4" title="4"><span class="co"># write a csv</span></a>
-<a class="sourceLine" id="cb5-5" title="5">data.table<span class="op">::</span><span class="kw">fwrite</span>(flights, <span class="st">"tmp_flights.csv"</span>)</a>
+<a class="sourceLine" id="cb5-5" title="5">csv_path =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.csv"</span>)</a>
 <a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
-<a class="sourceLine" id="cb5-8" title="8">  <span class="st">"tmp_flights.csv"</span>, </a>
-<a class="sourceLine" id="cb5-9" title="9">  <span class="dt">outdir =</span> <span class="st">"tmp_flights_too_large.df"</span>,</a>
-<a class="sourceLine" id="cb5-10" title="10">  <span class="dt">in_chunk_size =</span> <span class="dv">100000</span>)</a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; read 336776 rows from tmp_flights.csv</span></a>
-<a class="sourceLine" id="cb5-12" title="12">  </a>
-<a class="sourceLine" id="cb5-13" title="13">flights.df</a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; path: "tmp_flights_too_large.df"</span></a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; nchunks: 4</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-7" title="7">data.table<span class="op">::</span><span class="kw">fwrite</span>(flights, csv_path)</a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9">df_path =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>)</a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
+<a class="sourceLine" id="cb5-12" title="12">  csv_path, </a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="dt">outdir =</span> df_path, </a>
+<a class="sourceLine" id="cb5-14" title="14">  <span class="dt">in_chunk_size =</span> <span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; read 336776 rows from C:\Users\RTX2080\AppData\Local\Temp\RtmpMxRMr3/tmp_flights.csv</span></a>
+<a class="sourceLine" id="cb5-16" title="16">  </a>
+<a class="sourceLine" id="cb5-17" title="17">flights.df</a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpMxRMr3/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; nchunks: 4</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; nrow: 336776</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
 <p><code>disk.frame</code> also has a function <code>zip_to_disk.frame</code> that can convert every CSV in a zip file to <code>disk.frame</code>s.</p>
 </div>
 <div id="simple-dplyr-verbs-and-lazy-evaluation" class="section level3">
@@ -177,7 +183,7 @@
 <a href="#simple-dplyr-verbs-and-lazy-evaluation" class="anchor"></a>Simple <code>dplyr</code> verbs and lazy evaluation</h3>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">flights.df1 &lt;-<span class="st"> </span><span class="kw">select</span>(flights.df, year<span class="op">:</span>day, arr_delay, dep_delay)</a>
 <a class="sourceLine" id="cb6-2" title="2">flights.df1</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; path: "tmp_flights_too_large.df"</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpMxRMr3/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; nchunks: 4</span></a>
 <a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; nrow: 336776</span></a>
 <a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
@@ -193,7 +199,7 @@
 <a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 4: 2013     1   1       -18        -1</span></a>
 <a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; 5: 2013     1   1       -25        -6</span></a>
 <a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; 6: 2013     1   1        12        -4</span></a></code></pre></div>
-<p>Of course, for larger-than-RAM datasets, one wouldn’t call <code>collect</code> on the whole <code>disk.frame</code> (because why would you need <code>disk.frame</code> otherwise). More likely, one would call <code>collect</code> on a <code>filter</code>ed dataset or one summarised with <code>group_by</code>.</p>
+<p>Of course, for larger-than-RAM datasets, one wouldn’t call <code>collect</code> on the whole <code>disk.frame</code> (because why would you need <code>disk.frame</code> otherwise). More likely, one would call <code>collect</code> on a <code>filter</code>ed dataset or one summarized with <code>group_by</code>.</p>
 <p>Some examples of other dplyr verbs applied:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(flights.df, dep_delay <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>collect <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
@@ -266,7 +272,7 @@
 <a class="sourceLine" id="cb11-23" title="23"><span class="co">#&gt; 4     35 2013-01-01T23:00:00Z</span></a>
 <a class="sourceLine" id="cb11-24" title="24"><span class="co">#&gt; 5     25 2013-12-19T22:00:00Z</span></a>
 <a class="sourceLine" id="cb11-25" title="25"><span class="co">#&gt; 6      0 2013-12-17T22:00:00Z</span></a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">summarise</span>(flights.df, <span class="dt">mean_dep_delay =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(dep_delay, <span class="dt">na.rm =</span>T)) <span class="op">%&gt;%</span><span class="st"> </span>collect</a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">summarize</span>(flights.df, <span class="dt">mean_dep_delay =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(dep_delay, <span class="dt">na.rm =</span>T)) <span class="op">%&gt;%</span><span class="st"> </span>collect</a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt;   mean_dep_delay</span></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt; 1       8.771247</span></a>
 <a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt; 2      12.742945</span></a>
@@ -418,8 +424,7 @@
 <a class="sourceLine" id="cb18-25" title="25"><span class="co">#&gt; 15 WN      12275</span></a>
 <a class="sourceLine" id="cb18-26" title="26"><span class="co">#&gt; 16 YV        601</span></a></code></pre></div>
 <p>Because this two-stage approach avoids the expensive <code>hard group_by</code> operation, it is often significantly faster. However, it can be tedious to write; and this is a con of the <code>disk.frame</code> chunking mechanism.</p>
-<p><em>Note1</em>: the same code without the <code>hard = F</code> would also work if <code>flight.df</code> is a data.frame</p>
-<p><em>Note2</em>: this two-stage approach is similar to a map-reduce operation.</p>
+<p><em>Note</em>: this two-stage approach is similar to a map-reduce operation.</p>
 </div>
 </div>
 <div id="restrict-input-columns-for-faster-processing" class="section level2">
@@ -552,31 +557,30 @@
 <a class="sourceLine" id="cb24-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb24-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(year, month, day) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb24-5" title="5"><span class="st">  </span><span class="kw">select</span>(dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-6" title="6"><span class="st">  </span><span class="co"># </span><span class="al">TODO</span><span class="co"> add desc as a test case</span></a>
-<a class="sourceLine" id="cb24-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rank">rank</a></span>(<span class="kw">desc</span>(dep_delay))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-8" title="8"><span class="st">  </span>collect</a>
+<a class="sourceLine" id="cb24-6" title="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rank">rank</a></span>(<span class="kw">desc</span>(dep_delay))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-7" title="7"><span class="st">  </span>collect</a>
+<a class="sourceLine" id="cb24-8" title="8"><span class="co">#&gt; Adding missing grouping variables: `year`, `month`, `day`</span></a>
 <a class="sourceLine" id="cb24-9" title="9"><span class="co">#&gt; Adding missing grouping variables: `year`, `month`, `day`</span></a>
 <a class="sourceLine" id="cb24-10" title="10"><span class="co">#&gt; Adding missing grouping variables: `year`, `month`, `day`</span></a>
 <a class="sourceLine" id="cb24-11" title="11"><span class="co">#&gt; Adding missing grouping variables: `year`, `month`, `day`</span></a>
-<a class="sourceLine" id="cb24-12" title="12"><span class="co">#&gt; Adding missing grouping variables: `year`, `month`, `day`</span></a>
-<a class="sourceLine" id="cb24-13" title="13"></a>
-<a class="sourceLine" id="cb24-14" title="14">ranked <span class="op">%&gt;%</span><span class="st"> </span>head</a>
-<a class="sourceLine" id="cb24-15" title="15"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
-<a class="sourceLine" id="cb24-16" title="16"><span class="co">#&gt; # Groups:   year, month, day [1]</span></a>
-<a class="sourceLine" id="cb24-17" title="17"><span class="co">#&gt;    year month   day dep_delay  rank</span></a>
-<a class="sourceLine" id="cb24-18" title="18"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb24-19" title="19"><span class="co">#&gt; 1  2013     1     1         2   313</span></a>
-<a class="sourceLine" id="cb24-20" title="20"><span class="co">#&gt; 2  2013     1     1         4   276</span></a>
-<a class="sourceLine" id="cb24-21" title="21"><span class="co">#&gt; 3  2013     1     1         2   313</span></a>
-<a class="sourceLine" id="cb24-22" title="22"><span class="co">#&gt; 4  2013     1     1        -1   440</span></a>
-<a class="sourceLine" id="cb24-23" title="23"><span class="co">#&gt; 5  2013     1     1        -6   742</span></a>
-<a class="sourceLine" id="cb24-24" title="24"><span class="co">#&gt; 6  2013     1     1        -4   633</span></a></code></pre></div>
+<a class="sourceLine" id="cb24-12" title="12"></a>
+<a class="sourceLine" id="cb24-13" title="13">ranked <span class="op">%&gt;%</span><span class="st"> </span>head</a>
+<a class="sourceLine" id="cb24-14" title="14"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
+<a class="sourceLine" id="cb24-15" title="15"><span class="co">#&gt; # Groups:   year, month, day [1]</span></a>
+<a class="sourceLine" id="cb24-16" title="16"><span class="co">#&gt;    year month   day dep_delay  rank</span></a>
+<a class="sourceLine" id="cb24-17" title="17"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb24-18" title="18"><span class="co">#&gt; 1  2013     1     1         2   313</span></a>
+<a class="sourceLine" id="cb24-19" title="19"><span class="co">#&gt; 2  2013     1     1         4   276</span></a>
+<a class="sourceLine" id="cb24-20" title="20"><span class="co">#&gt; 3  2013     1     1         2   313</span></a>
+<a class="sourceLine" id="cb24-21" title="21"><span class="co">#&gt; 4  2013     1     1        -1   440</span></a>
+<a class="sourceLine" id="cb24-22" title="22"><span class="co">#&gt; 5  2013     1     1        -6   742</span></a>
+<a class="sourceLine" id="cb24-23" title="23"><span class="co">#&gt; 6  2013     1     1        -4   633</span></a></code></pre></div>
 </div>
 <div id="arbitrary-by-chunk-processing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#arbitrary-by-chunk-processing" class="anchor"></a>Arbitrary by-chunk processing</h2>
 <p>One can apply arbitrary transformations to each chunk of the <code>disk.frame</code> by using the <code>delayed</code> function which evaluates lazily or the <code><a href="../reference/map.html">map.disk.frame(lazy = F)</a></code> function which evaluates eagerly. For example to return the number of rows in each chunk</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">flights.df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map.html">delayed</a></span>(flights.df, <span class="op">~</span><span class="kw"><a href="../reference/nrow.html">nrow</a></span>(.x))</a>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">flights.df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map.html">delayed</a></span>(flights.df, <span class="op">~</span><span class="kw"><a href="../reference/ncol_nrow.html">nrow</a></span>(.x))</a>
 <a class="sourceLine" id="cb25-2" title="2"><span class="kw"><a href="../reference/collect.html">collect_list</a></span>(flights.df1) <span class="op">%&gt;%</span><span class="st"> </span>head <span class="co"># returns number of rows for each data.frame in a list</span></a>
 <a class="sourceLine" id="cb25-3" title="3"><span class="co">#&gt; [[1]]</span></a>
 <a class="sourceLine" id="cb25-4" title="4"><span class="co">#&gt; [1] 100000</span></a>
@@ -590,7 +594,7 @@
 <a class="sourceLine" id="cb25-12" title="12"><span class="co">#&gt; [[4]]</span></a>
 <a class="sourceLine" id="cb25-13" title="13"><span class="co">#&gt; [1] 36776</span></a></code></pre></div>
 <p>and to do the same with <code>map.disk.frame</code></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw"><a href="../reference/map.html">map</a></span>(flights.df, <span class="op">~</span><span class="kw"><a href="../reference/nrow.html">nrow</a></span>(.x), <span class="dt">lazy =</span> F) <span class="op">%&gt;%</span><span class="st"> </span>head</a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw"><a href="../reference/map.html">map</a></span>(flights.df, <span class="op">~</span><span class="kw"><a href="../reference/ncol_nrow.html">nrow</a></span>(.x), <span class="dt">lazy =</span> F) <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb26-2" title="2"><span class="co">#&gt; [[1]]</span></a>
 <a class="sourceLine" id="cb26-3" title="3"><span class="co">#&gt; [1] 100000</span></a>
 <a class="sourceLine" id="cb26-4" title="4"><span class="co">#&gt; </span></a>
@@ -602,9 +606,9 @@
 <a class="sourceLine" id="cb26-10" title="10"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb26-11" title="11"><span class="co">#&gt; [[4]]</span></a>
 <a class="sourceLine" id="cb26-12" title="12"><span class="co">#&gt; [1] 36776</span></a></code></pre></div>
-<p>The <code>map.disk.frame</code> function can also output the results to another disk.frame folder, e.g.</p>
+<p>The <code>map</code> function can also output the results to another disk.frame folder, e.g.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># return the first 10 rows of each chunk</span></a>
-<a class="sourceLine" id="cb27-2" title="2">flights.df2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map.html">map</a></span>(flights.df, <span class="op">~</span>.x[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,], <span class="dt">lazy =</span> F, <span class="dt">outdir =</span> <span class="st">"tmp2"</span>, <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb27-2" title="2">flights.df2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map.html">map</a></span>(flights.df, <span class="op">~</span>.x[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,], <span class="dt">lazy =</span> F, <span class="dt">outdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp2"</span>), <span class="dt">overwrite =</span> T)</a>
 <a class="sourceLine" id="cb27-3" title="3"></a>
 <a class="sourceLine" id="cb27-4" title="4">flights.df2 <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb27-5" title="5"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></a>
@@ -636,26 +640,26 @@
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">flights.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_frac</span>(<span class="fl">0.01</span>) <span class="op">%&gt;%</span><span class="st"> </span>collect <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb28-2" title="2"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013     1   3     1225           1225         0     1351           1348</span></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013     1  25     1219           1221        -2     1423           1418</span></a>
-<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013    12  11     1845           1850        -5     2231           2220</span></a>
-<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013     1   9      652            700        -8      801            807</span></a>
-<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013    10   8     1354           1355        -1     1547           1602</span></a>
-<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013    11   4     1705           1700         5     2023           1955</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co">#&gt; 1 2013    10  20      703            710        -7      829            845</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co">#&gt; 2 2013    11  22      605            613        -8      827            834</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="co">#&gt; 3 2013    10  18     2132           2140        -8     2238           2255</span></a>
+<a class="sourceLine" id="cb28-6" title="6"><span class="co">#&gt; 4 2013     1  15     1951           2000        -9     2122           2117</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="co">#&gt; 5 2013    10   8     1537           1545        -8     1717           1721</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="co">#&gt; 6 2013     1   9     1253           1259        -6     1449           1456</span></a>
 <a class="sourceLine" id="cb28-9" title="9"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></a>
-<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1         3      B6     66  N206JB    JFK  BUF       68      301   12</span></a>
-<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2         5      EV   4640  N22909    EWR  DAY      102      533   12</span></a>
-<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3        11      AA    235  N3HTAA    JFK  SEA      370     2422   18</span></a>
-<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4        -6      US   2163  N712US    LGA  DCA       49      214    7</span></a>
-<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5       -15      US    686  N653AW    EWR  PHX      270     2133   13</span></a>
-<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6        28      AA    211  N3CDAA    JFK  IAH      217     1417   17</span></a>
+<a class="sourceLine" id="cb28-10" title="10"><span class="co">#&gt; 1       -16      AA    305  N4WTAA    LGA  ORD      117      733    7</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="co">#&gt; 2        -7      EV   4393  N11551    EWR  IND      107      645    6</span></a>
+<a class="sourceLine" id="cb28-12" title="12"><span class="co">#&gt; 3       -17      MQ   3621  N725MQ    JFK  DCA       44      213   21</span></a>
+<a class="sourceLine" id="cb28-13" title="13"><span class="co">#&gt; 4         5      US   2189  N770UW    LGA  DCA       57      214   20</span></a>
+<a class="sourceLine" id="cb28-14" title="14"><span class="co">#&gt; 5        -4      EV   5293  N718EV    LGA  ORF       51      296   15</span></a>
+<a class="sourceLine" id="cb28-15" title="15"><span class="co">#&gt; 6        -7      US   1459  N181UW    LGA  CLT       90      544   12</span></a>
 <a class="sourceLine" id="cb28-16" title="16"><span class="co">#&gt;   minute            time_hour</span></a>
-<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     25 2013-01-03T17:00:00Z</span></a>
-<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2     21 2013-01-25T17:00:00Z</span></a>
-<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     50 2013-12-11T23:00:00Z</span></a>
-<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4      0 2013-01-09T12:00:00Z</span></a>
-<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     55 2013-10-08T17:00:00Z</span></a>
-<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6      0 2013-11-04T22:00:00Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-17" title="17"><span class="co">#&gt; 1     10 2013-10-20T11:00:00Z</span></a>
+<a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; 2     13 2013-11-22T11:00:00Z</span></a>
+<a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; 3     40 2013-10-19T01:00:00Z</span></a>
+<a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; 4      0 2013-01-16T01:00:00Z</span></a>
+<a class="sourceLine" id="cb28-21" title="21"><span class="co">#&gt; 5     45 2013-10-08T19:00:00Z</span></a>
+<a class="sourceLine" id="cb28-22" title="22"><span class="co">#&gt; 6     59 2013-01-09T17:00:00Z</span></a></code></pre></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">
@@ -663,6 +667,9 @@
 <p>One can output a <code>disk.frame</code> by using the <code>write_disk.frame</code> function. E.g.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw"><a href="../reference/write_disk.frame.html">write_disk.frame</a></span>(flights.df, <span class="dt">outdir=</span><span class="st">"out"</span>)</a></code></pre></div>
 <p>this will output a disk.frame to the folder “out”</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>))</a>
+<a class="sourceLine" id="cb30-2" title="2">fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp2"</span>))</a>
+<a class="sourceLine" id="cb30-3" title="3">fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">file_delete</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.csv"</span>))</a></code></pre></div>
 </div>
 </div>
   </div>

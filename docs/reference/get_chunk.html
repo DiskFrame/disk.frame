@@ -155,12 +155,125 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>get_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt;     speed dist
+#&gt;  1:     4    2
+#&gt;  2:     4   10
+#&gt;  3:     7    4
+#&gt;  4:     7   22
+#&gt;  5:     8   16
+#&gt;  6:     9   10
+#&gt;  7:    10   18
+#&gt;  8:    10   26
+#&gt;  9:    10   34
+#&gt; 10:    11   17
+#&gt; 11:    11   28
+#&gt; 12:    12   14
+#&gt; 13:    12   20
+#&gt; 14:    12   24
+#&gt; 15:    12   28
+#&gt; 16:    13   26
+#&gt; 17:    13   34
+#&gt; 18:    13   34
+#&gt; 19:    13   46
+#&gt; 20:    14   26
+#&gt; 21:    14   36
+#&gt; 22:    14   60
+#&gt; 23:    14   80
+#&gt; 24:    15   20
+#&gt; 25:    15   26
+#&gt;     speed dist</div><div class='input'><span class='fu'>get_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt;     speed dist
+#&gt;  1:    15   54
+#&gt;  2:    16   32
+#&gt;  3:    16   40
+#&gt;  4:    17   32
+#&gt;  5:    17   40
+#&gt;  6:    17   50
+#&gt;  7:    18   42
+#&gt;  8:    18   56
+#&gt;  9:    18   76
+#&gt; 10:    18   84
+#&gt; 11:    19   36
+#&gt; 12:    19   46
+#&gt; 13:    19   68
+#&gt; 14:    20   32
+#&gt; 15:    20   48
+#&gt; 16:    20   52
+#&gt; 17:    20   56
+#&gt; 18:    20   64
+#&gt; 19:    22   66
+#&gt; 20:    23   54
+#&gt; 21:    24   70
+#&gt; 22:    24   92
+#&gt; 23:    24   93
+#&gt; 24:    24  120
+#&gt; 25:    25   85
+#&gt;     speed dist</div><div class='input'><span class='fu'>get_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='st'>"speed"</span>)</div><div class='output co'>#&gt;     speed
+#&gt;  1:     4
+#&gt;  2:     4
+#&gt;  3:     7
+#&gt;  4:     7
+#&gt;  5:     8
+#&gt;  6:     9
+#&gt;  7:    10
+#&gt;  8:    10
+#&gt;  9:    10
+#&gt; 10:    11
+#&gt; 11:    11
+#&gt; 12:    12
+#&gt; 13:    12
+#&gt; 14:    12
+#&gt; 15:    12
+#&gt; 16:    13
+#&gt; 17:    13
+#&gt; 18:    13
+#&gt; 19:    13
+#&gt; 20:    14
+#&gt; 21:    14
+#&gt; 22:    14
+#&gt; 23:    14
+#&gt; 24:    15
+#&gt; 25:    15
+#&gt;     speed</div><div class='input'>
+<span class='co'># if full.names = TRUE then the full path to the chunk need to be provided</span>
+<span class='fu'>get_chunk</span>(<span class='no'>cars.df</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>cars.df</span>, <span class='st'>"path"</span>), <span class='st'>"1.fst"</span>), <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;     speed dist
+#&gt;  1:     4    2
+#&gt;  2:     4   10
+#&gt;  3:     7    4
+#&gt;  4:     7   22
+#&gt;  5:     8   16
+#&gt;  6:     9   10
+#&gt;  7:    10   18
+#&gt;  8:    10   26
+#&gt;  9:    10   34
+#&gt; 10:    11   17
+#&gt; 11:    11   28
+#&gt; 12:    12   14
+#&gt; 13:    12   20
+#&gt; 14:    12   24
+#&gt; 15:    12   28
+#&gt; 16:    13   26
+#&gt; 17:    13   34
+#&gt; 18:    13   34
+#&gt; 19:    13   46
+#&gt; 20:    14   26
+#&gt; 21:    14   36
+#&gt; 22:    14   60
+#&gt; 23:    14   80
+#&gt; 24:    15   20
+#&gt; 25:    15   26
+#&gt;     speed dist</div><div class='input'>
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

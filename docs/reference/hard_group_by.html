@@ -172,12 +172,38 @@ in the same chunk</p>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>iris</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+
+<span class='co'># group_by iris.df by specifies and ensure rows with the same specifies are in the same chunk</span>
+<span class='no'>iris_hard.df</span> <span class='kw'>=</span> <span class='fu'>hard_group_by</span>(<span class='no'>iris.df</span>, <span class='no'>Species</span>)
+
+<span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 150 x 5</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   Species [3]</span><span>
+#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
+#&gt; </span><span style='color: #555555;'> 1</span><span>          5.1         3.5          1.4         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 2</span><span>          4.9         3            1.4         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 3</span><span>          4.7         3.2          1.3         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 4</span><span>          4.6         3.1          1.5         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 5</span><span>          5           3.6          1.4         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 6</span><span>          5.4         3.9          1.7         0.4 setosa 
+#&gt; </span><span style='color: #555555;'> 7</span><span>          4.6         3.4          1.4         0.3 setosa 
+#&gt; </span><span style='color: #555555;'> 8</span><span>          5           3.4          1.5         0.2 setosa 
+#&gt; </span><span style='color: #555555;'> 9</span><span>          4.4         2.9          1.4         0.2 setosa 
+#&gt; </span><span style='color: #555555;'>10</span><span>          4.9         3.1          1.5         0.1 setosa 
+#&gt; </span><span style='color: #555555;'># ... with 140 more rows</span><span></div><div class='input'><span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The chunk C:\Users\RTX2080\AppData\Local\Temp\RtmpsR7LzT\tmp_disk_frame_hard_group_by283042c7285f/2.fst does not exist; returning an empty data.table</span></div><div class='output co'>#&gt; Null data.table (0 rows and 0 cols)</div><div class='input'>
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris_hard.df</span>)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

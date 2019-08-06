@@ -201,10 +201,10 @@
 <a class="sourceLine" id="cb3-44" title="44"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail</a></span>(df)</a>
 <a class="sourceLine" id="cb3-45" title="45"></a>
 <a class="sourceLine" id="cb3-46" title="46"><span class="co"># number of rows</span></a>
-<a class="sourceLine" id="cb3-47" title="47"><span class="kw"><a href="reference/nrow.html">nrow</a></span>(df)</a>
+<a class="sourceLine" id="cb3-47" title="47"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df)</a>
 <a class="sourceLine" id="cb3-48" title="48"></a>
 <a class="sourceLine" id="cb3-49" title="49"><span class="co"># number of columns</span></a>
-<a class="sourceLine" id="cb3-50" title="50"><span class="kw"><a href="reference/ncol.html">ncol</a></span>(df)</a></code></pre></div>
+<a class="sourceLine" id="cb3-50" title="50"><span class="kw"><a href="reference/ncol_nrow.html">ncol</a></span>(df)</a></code></pre></div>
 <div id="example-dplyr-verbs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-dplyr-verbs" class="anchor"></a>Example: dplyr verbs</h2>
@@ -225,7 +225,7 @@
 <a class="sourceLine" id="cb4-15" title="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(df_filtered &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-16" title="16"><span class="st">              </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(a <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>))</a>
 <a class="sourceLine" id="cb4-17" title="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="kw"><a href="reference/nrow.html">nrow</a></span>(df_filtered)</a></code></pre></div>
+<a class="sourceLine" id="cb4-18" title="18"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</a></code></pre></div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
 <a href="#group-by" class="anchor"></a>Group by</h3>
@@ -282,7 +282,7 @@
 <a class="sourceLine" id="cb8-8" title="8">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(df_filtered &lt;-<span class="st"> </span>df[a <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>,])</a>
 <a class="sourceLine" id="cb8-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"df[a &lt; 0.1,] took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb8-11" title="11"><span class="kw"><a href="reference/nrow.html">nrow</a></span>(df_filtered)</a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</a>
 <a class="sourceLine" id="cb8-12" title="12"></a>
 <a class="sourceLine" id="cb8-13" title="13"><span class="co"># group by</span></a>
 <a class="sourceLine" id="cb8-14" title="14">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
@@ -323,10 +323,13 @@
 <a href="#sponsors" class="anchor"></a>Sponsors</h3>
 <p>Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
 <p><a href="#sponsors"><img src="https://opencollective.com/diskframe/sponsors/badge.svg" alt="Sponsors on Open Collective"></a></p>
-<p>&lt;# Contact me for consulting</p>
+</div>
+</div>
+<div id="contact-me-for-consulting" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h2>
 <p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> <a href="https://www.codementor.io/evalparse"><img src="https://cdn.codementor.io/badges/contact_me_github.svg" alt="Contact me on Codementor"></a></p>
 <p>I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a> to get 10% discount off the hourly rate.</p>
-</div>
 </div>
 </div>
   </div>

@@ -127,8 +127,8 @@
   (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df1</span>)$<span class='no'>shardkey</span>, <span class='st'>""</span>)) <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df1</span>)$<span class='no'>shardkey</span> <span class='kw'>else</span>
   <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df2</span>)$<span class='no'>shardkey</span>, <span class='kw'>by.y</span> <span class='kw'>=</span> <span class='fu'><a href='shardkey.html'>shardkey</a></span>(<span class='no'>df2</span>)$<span class='no'>shardkey</span>, <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> {     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>warning</a></span>(<span class='st'>"temp dir create"</span>)
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"df_foverlaps_tmp"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>) }, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"df_foverlaps_tmp"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>) },
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,12 +172,29 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>## simple example:</span>
+<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'>data.table</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>31</span>,<span class='fl'>22</span>,<span class='fl'>16</span>), <span class='kw'>end</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>8</span>,<span class='fl'>50</span>,<span class='fl'>25</span>,<span class='fl'>18</span>), <span class='kw'>val2</span> <span class='kw'>=</span> <span class='fl'>7</span>:<span class='fl'>10</span>))
+<span class='no'>y</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'>data.table</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30</span>), <span class='kw'>end</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>15</span>, <span class='fl'>35</span>, <span class='fl'>45</span>), <span class='kw'>val1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))
+<span class='no'>xy.df</span> <span class='kw'>=</span> <span class='fu'>foverlaps.disk.frame</span>(
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>by.x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"val1"</span>, <span class='st'>"start"</span>, <span class='st'>"end"</span>),
+  <span class='kw'>by.y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"val1"</span>, <span class='st'>"start"</span>, <span class='st'>"end"</span>),
+  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: temp dir create</span></div><div class='input'>
+<span class='co'># clean up</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>y</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>xy.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
