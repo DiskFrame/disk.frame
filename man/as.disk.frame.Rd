@@ -4,8 +4,9 @@
 \alias{as.disk.frame}
 \title{Make a data.frame into a disk.frame}
 \usage{
-as.disk.frame(df, outdir, nchunks = recommend_nchunks(df),
-  overwrite = FALSE, compress = 50, ...)
+as.disk.frame(df, outdir = tempfile(fileext = ".df"),
+  nchunks = recommend_nchunks(df), overwrite = FALSE, shardby = NULL,
+  compress = 50, ...)
 }
 \arguments{
 \item{df}{a disk.frame}
@@ -16,10 +17,27 @@ as.disk.frame(df, outdir, nchunks = recommend_nchunks(df),
 
 \item{overwrite}{if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty}
 
+\item{shardby}{The shardkey}
+
 \item{compress}{the compression level 0-100; 100 is highest}
 
 \item{...}{passed to output_disk.frame}
 }
 \description{
 Make a data.frame into a disk.frame
+}
+\examples{
+# write to temporary location
+cars.df = as.disk.frame(cars) 
+
+# clean up
+delete(cars.df)
+
+\dontrun{
+# specify a different path
+as.disk.frame(cars, outdir = "some_path.df") 
+
+# specify a different number of chunks
+as.disk.frame(cars, nchunks = 4, overwrite = TRUE) 
+}
 }

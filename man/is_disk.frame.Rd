@@ -12,3 +12,12 @@ is_disk.frame(df)
 \description{
 Checks if a folder is a disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+is_disk.frame(cars) # FALSE
+is_disk.frame(cars.df) # TRUE
+
+# clean up cars.df
+delete(cars.df)
+}

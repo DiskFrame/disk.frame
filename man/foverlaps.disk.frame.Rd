@@ -8,8 +8,8 @@ foverlaps.disk.frame(df1, df2, by.x = if
   (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else
   shardkey(df2)$shardkey, by.y = shardkey(df2)$shardkey, ...,
   outdir = {     warning("temp dir create")    
-  tempfile("df_foverlaps_tmp", fileext = ".df") }, merge_by_chunk_id = F,
-  compress = 50, overwrite = T)
+  tempfile("df_foverlaps_tmp", fileext = ".df") },
+  merge_by_chunk_id = FALSE, compress = 50, overwrite = TRUE)
 }
 \arguments{
 \item{df1}{A disk.frame}
@@ -32,4 +32,21 @@ foverlaps.disk.frame(df1, df2, by.x = if
 }
 \description{
 Apply data.table's foverlaps to the disk.frame
+}
+\examples{
+## simple example:
+x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
+y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))
+xy.df = foverlaps.disk.frame(
+  x, 
+  y, 
+  by.x = c("val1", "start", "end"), 
+  by.y = c("val1", "start", "end"), 
+  merge_by_chunk_id = TRUE, 
+  overwrite = TRUE)
+
+# clean up
+delete(x)
+delete(y)
+delete(xy.df)
 }

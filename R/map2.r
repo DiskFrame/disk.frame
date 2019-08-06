@@ -8,6 +8,15 @@
 #' @importFrom purrr as_mapper map2
 #' @importFrom data.table data.table
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' cars2.df = map2(cars.df, cars.df, ~data.table::rbindlist(list(.x, .y)))
+#' collect(cars2.df)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+#' delete(cars2.df)
 map2 <- function(.x, .y, .f, ...){
   UseMethod("map2")
 }
@@ -20,7 +29,7 @@ map2.default <- function(.x, .y, .f, ...) {
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom pryr do_call
-map2.disk.frame <- function(.x, .y, .f, ..., outdir) {
+map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")) {
   assertthat::assert_that("disk.frame" %in% class(.x), msg = "running map2.disk.frame(.x,.y, ...): the .x argument must be a disk.frame")
   .f = purrr::as_mapper(.f)
   

@@ -16,6 +16,34 @@
 #' @importFrom purrr as_mapper map
 #' @importFrom future.apply future_lapply
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # return the first row of each chunk lazily
+#' # 
+#' cars2 = map(cars.df, function(chunk) {
+#'  chunk[1,]
+#' })
+#' 
+#' collect(cars2)
+#'
+#' # same as above but using purrr 
+#' cars2 = map(cars.df, ~.x[1,])
+#'
+#' collect(cars2)
+#' 
+#' # return the first row of each chunk eagerly as list
+#' map(cars.df, ~.x[1,], lazy = FALSE)
+#'
+#' # return the first row of each chunk eagerly as data.table/data.frame by row-binding
+#' map_dfr(cars.df, ~.x[1,])
+#'
+#' # lazy and delayed are just an aliases for map(..., lazy = TRUE)
+#' collect(lazy(cars.df, ~.x[1,]))
+#' collect(delayed(cars.df, ~.x[1,]))
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 map <- function(.x, .f, ...) {
   UseMethod("map")
 }
@@ -106,31 +134,39 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
 
 #' @export
 #' @rdname map
-imap_dfr <- function(.x, .f, ..., .id = NULL) {
-  UseMethod("imap_dfr")
-}
-
-imap_dfr.default <- function(.x, .f, ..., .id = NULL) {
-  purrr::imap_dfr(.x, .f, ..., .id = .id)
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # .x is the chunk and .y is the ID as an integer
+#' 
+#' # lazy = TRUE support is not available at the moment
+#' imap(cars.df, ~.x[, id := .y], lazy = FALSE)
+#' 
+#' imap_dfr(cars.df, ~.x[, id := .y])
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+#' @rdname map
+imap <- function(.x, .f, ...) {
+  UseMethod("imap")
 }
 
 #' @export
-#' 
-imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
-  if(!is.null(.id)) {
-    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
-  }
-  data.table::rbindlist(imap.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
+#' @rdname map
+imap.default <- function(.x, .f, ...) {
+  purrr::imap(.x, .f, ...)
 }
 
-#' imap.disk.frame accepts a two argument function where the first argument is a disk.frame and the 
+#' imap.disk.frame accepts a two argument function where the first argument is a data.frame and the 
 #' second is the chunk ID
 #' @export
 #' @rdname map
-imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE) {
+imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, ...) {
   .f = purrr::as_mapper(.f)
   
+  # TODO support lazy for imap
   if(lazy) {
+    stop("imap.disk.frame: lazy = TRUE is not supported at this stage")
     attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), .f)
     return(.x)
   }
@@ -148,7 +184,7 @@ imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks
   }
   
   path <- attr(.x, "path")
-  files <- list.files(path, full.names = T)
+  files <- get_chunk_ids(.x)
   files_shortname <- list.files(path)
   
   keep_future = keep
@@ -170,6 +206,30 @@ imap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks
   }
 }
 
+#' @export
+#' @rdname map
+imap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
+  if(!is.null(.id)) {
+    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
+  }
+  data.table::rbindlist(imap.disk.frame(.x, .f, ..., lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
+}
+
+
+#' @export
+#' @rdname map
+imap_dfr <- function(.x, .f, ..., .id = NULL) {
+  UseMethod("imap_dfr")
+}
+
+
+#' @export
+#' @rdname map
+imap_dfr.default <- function(.x, .f, ..., .id = NULL) {
+  purrr::imap_dfr(.x, .f, ..., .id = .id)
+}
+
+
 #' `lazy` is convenience function to apply `.f` to every chunk
 #' @export
 #' @rdname map
@@ -178,6 +238,7 @@ lazy <- function(.x, .f, ...) {
 }
 
 #' @rdname map
+#' @export
 lazy.disk.frame <- function(.x, .f, ...) {
   map.disk.frame(.x, .f, ..., lazy = TRUE)
 }

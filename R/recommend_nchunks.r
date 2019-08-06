@@ -6,6 +6,12 @@
 #' @importFrom pryr object_size
 #' @importFrom utils memory.limit
 #' @export
+#' @examples
+#' # recommend nchunks based on data.frame
+#' recommend_nchunks(cars)
+#' 
+#' # recommend nchunks based on file size ONLY CSV is implemented at the moment
+#' recommend_nchunks(1024^3)
 recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = FALSE), conservatism = 2) {
   dfsize = 0
   if ("data.frame" %in% class(df)) {

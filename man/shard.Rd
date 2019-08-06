@@ -5,7 +5,7 @@
 \alias{distribute}
 \title{Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame}
 \usage{
-shard(df, shardby, outdir = tempfile("tmp_disk_frame_shard"), ...,
+shard(df, shardby, outdir = tempfile(fileext = ".df"), ...,
   nchunks = recommend_nchunks(df), overwrite = FALSE)
 
 distribute(...)
@@ -27,4 +27,12 @@ distribute(...)
 Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame
 
 `distribute` is an alias for `shard`
+}
+\examples{
+
+# shard the cars data.frame by speed so that rows with the same speed are in the same chunk
+iris.df = shard(iris, "Species")
+
+# clean up cars.df
+delete(iris.df)
 }

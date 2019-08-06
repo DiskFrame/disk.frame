@@ -34,3 +34,16 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 Perform a group by and ensuring that every unique grouping of by is
 in the same chunk
 }
+\examples{
+iris.df = as.disk.frame(iris, nchunks = 2)
+
+# group_by iris.df by specifies and ensure rows with the same specifies are in the same chunk
+iris_hard.df = hard_group_by(iris.df, Species)
+
+get_chunk(iris_hard.df, 1)
+get_chunk(iris_hard.df, 2)
+
+# clean up cars.df
+delete(iris.df)
+delete(iris_hard.df)
+}

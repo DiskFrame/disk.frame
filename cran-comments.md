@@ -1,3 +1,7 @@
+## Resubmission 4
+* added more examples; almost one example per function
+* also updated examples and vignettes to not write to user's home filespace
+
 ## Resubmission 3
 Fixed the note
 - non-canonical URL to CRAN package which I had missed in resubmission 2

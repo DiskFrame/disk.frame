@@ -14,3 +14,11 @@ overwrite_check(outdir, overwrite)
 \description{
 Check if the outdir exists or not; and cleans it if it's not already there
 }
+\examples{
+tf = tempfile()
+overwrite_check(tf, overwrite = FALSE)
+overwrite_check(tf, overwrite = TRUE)
+
+# clean up
+fs::dir_delete(tf)
+}

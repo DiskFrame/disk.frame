@@ -23,3 +23,13 @@ map_by_chunk_id(.x, .y, .f, ..., outdir)
 \description{
 Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+cars2.df = map2(cars.df, cars.df, ~data.table::rbindlist(list(.x, .y)))
+collect(cars2.df)
+
+# clean up cars.df
+delete(cars.df)
+delete(cars2.df)
+}

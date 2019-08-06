@@ -14,3 +14,12 @@ srckeep(df, selections)
 \description{
 Keep only the variables from the input listed in selections
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+# when loading cars's chunks into RAM, load only the column speed
+collect(srckeep(cars.df, "speed"))
+
+# clean up cars.df
+delete(cars.df)
+}

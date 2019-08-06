@@ -21,3 +21,19 @@ rechunk(df, nchunks, outdir = attr(df, "path"), shardby = NULL,
 \description{
 Increase or decrease the number of chunks in the disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars, nchunks = 2)
+
+# re-chunking cars.df to 3 chunks, done "in-place"
+\dontrun{
+rechunk(cars.df, 3)
+}
+
+new_path = tempfile(fileext = ".df")
+# re-chunking cars.df to 4 chunks, shardby speed, done "out-of-place"
+cars2.df = rechunk(cars.df, 4, new_path, shardby = "speed")
+
+# clean up cars.df
+delete(cars.df)
+delete(cars2.df)
+}

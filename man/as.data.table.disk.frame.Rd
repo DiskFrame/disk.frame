@@ -16,3 +16,10 @@
 \description{
 Convert disk.frame to data.table by collecting all chunks
 }
+\examples{
+cars.df = as.disk.frame(cars)
+as.data.table(cars.df)
+
+# clean up
+delete(cars.df)
+}

@@ -8,6 +8,13 @@
 #' @export
 #' @importFrom dplyr sample_frac
 #' @rdname sample
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' collect(sample_frac(cars.df, 0.5))
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...) {
   if(!is.null(weight)) {
     stop("sample_frac(..., weight =) is not implemented yet")

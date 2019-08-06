@@ -12,10 +12,19 @@
 #' @importFrom purrr map
 #' @importFrom assertthat assert_that
 #' @export
-rbindlist.disk.frame <- function(df_list, outdir, by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE) {
-  overwrite_check(outdir, overwrite)
-  
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # row-bind two disk.frames
+#' cars2.df = rbindlist.disk.frame(list(cars.df, cars.df))
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+#' delete(cars2.df)
+rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE) {
   assertthat::assert_that(typeof(df_list) == "list")
+  
+  overwrite_check(outdir, overwrite)
   
   purrr::map(df_list, ~assertthat::assert_that("disk.frame" %in% class(.x), msg = "error running rbindlist.disk.frame: Not every element of df_list is a disk.frame"))
   

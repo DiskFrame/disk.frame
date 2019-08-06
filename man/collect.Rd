@@ -29,3 +29,18 @@ Bring the disk.frame into R as data.table/data.frame
 
 Bring the disk.frame into R as list
 }
+\examples{
+cars.df = as.disk.frame(cars)
+# use collect to bring the data into RAM as a data.table/data.frame
+collect(cars.df)
+
+# clean up
+delete(cars.df)
+cars.df = as.disk.frame(cars)
+
+# returns the result as a list
+collect_list(map(cars.df, ~1))
+
+# clean up
+delete(cars.df)
+}

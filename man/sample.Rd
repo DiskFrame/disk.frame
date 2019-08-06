@@ -23,3 +23,11 @@
 \description{
 Sample n rows from a disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+collect(sample_frac(cars.df, 0.5))
+
+# clean up cars.df
+delete(cars.df)
+}

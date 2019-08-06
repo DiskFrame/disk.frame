@@ -3,6 +3,15 @@
 #' @param skip.ready.check NOT implemented
 #' @param ... not used
 #' @export
+#' @examples
+#' cars.df = as.disk.frame(cars)
+#' 
+#' # return the number of chunks
+#' nchunks(cars.df)
+#' nchunk(cars.df)
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
 nchunks <- function(df, ...) {
   UseMethod("nchunks")
 }

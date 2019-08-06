@@ -4,6 +4,14 @@
 #' @import fs
 #' @importFrom glue glue
 #' @export
+#' 
+#' @examples
+#' tf = tempfile()
+#' overwrite_check(tf, overwrite = FALSE)
+#' overwrite_check(tf, overwrite = TRUE)
+#' 
+#' # clean up
+#' fs::dir_delete(tf)
 overwrite_check <- function(outdir, overwrite) {
   ##browser
   if (is.null(outdir)) {

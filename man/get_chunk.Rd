@@ -24,3 +24,15 @@ get_chunk(...)
 \description{
 Obtain one chunk by chunk id
 }
+\examples{
+cars.df = as.disk.frame(cars, nchunks = 2)
+get_chunk(cars.df, 1)
+get_chunk(cars.df, 2)
+get_chunk(cars.df, 1, keep = "speed")
+
+# if full.names = TRUE then the full path to the chunk need to be provided
+get_chunk(cars.df, file.path(attr(cars.df, "path"), "1.fst"), full.names = TRUE)
+
+# clean up cars.df
+delete(cars.df)
+}

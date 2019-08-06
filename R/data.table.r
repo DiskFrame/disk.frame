@@ -11,6 +11,13 @@
 #' @importFrom data.table rbindlist 
 #' @importFrom globals findGlobals
 #' @export
+#' @examples 
+#' cars.df = as.disk.frame(cars)
+#' speed_limit = 50
+#' cars.df[speed < speed_limit ,.N, cut(dist, pretty(dist))]
+#' 
+#' # clean up
+#' delete(cars.df)
 `[.disk.frame` <- function(df, ..., keep = NULL, rbind = T, use.names = TRUE, fill = FALSE, idcol = NULL) {
   keep_for_future = keep
   

@@ -3,13 +3,14 @@
 \name{write_disk.frame}
 \alias{write_disk.frame}
 \alias{output_disk.frame}
-\title{Write out a data.frame/disk.frame to a disk.frame location. If df is a
+\title{Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases}
 \usage{
-write_disk.frame(df, outdir, nchunks, overwrite, shardby = NULL,
-  compress = 50, ...)
+write_disk.frame(df, outdir = tempfile(fileext = ".df"),
+  nchunks = nchunks.disk.frame(df), overwrite = FALSE,
+  shardby = NULL, compress = 50, ...)
 
 output_disk.frame(...)
 }
@@ -29,8 +30,19 @@ output_disk.frame(...)
 \item{...}{passed to map.disk.frame}
 }
 \description{
-Write out a data.frame/disk.frame to a disk.frame location. If df is a
+Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases
+}
+\examples{
+cars.df = as.disk.frame(cars)
+
+# write out a lazy disk.frame to disk
+cars2.df = write_disk.frame(map(cars.df, ~.x[1,]), overwrite = TRUE)
+collect(cars2.df)
+
+# clean up cars.df
+delete(cars.df)
+delete(cars2.df)
 }

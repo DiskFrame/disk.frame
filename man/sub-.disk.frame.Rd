@@ -25,3 +25,11 @@
 \description{
 [ interface for disk.frame using fst backend
 }
+\examples{
+cars.df = as.disk.frame(cars)
+speed_limit = 50
+cars.df[speed < speed_limit ,.N, cut(dist, pretty(dist))]
+
+# clean up
+delete(cars.df)
+}

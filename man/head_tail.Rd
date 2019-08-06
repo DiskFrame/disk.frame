@@ -21,3 +21,11 @@ Head of the disk.frame
 
 tail of disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+head(cars.df)
+tail(cars.df)
+
+# clean up 
+delete(cars.df)
+}

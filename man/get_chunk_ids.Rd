@@ -18,3 +18,18 @@ get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 \description{
 Get the chunk file names
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+# return the integer-string chunk IDs
+get_chunk_ids(cars.df)
+
+# return the file name chunk IDs
+get_chunk_ids(cars.df, full.names = TRUE)
+
+# return the file name chunk IDs with file extension
+get_chunk_ids(cars.df, strip_extension = FALSE)
+
+# clean up cars.df
+delete(cars.df)
+}

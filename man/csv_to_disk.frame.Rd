@@ -4,7 +4,8 @@
 \alias{csv_to_disk.frame}
 \title{convert CSV file(s) to disk.frame format}
 \usage{
-csv_to_disk.frame(infile, outdir, inmapfn = base::I,
+csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
+  inmapfn = base::I,
   nchunks = recommend_nchunks(sum(file.size(infile))),
   in_chunk_size = NULL, shardby = NULL, compress = 50,
   overwrite = TRUE, header = TRUE, ...)
@@ -32,4 +33,14 @@ csv_to_disk.frame(infile, outdir, inmapfn = base::I,
 }
 \description{
 convert CSV file(s) to disk.frame format
+}
+\examples{
+tmpfile = tempfile()
+write.csv(cars, tmpfile)
+tmpdf = tempfile(fileext = ".df")
+df = csv_to_disk.frame(tmpfile, outdir = tmpdf, overwrite = TRUE)
+
+# clean up
+fs::file_delete(tmpfile)
+delete(df)
 }

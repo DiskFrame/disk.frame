@@ -1,11 +1,19 @@
-#' Perform the computation
+#' Perform the computation; same as calling map without .f and lazy = F
 #' @param x a disk.frame
-#' @param outdir the output directory
-#' @param name not used
-#' @param overwrite if TRUE overwrite outdir if it's a disk.frame
-#' @param ... not used
+#' @param name not used kept for compatibility with dplyr
 #' @export
 #' @importFrom dplyr compute
+#' @rdname map
+#' @examples 
+#' cars.df = as.disk.frame(cars)
+#' cars.df2 = cars.df %>% map(~.x)
+#' # the computation is performed and the data is now stored elsewhere
+#' cars.df3 = compute(cars.df2)
+#' 
+#' # clean up
+#' delete(cars.df)
+#' delete(cars.df3)
 compute.disk.frame <- function(x, name, outdir = tempfile("tmp_df_", fileext=".df"), overwrite = TRUE, ...) {
-  map.disk.frame(x, base::I, outdir = outdir, lazy = F, overwrite=overwrite)
+  overwrite_check(outdir, overwrite)
+  write_disk.frame(x, outdir = outdir, overwrite = TRUE)
 }

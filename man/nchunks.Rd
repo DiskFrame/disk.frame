@@ -27,3 +27,13 @@ Return the number of chunks
 
 Returns the number of chunks in a disk.frame
 }
+\examples{
+cars.df = as.disk.frame(cars)
+
+# return the number of chunks
+nchunks(cars.df)
+nchunk(cars.df)
+
+# clean up cars.df
+delete(cars.df)
+}

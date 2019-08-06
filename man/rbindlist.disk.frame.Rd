@@ -4,8 +4,9 @@
 \alias{rbindlist.disk.frame}
 \title{rbindlist disk.frames together}
 \usage{
-rbindlist.disk.frame(df_list, outdir, by_chunk_id = TRUE,
-  parallel = TRUE, compress = 50, overwrite = TRUE)
+rbindlist.disk.frame(df_list, outdir = tempfile(fileext = ".df"),
+  by_chunk_id = TRUE, parallel = TRUE, compress = 50,
+  overwrite = TRUE)
 }
 \arguments{
 \item{df_list}{A list of disk.frames}
@@ -22,4 +23,14 @@ rbindlist.disk.frame(df_list, outdir, by_chunk_id = TRUE,
 }
 \description{
 rbindlist disk.frames together
+}
+\examples{
+cars.df = as.disk.frame(cars)
+
+# row-bind two disk.frames
+cars2.df = rbindlist.disk.frame(list(cars.df, cars.df))
+
+# clean up cars.df
+delete(cars.df)
+delete(cars2.df)
 }

@@ -29,3 +29,11 @@ Automatically read and convert every single CSV file within the zip file to disk
 
 Validate and auto-correct read and convert every single file within the zip file to df format
 }
+\examples{
+\dontrun{
+path_to_zip_file_containing_csv = "some/path/file.zip"
+
+# read every file and convert it to a disk.frame
+zip_to_disk.frame(path_to_zip_file_containing_csv, tempfile(fileext = ".df"))
+}
+}

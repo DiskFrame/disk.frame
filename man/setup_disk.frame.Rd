@@ -4,18 +4,18 @@
 \alias{setup_disk.frame}
 \title{Set up disk.frame environment}
 \usage{
-setup_disk.frame(future_backend = multiprocess,
-  workers = parallel::detectCores(logical = FALSE),
-  future.globals.maxSize = Inf, ..., gui = FALSE)
+setup_disk.frame(workers = parallel::detectCores(logical = FALSE),
+  future_backend = multiprocess, future.globals.maxSize = Inf, ...,
+  gui = FALSE)
 }
 \arguments{
+\item{workers}{the number of workers (background R processes in the}
+
 \item{future_backend}{which future backend to use for parallelization}
 
-\item{workers}{the number of workers (background R processes in the
-multiprocess environment)}
-
 \item{future.globals.maxSize}{The amount of memory that is allowed to be
-transferred between workers. Defaults to Inf for no limit.}
+transferred between workers. Defaults to Inf for no limit.
+multiprocess environment)}
 
 \item{...}{passed to `future::plan`}
 
@@ -23,4 +23,19 @@ transferred between workers. Defaults to Inf for no limit.}
 }
 \description{
 Set up disk.frame environment
+}
+\examples{
+\dontrun{
+# use a Shiny GUI to adjust settings
+setup_disk.frame(gui = TRUE)
+
+# setup disk.frame to use multiple workers
+setup_disk.frame()
+
+# set the number workers to 2
+setup_disk.frame(2)
+
+# set the future backend to sequential
+setup_disk.frame(future_backend = future::sequential)
+}
 }
