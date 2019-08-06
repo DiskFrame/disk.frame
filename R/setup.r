@@ -23,6 +23,7 @@
 #' setup_disk.frame(future_backend = future::sequential)
 #' }
 setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), future_backend = multiprocess, future.globals.maxSize = Inf, ..., gui = FALSE) {
+  #browser()
   if(!gui) {
     future::plan(future_backend, workers = workers, gc = TRUE, ...)
     print(sprintf("The number of workers available for disk.frame is %d", future::nbrOfWorkers()))
@@ -38,9 +39,19 @@ setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), f
       shiny::h1("disk.frame settings"),
       shiny::sliderInput(
         "nbrOfWorkers", 
-        sprintf("Number of workers (recommendation = %d)", parallel::detectCores(logical = F)), 1, parallel::detectCores(), value = future::nbrOfWorkers(), step = 1),
-      
-      shiny::checkboxInput("inf_fgm", "Recommended: Set Maximum transfer size between workers to Inf (so ignore slider below)", value = is.infinite(getOption("future.globals.maxSize"))),
+        sprintf("Number of workers (recommendation = %d)", parallel::detectCores(logical = F)),
+        1, 
+        parallel::detectCores(), 
+        value = future::nbrOfWorkers(), 
+        step = 1),
+      shiny::checkboxInput(
+        "inf_fgm", 
+        "Recommended: Set Maximum transfer size between workers to Inf (so ignore slider below)", 
+        value = ifelse(
+          is.null(getOption("future.globals.maxSize")), 
+          TRUE, 
+          is.infinite(getOption("future.globals.maxSize")))
+      ),
       shiny::sliderInput(
         "future.globals.maxSize",
         "Maximum transfer size between workers (gb)",

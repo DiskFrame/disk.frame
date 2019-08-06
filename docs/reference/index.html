@@ -172,12 +172,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="compute.disk.frame.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Perform the computation</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="create_dplyr_mapper.html">create_dplyr_mapper()</a></code> </p>
         </td>
         <td><p>A function to make it easier to create dplyr function for disk.frame</p></td>
@@ -293,9 +287,9 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">imap.disk.frame()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
+          <p><code><a href="map.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
         </td>
-        <td><p>Apply the same function to all chunks</p></td>
+        <td><p>Perform the computation; same as calling map without .f and lazy = F</p></td>
       </tr><tr>
         
         <td>
@@ -317,13 +311,7 @@ in the same chunk</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ncol.html">ncol()</a></code> </p>
-        </td>
-        <td><p>Number of columns</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="nrow.html">nrow()</a></code> </p>
+          <p><code><a href="ncol_nrow.html">nrow()</a></code> <code><a href="ncol_nrow.html">ncol()</a></code> </p>
         </td>
         <td><p>Number of rows of disk.frame</p></td>
       </tr><tr>
@@ -421,7 +409,7 @@ in the same chunk</p></td>
         <td>
           <p><code><a href="write_disk.frame.html">write_disk.frame()</a></code> <code><a href="write_disk.frame.html">output_disk.frame()</a></code> </p>
         </td>
-        <td><p>Write out a data.frame/disk.frame to a disk.frame location. If df is a
+        <td><p>Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases</p></td>

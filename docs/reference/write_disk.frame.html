@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write out a data.frame/disk.frame to a disk.frame location. If df is a
+<title>Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases — write_disk.frame • disk.frame</title>
@@ -33,12 +33,12 @@ as.disk.frame function is recommended for most cases — write_disk.frame • di
 
 
 
-<meta property="og:title" content="Write out a data.frame/disk.frame to a disk.frame location. If df is a
+<meta property="og:title" content="Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases — write_disk.frame" />
 
-<meta property="og:description" content="Write out a data.frame/disk.frame to a disk.frame location. If df is a
+<meta property="og:description" content="Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases" />
@@ -121,7 +121,7 @@ as.disk.frame function is recommended for most cases" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write out a data.frame/disk.frame to a disk.frame location. If df is a
+    <h1>Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases</h1>
@@ -131,15 +131,16 @@ as.disk.frame function is recommended for most cases</h1>
 
     <div class="ref-description">
     
-    <p>Write out a data.frame/disk.frame to a disk.frame location. If df is a
+    <p>Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
 intended to be a low-level version of writing disk.frames. Using the
 as.disk.frame function is recommended for most cases</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='no'>outdir</span>, <span class='no'>nchunks</span>, <span class='no'>overwrite</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks.disk.frame</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)
 
 <span class='fu'>output_disk.frame</span>(<span class='no'>...</span>)</pre>
     
@@ -177,12 +178,29 @@ as.disk.frame function is recommended for most cases</p>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+
+<span class='co'># write out a lazy disk.frame to disk</span>
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>write_disk.frame</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;    speed dist
+#&gt; 1:     4    2
+#&gt; 2:    11   17
+#&gt; 3:    13   46
+#&gt; 4:    16   40
+#&gt; 5:    19   46
+#&gt; 6:    24   70</div><div class='input'>
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

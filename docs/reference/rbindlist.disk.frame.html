@@ -123,8 +123,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>rbindlist.disk.frame</span>(<span class='no'>df_list</span>, <span class='no'>outdir</span>, <span class='kw'>by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>rbindlist.disk.frame</span>(<span class='no'>df_list</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+  <span class='kw'>by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,12 +157,23 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+
+<span class='co'># row-bind two disk.frames</span>
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>rbindlist.disk.frame</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>))
+
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

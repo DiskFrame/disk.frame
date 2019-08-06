@@ -124,8 +124,8 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>by</span>, <span class='no'>outdir</span>, <span class='no'>...</span>,
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>by</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+  <span class='no'>...</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,15 +154,30 @@
       <th>merge_by_chunk_id</th>
       <td><p>if TRUE then only chunks in df1 and df2 with the same chunk id will get merged</p></td>
     </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite the outdir or not</p></td>
+    </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>b</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>51</span>:<span class='fl'>150</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>))
+<span class='no'>d</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>151</span>:<span class='fl'>250</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>))
+<span class='no'>bd.df</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/merge'>merge</a></span>(<span class='no'>b</span>, <span class='no'>d</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"b"</span>)
+
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>b</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>d</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>bd.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
