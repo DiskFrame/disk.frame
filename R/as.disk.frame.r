@@ -35,6 +35,6 @@ as.disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = reco
     
     write_disk.frame(df, outdir, nchunks, overwrite = TRUE, shardby="", compress = compress, ...)
   } else {
-    shard(df, shardby = shardby, outdir = outdir, nchunks = nchunks, overwrite = T, compress = compress, ...)
+    shard(df, shardby = shardby, outdir = outdir, nchunks = nchunks, overwrite = TRUE, compress = compress, ...)
   }
 }

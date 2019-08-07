@@ -30,14 +30,14 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     dotdotdot = list(...)
     origarg = list(inmapfn = inmapfn, nchunks = nchunks,
                    in_chunk_size = in_chunk_size, shardby = shardby, compress = compress, 
-                   overwrite = T, header = header)
+                   overwrite = TRUE, header = header)
     dotdotdotorigarg = c(dotdotdot, origarg)
     
     outdf = furrr::future_imap(infile, ~{
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
       
       do_call(csv_to_disk.frame, dotdotdotorigarg1)
-    }) %>% rbindlist.disk.frame(outdir = outdir, by_chunk_id = T, compress = compress, overwrite = overwrite)
+    }) %>% rbindlist.disk.frame(outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite)
     return(outdf)
   } else { # reading one file
     l = length(list.files(outdir))
@@ -51,7 +51,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
         tmpdir1 = tempfile(pattern="df_tmp")
         fs::dir_create(tmpdir1)
         
-        done = F
+        done = FALSE
         skiprows = 0
         column_names = ""
         while(!done) {
@@ -66,12 +66,12 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
               tmpdt = inmapfn(data.table::fread(
                 infile,
                 skip = skiprows, nrows = in_chunk_size, 
-                header=F, ...))
+                header=FALSE, ...))
             } else {
               tmpdt = inmapfn(data.table::fread(
                 infile,
                 skip = skiprows, nrows = in_chunk_size, 
-                header=F, col.names = column_names, ...))
+                header=FALSE, col.names = column_names, ...))
             }
           }
           
@@ -81,7 +81,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
             ifelse(i == 1 & header, 1, 0)
           rows <- tmpdt[,.N]
           if(rows < in_chunk_size) {
-            done <- T
+            done <- TRUE
           }
           
           # add to chunk
@@ -103,7 +103,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
         fs::dir_create(tmpdir1)
         #print(tmpdir1)
         
-        done = F
+        done = FALSE
         skiprows = 0
         column_names = ""
         while(!done) {
@@ -118,12 +118,12 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
               tmpdt = inmapfn(data.table::fread(
                 infile,
                 skip = skiprows, nrows = in_chunk_size, 
-                header=F, ...))
+                header=FALSE, ...))
             } else {
               tmpdt = inmapfn(data.table::fread(
                 infile,
                 skip = skiprows, nrows = in_chunk_size, 
-                header=F, col.names = column_names, ...))
+                header=FALSE, col.names = column_names, ...))
             }
           }
           
@@ -133,7 +133,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
             ifelse(i == 1 & header, 1, 0)
           rows <- tmpdt[,.N]
           if(rows < in_chunk_size) {
-            done <- T
+            done <- TRUE
           }
           
           tmp.disk.frame = shard(
@@ -141,7 +141,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
             shardby = shardby, 
             nchunks = nchunks, 
             outdir = file.path(tmpdir1,i), 
-            overwrite = T,
+            overwrite = TRUE,
             compress = compress,...)
           rm(tmpdt); gc()
         }
@@ -154,8 +154,8 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
             rbindlist.disk.frame(
               lapply(
                 list.files(
-                  tmpdir1,full.names = T), disk.frame), 
-              outdir = outdir, by_chunk_id = T, parallel=F, overwrite = overwrite, compress = compress))
+                  tmpdir1, full.names = TRUE), disk.frame), 
+              outdir = outdir, by_chunk_id = TRUE, parallel=FALSE, overwrite = overwrite, compress = compress))
         
         # remove the files
         fs::dir_delete(tmpdir1)

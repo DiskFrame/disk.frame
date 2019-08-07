@@ -18,7 +18,7 @@
 #' 
 #' # clean up
 #' delete(cars.df)
-`[.disk.frame` <- function(df, ..., keep = NULL, rbind = T, use.names = TRUE, fill = FALSE, idcol = NULL) {
+`[.disk.frame` <- function(df, ..., keep = NULL, rbind = TRUE, use.names = TRUE, fill = FALSE, idcol = NULL) {
   keep_for_future = keep
   
   dotdotdot = substitute(...()) #this is an alist

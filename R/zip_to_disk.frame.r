@@ -11,12 +11,22 @@
 #' @export
 #' @return a list of disk.frame
 #' @examples 
-#' \dontrun{
-#' path_to_zip_file_containing_csv = "some/path/file.zip"
+#' # create a zip file containing a csv
+#' csvfile = tempfile(fileext = ".csv")
+#' write.csv(cars, csvfile)
+#' zipfile = tempfile(fileext = ".zip")
+#' zip(zipfile, csvfile)
 #' 
 #' # read every file and convert it to a disk.frame
-#' zip_to_disk.frame(path_to_zip_file_containing_csv, tempfile(fileext = ".df"))
-#' }
+#' zip.df = zip_to_disk.frame(zipfile, tempfile(fileext = ".df"))
+#' 
+#' # there is only one csv file so it return a list of one disk.frame
+#' zip.df[[1]]
+#' 
+#' # clean up
+#' unlink(csvfile)
+#' unlink(zipfile)
+#' delete(zip.df[[1]])
 # TODO do NSE better here. add all the options of fread into the ... as future may not be able to deal with it
 zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwrite = T) {
   files = unzip(zipfile, list=T)
@@ -32,7 +42,6 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
     outdfpath = file.path(outdir, fn)
     overwrite_check(outdfpath, T)
     unzip(zipfile, files = fn, exdir = tmpdir)
-    
     
     # lift the domain of csv_to_disk.frame so it accepts a list
     cl = purrr::lift(csv_to_disk.frame)

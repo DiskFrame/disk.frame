@@ -9,18 +9,20 @@
 #' @importFrom future plan multiprocess nbrOfWorkers sequential
 #' @export
 #' @examples 
-#' \dontrun{
-#' # use a Shiny GUI to adjust settings
-#' setup_disk.frame(gui = TRUE)
+#' if (interactive()) {
+#'   # use a Shiny GUI to adjust settings
+#'   setup_disk.frame(gui = TRUE)
 #' 
-#' # setup disk.frame to use multiple workers
-#' setup_disk.frame()
+#'   # set the number workers to 2
+#'   setup_disk.frame(2)
 #' 
-#' # set the number workers to 2
-#' setup_disk.frame(2)
-#' 
-#' # set the future backend to sequential
-#' setup_disk.frame(future_backend = future::sequential)
+#'   # set the future backend to sequential
+#'   # these may use more than two cores, so it commented out
+#'   # setup_disk.frame(future_backend = future::sequential)
+#'   
+#'   # setup disk.frame to use multiple workers
+#'   # these may use more than two cores, so it commented out
+#'   setup_disk.frame()
 #' }
 setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), future_backend = multiprocess, future.globals.maxSize = Inf, ..., gui = FALSE) {
   #browser()
