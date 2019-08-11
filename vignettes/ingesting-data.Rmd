@@ -56,7 +56,7 @@ some.df = csv_to_disk.frame("some/path.csv", outdir = "some.df")
 
 this will convert the `"some/path.csv"` to a `disk.frame`. 
 
-### Multiple CSV files
+## Multiple CSV files
 
 However, sometimes we have multiple CSV files that you want to read. You can do so by supplying a vector of file paths e.g. from the result of `list.files`
 
@@ -67,7 +67,7 @@ some.df = csv_to_disk.frame(c("some/path/file1.csv", "some/path/file2.csv"))
 some.df = csv_to_disk.frame(list.files("some/path"))
 ```
 
-### Inputing CSV files chunk-wise
+## Inputing CSV files chunk-wise
 The `csv_to_disk.frame(path, ...)` function reads the file located at `path` in full into RAM and sometimes the CSV file may be too large for RAM. In that case you can wish to read the files chunk-by-chunk by using the `in_chunk_size` argument which controls how many rows you read in per chunk
 
 ```r
@@ -75,7 +75,7 @@ The `csv_to_disk.frame(path, ...)` function reads the file located at `path` in 
 csv_to_disk.frame(path, in_chunk_size = 1e6)
 ```
 
-### Sharding
+## Sharding
 One of the most important aspects of `disk.frame` is sharding. One can shard a `disk.frame` at read time by using the `shardby`
 
 ```r
@@ -85,7 +85,7 @@ csv_to_disk.frame(path, shardby = "id")
 in the above case, all rows with the same `id` values will end up in the same chunk.
 
 
-### Just-in-time transformation
+## Just-in-time transformation
 Sometimes one may wish to perform some transformation on the CSV before writing out to disk. One can use the `inmapfn` argument to do that. The `inmapfn` comes from INput MAPping FuNction.
 
 ```r
@@ -94,7 +94,7 @@ csv_to_disk.frame(path, inmapfn = function(chunk) {
 })
 ```
 
-### Reading CSVs from zip files
+## Reading CSVs from zip files
 Often, CSV comes zipped in a zip files. You can use the `zip_to_disk.frame` to convert all CSVs within a zip file
 
 ```r
@@ -104,7 +104,7 @@ zip_to_disk.frame(path_to_zip_file)
 The arguments for `zip_to_disk.frame` are the same as `csv_to_disk.frame`'s.
 
 
-### Using `add_chunk` or exploiting the structure of a disk.frame
+## Using `add_chunk`
 
 What if the method of converting to a `disk.frame` isn't implemented in `disk.frame` yet? One can use some lower level constructs provided by `disk.frame` to create `disk.frame`s. For example the `add_chunk` function can be used to add more chunks to a `disk.frame`, e.g.
 
@@ -130,5 +130,7 @@ delimited_to_disk.frame(path, outdir = "some.df")
 ```
 
 The above code uses `readr`'s `read_delim_chunked` function to read
+
+## Exploiting the structure of a disk.frame
 
 Of course, a `disk.frame` is just a folder with many `fst` files named as `1.fst`, `2.fst` etc. So one can simply create these `fst` files and ensure they have the same variable names and it should work.
