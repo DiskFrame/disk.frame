@@ -1,0 +1,37 @@
+---
+title: "Concepts for disk.frame"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Concepts for disk.frame}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+There are a number of concepts and terminologies that are useful to understand in order to use `disk.frame` effectively.
+
+## What is a `disk.frame` and what are chunks?
+A `disk.frame` is nothing more a folder and in that folder there should be [`fst`](https://www.fstpackage.org/) files named "1.fst", "2.fst", "3.fst" etc. Each of the ".fst" file is called a _chunk_.
+
+## Workers and parallelism
+Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. For example, suppose we wish to compute the number of rows for each chunk, we can clearly perform this simultaneously in parallel. The code to do that is
+
+```r
+# use only one column is fastest
+df[,.N, keep = "first_col"]
+```
+Say there are `n` chunks in `df`, and there are `m` workers. Then the first `m` chunks will run `chunk[,.N]` simultaneously.
+
+To see how many workers are at work, use
+```r
+# see how many workers are available for work
+future::nbrOfWorkers()
+```
+
+
