@@ -8,13 +8,13 @@ setup({
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
 
-  as.disk.frame(a, "tmp_a_aj.df", nchunks = 4, overwrite = T)
-  as.disk.frame(b, "tmp_b_aj.df", nchunks = 5, overwrite = T)
-  as.disk.frame(d, "tmp_d_aj.df", overwrite = T)
+  as.disk.frame(a, "tmp_a_aj.df", nchunks = 4, overwrite = TRUE)
+  as.disk.frame(b, "tmp_b_aj.df", nchunks = 5, overwrite = TRUE)
+  as.disk.frame(d, "tmp_d_aj.df", overwrite = TRUE)
 
-  as.disk.frame(a, "tmp_a_aj2.df", nchunks = 4, overwrite = T)
-  as.disk.frame(b, "tmp_b_aj2.df", nchunks = 5, overwrite = T)
-  as.disk.frame(d, "tmp_d_aj2.df", overwrite = T)
+  as.disk.frame(a, "tmp_a_aj2.df", nchunks = 4, overwrite = TRUE)
+  as.disk.frame(b, "tmp_b_aj2.df", nchunks = 5, overwrite = TRUE)
+  as.disk.frame(d, "tmp_d_aj2.df", overwrite = TRUE)
 })
 
 test_that("testing anti_join where right is data.frame", {
@@ -45,22 +45,22 @@ test_that("testing anti_join where right is disk.frame", {
   d = disk.frame("tmp_d_aj2.df")
   
   expect_warning({
-    ab <- anti_join(a, b, by = "a", merge_by_chunk_id = F) %>% collect
+    ab <- anti_join(a, b, by = "a", merge_by_chunk_id = FALSE) %>% collect
     })
   expect_equal(nrow(ab), 50)
   
   expect_warning({
-    ab0 = anti_join(a, b, by = c("a","b"), merge_by_chunk_id = F) %>% collect
+    ab0 = anti_join(a, b, by = c("a","b"), merge_by_chunk_id = FALSE) %>% collect
     })
   expect_equal(nrow(ab0), 100)
   
   expect_warning({
-    ab100 = anti_join(a, b, by = "b", merge_by_chunk_id = F) %>% collect
+    ab100 = anti_join(a, b, by = "b", merge_by_chunk_id = FALSE) %>% collect
     })
   expect_equal(nrow(ab100), 0)
   
   expect_warning({
-    ad50 = anti_join(a, d, by = "b", merge_by_chunk_id = F) %>% collect
+    ad50 = anti_join(a, d, by = "b", merge_by_chunk_id = FALSE) %>% collect
     })
   expect_equal(nrow(ad50), 50)
 })

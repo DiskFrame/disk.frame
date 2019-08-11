@@ -92,6 +92,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+    </li>
+    <li>
       <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
@@ -156,19 +159,21 @@ multiprocess environment)</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># use a Shiny GUI to adjust settings</span>
-<span class='fu'>setup_disk.frame</span>(<span class='kw'>gui</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>()) {
+  <span class='co'># use a Shiny GUI to adjust settings</span>
+  <span class='fu'>setup_disk.frame</span>(<span class='kw'>gui</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># setup disk.frame to use multiple workers</span>
-<span class='fu'>setup_disk.frame</span>()
+  <span class='co'># set the number workers to 2</span>
+  <span class='fu'>setup_disk.frame</span>(<span class='fl'>2</span>)
 
-<span class='co'># set the number workers to 2</span>
-<span class='fu'>setup_disk.frame</span>(<span class='fl'>2</span>)
+  <span class='co'># setup disk.frame to use multiple workers</span>
+  <span class='co'># these may use more than two cores, so it commented out</span>
+  <span class='co'># setup_disk.frame()</span>
 
-<span class='co'># set the future backend to sequential</span>
-<span class='fu'>setup_disk.frame</span>(<span class='kw'>future_backend</span> <span class='kw'>=</span> <span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/future/topics/sequential'>sequential</a></span>)
-<span class='co'># }</span></pre>
+  <span class='co'># set the future backend to sequential</span>
+  <span class='co'># these may use more than two cores, so it commented out</span>
+  <span class='co'># setup_disk.frame(future_backend = future::sequential)</span>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

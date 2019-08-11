@@ -92,6 +92,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+    </li>
+    <li>
       <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
@@ -167,10 +170,11 @@
 
 <span class='co'># clean up</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div><span class='co'># NOT RUN {</span>
-<span class='co'># specify a different path</span>
-<span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='st'>"some_path.df"</span>)
+<span class='co'># specify a different path in the temporary folder, you are free to choose a different folder</span>
+<span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"some_path.df"</span>))
 
 <span class='co'># specify a different number of chunks</span>
+<span class='co'># this writes to tempdir() by default</span>
 <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># }</span></pre>
   </div>

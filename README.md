@@ -80,8 +80,7 @@ example, see [`chunkded`](https://github.com/edwindj/chunked)
 Furthermore, there is a row-limit of 2^31 for `data.frame`s in R; hence
 an alternate approach is needed to apply R to these large datasets. The
 chunking mechanism in `disk.frame` provides such an avenue to enable
-data manipulation beyond the 2^31 row
-limit.
+data manipulation beyond the 2^31 row limit.
 
 ### c) How is `disk.frame` different to previous “big” data solutions for R?
 
@@ -151,6 +150,23 @@ on existing verbs provided by data.table and dplyr. The package
 updated for a few years and also seems to require its own functions and
 verbs.
 
+## Set-up `disk.frame`
+
+`disk.frame` works best if it can process multiple data chunks in
+parallel. The best way to set-up `disk.frame` so that each CPU core runs
+a background worker is by using
+
+``` r
+setup_disk.frame()
+```
+
+The `setup_disk.frame()` sets up background workers equal to the number
+of CPU cores; please note that, by default, hyper-threaded cores are
+counted as one not two.
+
+Alternatively, one may specify the number of workers using
+`setup_disk.frame(workers = n)`.
+
 # Example usage
 
 ``` r
@@ -166,7 +182,7 @@ library(fst)
 
 # you need to run this to make multiple workers
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
-setup_disk.frame() 
+setup_disk.frame()
 
 rows_per_chunk = 1e7
 # generate synthetic data

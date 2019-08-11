@@ -55,6 +55,17 @@ or
 devtools::install_github("xiaodaigh/disk.frame")
 ```
 
+## Set-up `disk.frame`
+`disk.frame` works best if it can process multiple data chunks in parallel. The best way to set-up `disk.frame` so that each CPU core runs a background worker is by using
+
+```r
+setup_disk.frame()
+```
+
+The `setup_disk.frame()` sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.
+
+Alternatively, one may specify the number of workers using `setup_disk.frame(workers = n)`.
+
 ## Basic Data Operations with `disk.frame`
 
 The `disk.frame` package provides convenient functions to convert `data.frame`s and CSVs to `disk.frame`s.

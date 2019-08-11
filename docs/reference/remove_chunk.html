@@ -92,6 +92,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+    </li>
+    <li>
       <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
@@ -138,7 +141,7 @@
     </tr>
     <tr>
       <th>full.names</th>
-      <td><p>TRUE or FALSE. Defaults to F. If true then chunk_id is the full path to the chunk otherwise it's the relative path</p></td>
+      <td><p>TRUE or FALSE. Defaults to FALSE. If true then chunk_id is the full path to the chunk otherwise it's the relative path</p></td>
     </tr>
     </table>
     
@@ -148,20 +151,20 @@
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 
 <span class='co'># removes 3rd chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpsR7LzT\file28302afa60b5.df"
-#&gt; nchunks: 3
-#&gt; nrow: 37
-#&gt; ncol: 2</div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 3</div><div class='input'>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpYByxmg\file226450875cb6.df"</span>
+#&gt; <span class='message'>nchunks: 3</span>
+#&gt; <span class='message'>nrow: 37</span>
+#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 3</div><div class='input'>
 <span class='co'># removes 4th chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='st'>"4.fst"</span>)</div><div class='output co'>#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpsR7LzT\file28302afa60b5.df"
-#&gt; nchunks: 2
-#&gt; nrow: 26
-#&gt; ncol: 2</div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='st'>"4.fst"</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpYByxmg\file226450875cb6.df"</span>
+#&gt; <span class='message'>nchunks: 2</span>
+#&gt; <span class='message'>nrow: 26</span>
+#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='co'># removes 2nd chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>cars.df</span>, <span class='st'>"path"</span>), <span class='st'>"2.fst"</span>), <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpsR7LzT\file28302afa60b5.df"
-#&gt; nchunks: 1
-#&gt; nrow: 13
-#&gt; ncol: 2</div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 1</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>cars.df</span>, <span class='st'>"path"</span>), <span class='st'>"2.fst"</span>), <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpYByxmg\file226450875cb6.df"</span>
+#&gt; <span class='message'>nchunks: 1</span>
+#&gt; <span class='message'>nrow: 13</span>
+#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 1</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'>
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>

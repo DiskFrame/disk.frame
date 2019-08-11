@@ -92,6 +92,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+    </li>
+    <li>
       <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
     </li>
   </ul>
@@ -156,10 +159,10 @@
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># adding some useless metadata to the repo</span>
-<span class='fu'>add_meta</span>(<span class='no'>cars.df</span>, <span class='kw'>useless</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpsR7LzT\file28306fe420e8.df"
-#&gt; nchunks: 6
-#&gt; nrow: 50
-#&gt; ncol: 2</div><div class='input'>
+<span class='fu'>add_meta</span>(<span class='no'>cars.df</span>, <span class='kw'>useless</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpYByxmg\file22642cf11383.df"</span>
+#&gt; <span class='message'>nchunks: 6</span>
+#&gt; <span class='message'>nrow: 50</span>
+#&gt; <span class='message'>ncol: 2</span></div><div class='input'>
 <span class='co'># clean up</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
