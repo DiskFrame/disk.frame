@@ -29,7 +29,7 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   if (Sys.info()[["sysname"]] == "Windows") {
     ml = memory.limit() / 1024
   } else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
-    ml = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = T) / 1024)
+    ml = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
   } else {
     ml = 128
   }

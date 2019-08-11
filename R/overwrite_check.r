@@ -34,7 +34,7 @@ overwrite_check <- function(outdir, overwrite) {
     
     fs::dir_create(outdir)
   } else if(overwrite == FALSE & fs::dir_exists(outdir)) {
-    stop(glue::glue("overwrite  = F and outdir '{outdir}' already exists"))
+    stop(glue::glue("overwrite  = FALSE and outdir '{outdir}' already exists"))
   } else {
     fs::dir_create(outdir)
   }

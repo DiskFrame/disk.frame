@@ -28,8 +28,8 @@
 #' unlink(zipfile)
 #' delete(zip.df[[1]])
 # TODO do NSE better here. add all the options of fread into the ... as future may not be able to deal with it
-zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwrite = T) {
-  files = unzip(zipfile, list=T)
+zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, overwrite = TRUE) {
+  files = unzip(zipfile, list=TRUE)
   
   fs::dir_create(outdir)
   
@@ -40,7 +40,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
   dfs = future.apply::future_lapply(files$Name, function(fn) {
   #dfs = lapply(files$Name, function(fn) {
     outdfpath = file.path(outdir, fn)
-    overwrite_check(outdfpath, T)
+    overwrite_check(outdfpath, TRUE)
     unzip(zipfile, files = fn, exdir = tmpdir)
     
     # lift the domain of csv_to_disk.frame so it accepts a list
@@ -64,7 +64,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = F, overwri
 #' @import fst
 #' @rdname zip_to_disk.frame
 validate_zip_to_disk.frame = function(zipfile, outdir) {
-  files = unzip(zipfile, list=T)
+  files = unzip(zipfile, list=TRUE)
   
   if(!dir.exists(outdir)) {
     stop(glue("The output directory {outdir} does not exist.\n Nothing to validate."))
@@ -83,7 +83,7 @@ validate_zip_to_disk.frame = function(zipfile, outdir) {
         # read it and if it errors then the file might be corrupted, so 
         # read it again and write again
         pt = proc.time()
-        read_fst(out_fst_file, as.data.table = T)
+        read_fst(out_fst_file, as.data.table = TRUE)
         print(paste0("checking(read): ", timetaken(pt))); pt = proc.time()
       }, error = function(e) {
         print(e)

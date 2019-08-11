@@ -19,7 +19,7 @@
 #' delete(bd.df)
 merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., merge_by_chunk_id = FALSE, overwrite = FALSE) {  
   stopifnot("disk.frame" %in% class(x))
-  overwrite_check(outdir, overwrite = T)
+  overwrite_check(outdir, overwrite = TRUE)
   #fs::dir_create(outdir)
   
   if("data.frame" %in% class(y)) {
@@ -64,18 +64,18 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
     # 
     # df3 = merge(
     #   data.table(
-    #     justmerge = T,
+    #     justmerge = TRUE,
     #     chunk_id1 = list.files(path1), 
-    #     pathA = list.files(path1,full.names = T)
+    #     pathA = list.files(path1,full.names = TRUE)
     #   ),
     #   data.table(
-    #     justmerge = T,
+    #     justmerge = TRUE,
     #     chunk_id2 = list.files(path2), 
-    #     pathB = list.files(path2,full.names = T)
+    #     pathB = list.files(path2,full.names = TRUE)
     #   ),
     #   by = "justmerge",
-    #   all=T,
-    #   allow.cartesian = T
+    #   all=TRUE,
+    #   allow.cartesian = TRUE
     # )
     # 
     # 
@@ -83,8 +83,8 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
     # i <- 0
     # mapply(function(pathA, pathB) {
     #   stop("error")
-    #   data1 = read_fst(pathA,as.data.table = T, columns = c("ACCOUNT_ID","MONTH_KEY"))
-    #   data2 = read_fst(pathB,as.data.table = T, columns = c("ACCOUNT_ID","MONTH_KEY"))
+    #   data1 = read_fst(pathA,as.data.table = TRUE, columns = c("ACCOUNT_ID","MONTH_KEY"))
+    #   data2 = read_fst(pathB,as.data.table = TRUE, columns = c("ACCOUNT_ID","MONTH_KEY"))
     #   data3 = merge(data1, data2, ...)
     #   rm(data1); rm(data2); gc()
     #   if(nrow(data3) > 0) {

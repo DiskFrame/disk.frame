@@ -33,11 +33,11 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     
     ncx = nchunks(x)
     ncy = nchunks(y)
-    if (merge_by_chunk_id == F) {
+    if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = T, overwrite = overwrite))
+      return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map2.disk.frame(x, y, ~{
         if(is.null(.y)) {

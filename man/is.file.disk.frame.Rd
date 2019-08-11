@@ -5,9 +5,9 @@
 \alias{is.dir.disk.frame}
 \title{Checks if the df is a single-file based disk.frame}
 \usage{
-is.file.disk.frame(df, check.consistency = T)
+is.file.disk.frame(df, check.consistency = TRUE)
 
-is.dir.disk.frame(df, check.consistency = T)
+is.dir.disk.frame(df, check.consistency = TRUE)
 }
 \arguments{
 \item{df}{a disk.frame}

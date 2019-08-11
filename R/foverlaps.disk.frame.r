@@ -45,7 +45,7 @@ foverlaps.disk.frame <-
   overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(df2)) {
-    map.disk.frame(df1, ~foverlaps(.x, df2, ...), ..., lazy = F, compress = compress, overwrite = overwrite)
+    map.disk.frame(df1, ~foverlaps(.x, df2, ...), ..., lazy = FALSE, compress = compress, overwrite = overwrite)
   } else if (merge_by_chunk_id | (identical(shardkey(df1), shardkey(df2)))) {
     # if the shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
@@ -55,12 +55,12 @@ foverlaps.disk.frame <-
     df3 = merge(
       data.table(
         chunk_id = list.files(path1), 
-        pathA = list.files(path1,full.names = T),
+        pathA = list.files(path1,full.names = TRUE),
         file_id = 1:length(list.files(path1))
       ),
       data.table(
         chunk_id = list.files(path2), 
-        pathB = list.files(path2,full.names = T)
+        pathB = list.files(path2,full.names = TRUE)
       ),
       by = "chunk_id"
     )

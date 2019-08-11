@@ -52,7 +52,7 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' 
 #' # clean up
 #' delete(cars.df)
-collect_list <- function(x, simplify = F, parallel = !is.null(attr(x,"lazyfn"))) {
+collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn"))) {
   if(nchunks(x) > 0) {
     res <- NULL
     if (parallel) {

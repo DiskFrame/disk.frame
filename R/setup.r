@@ -16,13 +16,13 @@
 #'   # set the number workers to 2
 #'   setup_disk.frame(2)
 #' 
+#'   # setup disk.frame to use multiple workers
+#'   # these may use more than two cores, so it commented out
+#'   # setup_disk.frame()
+#'
 #'   # set the future backend to sequential
 #'   # these may use more than two cores, so it commented out
 #'   # setup_disk.frame(future_backend = future::sequential)
-#'   
-#'   # setup disk.frame to use multiple workers
-#'   # these may use more than two cores, so it commented out
-#'   setup_disk.frame()
 #' }
 setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), future_backend = multiprocess, future.globals.maxSize = Inf, ..., gui = FALSE) {
   #browser()
@@ -41,7 +41,7 @@ setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), f
       shiny::h1("disk.frame settings"),
       shiny::sliderInput(
         "nbrOfWorkers", 
-        sprintf("Number of workers (recommendation = %d)", parallel::detectCores(logical = F)),
+        sprintf("Number of workers (recommendation = %d)", parallel::detectCores(logical = FALSE)),
         1, 
         parallel::detectCores(), 
         value = future::nbrOfWorkers(), 

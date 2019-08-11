@@ -24,7 +24,7 @@ Increase or decrease the number of chunks in the disk.frame
 \examples{
 cars.df = as.disk.frame(cars, nchunks = 2)
 
-# re-chunking cars.df to 3 chunks, done "in-place"
+# re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df
 \dontrun{
 rechunk(cars.df, 3)
 }
