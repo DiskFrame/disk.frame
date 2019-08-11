@@ -89,7 +89,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
           rm(tmpdt); gc()
         }
         
-        print(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
+        message(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
         
         # remove the files
         fs::dir_delete(tmpdir1)
@@ -101,7 +101,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
         i <- 0
         tmpdir1 = tempfile(pattern="df_tmp")
         fs::dir_create(tmpdir1)
-        #print(tmpdir1)
+        #message(tmpdir1)
         
         done = FALSE
         skiprows = 0
@@ -146,7 +146,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
           rm(tmpdt); gc()
         }
         
-        print(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
+        message(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
         #
         # do not run this in parallel as the level above this is likely in parallel
         system.time(

@@ -28,7 +28,7 @@ setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), f
   #browser()
   if(!gui) {
     future::plan(future_backend, workers = workers, gc = TRUE, ...)
-    print(sprintf("The number of workers available for disk.frame is %d", future::nbrOfWorkers()))
+    message(sprintf("The number of workers available for disk.frame is %d", future::nbrOfWorkers()))
     options(future.globals.maxSize = future.globals.maxSize) # do not limit the amount of transfers to other workers
     options(disk.frame.nworkers = workers)
   } else if(gui) {

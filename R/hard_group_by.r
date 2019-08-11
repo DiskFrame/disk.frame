@@ -147,7 +147,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     
     res1
   }, error = function(e) {
-    #print(e)
+    #message(e)
     # This will return the variable names
     by = rlang::enquos(...) %>% 
       substr(2, nchar(.))

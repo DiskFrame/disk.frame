@@ -8,7 +8,8 @@
 \method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x,
   "lazyfn")))
 
-collect_list(x, simplify = F, parallel = !is.null(attr(x, "lazyfn")))
+collect_list(x, simplify = FALSE, parallel = !is.null(attr(x,
+  "lazyfn")))
 }
 \arguments{
 \item{x}{a disk.frame}

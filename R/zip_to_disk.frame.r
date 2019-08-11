@@ -74,7 +74,7 @@ validate_zip_to_disk.frame = function(zipfile, outdir) {
   
   # check if files are ok
   system.time(lapply(files$Name, function(fn) {
-    print(fn)
+    message(fn)
     out_fst_file = file.path(outdir, paste0(fn,".fst"))
     
     if(file.exists(out_fst_file)) {
@@ -84,27 +84,27 @@ validate_zip_to_disk.frame = function(zipfile, outdir) {
         # read it again and write again
         pt = proc.time()
         read_fst(out_fst_file, as.data.table = TRUE)
-        print(paste0("checking(read): ", timetaken(pt))); pt = proc.time()
+        message(paste0("checking(read): ", timetaken(pt))); pt = proc.time()
       }, error = function(e) {
-        print(e)
+        message(e)
         pt = proc.time()
         unzip(zipfile, files = fn, exdir = tmpdir)
-        print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
+        message(paste0("unzip: ", timetaken(pt))); pt = proc.time()
         write_fst(fread(file.path(tmpdir, fn)), out_fst_file,100)
-        print(paste0("read: ", timetaken(pt)))
+        message(paste0("read: ", timetaken(pt)))
         unlink(file.path(tmpdir, fn))
         gc()
       })
-      print("output already exists")
+      message("output already exists")
       return(NULL)
     } else {
       # if the output file doesn't exists then the process might have failed
       # re do again
       pt = proc.time()
       unzip(zipfile, files = fn, exdir = tmpdir)
-      print(paste0("unzip: ", timetaken(pt))); pt = proc.time()
+      message(paste0("unzip: ", timetaken(pt))); pt = proc.time()
       write_fst(fread(file.path(tmpdir, fn)), out_fst_file,100)
-      print(paste0("read: ", timetaken(pt)))
+      message(paste0("read: ", timetaken(pt)))
       unlink(file.path(tmpdir, fn))
       gc()
     }

@@ -5,8 +5,8 @@
 \alias{validate_zip_to_disk.frame}
 \title{Automatically read and convert every single CSV file within the zip file to disk.frame format}
 \usage{
-zip_to_disk.frame(zipfile, outdir, ..., validation.check = F,
-  overwrite = T)
+zip_to_disk.frame(zipfile, outdir, ..., validation.check = FALSE,
+  overwrite = TRUE)
 
 validate_zip_to_disk.frame(zipfile, outdir)
 }
