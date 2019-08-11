@@ -30,7 +30,7 @@ shard <- function(df, shardby, outdir = tempfile(fileext = ".df"), ..., nchunks 
     tryCatch(
       eval(parse(text=code)),
       error = function(e) {
-        print("error occurred in shard")
+        message("error occurred in shard")
       }
     )
     

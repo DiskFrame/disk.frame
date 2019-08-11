@@ -87,7 +87,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
                                 chunk_id = .y))
     
     metas_df_summ = metas_df[,.N,.(colnames, coltypes)][order(N)]
-    metas_df_summ[,existing_df := T]
+    metas_df_summ[,existing_df := TRUE]
     
     new_chunk_meta = 
       data.table::data.table(
@@ -99,7 +99,9 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     setDT(merged_meta)
     
     # find out which vars are matched
-    check_vars = full_join(new_chunk_meta[,.(colnames, new_chunk)], metas_df[,.(colnames=unique(colnames), existing_df = TRUE)], by = "colnames")
+    check_vars = full_join(
+      new_chunk_meta[,.(colnames, new_chunk)], 
+      metas_df[,.(colnames=unique(colnames), existing_df = TRUE)], by = "colnames")
     
     setDT(check_vars)
     if(nrow(check_vars[is.na(new_chunk)]) > 0) {
@@ -121,11 +123,11 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
       coltypes.x == "Date" & coltypes.y %in% c("integer", "double")
     }]
     
-    metas_df_summ2 = metas_df_summ1[incompatible_types == T,]
+    metas_df_summ2 = metas_df_summ1[incompatible_types == TRUE,]
     
     if(nrow(metas_df_summ2)>0) {
-      print("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added")
-      print(metas_df_summ2)
+      message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added")
+      message(metas_df_summ2)
       stop("")
     }
   }

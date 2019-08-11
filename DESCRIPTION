@@ -1,6 +1,6 @@
 Type: Package
 Package: disk.frame
-Title: Fast Disk-Based Data Manipulation Framework for Larger-than-RAM Structured Tabular Data
+Title: Larger-than-RAM Disk-Based Data Manipulation Framework
 Version: 0.1.0
 Date: 2019-08-03
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",

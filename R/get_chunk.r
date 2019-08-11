@@ -45,7 +45,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   }
   
   if(is.numeric(n)) {
-    #filename = list.files(path, full.names = T)[n]
+    #filename = list.files(path, full.names = TRUE)[n]
     filename = file.path(path, paste0(n,".fst"))
   } else {
     if (full.names) {
@@ -59,21 +59,21 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   if (!fs::file_exists(filename)) {
     warning(glue("The chunk {filename} does not exist; returning an empty data.table"))
     notbl <- data.table()
-    attr(notbl, "does not exist") <- T
+    attr(notbl, "does not exist") <- TRUE
     return(notbl)
   }
 
   if (is.null(cmds)) {
     if(typeof(keep)!="closure") {
-      fst::read_fst(filename, columns = keep, as.data.table = T,...)
+      fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
     } else {
-      fst::read_fst(filename, as.data.table = T,...)
+      fst::read_fst(filename, as.data.table = TRUE,...)
     }
   } else {
     if(typeof(keep)!="closure") {
-      play(fst::read_fst(filename, columns = keep, as.data.table = T,...), cmds)
+      play(fst::read_fst(filename, columns = keep, as.data.table = TRUE,...), cmds)
     } else {
-      play(fst::read_fst(filename, as.data.table = T,...), cmds)
+      play(fst::read_fst(filename, as.data.table = TRUE,...), cmds)
     }
   }
 }

@@ -1,4 +1,4 @@
-#' Perform the computation; same as calling map without .f and lazy = F
+#' Perform the computation; same as calling map without .f and lazy = FALSE
 #' @param x a disk.frame
 #' @param name not used kept for compatibility with dplyr
 #' @export

@@ -17,10 +17,11 @@
 #' delete(cars.df)
 #' 
 #' \dontrun{
-#' # specify a different path
-#' as.disk.frame(cars, outdir = "some_path.df") 
+#' # specify a different path in the temporary folder, you are free to choose a different folder
+#' as.disk.frame(cars, outdir = file.path(tempdir(), "some_path.df"))
 #' 
 #' # specify a different number of chunks
+#' # this writes to tempdir() by default
 #' as.disk.frame(cars, nchunks = 4, overwrite = TRUE) 
 #' }
 as.disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = recommend_nchunks(df), overwrite = FALSE, shardby = NULL, compress = 50,...) {
@@ -35,6 +36,6 @@ as.disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = reco
     
     write_disk.frame(df, outdir, nchunks, overwrite = TRUE, shardby="", compress = compress, ...)
   } else {
-    shard(df, shardby = shardby, outdir = outdir, nchunks = nchunks, overwrite = T, compress = compress, ...)
+    shard(df, shardby = shardby, outdir = outdir, nchunks = nchunks, overwrite = TRUE, compress = compress, ...)
   }
 }

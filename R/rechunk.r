@@ -8,7 +8,7 @@
 #' @examples
 #' cars.df = as.disk.frame(cars, nchunks = 2)
 #' 
-#' # re-chunking cars.df to 3 chunks, done "in-place"
+#' # re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df
 #' \dontrun{
 #' rechunk(cars.df, 3)
 #' }
@@ -44,7 +44,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     )
     
     # back-up the files first
-    full_files = dir(outdir, full.names = T)
+    full_files = dir(outdir, full.names = TRUE)
     short_files = dir(outdir)
     
     # move all files to the back up folder
@@ -57,7 +57,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     }
     
     # TODO check for validity
-    print(glue::glue("files have been backed up to temporary dir {back_up_tmp_dir}. You can recover there files until you restart your R session"))
+    message(glue::glue("files have been backed up to temporary dir {back_up_tmp_dir}. You can recover there files until you restart your R session"))
     
     df = disk.frame(back_up_tmp_dir)
   }
@@ -77,7 +77,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     nr = nrow(df)
     nr_per_chunk = ceiling(nr/nchunks)
     used_so_far = 0
-    done = F
+    done = FALSE
     chunks_read = 1
     chunks_written = 0
     res = disk.frame(outdir)

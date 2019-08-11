@@ -132,11 +132,11 @@ status <- function(...) {
 status.disk.frame <- function(df) {
   perf = attr(df,"performing")
   if(perf == "none") {
-    nc = nchunk(df, skip.ready.check = T)
+    nc = nchunk(df, skip.ready.check = TRUE)
     return(list(status = "at rest", nchunk = nc, nchunk_ready = nc))
   } else if (perf == "hard_group_by") {
     fpath = attr(df, "parent")
-    ndf = nchunk(df, skip.ready.check = T)
+    ndf = nchunk(df, skip.ready.check = TRUE)
     if(!dir.exists(file.path(fpath, ".performing"))) {
       return(list(status = "hard group by", nchunk = ndf, nchunk_ready = 0))
     } else if(dir.exists(file.path(fpath, ".performing", "outchunks"))) {
@@ -155,16 +155,16 @@ status.disk.frame <- function(df) {
 is_ready.disk.frame <- function(df) {
   sts = status(df)
   if(sts$status == "none") {
-    return(T)
+    return(TRUE)
   } else {
-    return(T)
+    return(TRUE)
   }
 }
 
 #' Checks if the df is a single-file based disk.frame
 #' @param df a disk.frame
 #' @param check.consistency check for consistency e.g. if it's actually a file
-is.file.disk.frame <- function(df, check.consistency = T) {
+is.file.disk.frame <- function(df, check.consistency = TRUE) {
   if(check.consistency) {
     fpath <- attr(df,"path")
     if(!dir.exists(fpath) & file.exists(fpath)) {
@@ -177,7 +177,7 @@ is.file.disk.frame <- function(df, check.consistency = T) {
 }
 
 #' @rdname is.file.disk.frame
-is.dir.disk.frame <- function(df, check.consistency = T) {
+is.dir.disk.frame <- function(df, check.consistency = TRUE) {
   !is.file.disk.frame(df, check.consistency = check.consistency)
 }
 
@@ -203,8 +203,8 @@ head.disk.frame <- function(x, n = 6L, ...) {
   path1 <- attr(x,"path")
   cmds <- attr(x, "lazyfn")
   if(fs::dir_exists(path1)) {
-    path2 <- list.files(path1,full.names = T)[1]
-    head(play(fst::read_fst(path2, from = 1, to = n, as.data.table = T), cmds), n = n, ...)
+    path2 <- list.files(path1,full.names = TRUE)[1]
+    head(play(fst::read_fst(path2, from = 1, to = n, as.data.table = TRUE), cmds), n = n, ...)
   } else {
     stop(glue::glue("dir {path1} does not exist"))
   }
@@ -220,9 +220,9 @@ tail.disk.frame <- function(x, n = 6L, ...) {
   path1 <- attr(x,"path")
   cmds <- attr(x, "lazyfn")
   if(dir.exists(path1)) {
-    path2 <- list.files(path1,full.names = T)
+    path2 <- list.files(path1,full.names = TRUE)
     path2 <- path2[length(path2)]
-    tail(play(fst::read_fst(path2, as.data.table = T), cmds), n = n, ...)
+    tail(play(fst::read_fst(path2, as.data.table = TRUE), cmds), n = n, ...)
   } else {
     stop(glue::glue("dir {path1} does not exist"))
   }

@@ -39,3 +39,4 @@ tests_manual$
 ^CRAN-RELEASE$
 ^doc$
 ^Meta$
+^rsconnect$

@@ -10,5 +10,5 @@ print.disk.frame <- function(x, ...) {
              ,glue::glue("nrow: {disk.frame::nrow(x)}")
              ,glue::glue("ncol: {disk.frame::ncol(x)}\n")
   )
-  cat(a)
+  message(a)
 }

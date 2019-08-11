@@ -11,7 +11,7 @@ get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 
 \item{...}{passed to list.files}
 
-\item{full.names}{If TRUE returns the full path to the file, Defaults to F.}
+\item{full.names}{If TRUE returns the full path to the file, Defaults to FALSE}
 
 \item{strip_extension}{If TRUE then the file extension in the chunk_id is removed. Defaults to TRUE}
 }

@@ -27,14 +27,14 @@ overwrite_check <- function(outdir, overwrite) {
       tryCatch({
         fs::dir_delete(outdir)
       }, error = function(e) {
-        print(e)
+        message(e)
         stop(glue::glue("Failed to delete the directory {outdir} in preparation for overwrite, this could be due to many reason and may be a genuine bug. Firstly, though, please ensure you do not have the folder open by Explorer (Windows) or other file management systems"))
       })
     }
     
     fs::dir_create(outdir)
   } else if(overwrite == FALSE & fs::dir_exists(outdir)) {
-    stop(glue::glue("overwrite  = F and outdir '{outdir}' already exists"))
+    stop(glue::glue("overwrite  = FALSE and outdir '{outdir}' already exists"))
   } else {
     fs::dir_create(outdir)
   }

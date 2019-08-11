@@ -5,8 +5,8 @@
 \alias{validate_zip_to_disk.frame}
 \title{Automatically read and convert every single CSV file within the zip file to disk.frame format}
 \usage{
-zip_to_disk.frame(zipfile, outdir, ..., validation.check = F,
-  overwrite = T)
+zip_to_disk.frame(zipfile, outdir, ..., validation.check = FALSE,
+  overwrite = TRUE)
 
 validate_zip_to_disk.frame(zipfile, outdir)
 }
@@ -30,10 +30,20 @@ Automatically read and convert every single CSV file within the zip file to disk
 Validate and auto-correct read and convert every single file within the zip file to df format
 }
 \examples{
-\dontrun{
-path_to_zip_file_containing_csv = "some/path/file.zip"
+# create a zip file containing a csv
+csvfile = tempfile(fileext = ".csv")
+write.csv(cars, csvfile)
+zipfile = tempfile(fileext = ".zip")
+zip(zipfile, csvfile)
 
 # read every file and convert it to a disk.frame
-zip_to_disk.frame(path_to_zip_file_containing_csv, tempfile(fileext = ".df"))
-}
+zip.df = zip_to_disk.frame(zipfile, tempfile(fileext = ".df"))
+
+# there is only one csv file so it return a list of one disk.frame
+zip.df[[1]]
+
+# clean up
+unlink(csvfile)
+unlink(zipfile)
+delete(zip.df[[1]])
 }

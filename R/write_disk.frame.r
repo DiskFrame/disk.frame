@@ -30,7 +30,7 @@ write_disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = n
   }
   
   if(is_disk.frame(df)) {
-    map.disk.frame(df, ~.x, outdir = outdir, lazy = F, ..., compress = compress, overwrite = overwrite)
+    map.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = overwrite)
   } else if ("data.frame" %in% class(df)) {
     df[,{
       if (base::nrow(.SD) > 0) {

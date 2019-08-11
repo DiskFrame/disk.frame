@@ -4,7 +4,7 @@
 \alias{[.disk.frame}
 \title{[ interface for disk.frame using fst backend}
 \usage{
-\method{[}{disk.frame}(df, ..., keep = NULL, rbind = T,
+\method{[}{disk.frame}(df, ..., keep = NULL, rbind = TRUE,
   use.names = TRUE, fill = FALSE, idcol = NULL)
 }
 \arguments{

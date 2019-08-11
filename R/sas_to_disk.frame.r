@@ -25,7 +25,7 @@ sas_to_disk.frame = function(inpath, outpath, nchunks = disk.frame::recommend_nc
           file.remove(incsv)
           gc()
         }
-        print(glue::glue("converting: {w} of {nchunks}; time: {Sys.time()}"))
+        message(glue::glue("converting: {w} of {nchunks}; time: {Sys.time()}"))
       } else if (!extracting_jobs & !extracting[w]) {
         done1 = TRUE
         extracting_jobs = TRUE
@@ -33,11 +33,11 @@ sas_to_disk.frame = function(inpath, outpath, nchunks = disk.frame::recommend_nc
         ok %<-% {
           sas_to_csv(inpath, w, nchunks)
         }
-        print(glue::glue("extracting: {w} of {nchunks}; time: {Sys.time()}"))
+        message(glue::glue("extracting: {w} of {nchunks}; time: {Sys.time()}"))
       }
     }
     if(!done1) {
-      print(glue::glue("didn't get any work: {Sys.time()}"))
+      message(glue::glue("didn't get any work: {Sys.time()}"))
       Sys.sleep(18)
     }
   }

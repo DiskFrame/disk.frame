@@ -39,11 +39,11 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"))
     
     # get all the chunk ids
     xc = data.table(cid = get_chunk_ids(.x))
-    xc[,xid:=get_chunk_ids(.x, full.names = T)]
+    xc[,xid:=get_chunk_ids(.x, full.names = TRUE)]
     yc = data.table(cid = get_chunk_ids(.y))
-    yc[,yid:=get_chunk_ids(.y, full.names = T)]
+    yc[,yid:=get_chunk_ids(.y, full.names = TRUE)]
     
-    xyc = merge(xc, yc, by="cid", all = T, allow.cartesian = T)
+    xyc = merge(xc, yc, by="cid", all = TRUE, allow.cartesian = TRUE)
     
     ddd = list(...)
     # apply the functions
@@ -51,8 +51,8 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"))
     #future.apply::future_mapply(function(xid, yid, outid) {
     #mapply(function(xid, yid, outid) {
     furrr::future_pmap(list(xyc$xid, xyc$yid, xyc$cid), function(xid, yid, outid) {
-      xch = disk.frame::get_chunk(.x, xid, full.names = T)
-      ych = disk.frame::get_chunk(.y, yid, full.names = T)
+      xch = disk.frame::get_chunk(.x, xid, full.names = TRUE)
+      ych = disk.frame::get_chunk(.y, yid, full.names = TRUE)
       xych = .f(xch, ych)
       if(base::nrow(xych) > 0) {
         fst::write_fst(xych, file.path(outdir, paste0(outid,".fst")))
@@ -62,7 +62,7 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"))
       NULL
     }
     #,xyc$xid, xyc$yid, xyc$cid # together with mapply
-    , .progress = T
+    , .progress = TRUE
     )
     
     return(disk.frame(outdir))
@@ -73,8 +73,8 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"))
     f_for_passing = force(.f)
     ddd = list(...)
     tmp_disk.frame = force(.x)
-    res = furrr::future_map2(get_chunk_ids(tmp_disk.frame, full.names = T), .y, function(xs, ys) {
-      ddd = c(list(get_chunk(tmp_disk.frame, xs, full.names = T), ys), ddd)
+    res = furrr::future_map2(get_chunk_ids(tmp_disk.frame, full.names = TRUE), .y, function(xs, ys) {
+      ddd = c(list(get_chunk(tmp_disk.frame, xs, full.names = TRUE), ys), ddd)
       
       pryr::do_call(f_for_passing, ddd)
     })

@@ -18,7 +18,7 @@
 \alias{delayed}
 \alias{delayed.disk.frame}
 \alias{chunk_lapply}
-\title{Perform the computation; same as calling map without .f and lazy = F}
+\title{Perform the computation; same as calling map without .f and lazy = FALSE}
 \usage{
 \method{compute}{disk.frame}(x, name, outdir = tempfile("tmp_df_",
   fileext = ".df"), overwrite = TRUE, ...)
@@ -96,7 +96,7 @@ chunk_lapply(...)
 \item{vars_and_pkgs}{variables and packages to send to a background session. This is typically automatically detected}
 }
 \description{
-Perform the computation; same as calling map without .f and lazy = F
+Perform the computation; same as calling map without .f and lazy = FALSE
 
 Apply the same function to all chunks
 
