@@ -85,6 +85,17 @@ Finally, Spark can only apply functions that are implemented for Spark, whereas 
 
 The packages [multidplyr](https://github.com/tidyverse/multidplyr) doesn't seem to be disk-focussed and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/], it seems to use it's own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package [`distributedR`](https://github.com/vertica/DistributedR) hasn't been updated for a few years and also seems to require its own functions and verbs.
 
+## Set-up `disk.frame`
+`disk.frame` works best if it can process multiple data chunks in parallel. The best way to set-up `disk.frame` so that each CPU core runs a background worker is by using
+
+```r
+setup_disk.frame()
+```
+
+The `setup_disk.frame()` sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.
+
+Alternatively, one may specify the number of workers using `setup_disk.frame(workers = n)`.
+
 # Example usage
 ```r
 #install.packages(c("fst","future","data.table"))
@@ -99,7 +110,7 @@ library(fst)
 
 # you need to run this to make multiple workers
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
-setup_disk.frame() 
+setup_disk.frame()
 
 rows_per_chunk = 1e7
 # generate synthetic data

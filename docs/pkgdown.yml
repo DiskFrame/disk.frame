@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   common-questions: common-questions.html
   data-table-syntax: data-table-syntax.html
+  ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
 

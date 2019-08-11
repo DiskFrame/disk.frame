@@ -20,8 +20,13 @@ knitr::opts_chunk$set(
 ```{r setup, cache=TRUE}
 library(disk.frame)
 
-# uncomment the below to setup disk.frame to use multiple workers
-# setup_disk.frame()
+# set-up disk.frame to use multiple workers
+if(interactive()) {
+  setup_disk.frame()
+} else {
+  setup_disk.frame(2)
+}
+
 
 library(nycflights13)
 
@@ -42,6 +47,12 @@ flights.df[,.N, .(year, month), keep = c("year", "month")]
 ```
 
 All `data.table` syntax are supported. However, `disk.frame` adds the ability to load only those columns required for the analysis using the `keep =` option. In the above analysis, only the `year` and `month` variables are required and hence `keep = c("year", "month")` was used. 
+
+Alternatively, we can use the `srckeep` function to achieve the same, e.g.
+
+```r
+srckeep(flights.df, c("year", "month"))[,.N, .(year, month)]
+```
 
 ### External variables are captured
 
