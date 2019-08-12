@@ -109,8 +109,8 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   
   cid = get_chunk_ids(.x, full.names = TRUE)
   
-  #res = future.apply::future_lapply(1:length(files), function(ii) {
-  res = lapply(1:length(files), function(ii) {
+  res = future.apply::future_lapply(1:length(files), function(ii) {
+  #res = lapply(1:length(files), function(ii) {
     ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
     res = .f(ds)
     if(!is.null(outdir)) {
