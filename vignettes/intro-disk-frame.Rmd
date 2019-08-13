@@ -71,7 +71,7 @@ Alternatively, one may specify the number of workers using `setup_disk.frame(wor
 The `disk.frame` package provides convenient functions to convert `data.frame`s and CSVs to `disk.frame`s.
 
 ### Creating a `disk.frame` from `data.frame`
-We convert a `data.frame` to `disk.frame` using the `as.data.frame` function.
+We convert a `data.frame` to `disk.frame` using the `as.disk.frame` function.
 
 ```{r asdiskframe, cache=TRUE}
 library(nycflights13)
