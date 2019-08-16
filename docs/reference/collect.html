@@ -166,7 +166,7 @@ hence parallel = FALSE is a better choice</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
 <span class='co'># use collect to bring the data into RAM as a data.table/data.frame</span>
 <span class='fu'>collect</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt;     speed dist
 #&gt;  1:     4    2
@@ -221,11 +221,11 @@ hence parallel = FALSE is a better choice</p></td>
 #&gt; 50:    25   85
 #&gt;     speed dist</div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
+<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
 
 <span class='co'># returns the result as a list</span>
-<span class='fu'>collect_list</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>collect_list</span>(<span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]
@@ -244,7 +244,7 @@ hence parallel = FALSE is a better choice</p></td>
 #&gt; [1] 1
 #&gt; </div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -6,7 +6,7 @@
 \usage{
 rbindlist.disk.frame(df_list, outdir = tempfile(fileext = ".df"),
   by_chunk_id = TRUE, parallel = TRUE, compress = 50,
-  overwrite = TRUE)
+  overwrite = TRUE, .progress = TRUE)
 }
 \arguments{
 \item{df_list}{A list of disk.frames}

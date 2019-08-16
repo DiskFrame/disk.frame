@@ -132,7 +132,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>), <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'>recommend_nchunks</span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
     
@@ -172,7 +172,7 @@
 <span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'>shard</span>(<span class='no'>iris</span>, <span class='st'>"Species"</span>)
 
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)</div></pre>
+<span class='fu'>delete</span>(<span class='no'>iris.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

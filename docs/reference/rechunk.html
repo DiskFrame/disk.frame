@@ -159,18 +159,17 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span></div><span class='co'># NOT RUN {</span>
 <span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)
 <span class='co'># }</span><div class='input'>
 <span class='no'>new_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>)
 <span class='co'># re-chunking cars.df to 4 chunks, shardby speed, done "out-of-place"</span>
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>4</span>, <span class='no'>new_path</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='st'>"speed"</span>)
-
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>4</span>, <span class='no'>new_path</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='st'>"speed"</span>)</div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
+<span class='fu'>delete</span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
