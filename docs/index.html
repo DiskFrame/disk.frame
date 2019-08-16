@@ -142,7 +142,7 @@
 <h3 class="hasAnchor">
 <a href="#d-how-does-disk-frame-work" class="anchor"></a>d) How does <code>disk.frame</code> work?</h3>
 <p><code>disk.frame</code> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
-<p><code>disk.frame</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/map.html">map.disk.frame(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>disk.frame</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
+<p><code>disk.frame</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code>map.disk.frame(a.disk.frame, fn, lazy = F)</code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>disk.frame</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
 </div>
 <div id="e-how-is-disk-frame-different-from-spark-dask-and-juliadb-jl" class="section level3">
 <h3 class="hasAnchor">
@@ -162,9 +162,9 @@
 <a href="#set-up-disk-frame" class="anchor"></a>Set-up <code>disk.frame</code>
 </h2>
 <p><code>disk.frame</code> works best if it can process multiple data chunks in parallel. The best way to set-up <code>disk.frame</code> so that each CPU core runs a background worker is by using</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a></code></pre></div>
-<p>The <code><a href="reference/setup_disk.frame.html">setup_disk.frame()</a></code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
-<p>Alternatively, one may specify the number of workers using <code><a href="reference/setup_disk.frame.html">setup_disk.frame(workers = n)</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">setup_disk.frame</span>()</a></code></pre></div>
+<p>The <code>setup_disk.frame()</code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
+<p>Alternatively, one may specify the number of workers using <code>setup_disk.frame(workers = n)</code>.</p>
 </div>
 </div>
 <div id="example-usage" class="section level1">
@@ -182,7 +182,7 @@
 <a class="sourceLine" id="cb4-10" title="10"></a>
 <a class="sourceLine" id="cb4-11" title="11"><span class="co"># you need to run this to make multiple workers</span></a>
 <a class="sourceLine" id="cb4-12" title="12"><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="kw">setup_disk.frame</span>()</a>
 <a class="sourceLine" id="cb4-14" title="14"></a>
 <a class="sourceLine" id="cb4-15" title="15">rows_per_chunk =<span class="st"> </span><span class="fl">1e7</span></a>
 <a class="sourceLine" id="cb4-16" title="16"><span class="co"># generate synthetic data</span></a>
@@ -194,11 +194,11 @@
 <a class="sourceLine" id="cb4-22" title="22"><span class="co"># write out nworkers chunks</span></a>
 <a class="sourceLine" id="cb4-23" title="23">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb4-24" title="24"></a>
-<a class="sourceLine" id="cb4-25" title="25">df =<span class="st"> </span><span class="kw"><a href="reference/disk.frame.html">disk.frame</a></span>(tmpdir)</a>
+<a class="sourceLine" id="cb4-25" title="25">df =<span class="st"> </span><span class="kw">disk.frame</span>(tmpdir)</a>
 <a class="sourceLine" id="cb4-26" title="26"></a>
 <a class="sourceLine" id="cb4-27" title="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="dv">1</span><span class="op">:</span>(nworkers<span class="op">*</span><span class="dv">2</span>), <span class="cf">function</span>(ii) {</a>
 <a class="sourceLine" id="cb4-28" title="28">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(ab &lt;-<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">a =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(rows_per_chunk), <span class="dt">b =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(rows_per_chunk)) ) <span class="co">#102 seconds</span></a>
-<a class="sourceLine" id="cb4-29" title="29">  <span class="kw"><a href="reference/add_chunk.html">add_chunk</a></span>(df, ab, ii)</a>
+<a class="sourceLine" id="cb4-29" title="29">  <span class="kw">add_chunk</span>(df, ab, ii)</a>
 <a class="sourceLine" id="cb4-30" title="30">  <span class="ot">NULL</span></a>
 <a class="sourceLine" id="cb4-31" title="31">})</a>
 <a class="sourceLine" id="cb4-32" title="32"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Generating data took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
@@ -206,7 +206,7 @@
 <a class="sourceLine" id="cb4-34" title="34"></a>
 <a class="sourceLine" id="cb4-35" title="35"><span class="co"># read and output the disk.frame as it to assess "sequential" read-write performance</span></a>
 <a class="sourceLine" id="cb4-36" title="36">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb4-37" title="37">df2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/map.html">map</a></span>(df, <span class="op">~</span>.x, <span class="dt">outdir =</span> <span class="st">"tmpfst2"</span>, <span class="dt">lazy =</span> F, <span class="dt">overwrite =</span> T)</a>
+<a class="sourceLine" id="cb4-37" title="37">df2 &lt;-<span class="st"> </span><span class="kw">map</span>(df, <span class="op">~</span>.x, <span class="dt">outdir =</span> <span class="st">"tmpfst2"</span>, <span class="dt">lazy =</span> F, <span class="dt">overwrite =</span> T)</a>
 <a class="sourceLine" id="cb4-38" title="38"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Read and write took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb4-39" title="39"></a>
 <a class="sourceLine" id="cb4-40" title="40"><span class="co"># get first few rows</span></a>
@@ -216,14 +216,14 @@
 <a class="sourceLine" id="cb4-44" title="44"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail</a></span>(df)</a>
 <a class="sourceLine" id="cb4-45" title="45"></a>
 <a class="sourceLine" id="cb4-46" title="46"><span class="co"># number of rows</span></a>
-<a class="sourceLine" id="cb4-47" title="47"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df)</a>
+<a class="sourceLine" id="cb4-47" title="47"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(df)</a>
 <a class="sourceLine" id="cb4-48" title="48"></a>
 <a class="sourceLine" id="cb4-49" title="49"><span class="co"># number of columns</span></a>
-<a class="sourceLine" id="cb4-50" title="50"><span class="kw"><a href="reference/ncol_nrow.html">ncol</a></span>(df)</a></code></pre></div>
+<a class="sourceLine" id="cb4-50" title="50"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(df)</a></code></pre></div>
 <div id="example-dplyr-verbs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-dplyr-verbs" class="anchor"></a>Example: dplyr verbs</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">df =<span class="st"> </span><span class="kw"><a href="reference/disk.frame.html">disk.frame</a></span>(tmpdir)</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">df =<span class="st"> </span><span class="kw">disk.frame</span>(tmpdir)</a>
 <a class="sourceLine" id="cb5-2" title="2"></a>
 <a class="sourceLine" id="cb5-3" title="3">df <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-4" title="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">suma =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(a)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this does a count per chunk</span></a>
@@ -240,7 +240,7 @@
 <a class="sourceLine" id="cb5-15" title="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(df_filtered &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-16" title="16"><span class="st">              </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(a <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>))</a>
 <a class="sourceLine" id="cb5-17" title="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb5-18" title="18"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</a></code></pre></div>
+<a class="sourceLine" id="cb5-18" title="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(df_filtered)</a></code></pre></div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
 <a href="#group-by" class="anchor"></a>Group by</h3>
@@ -260,7 +260,7 @@
 <a class="sourceLine" id="cb7-2" title="2">res1 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(b <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">blt005 =</span> b <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/hard_group_by.html">hard_group_by</a></span>(blt005) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="st">  </span><span class="kw">hard_group_by</span>(blt005) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span></a>
 <a class="sourceLine" id="cb7-6" title="6"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">suma =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(a), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-7" title="7"><span class="st">  </span><span class="kw">collect</span>(<span class="dt">parallel =</span> T)</a>
 <a class="sourceLine" id="cb7-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"group by took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
@@ -271,7 +271,7 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># keep only one var is faster</span></a>
 <a class="sourceLine" id="cb8-2" title="2">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb8-3" title="3">res1 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#keeping only the column `a` from the input</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="st">  </span><span class="kw">srckeep</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#keeping only the column `a` from the input</span></a>
 <a class="sourceLine" id="cb8-5" title="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">suma =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(a), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-6" title="6"><span class="st">  </span><span class="kw">collect</span>(<span class="dt">parallel =</span> T)</a>
 <a class="sourceLine" id="cb8-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"summarise keeping only one column "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
@@ -297,7 +297,7 @@
 <a class="sourceLine" id="cb9-8" title="8">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>
 <a class="sourceLine" id="cb9-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(df_filtered &lt;-<span class="st"> </span>df[a <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>,])</a>
 <a class="sourceLine" id="cb9-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"df[a &lt; 0.1,] took: "</span>, <span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(df_filtered)</a>
 <a class="sourceLine" id="cb9-12" title="12"></a>
 <a class="sourceLine" id="cb9-13" title="13"><span class="co"># group by</span></a>
 <a class="sourceLine" id="cb9-14" title="14">pt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/proc.time">proc.time</a></span>()</a>

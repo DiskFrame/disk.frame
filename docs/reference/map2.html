@@ -160,7 +160,7 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
 
 <span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>map2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/rbindlist'>rbindlist</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
 <span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;      speed dist
@@ -266,8 +266,8 @@
 #&gt; 100:    25   85
 #&gt;      speed dist</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
+<span class='fu'>delete</span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

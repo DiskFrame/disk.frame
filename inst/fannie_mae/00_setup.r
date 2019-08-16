@@ -9,7 +9,7 @@ library(lubridate)
 library(future.apply)
 library(disk.frame)
 
-#setup_disk.frame()
+setup_disk.frame()
 
 
 raw_harp_data_path = "c:/data/fannie_mae/harp_files"
@@ -27,13 +27,13 @@ compress = 50
 
 # where the outputs go
 #outpath = "c:/data/fannie_mae_disk_frame/"
-outpath = "d:/data/fannie_mae_disk_frame/"
+outpath = "c:/data/fannie_mae_disk_frame/"
 
 #acqzip_file_path = "c:/data/Acquisition_All.zip"
-acqzip_file_path = "d:/data/fannie_mae/Acquisition_All.zip"
+acqzip_file_path = "c:/data/fannie_mae/Acquisition_All.zip"
 
 #appl_path = "C:/data/"
-appl_path = "d:/data"
+appl_path = "c:/data"
 
 Performance_ColClasses = 
   c("character", "character", "character", "numeric", "numeric", "numeric", "numeric", 

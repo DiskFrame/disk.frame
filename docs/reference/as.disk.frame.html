@@ -130,7 +130,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>as.disk.frame</span>(<span class='no'>df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'>recommend_nchunks</span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -172,7 +172,7 @@
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
 
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div><span class='co'># NOT RUN {</span>
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div><span class='co'># NOT RUN {</span>
 <span class='co'># specify a different path in the temporary folder, you are free to choose a different folder</span>
 <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"some_path.df"</span>))
 

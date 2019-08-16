@@ -145,7 +145,7 @@ as.disk.frame function is recommended for most cases</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks.disk.frame</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'>nchunks.disk.frame</span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)
 
 <span class='fu'>output_disk.frame</span>(<span class='no'>...</span>)</pre>
@@ -185,10 +185,10 @@ as.disk.frame function is recommended for most cases</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
 
 <span class='co'># write out a lazy disk.frame to disk</span>
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>write_disk.frame</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>write_disk.frame</span>(<span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:    11   17
@@ -197,8 +197,8 @@ as.disk.frame function is recommended for most cases</p>
 #&gt; 5:    19   46
 #&gt; 6:    24   70</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
+<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
+<span class='fu'>delete</span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

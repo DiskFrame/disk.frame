@@ -12,6 +12,7 @@
 #' @param overwrite Whether to overwrite the existing directory
 #' @param header Whether the files have header. Defaults to TRUE
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
+#' @importFrom pryr do_call
 #' @export
 #' @examples 
 #' tmpfile = tempfile()
@@ -23,7 +24,8 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = FALSE, ...) {
+  #browser()
   overwrite_check(outdir, overwrite)
   # reading multiple files
   if(length(infile) > 1) {
@@ -33,11 +35,19 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
                    overwrite = TRUE, header = header)
     dotdotdotorigarg = c(dotdotdot, origarg)
     
-    outdf = furrr::future_imap(infile, ~{
+    if(.progress) {
+      message("-- Converting CSVs to disk.frame --")
+      message("Converting individual CSVs to individual disk.frame (Stage 1 of 2):")
+    }
+    outdf_tmp = furrr::future_imap(infile, ~{
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
       
-      do_call(csv_to_disk.frame, dotdotdotorigarg1)
-    }) %>% rbindlist.disk.frame(outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite)
+      pryr::do_call(csv_to_disk.frame, dotdotdotorigarg1)
+    }, .progress = .progress)
+    
+    message("Row-binding the individual disk.frames together to form one large disk.frame (Stage 2 of 2):")
+    outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
+    
     return(outdf)
   } else { # reading one file
     l = length(list.files(outdir))
@@ -149,6 +159,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
         message(glue::glue("read {in_chunk_size*(i-1) + rows} rows from {infile}"))
         #
         # do not run this in parallel as the level above this is likely in parallel
+        # ZJ:
         system.time(
           fnl_out <- 
             rbindlist.disk.frame(

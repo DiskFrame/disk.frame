@@ -177,14 +177,14 @@ Validate and auto-correct read and convert every single file within the zip file
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4cmixi\file2c9438b32344.df/Users/RTX2080/AppData/Local/Temp/Rtmp4cmixi/file2c94e3c4c5c.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7\file291c734f5161.df/Users/RTX2080/AppData/Local/Temp/Rtmp8UXtF7/file291c4531850.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 3</span></div><div class='input'>
 <span class='co'># clean up</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>csvfile</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>zipfile</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div></pre>
+<span class='fu'>delete</span>(<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

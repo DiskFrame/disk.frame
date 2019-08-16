@@ -21,7 +21,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
-rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE) {
+rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE, .progress = TRUE) {
   assertthat::assert_that(typeof(df_list) == "list")
   
   overwrite_check(outdir, overwrite)
@@ -37,12 +37,16 @@ rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by
     slist = split(list_of_chunks$full_path,list_of_chunks$path)
     
     if(parallel) {
-      system.time(future.apply::future_lapply(1:length(slist), function(i) {
+      #system.time(future.apply::future_lapply(1:length(slist), function(i) {
+      if(.progress) {
+        message("Appending disk.frames: ")
+      }
+      system.time(furrr::future_map(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
         outfilename = names(slist[i])
-        fst::write_fst(purrr::map_dfr(full_paths1, ~read_fst(.x)),file.path(outdir,outfilename), compress = compress)
+        fst::write_fst(purrr::map_dfr(full_paths1, ~fst::read_fst(.x)),file.path(outdir,outfilename), compress = compress)
         NULL
-      }))
+      }, .progress = TRUE))
     } else {
       system.time(lapply(1:length(slist), function(i) {
         full_paths1 = slist[[i]]
