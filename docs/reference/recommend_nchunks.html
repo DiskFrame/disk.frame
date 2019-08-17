@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes the recommended number of chunks to break a data.frame into — recommend_nchunks • disk.frame</title>
+<title>Recommend number of chunks based on input size — recommend_nchunks • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Computes the recommended number of chunks to break a data.frame into — recommend_nchunks" />
+<meta property="og:title" content="Recommend number of chunks based on input size — recommend_nchunks" />
 
-<meta property="og:description" content="Computes the recommended number of chunks to break a data.frame into" />
+<meta property="og:description" content="Computes the recommended number of chunks to break a data.frame into. It can
+accept filesizes in bytes (as integer) or a data.frame" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,19 +87,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-intro.html">Story of disk.frame</a>
+      <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/02-intro-disk-frame.html">Testing</a>
+      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -118,14 +119,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes the recommended number of chunks to break a data.frame into</h1>
+    <h1>Recommend number of chunks based on input size</h1>
     
     <div class="hidden name"><code>recommend_nchunks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Computes the recommended number of chunks to break a data.frame into</p>
+    <p>Computes the recommended number of chunks to break a data.frame into. It can
+accept filesizes in bytes (as integer) or a data.frame</p>
     
     </div>
 

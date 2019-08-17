@@ -83,19 +83,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-intro.html">Story of disk.frame</a>
+      <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/02-intro-disk-frame.html">Testing</a>
+      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -175,6 +175,12 @@
           <p><code><a href="colnames.html">colnames()</a></code> <code><a href="colnames.html">names(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Return the column names of the disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="compute.disk.frame.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Compute without writing</p></td>
       </tr><tr>
         
         <td>
@@ -292,15 +298,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="map.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
+          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
         </td>
-        <td><p>Perform the computation; same as calling map without .f and lazy = FALSE</p></td>
+        <td><p>Apply the same function to all chunks</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="map2.html">map2()</a></code> <code><a href="map2.html">map_by_chunk_id()</a></code> </p>
         </td>
-        <td><p>Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)</p></td>
+        <td><p>`map` a function to two disk.frames</p></td>
       </tr><tr>
         
         <td>
@@ -312,25 +318,25 @@
         <td>
           <p><code><a href="nchunks.html">nchunks()</a></code> <code><a href="nchunks.html">nchunk()</a></code> </p>
         </td>
-        <td><p>Return the number of chunks</p></td>
+        <td><p>Returns the number of chunks in a disk.frame</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ncol_nrow.html">nrow()</a></code> <code><a href="ncol_nrow.html">ncol()</a></code> </p>
         </td>
-        <td><p>Number of rows of disk.frame</p></td>
+        <td><p>Number of rows or columns</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="overwrite_check.html">overwrite_check()</a></code> </p>
         </td>
-        <td><p>Check if the outdir exists or not; and cleans it if it's not already there</p></td>
+        <td><p>Check if the outdir exists or not</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="print.disk.frame.html">print(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>a new print method for disk.frame</p></td>
+        <td><p>Print disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -354,13 +360,13 @@
         <td>
           <p><code><a href="recommend_nchunks.html">recommend_nchunks()</a></code> </p>
         </td>
-        <td><p>Computes the recommended number of chunks to break a data.frame into</p></td>
+        <td><p>Recommend number of chunks based on input size</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="remove_chunk.html">remove_chunk()</a></code> </p>
         </td>
-        <td><p>removes a chunk from the disk.frame</p></td>
+        <td><p>Removes a chunk from the disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -408,22 +414,20 @@
         <td>
           <p><code><a href="tbl_vars.disk.frame.html">tbl_vars(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Returns the names of the columns. Needed for RStudio to complete variable names</p></td>
+        <td><p>Column names for RStudio auto-complete</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="write_disk.frame.html">write_disk.frame()</a></code> <code><a href="write_disk.frame.html">output_disk.frame()</a></code> </p>
         </td>
-        <td><p>Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases</p></td>
+        <td><p>Write disk.frame to disk</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="zip_to_disk.frame.html">zip_to_disk.frame()</a></code> <code><a href="zip_to_disk.frame.html">validate_zip_to_disk.frame()</a></code> </p>
         </td>
-        <td><p>Automatically read and convert every single CSV file within the zip file to disk.frame format</p></td>
+        <td><p>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format</p></td>
       </tr>
     </tbody>
     </table>

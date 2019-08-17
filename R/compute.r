@@ -5,6 +5,7 @@
 #' @param name not used kept for compatibility with dplyr
 #' @export
 #' @importFrom dplyr compute
+#' @examples
 #' cars.df = as.disk.frame(cars)
 #' cars.df2 = cars.df %>% map(~.x)
 #' # the computation is performed and the data is now stored elsewhere

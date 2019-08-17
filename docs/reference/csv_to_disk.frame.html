@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-intro.html">Story of disk.frame</a>
+      <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/02-intro-disk-frame.html">Testing</a>
+      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -133,7 +133,7 @@
   <span class='kw'>inmapfn</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>,
   <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.info'>file.size</a></span>(<span class='no'>infile</span>))),
   <span class='kw'>in_chunk_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +173,10 @@
     <tr>
       <th>header</th>
       <td><p>Whether the files have header. Defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>.progress</th>
+      <td><p>A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From furrr</p></td>
     </tr>
     <tr>
       <th>...</th>

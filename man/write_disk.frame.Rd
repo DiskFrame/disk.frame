@@ -3,10 +3,7 @@
 \name{write_disk.frame}
 \alias{write_disk.frame}
 \alias{output_disk.frame}
-\title{Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases}
+\title{Write disk.frame to disk}
 \usage{
 write_disk.frame(df, outdir = tempfile(fileext = ".df"),
   nchunks = nchunks.disk.frame(df), overwrite = FALSE,

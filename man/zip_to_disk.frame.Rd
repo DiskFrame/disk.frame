@@ -3,7 +3,8 @@
 \name{zip_to_disk.frame}
 \alias{zip_to_disk.frame}
 \alias{validate_zip_to_disk.frame}
-\title{Automatically read and convert every single CSV file within the zip file to disk.frame format}
+\title{`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format}
 \usage{
 zip_to_disk.frame(zipfile, outdir, ..., validation.check = FALSE,
   overwrite = TRUE)
@@ -25,9 +26,10 @@ validate_zip_to_disk.frame(zipfile, outdir)
 a list of disk.frame
 }
 \description{
-Automatically read and convert every single CSV file within the zip file to disk.frame format
+`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format
 
-Validate and auto-correct read and convert every single file within the zip file to df format
+`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format
 }
 \examples{
 # create a zip file containing a csv

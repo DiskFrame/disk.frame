@@ -5,7 +5,7 @@
 \alias{nchunk}
 \alias{nchunk.disk.frame}
 \alias{nchunks.disk.frame}
-\title{Return the number of chunks}
+\title{Returns the number of chunks in a disk.frame}
 \usage{
 nchunks(df, ...)
 
@@ -23,8 +23,6 @@ nchunk(df, ...)
 \item{skip.ready.check}{NOT implemented}
 }
 \description{
-Return the number of chunks
-
 Returns the number of chunks in a disk.frame
 }
 \examples{

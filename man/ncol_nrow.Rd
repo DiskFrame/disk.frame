@@ -6,7 +6,7 @@
 \alias{nrow.disk.frame}
 \alias{ncol}
 \alias{ncol.disk.frame}
-\title{Number of rows of disk.frame}
+\title{Number of rows or columns}
 \usage{
 nrow(df, ...)
 
@@ -24,9 +24,7 @@ ncol(df)
 \item{...}{passed to base::nrow}
 }
 \description{
-Number of rows of disk.frame
-
-Number of columns
+Number of rows or columns
 }
 \examples{
 cars.df = as.disk.frame(cars)

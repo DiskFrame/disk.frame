@@ -6,10 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases — write_disk.frame • disk.frame</title>
+<title>Write disk.frame to disk — write_disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -33,10 +30,7 @@ as.disk.frame function is recommended for most cases — write_disk.frame • di
 
 
 
-<meta property="og:title" content="Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases — write_disk.frame" />
+<meta property="og:title" content="Write disk.frame to disk — write_disk.frame" />
 
 <meta property="og:description" content="Write a data.frame/disk.frame to a disk.frame location. If df is a
 data.frame, then df must contain the column .out.disk.frame.id. This is
@@ -95,19 +89,19 @@ as.disk.frame function is recommended for most cases" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-intro.html">Story of disk.frame</a>
+      <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/02-intro-disk-frame.html">Testing</a>
+      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -127,10 +121,7 @@ as.disk.frame function is recommended for most cases" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases</h1>
+    <h1>Write disk.frame to disk</h1>
     
     <div class="hidden name"><code>write_disk.frame.Rd</code></div>
     </div>
@@ -188,10 +179,17 @@ as.disk.frame function is recommended for most cases</p>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># write out a lazy disk.frame to disk</span>
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>write_disk.frame</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .x[1, ]: incorrect number of dimensions</span></div><div class='input'><span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt; <span class='error'>Error in collect(cars2.df): object 'cars2.df' not found</span></div><div class='input'>
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>write_disk.frame</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;    speed dist
+#&gt; 1:     4    2
+#&gt; 2:    11   17
+#&gt; 3:    13   46
+#&gt; 4:    16   40
+#&gt; 5:    19   46
+#&gt; 6:    24   70</div><div class='input'>
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt; <span class='error'>Error in "disk.frame" %in% class(df): object 'cars2.df' not found</span></div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

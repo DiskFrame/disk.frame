@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Automatically read and convert every single CSV file within the zip file to disk.frame format — zip_to_disk.frame • disk.frame</title>
+<title>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format — zip_to_disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +31,12 @@
 
 
 
-<meta property="og:title" content="Automatically read and convert every single CSV file within the zip file to disk.frame format — zip_to_disk.frame" />
+<meta property="og:title" content="`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format — zip_to_disk.frame" />
 
-<meta property="og:description" content="Automatically read and convert every single CSV file within the zip file to disk.frame format
-Validate and auto-correct read and convert every single file within the zip file to df format" />
+<meta property="og:description" content="`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format
+`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -87,19 +90,19 @@ Validate and auto-correct read and convert every single file within the zip file
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-intro.html">Story of disk.frame</a>
+      <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/02-intro-disk-frame.html">Testing</a>
+      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -119,15 +122,17 @@ Validate and auto-correct read and convert every single file within the zip file
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Automatically read and convert every single CSV file within the zip file to disk.frame format</h1>
+    <h1>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format</h1>
     
     <div class="hidden name"><code>zip_to_disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Automatically read and convert every single CSV file within the zip file to disk.frame format</p>
-<p>Validate and auto-correct read and convert every single file within the zip file to df format</p>
+    <p>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
+file to disk.frame format</p>
+<p>`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format</p>
     
     </div>
 
@@ -177,7 +182,7 @@ Validate and auto-correct read and convert every single file within the zip file
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN\filef702184777.df/Users/RTX2080/AppData/Local/Temp/Rtmp4A3KLN/filef705bd97c82.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQtK8q9\file14541ba62c99.df/Users/RTX2080/AppData/Local/Temp/RtmpQtK8q9/file1454206774c3.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 3</span></div><div class='input'>

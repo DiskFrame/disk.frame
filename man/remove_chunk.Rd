@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove_chunk.r
 \name{remove_chunk}
 \alias{remove_chunk}
-\title{removes a chunk from the disk.frame}
+\title{Removes a chunk from the disk.frame}
 \usage{
 remove_chunk(df, chunk_id, full.names = FALSE)
 }
@@ -14,7 +14,7 @@ remove_chunk(df, chunk_id, full.names = FALSE)
 \item{full.names}{TRUE or FALSE. Defaults to FALSE. If true then chunk_id is the full path to the chunk otherwise it's the relative path}
 }
 \description{
-removes a chunk from the disk.frame
+Removes a chunk from the disk.frame
 }
 \examples{
 # TODO add these to tests
