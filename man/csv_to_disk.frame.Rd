@@ -2,13 +2,13 @@
 % Please edit documentation in R/csv2disk.frame.r
 \name{csv_to_disk.frame}
 \alias{csv_to_disk.frame}
-\title{convert CSV file(s) to disk.frame format}
+\title{Convert CSV file(s) to disk.frame format}
 \usage{
 csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
   inmapfn = base::I,
   nchunks = recommend_nchunks(sum(file.size(infile))),
   in_chunk_size = NULL, shardby = NULL, compress = 50,
-  overwrite = TRUE, header = TRUE, .progress = FALSE, ...)
+  overwrite = TRUE, header = TRUE, .progress = TRUE, ...)
 }
 \arguments{
 \item{infile}{The input CSV file or files}
@@ -29,10 +29,12 @@ csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
 
 \item{header}{Whether the files have header. Defaults to TRUE}
 
+\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
+
 \item{...}{passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard}
 }
 \description{
-convert CSV file(s) to disk.frame format
+Convert CSV file(s) to disk.frame format
 }
 \examples{
 tmpfile = tempfile()

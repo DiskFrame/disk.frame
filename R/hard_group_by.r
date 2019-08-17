@@ -67,8 +67,11 @@ progressbar <- function(df) {
   }
 }
 
-#' Perform a group by and ensuring that every unique grouping of by is
-#' in the same chunk
+#' Perform a hard group
+#' @description
+#' A hard_group_by is a group by that also reorganizes the chunks to ensure that
+#' every unique grouping of `by`` is in the same chunk. Or in other words, every
+#' row that share the same `by` value will end up in the same chunk.
 #' @param df a disk.frame
 #' @param ... grouping variables
 #' @param outdir the output directory

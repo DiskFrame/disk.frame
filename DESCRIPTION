@@ -21,12 +21,12 @@ Imports:
     stringr (>= 1.4.0),
     fst (>= 0.8.0),
     assertthat (>= 0.2.1),
-    globals (>= 0.12.4)
+    globals (>= 0.12.4),
+    future (>= 1.14.0),
+    data.table (>= 1.12.2)
 Depends:
     R (>= 3.5.0),
-    future (>= 1.14.0),
     dplyr (>= 0.8.3),
-    data.table (>= 1.12.2),
     purrr (>= 0.3.2)
 Suggests: 
     testthat,
@@ -40,5 +40,5 @@ LinkingTo:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
-URL: http://daizj.net/disk.frame/
+URL: http://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

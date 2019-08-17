@@ -3,7 +3,7 @@
 \name{disk.frame_folder}
 \alias{disk.frame_folder}
 \alias{disk.frame_fst}
-\title{Create a data frame pointed to a folder}
+\title{Create a disk.frame pointed to a folder}
 \usage{
 disk.frame_folder(path)
 
@@ -13,7 +13,5 @@ disk.frame_fst(path)
 \item{path}{The path to store the output file or to a directory}
 }
 \description{
-Create a data frame pointed to a folder
-
-Create a disk.frame from fst files
+Create a disk.frame pointed to a folder
 }

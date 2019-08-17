@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -147,7 +147,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(),<span class='st'>"cars"</span>)
-<span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7/cars"</span>
+<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN/cars"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='no'>df</span> <span class='kw'>=</span> <span class='fu'>disk.frame</span>(<span class='no'>path</span>)
@@ -157,8 +157,8 @@
 #&gt; 3:     7    4
 #&gt; 4:     7   22
 #&gt; 5:     8   16
-#&gt; 6:     9   10</div><div class='input'><span class='fu'>nchunks</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># clean up</span>
-<span class='fu'>delete</span>(<span class='no'>df</span>)</div></pre>
+#&gt; 6:     9   10</div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># clean up</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

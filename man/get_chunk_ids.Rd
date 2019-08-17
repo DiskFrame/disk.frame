@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_chunk_ids.r
 \name{get_chunk_ids}
 \alias{get_chunk_ids}
-\title{Get the chunk file names}
+\title{Get the chunk IDs and files names}
 \usage{
 get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 }
@@ -16,7 +16,7 @@ get_chunk_ids(df, ..., full.names = FALSE, strip_extension = TRUE)
 \item{strip_extension}{If TRUE then the file extension in the chunk_id is removed. Defaults to TRUE}
 }
 \description{
-Get the chunk file names
+Get the chunk IDs and files names
 }
 \examples{
 cars.df = as.disk.frame(cars)

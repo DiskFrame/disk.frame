@@ -1,4 +1,3 @@
-#' Performs semi join
 #' @param x a disk.frame
 #' @param y a data.frame or disk.frame. If data.frame then returns lazily; if disk.frame it performs the join eagerly and return a disk.frame
 #' @param outdir output directory for disk.frame

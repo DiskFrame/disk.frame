@@ -5,7 +5,7 @@ nreadin = NULL
 
 # your ram size in G
 # this is needed as memomry.limit seems broken 
-ram.size = 48
+ram.size = 64
 nc = parallel::detectCores(logical = FALSE)
 conservatism = 2
 minchunks = nc
@@ -36,5 +36,5 @@ res = csv_to_disk.frame(
     overwrite = TRUE,
     .progress = TRUE # show progress
 )
-print(timetaken(pt))
+print(data.table::timetaken(pt))
 

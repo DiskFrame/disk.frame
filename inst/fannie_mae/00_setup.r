@@ -7,6 +7,7 @@ library(stringr)
 library(xgboost)
 library(lubridate)
 library(future.apply)
+library(data.table)
 library(disk.frame)
 
 setup_disk.frame()
@@ -15,7 +16,10 @@ setup_disk.frame()
 raw_harp_data_path = "c:/data/fannie_mae/harp_files"
 #raw_harp_data_path = "D:/data/fannie_mae/harp_files"
 
-raw_perf_data_path = "c:/data/Performance_All/"
+#raw_perf_data_path = "c:/data/Performance_All/"
+
+## read the split data set is ALOT (6x) faster
+raw_perf_data_path = "c:/data/Performance_All_split/"
 #raw_perf_data_path = "d:/data/Performance_All/"
 
 

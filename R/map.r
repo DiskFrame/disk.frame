@@ -7,11 +7,12 @@
 #' @param lazy if TRUE then do this lazily
 #' @param compress 0-100 fst compression ratio
 #' @param overwrite if TRUE removes any existing chunks in the data
-#' @param ... for compatibility with `purrr::map`
 #' @param use.names for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param fill for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param idcol for map_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param vars_and_pkgs variables and packages to send to a background session. This is typically automatically detected
+#' @param .progress A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}
+#' @param ... for compatibility with `purrr::map`
 #' @import fst
 #' @importFrom purrr as_mapper map
 #' @importFrom future.apply future_lapply
@@ -22,7 +23,7 @@
 #' # return the first row of each chunk lazily
 #' # 
 #' cars2 = map(cars.df, function(chunk) {
-#'  chunk[1,]
+#'  chunk[,1]
 #' })
 #' 
 #' collect(cars2)
@@ -48,31 +49,6 @@ map <- function(.x, .f, ...) {
   UseMethod("map")
 }
 
-#' @rdname map
-#' @param .id not used
-#' @export
-map_dfr <- function(.x, .f, ..., .id = NULL) {
-  UseMethod("map_dfr")
-}
-
-#' @export
-#' @rdname map
-map_dfr.default <- function(.x, .f, ..., .id = NULL) {
-  purrr::map_dfr(.x, .f, ..., .id = .id)
-}
-
-#' @export
-#' @rdname map
-map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
-  if(!is.null(.id)) {
-    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
-  }
-  
-  # TODO warn the user if outdir is map_dfr
-  
-  data.table::rbindlist(map.disk.frame(.x, .f, ..., outdir = NULL, lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
-}
-
 #' @export
 map.default <- function(.x, .f, ...) {
   purrr::map(.x, .f, ...)
@@ -81,9 +57,9 @@ map.default <- function(.x, .f, ...) {
 #' @rdname map
 #' @importFrom future getGlobalsAndPackages
 #' @export
-map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame())) {
+map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()), .progress = TRUE) {
   .f = purrr::as_mapper(.f)
-
+  
   if(lazy) {
     attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), list(list(func = .f, vars_and_pkgs = vars_and_pkgs)))
     return(.x)
@@ -110,7 +86,7 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   cid = get_chunk_ids(.x, full.names = TRUE)
   
   res = future.apply::future_lapply(1:length(files), function(ii) {
-  #res = lapply(1:length(files), function(ii) {
+    #res = lapply(1:length(files), function(ii) {
     ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
     res = .f(ds)
     if(!is.null(outdir)) {
@@ -131,6 +107,33 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
     return(res)
   }
 }
+
+
+#' @rdname map
+#' @param .id not used
+#' @export
+map_dfr <- function(.x, .f, ..., .id = NULL) {
+  UseMethod("map_dfr")
+}
+
+#' @export
+#' @rdname map
+map_dfr.default <- function(.x, .f, ..., .id = NULL) {
+  purrr::map_dfr(.x, .f, ..., .id = .id)
+}
+
+#' @export
+#' @rdname map
+map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL) {
+  if(!is.null(.id)) {
+    warning(".id is not NULL, but the parameter is not used with map_dfr.disk.frame")
+  }
+  
+  # TODO warn the user if outdir is map_dfr
+  
+  data.table::rbindlist(map.disk.frame(.x, .f, ..., outdir = NULL, lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
+}
+
 
 #' @export
 #' @rdname map

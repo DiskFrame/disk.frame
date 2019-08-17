@@ -1,4 +1,4 @@
-#' delete a disk.frame
+#' Delete a disk.frame
 #' @param df a disk.frame
 #' @importFrom fs dir_delete
 #' @export

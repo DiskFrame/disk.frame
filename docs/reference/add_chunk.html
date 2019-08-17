@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -160,35 +160,35 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># create a disk.frame</span>
 <span class='no'>df_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"tmp_add_chunk"</span>)
-<span class='no'>diskf</span> <span class='kw'>=</span> <span class='fu'>disk.frame</span>(<span class='no'>df_path</span>)
+<span class='no'>diskf</span> <span class='kw'>=</span> <span class='fu'><a href='disk.frame.html'>disk.frame</a></span>(<span class='no'>df_path</span>)
 
 <span class='co'># add a chunk to diskf</span>
-<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7/tmp_add_chunk"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 1</span>
 #&gt; <span class='message'>nrow: 50</span>
-#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7/tmp_add_chunk"</span>
+#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow: 100</span>
 #&gt; <span class='message'>ncol: 2</span></div><div class='input'>
-<span class='fu'>nchunks</span>(<span class='no'>diskf</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
-<span class='no'>df2</span> <span class='kw'>=</span> <span class='fu'>disk.frame</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"tmp_add_chunk2"</span>))
+<span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>diskf</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
+<span class='no'>df2</span> <span class='kw'>=</span> <span class='fu'><a href='disk.frame.html'>disk.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"tmp_add_chunk2"</span>))
 
 <span class='co'># add chunks by specifying the chunk_id number; this is especially useful if</span>
 <span class='co'># you wish to add multiple chunk in parralel</span>
 
-<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7/tmp_add_chunk2"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 1</span>
 #&gt; <span class='message'>nrow: 1</span>
-#&gt; <span class='message'>ncol: 1</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7/tmp_add_chunk2"</span>
+#&gt; <span class='message'>ncol: 1</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow: 2</span>
 #&gt; <span class='message'>ncol: 1</span></div><div class='input'>
-<span class='fu'>nchunks</span>(<span class='no'>df2</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
+<span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df2</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>dir</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>df2</span>, <span class='st'>"path"</span>))</div><div class='output co'>#&gt; [1] "1.fst" "3.fst"</div><div class='input'><span class='co'># [1] "1.fst" "3.fst"</span>
 
 <span class='co'># clean up</span>
-<span class='fu'>delete</span>(<span class='no'>diskf</span>)
-<span class='fu'>delete</span>(<span class='no'>df2</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>diskf</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>df2</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

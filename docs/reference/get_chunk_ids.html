@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the chunk file names — get_chunk_ids • disk.frame</title>
+<title>Get the chunk IDs and files names — get_chunk_ids • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Get the chunk file names — get_chunk_ids" />
+<meta property="og:title" content="Get the chunk IDs and files names — get_chunk_ids" />
 
-<meta property="og:description" content="Get the chunk file names" />
+<meta property="og:description" content="Get the chunk IDs and files names" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -118,14 +118,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the chunk file names</h1>
+    <h1>Get the chunk IDs and files names</h1>
     
     <div class="hidden name"><code>get_chunk_ids.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get the chunk file names</p>
+    <p>Get the chunk IDs and files names</p>
     
     </div>
 
@@ -154,21 +154,21 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># return the integer-string chunk IDs</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] "1" "2" "3" "4" "5" "6"</div><div class='input'>
 <span class='co'># return the file name chunk IDs</span>
-<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/1.fst"
-#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/2.fst"
-#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/3.fst"
-#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/4.fst"
-#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/5.fst"
-#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8UXtF7\\file291c442133f5.df/6.fst"</div><div class='input'>
+<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/1.fst"
+#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/2.fst"
+#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/3.fst"
+#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/4.fst"
+#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/5.fst"
+#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4A3KLN\\filef707951581a.df/6.fst"</div><div class='input'>
 <span class='co'># return the file name chunk IDs with file extension</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>strip_extension</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "1.fst" "2.fst" "3.fst" "4.fst" "5.fst" "6.fst"</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -29,7 +29,7 @@ map2.default <- function(.x, .y, .f, ...) {
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom pryr do_call
-map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")) {
+map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"), .progress = TRUE) {
   assertthat::assert_that("disk.frame" %in% class(.x), msg = "running map2.disk.frame(.x,.y, ...): the .x argument must be a disk.frame")
   .f = purrr::as_mapper(.f)
   
@@ -62,7 +62,7 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"))
       NULL
     }
     #,xyc$xid, xyc$yid, xyc$cid # together with mapply
-    , .progress = TRUE
+    , .progress = .progress
     )
     
     return(disk.frame(outdir))

@@ -83,19 +83,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -168,7 +168,7 @@
         <td>
           <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> </p>
         </td>
-        <td><p>Bring the disk.frame into R as data.table/data.frame</p></td>
+        <td><p>Bring the disk.frame into R as data.table/data.frame or as a list</p></td>
       </tr><tr>
         
         <td>
@@ -186,13 +186,13 @@
         <td>
           <p><code><a href="csv_to_disk.frame.html">csv_to_disk.frame()</a></code> </p>
         </td>
-        <td><p>convert CSV file(s) to disk.frame format</p></td>
+        <td><p>Convert CSV file(s) to disk.frame format</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="delete.html">delete()</a></code> </p>
         </td>
-        <td><p>delete a disk.frame</p></td>
+        <td><p>Delete a disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -204,19 +204,19 @@
         <td>
           <p><code><a href="disk.frame_fst.html">disk.frame_folder()</a></code> <code><a href="disk.frame_fst.html">disk.frame_fst()</a></code> </p>
         </td>
-        <td><p>Create a data frame pointed to a folder</p></td>
+        <td><p>Create a disk.frame pointed to a folder</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>dplyr verbs implemented for disk.frame</p></td>
+        <td><p>The dplyr verbs implemented for disk.frame</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="evalparseglue.html">evalparseglue()</a></code> </p>
         </td>
-        <td><p>Helper function to evalparse some glue::glue string</p></td>
+        <td><p>Helper function to evalparse some `glue::glue` string</p></td>
       </tr><tr>
         
         <td>
@@ -240,38 +240,37 @@
         <td>
           <p><code><a href="get_chunk_ids.html">get_chunk_ids()</a></code> </p>
         </td>
-        <td><p>Get the chunk file names</p></td>
+        <td><p>Get the chunk IDs and files names</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="groups.disk.frame.html">groups(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Group</p></td>
+        <td><p>The shard keys of the disk.frame</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Group by designed for disk.frames</p></td>
+        <td><p>Group by within each disk.frame</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="hard_group_by.html">hard_group_by()</a></code> </p>
         </td>
-        <td><p>Perform a group by and ensuring that every unique grouping of by is
-in the same chunk</p></td>
+        <td><p>Perform a hard group</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="head_tail.html">head(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="head_tail.html">tail(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Head of the disk.frame</p></td>
+        <td><p>Head and tail of the disk.frame</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="is.file.disk.frame.html">is.file.disk.frame()</a></code> <code><a href="is.file.disk.frame.html">is.dir.disk.frame()</a></code> </p>
         </td>
-        <td><p>Checks if the df is a single-file based disk.frame</p></td>
+        <td><p>Is the disk.frame a single-file or a folder</p></td>
       </tr><tr>
         
         <td>
@@ -283,7 +282,7 @@ in the same chunk</p></td>
         <td>
           <p><code><a href="is_ready.html">is_ready()</a></code> </p>
         </td>
-        <td><p>is the disk.frame ready from a long running non-blocking process</p></td>
+        <td><p>The readiness of a disk.frame</p></td>
       </tr><tr>
         
         <td>

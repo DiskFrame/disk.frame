@@ -3,7 +3,7 @@
 \name{is.file.disk.frame}
 \alias{is.file.disk.frame}
 \alias{is.dir.disk.frame}
-\title{Checks if the df is a single-file based disk.frame}
+\title{Is the disk.frame a single-file or a folder}
 \usage{
 is.file.disk.frame(df, check.consistency = TRUE)
 

@@ -51,8 +51,6 @@ disk.frame or data.frame/data.table
 }
 \description{
 Performs join/merge for disk.frames
-
-Performs semi join
 }
 \examples{
 df.df = as.disk.frame(data.frame(x = 1:3, y = 4:6), overwrite = TRUE)

@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -160,114 +160,12 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>map2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/rbindlist'>rbindlist</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
-<span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;      speed dist
-#&gt;   1:     4    2
-#&gt;   2:     4   10
-#&gt;   3:     7    4
-#&gt;   4:     7   22
-#&gt;   5:     8   16
-#&gt;   6:     9   10
-#&gt;   7:    10   18
-#&gt;   8:    10   26
-#&gt;   9:    10   34
-#&gt;  10:     4    2
-#&gt;  11:     4   10
-#&gt;  12:     7    4
-#&gt;  13:     7   22
-#&gt;  14:     8   16
-#&gt;  15:     9   10
-#&gt;  16:    10   18
-#&gt;  17:    10   26
-#&gt;  18:    10   34
-#&gt;  19:    11   17
-#&gt;  20:    11   28
-#&gt;  21:    12   14
-#&gt;  22:    12   20
-#&gt;  23:    12   24
-#&gt;  24:    12   28
-#&gt;  25:    13   26
-#&gt;  26:    13   34
-#&gt;  27:    13   34
-#&gt;  28:    11   17
-#&gt;  29:    11   28
-#&gt;  30:    12   14
-#&gt;  31:    12   20
-#&gt;  32:    12   24
-#&gt;  33:    12   28
-#&gt;  34:    13   26
-#&gt;  35:    13   34
-#&gt;  36:    13   34
-#&gt;  37:    13   46
-#&gt;  38:    14   26
-#&gt;  39:    14   36
-#&gt;  40:    14   60
-#&gt;  41:    14   80
-#&gt;  42:    15   20
-#&gt;  43:    15   26
-#&gt;  44:    15   54
-#&gt;  45:    16   32
-#&gt;  46:    13   46
-#&gt;  47:    14   26
-#&gt;  48:    14   36
-#&gt;  49:    14   60
-#&gt;  50:    14   80
-#&gt;  51:    15   20
-#&gt;  52:    15   26
-#&gt;  53:    15   54
-#&gt;  54:    16   32
-#&gt;  55:    16   40
-#&gt;  56:    17   32
-#&gt;  57:    17   40
-#&gt;  58:    17   50
-#&gt;  59:    18   42
-#&gt;  60:    18   56
-#&gt;  61:    18   76
-#&gt;  62:    18   84
-#&gt;  63:    19   36
-#&gt;  64:    16   40
-#&gt;  65:    17   32
-#&gt;  66:    17   40
-#&gt;  67:    17   50
-#&gt;  68:    18   42
-#&gt;  69:    18   56
-#&gt;  70:    18   76
-#&gt;  71:    18   84
-#&gt;  72:    19   36
-#&gt;  73:    19   46
-#&gt;  74:    19   68
-#&gt;  75:    20   32
-#&gt;  76:    20   48
-#&gt;  77:    20   52
-#&gt;  78:    20   56
-#&gt;  79:    20   64
-#&gt;  80:    22   66
-#&gt;  81:    23   54
-#&gt;  82:    19   46
-#&gt;  83:    19   68
-#&gt;  84:    20   32
-#&gt;  85:    20   48
-#&gt;  86:    20   52
-#&gt;  87:    20   56
-#&gt;  88:    20   64
-#&gt;  89:    22   66
-#&gt;  90:    23   54
-#&gt;  91:    24   70
-#&gt;  92:    24   92
-#&gt;  93:    24   93
-#&gt;  94:    24  120
-#&gt;  95:    25   85
-#&gt;  96:    24   70
-#&gt;  97:    24   92
-#&gt;  98:    24   93
-#&gt;  99:    24  120
-#&gt; 100:    25   85
-#&gt;      speed dist</div><div class='input'>
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>map2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/rbindlist'>rbindlist</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in data.table::rbindlist(list(.x, .y)): Item 1 of input is not a data.frame, data.table or list</span></div><div class='input'><span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt; <span class='error'>Error in collect(cars2.df): object 'cars2.df' not found</span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
-<span class='fu'>delete</span>(<span class='no'>cars2.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt; <span class='error'>Error in "disk.frame" %in% class(df): object 'cars2.df' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

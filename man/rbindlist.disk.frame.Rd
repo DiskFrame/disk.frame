@@ -20,6 +20,8 @@ rbindlist.disk.frame(df_list, outdir = tempfile(fileext = ".df"),
 \item{compress}{0-100, 100 being the highest compression rate.}
 
 \item{overwrite}{overwrite the output directory}
+
+\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
 }
 \description{
 rbindlist disk.frames together

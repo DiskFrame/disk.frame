@@ -2,7 +2,7 @@
 % Please edit documentation in R/disk.frame.r
 \name{is_ready}
 \alias{is_ready}
-\title{is the disk.frame ready from a long running non-blocking process}
+\title{The readiness of a disk.frame}
 \usage{
 is_ready(df)
 }
@@ -10,5 +10,5 @@ is_ready(df)
 \item{df}{a disk.frame}
 }
 \description{
-is the disk.frame ready from a long running non-blocking process
+Sometimes a disk.frame may be in use and this check whether it is ready from a long running non-blocking process.
 }

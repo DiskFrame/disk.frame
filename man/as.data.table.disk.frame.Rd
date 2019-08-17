@@ -17,6 +17,7 @@
 Convert disk.frame to data.table by collecting all chunks
 }
 \examples{
+library(data.table)
 cars.df = as.disk.frame(cars)
 as.data.table(cars.df)
 

@@ -1,4 +1,4 @@
-source("inst/fannie_mae/0_setup.r")
+source("inst/fannie_mae/00_setup.r")
 
 # create a most compressed set
 a = disk.frame("fmdf")

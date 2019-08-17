@@ -2,13 +2,16 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{groups.disk.frame}
 \alias{groups.disk.frame}
-\title{Group}
+\title{The shard keys of the disk.frame}
 \usage{
 \method{groups}{disk.frame}(x)
 }
 \arguments{
 \item{x}{a disk.frame}
 }
+\value{
+character
+}
 \description{
-Group
+The shard keys of the disk.frame
 }
