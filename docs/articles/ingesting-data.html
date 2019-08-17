@@ -53,9 +53,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
-    </li>
-    <li>
       <a href="../articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
@@ -65,7 +62,10 @@
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start</a>
+    </li>
+    <li>
+      <a href="../articles/intro.html">Story of disk.frame</a>
     </li>
   </ul>
 </li>
@@ -97,26 +97,31 @@
 <a class="sourceLine" id="cb1-2" title="2"></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="co"># set up multiple</span></a>
 <a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a></code></pre></div>
-<p>One of the most important tasks to perform before using <code>disk.frame</code> is to make some <code>disk.frame</code>. There are a few functions to help you do that.</p>
-<p>Firstly there is the <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
+<p>One of the most important tasks to perform before using the <code>disk.frame</code> package is to make some <code>disk.frame</code>s! There are a few functions to help you do that.</p>
+<div id="convert-a-data-frame-to-disk-frame" class="section level2">
+<h2 class="hasAnchor">
+<a href="#convert-a-data-frame-to-disk-frame" class="anchor"></a>Convert a <code>data.frame</code> to <code>disk.frame</code>
+</h2>
+<p>Firstly there is <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</a></code></pre></div>
 <p>will convert the <code><a href="https://www.rdocumentation.org/packages/nycflights13/topics/flights">nycflights13::flights</a></code> <code>data.frame</code> to a <code>disk.frame</code> somewhere in <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code>. To find out the location of the <code>disk.frame</code> use:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(flights.df, <span class="st">"path"</span>)</a></code></pre></div>
 <p>You can also specify a location to output the <code>disk.frame</code> to using <code>outdir</code></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights, <span class="dt">outdir =</span> <span class="st">"some/path.df"</span>)</a></code></pre></div>
 <p>it is recommended that you use <code>.df</code> as the extension for a <code>disk.frame</code>, however this is not an enforced requirement.</p>
-<p>However, the one of the reason for <code>disk.frame</code> to exist is to handle larger-than-RAM files, hence <code>as.disk.frame</code> is all that useful because it can only convert data that can fit into RAM. <code>disk.frame</code> comes with a couple more ways to create <code>disk.frame</code>.</p>
+<p>However, one of the reasons for <code>disk.frame</code> to exist is to handle larger-than-RAM files, hence <code>as.disk.frame</code> is not all that useful because it can only convert data that can fit into RAM. <code>disk.frame</code> comes with a couple more ways to create <code>disk.frame</code>.</p>
+</div>
 <div id="creating-disk-frame-from-csvs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-disk-frame-from-csvs" class="anchor"></a>Creating <code>disk.frame</code> from CSVs</h2>
 <p>The function <code>csv_to_disk.frame</code> can convert CSV files to <code>disk.frame</code>. The most basic usage is</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">some.df =<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"some/path.csv"</span>, <span class="dt">outdir =</span> <span class="st">"some.df"</span>)</a></code></pre></div>
-<p>this will convert the <code>"some/path.csv"</code> to a <code>disk.frame</code>.</p>
+<p>this will convert the CSV file <code>"some/path.csv"</code> to a <code>disk.frame</code>.</p>
 </div>
 <div id="multiple-csv-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multiple-csv-files" class="anchor"></a>Multiple CSV files</h2>
-<p>However, sometimes we have multiple CSV files that you want to read. You can do so by supplying a vector of file paths e.g. from the result of <code>list.files</code></p>
+<p>However, sometimes we have multiple CSV files that you want to read in and row-bind into one large <code>disk.frame</code>. You can do so by supplying a vector of file paths e.g. from the result of <code>list.files</code></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">some.df =<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"some/path/file1.csv"</span>, <span class="st">"some/path/file2.csv"</span>))</a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="co"># or</span></a>
@@ -125,7 +130,7 @@
 <div id="inputing-csv-files-chunk-wise" class="section level2">
 <h2 class="hasAnchor">
 <a href="#inputing-csv-files-chunk-wise" class="anchor"></a>Inputing CSV files chunk-wise</h2>
-<p>The <code><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame(path, ...)</a></code> function reads the file located at <code>path</code> in full into RAM and sometimes the CSV file may be too large for RAM. In that case you can wish to read the files chunk-by-chunk by using the <code>in_chunk_size</code> argument which controls how many rows you read in per chunk</p>
+<p>The <code><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame(path, ...)</a></code> function reads the file located at <code>path</code> in full into RAM but sometimes the CSV file may be too large to read in one go, as that would require loading the whole file into RAM. In that case, you can read the files chunk-by-chunk by using the <code>in_chunk_size</code> argument which controls how many rows you read in per chunk</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># to read in 1 million (=1e6) rows per chunk</span></a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(path, <span class="dt">in_chunk_size =</span> <span class="fl">1e6</span>)</a></code></pre></div>
 </div>
@@ -134,48 +139,68 @@
 <a href="#sharding" class="anchor"></a>Sharding</h2>
 <p>One of the most important aspects of <code>disk.frame</code> is sharding. One can shard a <code>disk.frame</code> at read time by using the <code>shardby</code></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(path, <span class="dt">shardby =</span> <span class="st">"id"</span>)</a></code></pre></div>
-<p>in the above case, all rows with the same <code>id</code> values will end up in the same chunk.</p>
+<p>In the above case, all rows with the same <code>id</code> values will end up in the same chunk.</p>
 </div>
 <div id="just-in-time-transformation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#just-in-time-transformation" class="anchor"></a>Just-in-time transformation</h2>
-<p>Sometimes one may wish to perform some transformation on the CSV before writing out to disk. One can use the <code>inmapfn</code> argument to do that. The <code>inmapfn</code> comes from INput MAPping FuNction.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(path, <span class="dt">inmapfn =</span> <span class="cf">function</span>(chunk) {</a>
+<p>Sometimes, one may wish to perform some transformation on the CSV before writing out to disk. One can use the <code>inmapfn</code> argument to do that. The <code>inmapfn</code> name comes from INput MAPping FuNction. The general usage pattern is as follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"df.csv"</span>), <span class="dt">inmapfn =</span> <span class="cf">function</span>(chunk) {</a>
 <a class="sourceLine" id="cb9-2" title="2">  <span class="kw">some_transformation</span>(chunk)</a>
 <a class="sourceLine" id="cb9-3" title="3">})</a></code></pre></div>
+<p>As a contrived example, suppose you wish to convert a string into date at read time:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">date_str =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2019-01-02"</span>, <span class="st">"2019-01-02"</span>))</a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co"># write the data.frame </span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.csv</a></span>(df, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"df.csv"</span>))</a>
+<a class="sourceLine" id="cb10-5" title="5"></a>
+<a class="sourceLine" id="cb10-6" title="6"></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co"># this would show that date_str is a string</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(<span class="kw">collect</span>(<span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"df.csv"</span>)))<span class="op">$</span>date_str)</a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="co">## chr [1:2] "2019-01-02" "2019-01-02"</span></a>
+<a class="sourceLine" id="cb10-10" title="10"></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co"># this would show that date_str is a string</span></a>
+<a class="sourceLine" id="cb10-12" title="12">df =<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"df.csv"</span>), <span class="dt">inmapfn =</span> <span class="cf">function</span>(chunk) {</a>
+<a class="sourceLine" id="cb10-13" title="13">  <span class="co"># convert to date_str to date format and store as "date"</span></a>
+<a class="sourceLine" id="cb10-14" title="14">  chunk[, date <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(date_str, <span class="st">"%Y-%m-%d"</span>)]</a>
+<a class="sourceLine" id="cb10-15" title="15">  chunk[, date_str<span class="op">:</span><span class="er">=</span><span class="ot">NULL</span>]</a>
+<a class="sourceLine" id="cb10-16" title="16">})</a>
+<a class="sourceLine" id="cb10-17" title="17"></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(<span class="kw">collect</span>(df)<span class="op">$</span>date)</a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="co">## Date[1:2], format: "2019-01-02" "2019-01-02"</span></a></code></pre></div>
 </div>
 <div id="reading-csvs-from-zip-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading-csvs-from-zip-files" class="anchor"></a>Reading CSVs from zip files</h2>
 <p>Often, CSV comes zipped in a zip files. You can use the <code>zip_to_disk.frame</code> to convert all CSVs within a zip file</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="../reference/zip_to_disk.frame.html">zip_to_disk.frame</a></span>(path_to_zip_file)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="../reference/zip_to_disk.frame.html">zip_to_disk.frame</a></span>(path_to_zip_file)</a></code></pre></div>
 <p>The arguments for <code>zip_to_disk.frame</code> are the same as <code>csv_to_disk.frame</code>’s.</p>
 </div>
 <div id="using-add_chunk" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-add_chunk" class="anchor"></a>Using <code>add_chunk</code>
 </h2>
-<p>What if the method of converting to a <code>disk.frame</code> isn’t implemented in <code>disk.frame</code> yet? One can use some lower level constructs provided by <code>disk.frame</code> to create <code>disk.frame</code>s. For example the <code>add_chunk</code> function can be used to add more chunks to a <code>disk.frame</code>, e.g.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">a.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>() <span class="co"># create an empty disk.frame</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(a.df, cars) <span class="co"># adds cars as chunk 1</span></a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(a.df, cars) <span class="co"># adds cars as chunk 2</span></a></code></pre></div>
+<p>What if the method of converting to a <code>disk.frame</code> isn’t implemented in <code>disk.frame</code> yet? One can use some lower level constructs provided by <code>disk.frame</code> to create <code>disk.frame</code>s. For example, the <code>add_chunk</code> function can be used to add more chunks to a <code>disk.frame</code>, e.g.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">a.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>() <span class="co"># create an empty disk.frame</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(a.df, cars) <span class="co"># adds cars as chunk 1</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(a.df, cars) <span class="co"># adds cars as chunk 2</span></a></code></pre></div>
 <p>Another example of using <code>add_chunk</code> is via <code>readr</code>’s chunked read functions to create a delimited file reader</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">delimited_to_disk.frame &lt;-<span class="st"> </span><span class="cf">function</span>(file, outdir, ...) {</a>
-<a class="sourceLine" id="cb12-2" title="2">  res.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>(outdir, ...)</a>
-<a class="sourceLine" id="cb12-3" title="3">  readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim_chunked.html">read_delim_chunked</a></span>(file, <span class="dt">callback =</span> <span class="cf">function</span>(chunk) {</a>
-<a class="sourceLine" id="cb12-4" title="4">    <span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(res.df, chunk)</a>
-<a class="sourceLine" id="cb12-5" title="5">  }, ...)</a>
-<a class="sourceLine" id="cb12-6" title="6">  </a>
-<a class="sourceLine" id="cb12-7" title="7">  res.df</a>
-<a class="sourceLine" id="cb12-8" title="8">}</a>
-<a class="sourceLine" id="cb12-9" title="9"></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="kw">delimited_to_disk.frame</span>(path, <span class="dt">outdir =</span> <span class="st">"some.df"</span>)</a></code></pre></div>
-<p>The above code uses <code>readr</code>’s <code>read_delim_chunked</code> function to read</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">delimited_to_disk.frame &lt;-<span class="st"> </span><span class="cf">function</span>(file, outdir, ...) {</a>
+<a class="sourceLine" id="cb13-2" title="2">  res.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>(outdir, ...)</a>
+<a class="sourceLine" id="cb13-3" title="3">  readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim_chunked.html">read_delim_chunked</a></span>(file, <span class="dt">callback =</span> <span class="cf">function</span>(chunk) {</a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="kw"><a href="../reference/add_chunk.html">add_chunk</a></span>(res.df, chunk)</a>
+<a class="sourceLine" id="cb13-5" title="5">  }, ...)</a>
+<a class="sourceLine" id="cb13-6" title="6">  </a>
+<a class="sourceLine" id="cb13-7" title="7">  res.df</a>
+<a class="sourceLine" id="cb13-8" title="8">}</a>
+<a class="sourceLine" id="cb13-9" title="9"></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="kw">delimited_to_disk.frame</span>(path, <span class="dt">outdir =</span> <span class="st">"some.df"</span>)</a></code></pre></div>
+<p>The above code uses <code>readr</code>’s <code>read_delim_chunked</code> function to read <code>file</code> and call <code>add_chunk</code>. The problem with this approach is that is it sequential in nature and hence is not able to take advantage of parallelism.</p>
 </div>
 <div id="exploiting-the-structure-of-a-disk-frame" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploiting-the-structure-of-a-disk-frame" class="anchor"></a>Exploiting the structure of a disk.frame</h2>
-<p>Of course, a <code>disk.frame</code> is just a folder with many <code>fst</code> files named as <code>1.fst</code>, <code>2.fst</code> etc. So one can simply create these <code>fst</code> files and ensure they have the same variable names and it should work.</p>
+<p>Of course, a <code>disk.frame</code> is just a folder with many <code>fst</code> files named as <code>1.fst</code>, <code>2.fst</code> etc. So one can simply create these <code>fst</code> files and ensure they have the same variable names and put them in a folder.</p>
 </div>
   </div>
 
@@ -184,7 +209,8 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#creating-disk-frame-from-csvs">Creating <code>disk.frame</code> from CSVs</a></li>
+<li><a href="#convert-a-data-frame-to-disk-frame">Convert a <code>data.frame</code> to <code>disk.frame</code></a></li>
+      <li><a href="#creating-disk-frame-from-csvs">Creating <code>disk.frame</code> from CSVs</a></li>
       <li><a href="#multiple-csv-files">Multiple CSV files</a></li>
       <li><a href="#inputing-csv-files-chunk-wise">Inputing CSV files chunk-wise</a></li>
       <li><a href="#sharding">Sharding</a></li>

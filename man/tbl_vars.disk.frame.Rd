@@ -2,7 +2,7 @@
 % Please edit documentation in R/tbl_vars.r
 \name{tbl_vars.disk.frame}
 \alias{tbl_vars.disk.frame}
-\title{Returns the names of the columns. Needed for RStudio to complete variable names}
+\title{Column names for RStudio auto-complete}
 \usage{
 \method{tbl_vars}{disk.frame}(x)
 }
@@ -10,5 +10,6 @@
 \item{x}{a disk.frame}
 }
 \description{
-Returns the names of the columns. Needed for RStudio to complete variable names
+Returns the names of the columns. Needed for RStudio to complete variable
+names
 }

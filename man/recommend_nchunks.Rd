@@ -2,7 +2,7 @@
 % Please edit documentation in R/recommend_nchunks.r
 \name{recommend_nchunks}
 \alias{recommend_nchunks}
-\title{Computes the recommended number of chunks to break a data.frame into}
+\title{Recommend number of chunks based on input size}
 \usage{
 recommend_nchunks(df, type = "csv",
   minchunks = parallel::detectCores(logical = FALSE), conservatism = 2)
@@ -17,7 +17,8 @@ recommend_nchunks(df, type = "csv",
 \item{conservatism}{a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM}
 }
 \description{
-Computes the recommended number of chunks to break a data.frame into
+Computes the recommended number of chunks to break a data.frame into. It can
+accept filesizes in bytes (as integer) or a data.frame
 }
 \examples{
 # recommend nchunks based on data.frame

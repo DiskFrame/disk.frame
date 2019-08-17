@@ -3,7 +3,7 @@
 \name{map2}
 \alias{map2}
 \alias{map_by_chunk_id}
-\title{Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)}
+\title{`map` a function to two disk.frames}
 \usage{
 map2(.x, .y, .f, ...)
 
@@ -14,14 +14,16 @@ map_by_chunk_id(.x, .y, .f, ..., outdir)
 
 \item{.y}{a disk.frame}
 
-\item{.f}{a function to be called on each chunk of x and y matched by chunk_id}
+\item{.f}{a function to be called on each chunk of x and y matched by
+chunk_id}
 
 \item{...}{not used}
 
 \item{outdir}{output directory}
 }
 \description{
-Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)
+Perform a function on both disk.frames .x and .y, each chunk of .x and .y
+gets run by .f(x.chunk, y.chunk)
 }
 \examples{
 cars.df = as.disk.frame(cars)

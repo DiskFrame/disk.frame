@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.disk.frame.r
 \name{print.disk.frame}
 \alias{print.disk.frame}
-\title{a new print method for disk.frame}
+\title{Print disk.frame}
 \usage{
 \method{print}{disk.frame}(x, ...)
 }

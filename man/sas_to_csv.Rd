@@ -24,6 +24,4 @@ sas_to_disk.frame(inpath, outpath,
 }
 \description{
 Convert a SAS file (.sas7bdat) format to CSV by chunks
-
-Convert a SAS file (.sas7bdat format) to disk.frame via CSVs
 }
