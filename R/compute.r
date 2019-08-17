@@ -2,7 +2,10 @@
 #' @description 
 #' Perform the computation; same as calling map without .f and lazy = FALSE
 #' @param x a disk.frame
+#' @param outdir the output directory
+#' @param overwrite whether to overwrite or note
 #' @param name not used kept for compatibility with dplyr
+#' @param ... NOT used. Kept for dplyr compatibility
 #' @export
 #' @importFrom dplyr compute
 #' @examples

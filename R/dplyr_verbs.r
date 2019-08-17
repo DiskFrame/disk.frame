@@ -162,11 +162,6 @@ group_by_at.disk.frame <- create_dplyr_mapper(dplyr::group_by_at)
 
 #' @export
 #' @rdname dplyr_verbs
-#' @importFrom dplyr group_by_drop_default
-group_by_drop_default.disk.frame <- create_dplyr_mapper(dplyr::group_by_drop_default)
-
-#' @export
-#' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_if
 group_by_if.disk.frame <- create_dplyr_mapper(dplyr::group_by_if)
 
