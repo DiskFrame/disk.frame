@@ -2,7 +2,7 @@
 % Please edit documentation in R/util.r
 \name{evalparseglue}
 \alias{evalparseglue}
-\title{Helper function to evalparse some glue::glue string}
+\title{Helper function to evalparse some `glue::glue` string}
 \usage{
 evalparseglue(code, env = parent.frame())
 }
@@ -12,5 +12,5 @@ evalparseglue(code, env = parent.frame())
 \item{env}{the environment in which to evaluate the code}
 }
 \description{
-Helper function to evalparse some glue::glue string
+Helper function to evalparse some `glue::glue` string
 }

@@ -87,19 +87,19 @@ Number of columns" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -131,18 +131,18 @@ Number of columns" />
     
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>df</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>nrow</span>(<span class='no'>df</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>df</span>, <span class='no'>...</span>)
+<span class='fu'>nrow</span>(<span class='no'>df</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>df</span>, <span class='no'>...</span>)
+<span class='fu'>nrow</span>(<span class='no'>df</span>, <span class='no'>...</span>)
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>df</span>)
+<span class='fu'>ncol</span>(<span class='no'>df</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>df</span>)</pre>
+<span class='fu'>ncol</span>(<span class='no'>df</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,12 +159,12 @@ Number of columns" />
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># return total number of column and rows</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] 50</div><div class='input'>
+<span class='fu'>ncol</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>nrow</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] 50</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

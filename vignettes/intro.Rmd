@@ -1,0 +1,17 @@
+---
+title: "Story of disk.frame"
+author: "ZJ"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Story of disk.frame}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# The story of how `disk.frame` came to be
+I was working at a one of Australia's largest banks and their shiny new SAS server was experiencing huge instability issues. As a result, we had to SAS on our laptop to perform huge amounts of data manipulation. A simple SQL query can take up wards of 20 minutes.
+
+I had enough.
+
+That's why I created `disk.frame` - a larger-than-RAM data manipulation framework for R.

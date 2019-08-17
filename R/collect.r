@@ -1,4 +1,4 @@
-#' Bring the disk.frame into R as data.table/data.frame
+#' Bring the disk.frame into R as data.table/data.frame or as a list 
 #' @param x a disk.frame
 #' @param parallel if TRUE the collection is performed in parallel. By default
 #'   if there are delayed/lazy steps then it will be parallel, otherwise it will
@@ -7,12 +7,11 @@
 #'   computation then it's better to avoid transferring data between session,
 #'   hence parallel = FALSE is a better choice
 #' @param ... not used
-#' @export
 #' @importFrom data.table data.table as.data.table
 #' @importFrom furrr future_map_dfr future_options
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
-#' @rdname collect
+#' @return data.frame/data.table
 #' @examples 
 #' cars.df = as.disk.frame(cars)
 #' # use collect to bring the data into RAM as a data.table/data.frame
@@ -20,6 +19,8 @@
 #' 
 #' # clean up
 #' delete(cars.df)
+#' @export
+#' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
   #cids = get_chunk_ids(x, full.names = TRUE)
   cids = as.integer(get_chunk_ids(x))
@@ -40,10 +41,10 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
   }
 }
 
-#' Bring the disk.frame into R as list
 #' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
+#' @return list
 #' @examples
 #' cars.df = as.disk.frame(cars)
 #' 

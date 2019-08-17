@@ -4,8 +4,7 @@
 \alias{hard_group_by}
 \alias{hard_group_by.data.frame}
 \alias{hard_group_by.disk.frame}
-\title{Perform a group by and ensuring that every unique grouping of by is
-in the same chunk}
+\title{Perform a hard group}
 \usage{
 hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
@@ -31,8 +30,9 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 \item{overwrite}{overwrite the out put directory}
 }
 \description{
-Perform a group by and ensuring that every unique grouping of by is
-in the same chunk
+A hard_group_by is a group by that also reorganizes the chunks to ensure that
+every unique grouping of `by`` is in the same chunk. Or in other words, every
+row that share the same `by` value will end up in the same chunk.
 }
 \examples{
 iris.df = as.disk.frame(iris, nchunks = 2)

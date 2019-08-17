@@ -86,19 +86,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -129,7 +129,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>add_meta</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'>nchunks.disk.frame</span>(<span class='no'>df</span>), <span class='kw'>shardkey</span> <span class='kw'>=</span> <span class='st'>""</span>,
+    <pre class="usage"><span class='fu'>add_meta</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks.disk.frame</a></span>(<span class='no'>df</span>), <span class='kw'>shardkey</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>shardchunks</span> <span class='kw'>=</span> -<span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,15 +159,15 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># adding some useless metadata to the repo</span>
-<span class='fu'>add_meta</span>(<span class='no'>cars.df</span>, <span class='kw'>useless</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7\file291c2bb0ecf.df"</span>
+<span class='fu'>add_meta</span>(<span class='no'>cars.df</span>, <span class='kw'>useless</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN\filef703803263e.df"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 2</span></div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

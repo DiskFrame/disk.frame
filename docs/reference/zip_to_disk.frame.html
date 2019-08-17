@@ -87,19 +87,19 @@ Validate and auto-correct read and convert every single file within the zip file
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -177,14 +177,14 @@ Validate and auto-correct read and convert every single file within the zip file
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7\file291c734f5161.df/Users/RTX2080/AppData/Local/Temp/Rtmp8UXtF7/file291c4531850.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN\filef702184777.df/Users/RTX2080/AppData/Local/Temp/Rtmp4A3KLN/filef705bd97c82.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 3</span></div><div class='input'>
 <span class='co'># clean up</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>csvfile</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlink'>unlink</a></span>(<span class='no'>zipfile</span>)
-<span class='fu'>delete</span>(<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

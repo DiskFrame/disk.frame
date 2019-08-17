@@ -3,10 +3,10 @@
 \name{compute.disk.frame}
 \alias{compute.disk.frame}
 \alias{map}
+\alias{map.disk.frame}
 \alias{map_dfr}
 \alias{map_dfr.default}
 \alias{map_dfr.disk.frame}
-\alias{map.disk.frame}
 \alias{imap}
 \alias{imap.default}
 \alias{imap.disk.frame}
@@ -25,17 +25,17 @@
 
 map(.x, .f, ...)
 
+\method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
+  chunks = nchunks(.x), compress = 50, lazy = TRUE,
+  overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f,
+  envir = parent.frame()), .progress = TRUE)
+
 map_dfr(.x, .f, ..., .id = NULL)
 
 \method{map_dfr}{default}(.x, .f, ..., .id = NULL)
 
 \method{map_dfr}{disk.frame}(.x, .f, ..., .id = NULL, use.names = fill,
   fill = FALSE, idcol = NULL)
-
-\method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = TRUE,
-  overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f,
-  envir = parent.frame()))
 
 imap(.x, .f, ...)
 
@@ -77,14 +77,6 @@ chunk_lapply(...)
 
 \item{.f}{a function to apply to each of the chunks}
 
-\item{.id}{not used}
-
-\item{use.names}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
-\item{fill}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
-\item{idcol}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
 \item{keep}{the columns to keep from the input}
 
 \item{chunks}{The number of chunks to output}
@@ -94,6 +86,16 @@ chunk_lapply(...)
 \item{lazy}{if TRUE then do this lazily}
 
 \item{vars_and_pkgs}{variables and packages to send to a background session. This is typically automatically detected}
+
+\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
+
+\item{.id}{not used}
+
+\item{use.names}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{fill}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{idcol}{for map_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 }
 \description{
 Perform the computation; same as calling map without .f and lazy = FALSE
@@ -121,7 +123,7 @@ cars.df = as.disk.frame(cars)
 # return the first row of each chunk lazily
 # 
 cars2 = map(cars.df, function(chunk) {
- chunk[1,]
+ chunk[,1]
 })
 
 collect(cars2)

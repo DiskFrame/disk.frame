@@ -2,7 +2,7 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{group_by.disk.frame}
 \alias{group_by.disk.frame}
-\title{Group by designed for disk.frames}
+\title{Group by within each disk.frame}
 \usage{
 \method{group_by}{disk.frame}(.data, ...)
 }
@@ -12,5 +12,11 @@
 \item{...}{same as the dplyr::group_by}
 }
 \description{
-Group by designed for disk.frames
+The disk.frame group by operation perform group WITHIN each chunk. This is
+often used for performance reasons. If the user wishes to perform group-by,
+they may choose to use the `hard_group_by` function which is expensive as it
+reorganises the chunks by the shard key.
+}
+\seealso{
+hard_group_by
 }

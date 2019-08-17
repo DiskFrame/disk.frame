@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform a group by and ensuring that every unique grouping of by is
-in the same chunk — hard_group_by • disk.frame</title>
+<title>Perform a hard group — hard_group_by • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,11 +30,11 @@ in the same chunk — hard_group_by • disk.frame</title>
 
 
 
-<meta property="og:title" content="Perform a group by and ensuring that every unique grouping of by is
-in the same chunk — hard_group_by" />
+<meta property="og:title" content="Perform a hard group — hard_group_by" />
 
-<meta property="og:description" content="Perform a group by and ensuring that every unique grouping of by is
-in the same chunk" />
+<meta property="og:description" content="A hard_group_by is a group by that also reorganizes the chunks to ensure that
+every unique grouping of `by`` is in the same chunk. Or in other words, every
+row that share the same `by` value will end up in the same chunk." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,19 +88,19 @@ in the same chunk" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -121,16 +120,16 @@ in the same chunk" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform a group by and ensuring that every unique grouping of by is
-in the same chunk</h1>
+    <h1>Perform a hard group</h1>
     
     <div class="hidden name"><code>hard_group_by.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Perform a group by and ensuring that every unique grouping of by is
-in the same chunk</p>
+    <p>A hard_group_by is a group by that also reorganizes the chunks to ensure that
+every unique grouping of `by`` is in the same chunk. Or in other words, every
+row that share the same `by` value will end up in the same chunk.</p>
     
     </div>
 
@@ -179,11 +178,11 @@ in the same chunk</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>iris</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+    <pre class="examples"><div class='input'><span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>iris</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'># group_by iris.df by specifies and ensure rows with the same specifies are in the same chunk</span>
-<span class='no'>iris_hard.df</span> <span class='kw'>=</span> <span class='fu'>hard_group_by</span>(<span class='no'>iris.df</span>, <span class='no'>Species</span>)</div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
-<span class='fu'>get_chunk</span>(<span class='no'>iris_hard.df</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 150 x 5</span><span>
+<span class='no'>iris_hard.df</span> <span class='kw'>=</span> <span class='fu'>hard_group_by</span>(<span class='no'>iris.df</span>, <span class='no'>Species</span>)</div><div class='output co'>#&gt; <span class='message'># Performing the requested action to all chunks:</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
+<span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 150 x 5</span><span>
 #&gt; </span><span style='color: #555555;'># Groups:   Species [3]</span><span>
 #&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
@@ -197,10 +196,10 @@ in the same chunk</p>
 #&gt; </span><span style='color: #555555;'> 8</span><span>          5           3.4          1.5         0.2 setosa 
 #&gt; </span><span style='color: #555555;'> 9</span><span>          4.4         2.9          1.4         0.2 setosa 
 #&gt; </span><span style='color: #555555;'>10</span><span>          4.9         3.1          1.5         0.1 setosa 
-#&gt; </span><span style='color: #555555;'># ... with 140 more rows</span><span></div><div class='input'><span class='fu'>get_chunk</span>(<span class='no'>iris_hard.df</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The chunk C:\Users\RTX2080\AppData\Local\Temp\Rtmp8UXtF7\tmp_disk_frame_hard_group_by291c47a85cc5/2.fst does not exist; returning an empty data.table</span></div><div class='output co'>#&gt; Null data.table (0 rows and 0 cols)</div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 140 more rows</span><span></div><div class='input'><span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The chunk C:\Users\RTX2080\AppData\Local\Temp\Rtmp4A3KLN\tmp_disk_frame_hard_group_byf705a152913/2.fst does not exist; returning an empty data.table</span></div><div class='output co'>#&gt; Null data.table (0 rows and 0 cols)</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>iris.df</span>)
-<span class='fu'>delete</span>(<span class='no'>iris_hard.df</span>)</div></span></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris_hard.df</span>)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

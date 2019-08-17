@@ -1,4 +1,4 @@
-#' convert CSV file(s) to disk.frame format
+#' Convert CSV file(s) to disk.frame format
 #' @importFrom glue glue
 #' @importFrom fs dir_delete
 #' @importFrom pryr do_call
@@ -11,6 +11,7 @@
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
 #' @param header Whether the files have header. Defaults to TRUE
+#' @param .progress A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
 #' @importFrom pryr do_call
 #' @export
@@ -24,7 +25,7 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = FALSE, ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, ...) {
   #browser()
   overwrite_check(outdir, overwrite)
   # reading multiple files

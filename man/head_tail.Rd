@@ -3,7 +3,7 @@
 \name{head.disk.frame}
 \alias{head.disk.frame}
 \alias{tail.disk.frame}
-\title{Head of the disk.frame}
+\title{Head and tail of the disk.frame}
 \usage{
 \method{head}{disk.frame}(x, n = 6L, ...)
 
@@ -17,9 +17,7 @@
 \item{...}{passed to base::head or base::tail}
 }
 \description{
-Head of the disk.frame
-
-tail of disk.frame
+Head and tail of the disk.frame
 }
 \examples{
 cars.df = as.disk.frame(cars)

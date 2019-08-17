@@ -91,19 +91,19 @@ Lazy chunk_lapply wrapper" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -156,9 +156,9 @@ second is the chunk ID</p>
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'>nchunks</span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>vars_and_pkgs</span> <span class='kw'>=</span> <span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/future/topics/getGlobalsAndPackages'>getGlobalsAndPackages</a></span>(<span class='no'>.f</span>,
-  <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>()))
+  <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>parent.frame</a></span>()), <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>imap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
 
@@ -167,7 +167,7 @@ second is the chunk ID</p>
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>imap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'>nchunks</span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>), <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
@@ -262,72 +262,27 @@ second is the chunk ID</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 <span class='no'>cars.df2</span> <span class='kw'>=</span> <span class='no'>cars.df</span> <span class='kw'>%&gt;%</span> <span class='fu'>map</span>(~<span class='no'>.x</span>)
 <span class='co'># the computation is performed and the data is now stored elsewhere</span>
-<span class='no'>cars.df3</span> <span class='kw'>=</span> <span class='fu'>compute</span>(<span class='no'>cars.df2</span>)
-
+<span class='no'>cars.df3</span> <span class='kw'>=</span> <span class='fu'>compute</span>(<span class='no'>cars.df2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("compute"): no applicable method for 'compute' applied to an object of class "list"</span></div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
-<span class='fu'>delete</span>(<span class='no'>cars.df3</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in "disk.frame" %in% class(df): object 'cars.df3' not found</span></div><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># return the first row of each chunk lazily</span>
 <span class='co'># </span>
 <span class='no'>cars2</span> <span class='kw'>=</span> <span class='fu'>map</span>(<span class='no'>cars.df</span>, <span class='kw'>function</span>(<span class='no'>chunk</span>) {
  <span class='no'>chunk</span>[<span class='fl'>1</span>,]
-})
-
-<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt;    speed dist
-#&gt; 1:     4    2
-#&gt; 2:    11   17
-#&gt; 3:    13   46
-#&gt; 4:    16   40
-#&gt; 5:    19   46
-#&gt; 6:    24   70</div><div class='input'>
+})</div><div class='output co'>#&gt; <span class='error'>Error in chunk[1, ]: incorrect number of dimensions</span></div><div class='input'>
+<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in collect(cars2): object 'cars2' not found</span></div><div class='input'>
 <span class='co'># same as above but using purrr </span>
-<span class='no'>cars2</span> <span class='kw'>=</span> <span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])
-
-<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt;    speed dist
-#&gt; 1:     4    2
-#&gt; 2:    11   17
-#&gt; 3:    13   46
-#&gt; 4:    16   40
-#&gt; 5:    19   46
-#&gt; 6:    24   70</div><div class='input'>
+<span class='no'>cars2</span> <span class='kw'>=</span> <span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])</div><div class='output co'>#&gt; <span class='error'>Error in .x[1, ]: incorrect number of dimensions</span></div><div class='input'>
+<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in collect(cars2): object 'cars2' not found</span></div><div class='input'>
 <span class='co'># return the first row of each chunk eagerly as list</span>
-<span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt;    speed dist
-#&gt; 1:     4    2
-#&gt; 
-#&gt; [[2]]
-#&gt;    speed dist
-#&gt; 1:    11   17
-#&gt; 
-#&gt; [[3]]
-#&gt;    speed dist
-#&gt; 1:    13   46
-#&gt; 
-#&gt; [[4]]
-#&gt;    speed dist
-#&gt; 1:    16   40
-#&gt; 
-#&gt; [[5]]
-#&gt;    speed dist
-#&gt; 1:    19   46
-#&gt; 
-#&gt; [[6]]
-#&gt;    speed dist
-#&gt; 1:    24   70
-#&gt; </div><div class='input'>
+<span class='fu'>map</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .x[1, ]: incorrect number of dimensions</span></div><div class='input'>
 <span class='co'># return the first row of each chunk eagerly as data.table/data.frame by row-binding</span>
-<span class='fu'>map_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])</div><div class='output co'>#&gt;    speed dist
-#&gt; 1:     4    2
-#&gt; 2:    11   17
-#&gt; 3:    13   46
-#&gt; 4:    16   40
-#&gt; 5:    19   46
-#&gt; 6:    24   70</div><div class='input'>
+<span class='fu'>map_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])</div><div class='output co'>#&gt; <span class='error'>Error in .x[1, ]: incorrect number of dimensions</span></div><div class='input'>
 <span class='co'># lazy and delayed are just an aliases for map(..., lazy = TRUE)</span>
 <span class='fu'>collect</span>(<span class='fu'>lazy</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]))</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
@@ -343,134 +298,16 @@ second is the chunk ID</p>
 #&gt; 5:    19   46
 #&gt; 6:    24   70</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
+<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># .x is the chunk and .y is the ID as an integer</span>
 
 <span class='co'># lazy = TRUE support is not available at the moment</span>
-<span class='fu'>imap</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt;    speed dist id
-#&gt; 1:     4    2  1
-#&gt; 2:     4   10  1
-#&gt; 3:     7    4  1
-#&gt; 4:     7   22  1
-#&gt; 5:     8   16  1
-#&gt; 6:     9   10  1
-#&gt; 7:    10   18  1
-#&gt; 8:    10   26  1
-#&gt; 9:    10   34  1
-#&gt; 
-#&gt; [[2]]
-#&gt;    speed dist id
-#&gt; 1:    11   17  2
-#&gt; 2:    11   28  2
-#&gt; 3:    12   14  2
-#&gt; 4:    12   20  2
-#&gt; 5:    12   24  2
-#&gt; 6:    12   28  2
-#&gt; 7:    13   26  2
-#&gt; 8:    13   34  2
-#&gt; 9:    13   34  2
-#&gt; 
-#&gt; [[3]]
-#&gt;    speed dist id
-#&gt; 1:    13   46  3
-#&gt; 2:    14   26  3
-#&gt; 3:    14   36  3
-#&gt; 4:    14   60  3
-#&gt; 5:    14   80  3
-#&gt; 6:    15   20  3
-#&gt; 7:    15   26  3
-#&gt; 8:    15   54  3
-#&gt; 9:    16   32  3
-#&gt; 
-#&gt; [[4]]
-#&gt;    speed dist id
-#&gt; 1:    16   40  4
-#&gt; 2:    17   32  4
-#&gt; 3:    17   40  4
-#&gt; 4:    17   50  4
-#&gt; 5:    18   42  4
-#&gt; 6:    18   56  4
-#&gt; 7:    18   76  4
-#&gt; 8:    18   84  4
-#&gt; 9:    19   36  4
-#&gt; 
-#&gt; [[5]]
-#&gt;    speed dist id
-#&gt; 1:    19   46  5
-#&gt; 2:    19   68  5
-#&gt; 3:    20   32  5
-#&gt; 4:    20   48  5
-#&gt; 5:    20   52  5
-#&gt; 6:    20   56  5
-#&gt; 7:    20   64  5
-#&gt; 8:    22   66  5
-#&gt; 9:    23   54  5
-#&gt; 
-#&gt; [[6]]
-#&gt;    speed dist id
-#&gt; 1:    24   70  6
-#&gt; 2:    24   92  6
-#&gt; 3:    24   93  6
-#&gt; 4:    24  120  6
-#&gt; 5:    25   85  6
-#&gt; </div><div class='input'>
-<span class='fu'>imap_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>])</div><div class='output co'>#&gt;     speed dist id
-#&gt;  1:     4    2  1
-#&gt;  2:     4   10  1
-#&gt;  3:     7    4  1
-#&gt;  4:     7   22  1
-#&gt;  5:     8   16  1
-#&gt;  6:     9   10  1
-#&gt;  7:    10   18  1
-#&gt;  8:    10   26  1
-#&gt;  9:    10   34  1
-#&gt; 10:    11   17  2
-#&gt; 11:    11   28  2
-#&gt; 12:    12   14  2
-#&gt; 13:    12   20  2
-#&gt; 14:    12   24  2
-#&gt; 15:    12   28  2
-#&gt; 16:    13   26  2
-#&gt; 17:    13   34  2
-#&gt; 18:    13   34  2
-#&gt; 19:    13   46  3
-#&gt; 20:    14   26  3
-#&gt; 21:    14   36  3
-#&gt; 22:    14   60  3
-#&gt; 23:    14   80  3
-#&gt; 24:    15   20  3
-#&gt; 25:    15   26  3
-#&gt; 26:    15   54  3
-#&gt; 27:    16   32  3
-#&gt; 28:    16   40  4
-#&gt; 29:    17   32  4
-#&gt; 30:    17   40  4
-#&gt; 31:    17   50  4
-#&gt; 32:    18   42  4
-#&gt; 33:    18   56  4
-#&gt; 34:    18   76  4
-#&gt; 35:    18   84  4
-#&gt; 36:    19   36  4
-#&gt; 37:    19   46  5
-#&gt; 38:    19   68  5
-#&gt; 39:    20   32  5
-#&gt; 40:    20   48  5
-#&gt; 41:    20   52  5
-#&gt; 42:    20   56  5
-#&gt; 43:    20   64  5
-#&gt; 44:    22   66  5
-#&gt; 45:    23   54  5
-#&gt; 46:    24   70  6
-#&gt; 47:    24   92  6
-#&gt; 48:    24   93  6
-#&gt; 49:    24  120  6
-#&gt; 50:    25   85  6
-#&gt;     speed dist id</div><div class='input'>
+<span class='fu'>imap</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in `:=`(id, .y): could not find function ":="</span></div><div class='input'>
+<span class='fu'>imap_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>])</div><div class='output co'>#&gt; <span class='error'>Error in `:=`(id, .y): could not find function ":="</span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

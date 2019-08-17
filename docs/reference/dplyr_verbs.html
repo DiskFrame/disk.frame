@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>dplyr verbs implemented for disk.frame — select.disk.frame • disk.frame</title>
+<title>The dplyr verbs implemented for disk.frame — select.disk.frame • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="dplyr verbs implemented for disk.frame — select.disk.frame" />
+<meta property="og:title" content="The dplyr verbs implemented for disk.frame — select.disk.frame" />
 
-<meta property="og:description" content="dplyr verbs implemented for disk.frame
-mutate
-Take a glimpse" />
+<meta property="og:description" content="Please see the dplyr document for their usage. Please note that `group_by`
+and `arrange` performs the actions within each chunk" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -88,19 +87,19 @@ Take a glimpse" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/common-questions.html">Common Questions</a>
+      <a href="../articles/01-intro.html">Story of disk.frame</a>
     </li>
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/02-intro-disk-frame.html">Testing</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Basic Data Operations - nycflights13</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
   </ul>
 </li>
@@ -120,16 +119,15 @@ Take a glimpse" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>dplyr verbs implemented for disk.frame</h1>
+    <h1>The dplyr verbs implemented for disk.frame</h1>
     
     <div class="hidden name"><code>dplyr_verbs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>dplyr verbs implemented for disk.frame</p>
-<p>mutate</p>
-<p>Take a glimpse</p>
+    <p>Please see the dplyr document for their usage. Please note that `group_by`
+and `arrange` performs the actions within each chunk</p>
     
     </div>
 
@@ -179,9 +177,7 @@ Take a glimpse" />
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'magrittr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:testthat':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:purrr':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    set_names</span></div><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'>as.disk.frame</span>(<span class='no'>cars</span>)
+#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 <span class='no'>mult</span> <span class='kw'>=</span> <span class='fl'>2</span>
 
 <span class='co'># use all any of the supported dplyr</span>
@@ -190,9 +186,16 @@ Take a glimpse" />
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>speed2</span> <span class='kw'>=</span> <span class='no'>speed</span> * <span class='no'>mult</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>speed</span> <span class='kw'>&lt;</span> <span class='fl'>50</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='kw'>speed1</span> <span class='kw'>=</span> <span class='no'>speed</span>) <span class='kw'>%&gt;%</span>
-  <span class='no'>collect</span></div><div class='output co'>#&gt; <span class='error'>Error: object 'mult' not found</span></div><div class='input'>
+  <span class='no'>collect</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'purrr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:magrittr':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    set_names</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:disk.frame':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    imap, imap_dfr, map, map_dfr, map2</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:testthat':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    is_null</span></div><div class='output co'>#&gt; <span class='error'>Error: object 'mult' not found</span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'>delete</span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

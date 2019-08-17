@@ -1,4 +1,5 @@
 #' Apply data.table's foverlaps to the disk.frame
+#' @description EXPERIMENTAL
 #' @param df1 A disk.frame
 #' @param df2 A disk.frame or a data.frame
 #' @param by.x character/string vector. by.x used in foverlaps
@@ -15,6 +16,8 @@
 #' @importFrom pryr do_call
 #' @export
 #' @examples
+#' library(data.table)
+#' 
 #' ## simple example:
 #' x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
 #' y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))

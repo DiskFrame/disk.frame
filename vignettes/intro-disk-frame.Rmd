@@ -1,5 +1,5 @@
 ---
-title: "Basic Data Operations - nycflights13"
+title: "Quick Start"
 author: "ZJ"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -15,6 +15,7 @@ library(fst)
 library(magrittr)
 library(nycflights13)
 library(dplyr)
+library(data.table)
 
 # you need to run this for multi-worker support
 # limit to 2 cores if not running interactively; most likely on CRAN
@@ -30,7 +31,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
+# Quick Start - replicating dplyr's tutorial on nycflight13 
 
 The [`disk.frame` package](https://github.com/xiaodaigh/disk.frame) aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
 
@@ -77,6 +78,7 @@ We convert a `data.frame` to `disk.frame` using the `as.disk.frame` function.
 library(nycflights13)
 library(dplyr)
 library(disk.frame)
+library(data.table)
 
 # convert the flights data to a disk.frame and store the disk.frame in the folder
 # "tmp_flights" and overwrite any content if needed

@@ -10,7 +10,7 @@
 \alias{summarise.disk.frame}
 \alias{summarize.disk.frame}
 \alias{glimpse.disk.frame}
-\title{dplyr verbs implemented for disk.frame}
+\title{The dplyr verbs implemented for disk.frame}
 \usage{
 \method{select}{disk.frame}(.data, ...)
 
@@ -36,11 +36,8 @@
 \item{...}{Same as the dplyr functions}
 }
 \description{
-dplyr verbs implemented for disk.frame
-
-mutate
-
-Take a glimpse
+Please see the dplyr document for their usage. Please note that `group_by`
+and `arrange` performs the actions within each chunk
 }
 \examples{
 library(dplyr)

@@ -78,7 +78,7 @@ add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", s
   df
 }
 
-#' Create a data frame pointed to a folder
+#' Create a disk.frame pointed to a folder
 #' @rdname disk.frame_fst
 disk.frame_folder <- function(path) {
   df <- list()
@@ -93,7 +93,6 @@ disk.frame_folder <- function(path) {
 }
 
 
-#' Create a disk.frame from fst files
 #' @param path The path to store the output file or to a directory
 #' @import fst
 disk.frame_fst <- function(path) {
@@ -117,7 +116,9 @@ prepare_dir.disk.frame <- function(df, path, clean = FALSE) {
   fpath2
 }
 
-#' is the disk.frame ready from a long running non-blocking process
+#' The readiness of a disk.frame
+#' @description 
+#' Sometimes a disk.frame may be in use and this check whether it is ready from a long running non-blocking process.
 # TODO 
 #' @param df a disk.frame
 is_ready <- function(df) {
@@ -161,6 +162,8 @@ is_ready.disk.frame <- function(df) {
   }
 }
 
+#' Is the disk.frame a single-file or a folder
+#' @description 
 #' Checks if the df is a single-file based disk.frame
 #' @param df a disk.frame
 #' @param check.consistency check for consistency e.g. if it's actually a file
@@ -181,7 +184,7 @@ is.dir.disk.frame <- function(df, check.consistency = TRUE) {
   !is.file.disk.frame(df, check.consistency = check.consistency)
 }
 
-#' Head of the disk.frame
+#' Head and tail of the disk.frame
 #' @param x a disk.frame
 #' @param n number of rows to include
 #' @param ... passed to base::head or base::tail
@@ -210,7 +213,6 @@ head.disk.frame <- function(x, n = 6L, ...) {
   }
 }
 
-#' tail of disk.frame
 #' @export
 #' @import fst
 #' @importFrom utils tail

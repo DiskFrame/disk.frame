@@ -20,6 +20,7 @@ as.data.frame.disk.frame <- function(x, row.names, optional, ...) { # needs to r
 #' @param ... passed to as.data.table
 #' @export
 #' @examples 
+#' library(data.table)
 #' cars.df = as.disk.frame(cars)
 #' as.data.table(cars.df)
 #' 

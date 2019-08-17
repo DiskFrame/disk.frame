@@ -1,33 +1,3 @@
-#' dplyr verbs implemented for disk.frame
-#' @export
-#' @importFrom dplyr select rename filter mutate transmute arrange do groups group_by group_by glimpse summarise
-#' @param ... Same as the dplyr functions
-#' @param .data a disk.frame
-#' @rdname dplyr_verbs
-#' @examples
-#' library(dplyr)
-#' library(magrittr)
-#' cars.df = as.disk.frame(cars)
-#' mult = 2
-#' 
-#' # use all any of the supported dplyr
-#' cars2 = cars.df %>% 
-#'   select(speed) %>% 
-#'   mutate(speed2 = speed * mult) %>% 
-#'   filter(speed < 50) %>% 
-#'   rename(speed1 = speed) %>% 
-#'   collect
-#' 
-#' # clean up cars.df
-#' delete(cars.df)
-select.disk.frame <- function(.data, ...) {
-  quo_dotdotdot = rlang::enquos(...)
-  map(.data, ~{
-    code = rlang::quo(select(.x, !!!quo_dotdotdot))
-    rlang::eval_tidy(code)
-  }, lazy = TRUE)
-}
-
 #' A function to make it easier to create dplyr function for disk.frame
 #' @param dplyr_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
@@ -40,7 +10,7 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
     }
     
     quo_dotdotdot = rlang::enquos(...)
-  
+    
     # this is designed to capture any global stuff
     vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
     data_for_eval_tidy = force(vars_and_pkgs$globals)
@@ -65,6 +35,39 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
   return_func
 }
 
+#' The dplyr verbs implemented for disk.frame
+#' @description 
+#' Please see the dplyr document for their usage. Please note that `group_by`
+#' and `arrange` performs the actions within each chunk
+#' @export
+#' @importFrom dplyr select rename filter mutate transmute arrange do groups group_by group_by glimpse summarise
+#' @param ... Same as the dplyr functions
+#' @param .data a disk.frame
+#' @rdname dplyr_verbs
+#' @examples
+#' library(dplyr)
+#' library(magrittr)
+#' cars.df = as.disk.frame(cars)
+#' mult = 2
+#' 
+#' # use all any of the supported dplyr
+#' cars2 = cars.df %>% 
+#'   select(speed) %>% 
+#'   mutate(speed2 = speed * mult) %>% 
+#'   filter(speed < 50) %>% 
+#'   rename(speed1 = speed) %>% 
+#'   collect
+#' 
+#' # clean up cars.df
+#' delete(cars.df)
+select.disk.frame <- function(.data, ...) {
+  quo_dotdotdot = rlang::enquos(...)
+  map(.data, ~{
+    code = rlang::quo(dplyr::select(.x, !!!quo_dotdotdot))
+    rlang::eval_tidy(code)
+  }, lazy = TRUE)
+}
+
 
 #' @export
 #' @rdname dplyr_verbs
@@ -74,7 +77,6 @@ rename.disk.frame <- create_dplyr_mapper(dplyr::rename)
 #' @rdname dplyr_verbs
 filter.disk.frame <- create_dplyr_mapper(dplyr::filter)
 
-#' mutate
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom future getGlobalsAndPackages
@@ -102,15 +104,21 @@ summarise.disk.frame <- create_dplyr_mapper(dplyr::summarise)
 #' @rdname dplyr_verbs
 summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
 
-#' Group
+#' The shard keys of the disk.frame
+#' @return character
 #' @export
 #' @param x a disk.frame
 groups.disk.frame <- function(x){
   shardkey(x)
 }
 
-#' Group by designed for disk.frames
-#' @importFrom dplyr group_by_
+#' Group by within each disk.frame
+#' @description
+#' The disk.frame group by operation perform group WITHIN each chunk. This is
+#' often used for performance reasons. If the user wishes to perform group-by,
+#' they may choose to use the `hard_group_by` function which is expensive as it
+#' reorganises the chunks by the shard key.
+#' @seealso hard_group_by
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @export
@@ -144,7 +152,6 @@ group_by.disk.frame <- function(.data, ...) {
 }
 #group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
 
-#' Take a glimpse
 #' @export
 #' @rdname dplyr_verbs
 glimpse.disk.frame <- function(.data, ...) {

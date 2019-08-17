@@ -1,4 +1,4 @@
-#' Helper function to evalparse some glue::glue string
+#' Helper function to evalparse some `glue::glue` string
 #' @param code the code in character(string) format to evaluate
 #' @param env the environment in which to evaluate the code
 #' @export

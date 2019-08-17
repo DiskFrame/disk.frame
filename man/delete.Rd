@@ -2,7 +2,7 @@
 % Please edit documentation in R/delete.r
 \name{delete}
 \alias{delete}
-\title{delete a disk.frame}
+\title{Delete a disk.frame}
 \usage{
 delete(df)
 }
@@ -10,7 +10,7 @@ delete(df)
 \item{df}{a disk.frame}
 }
 \description{
-delete a disk.frame
+Delete a disk.frame
 }
 \examples{
 cars.df = as.disk.frame(cars)
