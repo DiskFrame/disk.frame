@@ -332,6 +332,10 @@ system.time(df[,.(sum(a))][,sum(V1)]) #2.95
 cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
 
+## Hex logo
+
+![disk.frame logo](inst/figures/hex-logo-280.png?raw=true)
+
 ## Contributors
 
 This project exists thanks to all the people who contribute.
