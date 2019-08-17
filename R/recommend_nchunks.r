@@ -1,4 +1,7 @@
-#' Computes the recommended number of chunks to break a data.frame into
+#' Recommend number of chunks based on input size
+#' @description
+#' Computes the recommended number of chunks to break a data.frame into. It can
+#' accept filesizes in bytes (as integer) or a data.frame
 #' @param df a disk.frame or the file size in bytes of a CSV file holding the data
 #' @param type only = "csv" is supported. It indicates the file type corresponding to file size `df`
 #' @param minchunks the minimum number of chunks. Defaults to the number of CPU cores (without hyper-threading)

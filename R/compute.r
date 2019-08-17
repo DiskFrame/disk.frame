@@ -1,10 +1,10 @@
+#' Compute without writing
+#' @description 
 #' Perform the computation; same as calling map without .f and lazy = FALSE
 #' @param x a disk.frame
 #' @param name not used kept for compatibility with dplyr
 #' @export
 #' @importFrom dplyr compute
-#' @rdname map
-#' @examples 
 #' cars.df = as.disk.frame(cars)
 #' cars.df2 = cars.df %>% map(~.x)
 #' # the computation is performed and the data is now stored elsewhere

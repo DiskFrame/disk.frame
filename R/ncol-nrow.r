@@ -1,4 +1,4 @@
-#' Number of rows of disk.frame
+#' Number of rows or columns
 #' @param ... passed to base::nrow
 #' @export
 #' @rdname ncol_nrow
@@ -44,7 +44,6 @@ nrow.disk.frame <- function(df, ...) {
   }
 }
 
-#' Number of columns
 #' @import fst
 #' @export
 #' @rdname ncol_nrow

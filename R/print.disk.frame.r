@@ -1,3 +1,5 @@
+#' Print disk.frame
+#' @description
 #' a new print method for disk.frame
 #' @export
 #' @param x disk.frame
