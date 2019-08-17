@@ -1,4 +1,6 @@
-#' Check if the outdir exists or not; and cleans it if it's not already there
+#' Check if the outdir exists or not
+#' @description 
+#' If the overwrite is TRUE then the folder will be deleted, otherwise the folder will be created.
 #' @param outdir the output directory
 #' @param overwrite TRUE or FALSE if `outdir`` exists and overwrite = FALSE then throw an error
 #' @import fs

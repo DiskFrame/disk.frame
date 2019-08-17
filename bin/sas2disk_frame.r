@@ -1,6 +1,5 @@
 library(disk.frame)
-
-#' Convert a SAS file (.sas7bdat) format to CSV by chunks
+#' Convert a SAS file (.sas7bdat) format to CSV or disk.frame by chunk
 #' @param infile the SAS7BDAT file
 #' @param chunk which convert of nchunks to convert
 #' @param nchunks number of chunks

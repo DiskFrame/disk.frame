@@ -1,4 +1,3 @@
-#' Convert a SAS file (.sas7bdat format) to disk.frame via CSVs
 #' @param inpath input SAS7BDAT file
 #' @param outpath output disk.frame
 #' @importFrom future %<-%

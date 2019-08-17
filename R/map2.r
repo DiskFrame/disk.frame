@@ -1,7 +1,11 @@
-#' Perform a function on both disk.frames .x and .y, each chunk of .x and .y gets run by .f(x.chunk, y.chunk)
+#' `map` a function to two disk.frames
+#' @description
+#' Perform a function on both disk.frames .x and .y, each chunk of .x and .y
+#' gets run by .f(x.chunk, y.chunk)
 #' @param .x a disk.frame
 #' @param .y a disk.frame
-#' @param .f a function to be called on each chunk of x and y matched by chunk_id
+#' @param .f a function to be called on each chunk of x and y matched by
+#'   chunk_id
 #' @param ... not used
 #' @param outdir output directory
 #' @import stringr fst
@@ -10,10 +14,10 @@
 #' @export
 #' @examples
 #' cars.df = as.disk.frame(cars)
-#' 
+#'
 #' cars2.df = map2(cars.df, cars.df, ~data.table::rbindlist(list(.x, .y)))
 #' collect(cars2.df)
-#' 
+#'
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)

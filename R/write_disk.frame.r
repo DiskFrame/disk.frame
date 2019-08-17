@@ -1,3 +1,5 @@
+#' Write disk.frame to disk
+#' @description 
 #' Write a data.frame/disk.frame to a disk.frame location. If df is a
 #' data.frame, then df must contain the column .out.disk.frame.id. This is
 #' intended to be a low-level version of writing disk.frames. Using the

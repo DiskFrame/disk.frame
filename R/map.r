@@ -160,7 +160,7 @@ imap.default <- function(.x, .f, ...) {
   purrr::imap(.x, .f, ...)
 }
 
-#' imap.disk.frame accepts a two argument function where the first argument is a data.frame and the 
+#' `imap.disk.frame` accepts a two argument function where the first argument is a data.frame and the 
 #' second is the chunk ID
 #' @export
 #' @rdname map
@@ -246,7 +246,7 @@ lazy.disk.frame <- function(.x, .f, ...) {
   map.disk.frame(.x, .f, ..., lazy = TRUE)
 }
 
-#' Lazy chunk_lapply wrapper
+#' `delayed` is an alias for lazy and is consistent with the naming in Dask and Dagger.jl
 #' @export
 #' @rdname map
 delayed <- function(.x, .f, ...) {

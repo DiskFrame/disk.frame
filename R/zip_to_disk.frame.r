@@ -1,4 +1,5 @@
-#' Automatically read and convert every single CSV file within the zip file to disk.frame format
+#' `zip_to_disk.frame` is used to read and convert every CSV file within the zip
+#' file to disk.frame format
 #' @param zipfile The zipfile
 #' @param outdir The output directory for disk.frame
 #' @param ... passed to fread
@@ -57,7 +58,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
   dfs  
 }
 
-#' Validate and auto-correct read and convert every single file within the zip file to df format
+#' `validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format
 #' @importFrom glue glue
 #' @importFrom utils unzip
 #' @importFrom data.table timetaken fread
