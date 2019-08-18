@@ -252,7 +252,7 @@ cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
 ## Hex logo
 
-![disk.frame logo](inst/figures/hex-logo-280.png?raw=true)
+![disk.frame logo](inst/figures/hex-logo.png?raw=true)
 
 ## Contributors
 
