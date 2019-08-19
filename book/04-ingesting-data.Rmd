@@ -18,8 +18,16 @@ Let's set-up `disk.frame`
 ```r
 library(disk.frame)
 
-# set up multiple
-setup_disk.frame()
+# set-up disk.frame to use multiple workers
+if(interactive()) {
+  setup_disk.frame()
+  # highly recommended, however it is pun into interactive() for CRAN because
+  # change user options are not allowed on CRAN
+  options(future.globals.maxSize = Inf)  
+} else {
+  setup_disk.frame(2)
+}
+
 ```
 
 One of the most important tasks to perform before using the `disk.frame` package is to make some `disk.frame`s! There are a few functions to help you do that.

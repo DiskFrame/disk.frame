@@ -33,7 +33,6 @@ tmp81$
 tmp82$
 .fst$
 .csv$
-inst$
 inst/surf_2019_02_demo/.ipynb_checkpoints$
 tests_manual$
 ^README\.Rmd$
@@ -42,3 +41,10 @@ tests_manual$
 ^Meta$
 ^rsconnect$
 book$
+inst/nyc-taxi/$
+tutorial$
+tutorials$
+Meta$
+add_chunk_readr.r
+build_utils.R
+utils$

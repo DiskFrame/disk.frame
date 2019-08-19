@@ -19,11 +19,16 @@ library(data.table)
 
 # you need to run this for multi-worker support
 # limit to 2 cores if not running interactively; most likely on CRAN
+# set-up disk.frame to use multiple workers
 if(interactive()) {
   setup_disk.frame()
+  # highly recommended, however it is pun into interactive() for CRAN because
+  # change user options are not allowed on CRAN
+  options(future.globals.maxSize = Inf)  
 } else {
   setup_disk.frame(2)
 }
+
 
 knitr::opts_chunk$set(
   collapse = TRUE,

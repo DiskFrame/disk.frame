@@ -15,7 +15,7 @@
 The disk.frame group by operation perform group WITHIN each chunk. This is
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
-reorganises the chunks by the shard key.
+reorganizes the chunks by the shard key.
 }
 \seealso{
 hard_group_by

@@ -5,17 +5,12 @@
 \title{Set up disk.frame environment}
 \usage{
 setup_disk.frame(workers = parallel::detectCores(logical = FALSE),
-  future_backend = multiprocess, future.globals.maxSize = Inf, ...,
-  gui = FALSE)
+  future_backend = future::multiprocess, ..., gui = FALSE)
 }
 \arguments{
 \item{workers}{the number of workers (background R processes in the}
 
 \item{future_backend}{which future backend to use for parallelization}
-
-\item{future.globals.maxSize}{The amount of memory that is allowed to be
-transferred between workers. Defaults to Inf for no limit.
-multiprocess environment)}
 
 \item{...}{passed to `future::plan`}
 
@@ -26,18 +21,15 @@ Set up disk.frame environment
 }
 \examples{
 if (interactive()) {
-  # use a Shiny GUI to adjust settings
-  setup_disk.frame(gui = TRUE)
-
-  # set the number workers to 2
-  setup_disk.frame(2)
-
-  # setup disk.frame to use multiple workers
-  # these may use more than two cores, so it commented out
-  # setup_disk.frame()
-
-  # set the future backend to sequential
-  # these may use more than two cores, so it commented out
-  # setup_disk.frame(future_backend = future::sequential)
+  # setup disk.frame to use multiple workers # these may use more than two
+  # cores, and so not allowed to run on CRAN. # Hence it's set to run only in
+  # interactive session
+  setup_disk.frame()
 }
+
+# use a Shiny GUI to adjust settings
+setup_disk.frame(gui = TRUE)
+
+# set the number workers to 2
+setup_disk.frame(2)
 }

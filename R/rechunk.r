@@ -6,16 +6,15 @@
 #' @param overwrite overwrite the output directory
 #' @export
 #' @examples
+#' # create a disk.frame with 2 chunks in tempdir()
 #' cars.df = as.disk.frame(cars, nchunks = 2)
-#' 
+#'
 #' # re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df
-#' \dontrun{
 #' rechunk(cars.df, 3)
-#' }
-#' 
+#'
 #' new_path = tempfile(fileext = ".df")
-#' # re-chunking cars.df to 4 chunks, shardby speed, done "out-of-place"
-#' cars2.df = rechunk(cars.df, 4, new_path, shardby = "speed")
+#' # re-chunking cars.df to 4 chunks, shard by speed, and done "out-of-place" to a new directory
+#' cars2.df = rechunk(cars.df, 4, outdir=new_path, shardby = "speed")
 #'
 #' # clean up cars.df
 #' delete(cars.df)
