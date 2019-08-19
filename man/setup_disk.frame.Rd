@@ -21,16 +21,20 @@ Set up disk.frame environment
 }
 \examples{
 if (interactive()) {
-  # setup disk.frame to use multiple workers # these may use more than two
-  # cores, and so not allowed to run on CRAN. # Hence it's set to run only in
+  # setup disk.frame to use multiple workers these may use more than two
+  # cores, and is therefore not allowed on CRAN. Hence it's set to run only in
   # interactive session
   setup_disk.frame()
   
   # use a Shiny GUI to adjust settings
+  # only run in interactive()
   setup_disk.frame(gui = TRUE)
 }
 
-
 # set the number workers to 2
+# only run this interatively
 setup_disk.frame(2)
+
+# if you do not wish to use multiple workers you can set it to sequential
+setup_disk.frame(future_backend=future::sequential)
 }
