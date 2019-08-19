@@ -42,7 +42,7 @@ setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), f
         parallel::detectCores(), 
         value = future::nbrOfWorkers(), 
         step = 1),
-      shiny::includeMarkdown("inst/options.rmd")
+      shiny::includeMarkdown(system.file("options.rmd", package="disk.frame"))
       # , shiny::checkboxInput(
       #   "inf_fgm", 
       #   "Recommended: Set Maximum transfer size between workers to Inf (so ignore slider below)", 
