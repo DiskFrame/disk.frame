@@ -25,10 +25,11 @@ if (interactive()) {
   # cores, and so not allowed to run on CRAN. # Hence it's set to run only in
   # interactive session
   setup_disk.frame()
+  
+  # use a Shiny GUI to adjust settings
+  setup_disk.frame(gui = TRUE)
 }
 
-# use a Shiny GUI to adjust settings
-setup_disk.frame(gui = TRUE)
 
 # set the number workers to 2
 setup_disk.frame(2)
