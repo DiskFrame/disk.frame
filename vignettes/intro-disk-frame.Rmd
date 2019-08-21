@@ -19,11 +19,16 @@ library(data.table)
 
 # you need to run this for multi-worker support
 # limit to 2 cores if not running interactively; most likely on CRAN
+# set-up disk.frame to use multiple workers
 if(interactive()) {
   setup_disk.frame()
+  # highly recommended, however it is pun into interactive() for CRAN because
+  # change user options are not allowed on CRAN
+  options(future.globals.maxSize = Inf)  
 } else {
   setup_disk.frame(2)
 }
+
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -72,7 +77,7 @@ Alternatively, one may specify the number of workers using `setup_disk.frame(wor
 The `disk.frame` package provides convenient functions to convert `data.frame`s and CSVs to `disk.frame`s.
 
 ### Creating a `disk.frame` from `data.frame`
-We convert a `data.frame` to `disk.frame` using the `as.disk.frame` function.
+We convert a `data.frame` to `disk.frame` using the `as.data.frame` function.
 
 ```{r asdiskframe, cache=TRUE}
 library(nycflights13)

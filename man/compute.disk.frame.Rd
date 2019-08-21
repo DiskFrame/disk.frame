@@ -11,6 +11,12 @@
 \item{x}{a disk.frame}
 
 \item{name}{not used kept for compatibility with dplyr}
+
+\item{outdir}{the output directory}
+
+\item{overwrite}{whether to overwrite or note}
+
+\item{...}{NOT used. Kept for dplyr compatibility}
 }
 \description{
 Perform the computation; same as calling map without .f and lazy = FALSE

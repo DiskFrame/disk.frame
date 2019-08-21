@@ -1,0 +1,9 @@
+## Allow unlimted amount of data for transfer
+It is highly recommended that you set the option
+
+```r
+options(future.globals.maxSize = Inf)
+```
+
+this will allow unlimited amount of data to be passed between workers (separate R session that parallize your workloads)
+

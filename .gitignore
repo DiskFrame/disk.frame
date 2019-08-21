@@ -42,3 +42,5 @@ flights_all_notsharded\.df/\.metadata/meta\.json
 doc
 Meta
 rsconnect
+src-i386
+src-x64

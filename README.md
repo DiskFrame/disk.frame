@@ -158,6 +158,9 @@ a background worker is by using
 
 ``` r
 setup_disk.frame()
+
+# this allows large datasets to be transferred between sessions
+options(future.globals.maxSize = Inf)
 ```
 
 The `setup_disk.frame()` sets up background workers equal to the number
@@ -170,19 +173,16 @@ Alternatively, one may specify the number of workers using
 # Example usage
 
 ``` r
-#install.packages(c("fst","future","data.table"))
-
 library(dplyr)
 library(disk.frame)
 library(data.table)
 library(fst)
-#library(future)
-#library(future.apply)
-#library(data.table)
 
 # you need to run this to make multiple workers
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
 setup_disk.frame()
+# this allows large datasets to be transferred between sessions
+options(future.globals.maxSize = Inf)
 
 rows_per_chunk = 1e7
 # generate synthetic data
@@ -301,6 +301,8 @@ cat("summarise without keeping", timetaken(pt), "\n")
 ## Example: data.table syntax
 
 ``` r
+library(data.table)
+
 # count by chunks
 system.time(df_cnt_by_chunk <- df[,.N])
 pt = proc.time()
@@ -331,6 +333,10 @@ pt = proc.time()
 system.time(df[,.(sum(a))][,sum(V1)]) #2.95
 cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
+
+## Hex logo
+
+![disk.frame logo](inst/figures/hex-logo.png?raw=true)
 
 ## Contributors
 

@@ -30,15 +30,15 @@ Make a data.frame into a disk.frame
 # write to temporary location
 cars.df = as.disk.frame(cars) 
 
-# clean up
-delete(cars.df)
-
-\dontrun{
 # specify a different path in the temporary folder, you are free to choose a different folder
-as.disk.frame(cars, outdir = file.path(tempdir(), "some_path.df"))
+cars_new_location.df = as.disk.frame(cars, outdir = file.path(tempdir(), "some_path.df"))
 
 # specify a different number of chunks
 # this writes to tempdir() by default
-as.disk.frame(cars, nchunks = 4, overwrite = TRUE) 
-}
+cars_chunks.df = as.disk.frame(cars, nchunks = 4, overwrite = TRUE) 
+
+# clean up
+delete(cars.df)
+delete(cars_new_location.df)
+delete(cars_chunks.df)
 }

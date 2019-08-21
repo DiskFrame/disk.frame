@@ -41,3 +41,10 @@ tests_manual$
 ^Meta$
 ^rsconnect$
 book$
+inst/nyc-taxi/$
+tutorial$
+tutorials$
+Meta$
+add_chunk_readr.r
+build_utils.R
+utils$

@@ -23,6 +23,9 @@ library(disk.frame)
 # set-up disk.frame to use multiple workers
 if(interactive()) {
   setup_disk.frame()
+  # highly recommended, however it is pun into interactive() for CRAN because
+  # change user options are not allowed on CRAN
+  options(future.globals.maxSize = Inf)  
 } else {
   setup_disk.frame(2)
 }
@@ -37,6 +40,7 @@ flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"
 In the following example, I will use the `.N` from the `data.table` package to count the unique combinations `year` and `month` within each chunk.
 
 ```{r ok, dependson='setup_data_table'}
+library(data.table)
 library(disk.frame)
 
 flights.df = disk.frame(file.path(tempdir(),"flights13"))
