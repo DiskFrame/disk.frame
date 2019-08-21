@@ -80,6 +80,7 @@ add_meta <- function(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "", s
 
 #' Create a disk.frame pointed to a folder
 #' @rdname disk.frame_fst
+#' @noRd
 disk.frame_folder <- function(path) {
   df <- list()
   df$files <- list.files(path, full.names = TRUE)
@@ -95,6 +96,7 @@ disk.frame_folder <- function(path) {
 
 #' @param path The path to store the output file or to a directory
 #' @import fst
+#' @noRd
 disk.frame_fst <- function(path) {
   df <- list()
   attr(df, "metadata") <- fst::fst.metadata(path)
@@ -121,6 +123,7 @@ prepare_dir.disk.frame <- function(df, path, clean = FALSE) {
 #' Sometimes a disk.frame may be in use and this check whether it is ready from a long running non-blocking process.
 # TODO 
 #' @param df a disk.frame
+#' @noRd
 is_ready <- function(df) {
   return(TRUE)
   UseMethod("is_ready")  
@@ -167,6 +170,7 @@ is_ready.disk.frame <- function(df) {
 #' Checks if the df is a single-file based disk.frame
 #' @param df a disk.frame
 #' @param check.consistency check for consistency e.g. if it's actually a file
+#' @noRd
 is.file.disk.frame <- function(df, check.consistency = TRUE) {
   if(check.consistency) {
     fpath <- attr(df,"path")
@@ -180,6 +184,7 @@ is.file.disk.frame <- function(df, check.consistency = TRUE) {
 }
 
 #' @rdname is.file.disk.frame
+#' @noRd
 is.dir.disk.frame <- function(df, check.consistency = TRUE) {
   !is.file.disk.frame(df, check.consistency = check.consistency)
 }

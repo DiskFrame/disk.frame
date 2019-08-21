@@ -59,8 +59,6 @@ filter_at.disk.frame(.data, ...)
 
 tally.disk.frame(.data, ...)
 
-tally.disk.frame(.data, ...)
-
 count.disk.frame(.data, ...)
 
 add_count.disk.frame(.data, ...)
@@ -135,3 +133,73 @@ cars2 = cars.df \%>\%
 # clean up cars.df
 delete(cars.df)
 }
+\seealso{
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+}
+\concept{dplyr verbs}

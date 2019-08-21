@@ -31,14 +31,18 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   # the amount of memory available in gigabytes
   if (Sys.info()[["sysname"]] == "Windows") {
     ml = memory.limit() / 1024
-  } else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
-    ml = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
+  #} else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
   } else {
-    ml = 128
-  }
+    #ml = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
+    ml = benchmarkme::get_ram()/1024/1024/1024
+  } 
   
+  if(is.na(ml)) {
+    warning("memory size not detected, Assumming you have at least 16G of RAM")
+    ml = 16
+  }
   # assume at least 1G of RAM
-  ml = max(ml, 1)
+  ml = max(ml, 1, na.rm = TRUE)
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
   nc = parallel::detectCores(logical = FALSE)

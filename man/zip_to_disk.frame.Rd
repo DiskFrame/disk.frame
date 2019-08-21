@@ -2,14 +2,11 @@
 % Please edit documentation in R/zip_to_disk.frame.r
 \name{zip_to_disk.frame}
 \alias{zip_to_disk.frame}
-\alias{validate_zip_to_disk.frame}
 \title{`zip_to_disk.frame` is used to read and convert every CSV file within the zip
 file to disk.frame format}
 \usage{
 zip_to_disk.frame(zipfile, outdir, ..., validation.check = FALSE,
   overwrite = TRUE)
-
-validate_zip_to_disk.frame(zipfile, outdir)
 }
 \arguments{
 \item{zipfile}{The zipfile}
@@ -28,8 +25,6 @@ a list of disk.frame
 \description{
 `zip_to_disk.frame` is used to read and convert every CSV file within the zip
 file to disk.frame format
-
-`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format
 }
 \examples{
 # create a zip file containing a csv

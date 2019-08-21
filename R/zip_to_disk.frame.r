@@ -64,6 +64,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
 #' @importFrom data.table timetaken fread
 #' @import fst
 #' @rdname zip_to_disk.frame
+#' @noRd
 validate_zip_to_disk.frame = function(zipfile, outdir) {
   files = unzip(zipfile, list=TRUE)
   

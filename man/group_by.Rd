@@ -19,4 +19,7 @@ reorganizes the chunks by the shard key.
 }
 \seealso{
 hard_group_by
+
+Other dplyr verbs: \code{\link{select.disk.frame}}
 }
+\concept{dplyr verbs}

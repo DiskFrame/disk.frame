@@ -35,8 +35,7 @@ file to disk.frame format — zip_to_disk.frame • disk.frame</title>
 file to disk.frame format — zip_to_disk.frame" />
 
 <meta property="og:description" content="`zip_to_disk.frame` is used to read and convert every CSV file within the zip
-file to disk.frame format
-`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format" />
+file to disk.frame format" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,7 +101,7 @@ file to disk.frame format
       <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Story of disk.frame</a>
+      <a href="../articles/intro.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -132,14 +131,11 @@ file to disk.frame format</h1>
     
     <p>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
 file to disk.frame format</p>
-<p>`validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>validation.check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>validate_zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,7 +178,7 @@ file to disk.frame format</p>
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY56T0W\file50040a239ea.df/Users/RTX2080/AppData/Local/Temp/RtmpY56T0W/file5001c105be2.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07\file16a02ada5624.df/Users/RTX2080/AppData/Local/Temp/RtmpY1GP07/file16a049d23338.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow: 50</span>
 #&gt; <span class='message'>ncol: 3</span></div><div class='input'>
