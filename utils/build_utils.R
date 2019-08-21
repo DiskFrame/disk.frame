@@ -18,23 +18,24 @@
 
 df_build_site <- function() {
   df_setup_vignette()
+  devtools::document()
   pkgdown::build_site()
 }
 
 df_setup_vignette <- function() {
   # remove cache
-  purrr::walk(list.dirs("vignettes/",recursive = F), ~{
+  purrr::walk(list.dirs("vignettes/",recursive = FALSE), ~{
     fs::dir_delete(.x)
   })
 
-    # copy the RMD from book
+  # copy the RMD from book
   lf = list.files("book", pattern="*.Rmd")
   lf = lf[!is.na(as.integer(sapply(lf, function(x) substr(x, 1, 2))))]
   
   purrr::walk(lf, function(file) {
     fs::file_copy(
       file.path("book", file), 
-      file.path("vignettes", substr(file, 4, nchar(file))), overwrite = T)
+      file.path("vignettes", substr(file, 4, nchar(file))), overwrite = TRUE)
   })
   NULL
 }

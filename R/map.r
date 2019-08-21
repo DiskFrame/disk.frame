@@ -261,6 +261,7 @@ delayed.disk.frame <- function(.x, .f, ...) {
   
 #' @export
 #' @rdname map
+#' @noRd
 chunk_lapply <- function (...) {
   warning("chunk_lapply is deprecated in favour of map.disk.frame")
   map.disk.frame(...)

@@ -66,6 +66,9 @@ devtools::install_github("xiaodaigh/disk.frame")
 
 ```r
 setup_disk.frame()
+
+# this will allow unlimited amount of data to be passed from worker to worker
+options(future.globals.maxSize = Inf)
 ```
 
 The `setup_disk.frame()` sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.

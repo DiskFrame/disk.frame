@@ -2,15 +2,12 @@
 % Please edit documentation in R/ncol-nrow.r
 \name{nrow}
 \alias{nrow}
-\alias{nrow.default}
 \alias{nrow.disk.frame}
 \alias{ncol}
 \alias{ncol.disk.frame}
 \title{Number of rows or columns}
 \usage{
 nrow(df, ...)
-
-\method{nrow}{default}(df, ...)
 
 \method{nrow}{disk.frame}(df, ...)
 

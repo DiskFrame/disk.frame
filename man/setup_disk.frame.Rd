@@ -32,7 +32,6 @@ if (interactive()) {
 }
 
 # set the number workers to 2
-# only run this interatively
 setup_disk.frame(2)
 
 # if you do not wish to use multiple workers you can set it to sequential

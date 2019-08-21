@@ -20,12 +20,32 @@ There are a number of concepts and terminologies that are useful to understand i
 A `disk.frame` is nothing more a folder and in that folder there should be [`fst`](https://www.fstpackage.org/) files named "1.fst", "2.fst", "3.fst" etc. Each of the ".fst" file is called a _chunk_.
 
 ## Workers and parallelism
-Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. For example, suppose we wish to compute the number of rows for each chunk, we can clearly perform this simultaneously in parallel. The code to do that is
+Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. 
+
+It is recommended that you should running these to set-up immedidately after you `library(disk.frame)`. For example:
+
+```r
+library(disk.frame)
+setup_disk.frame()
+
+# this will allow unlimited amount of data to be passed from worker to worker
+options(future.globals.maxSize = Inf)
+```
+
+For example, suppose we wish to compute the number of rows for each chunk, we can clearly perform this simultaneously in parallel. The code to do that is
 
 ```r
 # use only one column is fastest
 df[,.N, keep = "first_col"]
 ```
+
+or equivalent using the `srckeep` function
+
+```r
+# use only one column is fastest
+srckeep(df, "first_col")[,.N, keep = "first_col"]
+```
+
 Say there are `n` chunks in `df`, and there are `m` workers. Then the first `m` chunks will run `chunk[,.N]` simultaneously.
 
 To see how many workers are at work, use

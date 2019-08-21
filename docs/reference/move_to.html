@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set up disk.frame environment — setup_disk.frame • disk.frame</title>
+<title>Move or copy a disk.frame to another location — move_to • disk.frame</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Set up disk.frame environment — setup_disk.frame" />
+<meta property="og:title" content="Move or copy a disk.frame to another location — move_to" />
 
-<meta property="og:description" content="Set up disk.frame environment" />
+<meta property="og:description" content="Move or copy a disk.frame to another location" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,64 +118,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set up disk.frame environment</h1>
+    <h1>Move or copy a disk.frame to another location</h1>
     
-    <div class="hidden name"><code>setup_disk.frame.Rd</code></div>
+    <div class="hidden name"><code>move_to.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Set up disk.frame environment</p>
+    <p>Move or copy a disk.frame to another location</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>setup_disk.frame</span>(<span class='kw'>workers</span> <span class='kw'>=</span> <span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-  <span class='kw'>future_backend</span> <span class='kw'>=</span> <span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/future/topics/multiprocess'>multiprocess</a></span>, <span class='no'>...</span>, <span class='kw'>gui</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>move_to</span>(<span class='no'>df</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>copy_df_to</span>(<span class='no'>df</span>, <span class='no'>outdir</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>workers</th>
-      <td><p>the number of workers (background R processes in the</p></td>
+      <th>df</th>
+      <td><p>The disk.frame</p></td>
     </tr>
     <tr>
-      <th>future_backend</th>
-      <td><p>which future backend to use for parallelization</p></td>
+      <th>outdir</th>
+      <td><p>The new location</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed to `future::plan`</p></td>
+      <td><p>NOT USED</p></td>
     </tr>
     <tr>
-      <th>gui</th>
-      <td><p>Whether to use a Graphical User Interface (GUI) for selecting the options. Defaults to FALSE</p></td>
+      <th>copy</th>
+      <td><p>Merely copy and not move</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a disk.frame</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>()) {
-  <span class='co'># setup disk.frame to use multiple workers these may use more than two</span>
-  <span class='co'># cores, and is therefore not allowed on CRAN. Hence it's set to run only in</span>
-  <span class='co'># interactive session</span>
-  <span class='fu'>setup_disk.frame</span>()
+    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
-  <span class='co'># use a Shiny GUI to adjust settings</span>
-  <span class='co'># only run in interactive()</span>
-  <span class='fu'>setup_disk.frame</span>(<span class='kw'>gui</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}
+<span class='no'>cars_copy.df</span> <span class='kw'>=</span> <span class='fu'>copy_df_to</span>(<span class='no'>cars.df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span><span class='kw'>=</span><span class='st'>".df"</span>))
 
-<span class='co'># set the number workers to 2</span>
-<span class='fu'>setup_disk.frame</span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>The number of workers available for disk.frame is 2</span></div><div class='input'>
-<span class='co'># if you do not wish to use multiple workers you can set it to sequential</span>
-<span class='fu'>setup_disk.frame</span>(<span class='kw'>future_backend</span><span class='kw'>=</span><span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/future/topics/sequential'>sequential</a></span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignored 2 unknown arguments: 'workers', 'gc'</span></div><div class='output co'>#&gt; <span class='message'>The number of workers available for disk.frame is 1</span></div></pre>
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>move_to</span>(<span class='no'>cars.df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span><span class='kw'>=</span><span class='st'>".df"</span>))
+
+<span class='co'># clean up</span>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars_copy.df</span>)
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -2,7 +2,7 @@
 title: "Ingesting Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ingesting-data}
+  %\VignetteIndexEntry{Ingesting Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

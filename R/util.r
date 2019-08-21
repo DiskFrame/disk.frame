@@ -10,6 +10,7 @@ evalparseglue <- function(code, env = parent.frame()) {
 #' @param N number of rows. Defaults to 200 million
 #' @param K controls the number of unique values for id. Some ids will have K distinct values while others have N/K distinct values
 #' @importFrom stats runif
+#' @export
 gen_datatable_synthetic <- function(N=2e8, K=100) {
   data.table(
     id1 = sample(sprintf("id%03d",1:K), N, TRUE),      # large groups (char)

@@ -17,6 +17,7 @@ nrow <- function(df,...) {
 
 #' @rdname ncol_nrow
 #' @export
+#' @noRd
 nrow.default <- function(df, ...) {
   base::nrow(df, ...)
 }

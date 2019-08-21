@@ -1,6 +1,7 @@
 #' Show a progress bar of the action being performed
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @param df a disk.frame
+#' @noRd
 progressbar <- function(df) {
   if(attr(df,"performing") == "hard_group_by") {
     # create progress bar

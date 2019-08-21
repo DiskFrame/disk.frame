@@ -44,6 +44,7 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
 #' @rdname dplyr_verbs
+#' @family dplyr verbs
 #' @examples
 #' library(dplyr)
 #' library(magrittr)
@@ -69,29 +70,35 @@ select.disk.frame <- function(.data, ...) {
 }
 
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 rename.disk.frame <- create_dplyr_mapper(dplyr::rename)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 filter.disk.frame <- create_dplyr_mapper(dplyr::filter)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr filter_all
 filter_all.disk.frame <- create_dplyr_mapper(dplyr::filter_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr filter_if
 filter_if.disk.frame <- create_dplyr_mapper(dplyr::filter_if)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr filter_at
 filter_at.disk.frame <- create_dplyr_mapper(dplyr::filter_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom future getGlobalsAndPackages
@@ -99,142 +106,165 @@ filter_at.disk.frame <- create_dplyr_mapper(dplyr::filter_at)
 #' @importFrom dplyr mutate
 mutate.disk.frame <- create_dplyr_mapper(dplyr::mutate)
 
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr transmute
 #' @rdname dplyr_verbs
 transmute.disk.frame <- create_dplyr_mapper(dplyr::transmute)
 
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
 arrange.disk.frame <- create_dplyr_mapper(dplyr::arrange, "disk.frame only sorts (arange) WITHIN each chunk")
 
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr summarise
 #' @rdname dplyr_verbs
 summarise.disk.frame <- create_dplyr_mapper(dplyr::summarise)
 
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr tally
 #' @rdname dplyr_verbs
 tally.disk.frame <- create_dplyr_mapper(dplyr::tally)
 
-#' @export
-#' @importFrom dplyr tally
-#' @rdname dplyr_verbs
-tally.disk.frame <- create_dplyr_mapper(dplyr::tally)
-
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr count
 #' @rdname dplyr_verbs
 count.disk.frame <- create_dplyr_mapper(dplyr::count)
 
+# TODO alot of these .disk.frame functions are not generic
+
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr add_count
 #' @rdname dplyr_verbs
 add_count.disk.frame <- create_dplyr_mapper(dplyr::add_count)
 
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr add_tally
 #' @rdname dplyr_verbs
 add_tally.disk.frame <- create_dplyr_mapper(dplyr::add_tally)
 
-
+#' @family dplyr verbs
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
 summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr do
 do.disk.frame <- create_dplyr_mapper(dplyr::do)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_all
 group_by_all.disk.frame <- create_dplyr_mapper(dplyr::group_by_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_at
 group_by_at.disk.frame <- create_dplyr_mapper(dplyr::group_by_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_if
 group_by_if.disk.frame <- create_dplyr_mapper(dplyr::group_by_if)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_all
 mutate_all.disk.frame <- create_dplyr_mapper(dplyr::mutate_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_at
 mutate_at.disk.frame <- create_dplyr_mapper(dplyr::mutate_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_if
 mutate_if.disk.frame <- create_dplyr_mapper(dplyr::mutate_if)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr rename_all
 rename_all.disk.frame <- create_dplyr_mapper(dplyr::rename_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr rename_at
 rename_at.disk.frame <- create_dplyr_mapper(dplyr::rename_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr rename_if
 rename_if.disk.frame <- create_dplyr_mapper(dplyr::rename_if)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr select_all
 select_all.disk.frame <- create_dplyr_mapper(dplyr::select_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr select_at
 select_at.disk.frame <- create_dplyr_mapper(dplyr::select_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr select_if
 select_if.disk.frame <- create_dplyr_mapper(dplyr::select_if)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarise_all
 summarise_all.disk.frame <- create_dplyr_mapper(dplyr::summarise_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarise_at
 summarise_at.disk.frame <- create_dplyr_mapper(dplyr::summarise_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize
 summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_all
 summarize_all.disk.frame <- create_dplyr_mapper(dplyr::summarize_all)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_at
 summarize_at.disk.frame <- create_dplyr_mapper(dplyr::summarize_at)
 
+#' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_if
@@ -258,6 +288,7 @@ groups.disk.frame <- function(x){
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @export
+#' @family dplyr verbs
 #' @rdname group_by
 # TODO check shardkey
 group_by.disk.frame <- function(.data, ...) {
