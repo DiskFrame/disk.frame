@@ -14,20 +14,22 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(disk.frame)
 setup_disk.frame()
+options(future.globals.maxSize = Inf)
 ```
 
 ## Loading the data
 ```{r}
-system.time(nyc.df <- csv_to_disk.frame(list.files("c:/data/nyc-taxi-data/",pattern="*.csv", full.names = T)))
+system.time(nyc.df <- csv_to_disk.frame(list.files("c:/data/nyc-taxi-data/",pattern="*.csv", full.names = TRUE)))
 ```
 
 ```{r}
-sapply(list.files("c:/data/nyc-taxi-data/",pattern="*.csv", full.names = T), function(x) {
+sapply(list.files("c:/data/nyc-taxi-data/",pattern="*.csv", full.names = TRUE), function(x) {
   ncol(data.table::fread(x, nrows = 2))
 })
 ```
 
 ```{r}
+nyc.df = disk.frame("nyc.df")
 a = nyc.df[,uniqueN(Dispatching_base_num), keep=names(nyc.df)[1]]
 a
 ```
@@ -37,6 +39,8 @@ a
 nyc.df = disk.frame("nyc.df")
 head(nyc.df)
 ```
+
+
 ```{r}
 library(magrittr)
 library(lubridate)
@@ -50,9 +54,13 @@ system.time(nyc2.df <- nyc.df %>%
     chunk
   }, outdir="nyc2.df", lazy = FALSE, overwrite = TRUE))
 ```
+
 ```{r}
+nyc2.df = disk.frame("nyc2.df")
 head(nyc2.df)
 ```
+
+
 ```{r}
 system.time(rechunk(nyc2.df, nchunks = nchunks(nyc.df), shardby = "Dispatching_base_num"))
 ```
