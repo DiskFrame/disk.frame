@@ -8,6 +8,7 @@
 #' @param conservatism a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM
 #' @importFrom pryr object_size
 #' @importFrom utils memory.limit
+#' @importFrom benchmarkme get_ram
 #' @export
 #' @examples
 #' # recommend nchunks based on data.frame

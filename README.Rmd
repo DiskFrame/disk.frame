@@ -14,8 +14,10 @@ knitr::opts_chunk$set(
 ```
 # disk.frame
 
+[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+
 <!-- badges: start -->
-![disk.frame logo](man/figures/disk.frame.png?raw=true "disk.frame logo")
+![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo")
 <!-- badges: end -->
 
 # Introduction
@@ -254,7 +256,7 @@ cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
 ```
 ## Hex logo
 
-![disk.frame logo](inst/figures/hex-logo.png?raw=true)
+![disk.frame logo](inst/figures/logo.png?raw=true)
 
 ## Contributors
 
