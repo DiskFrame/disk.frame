@@ -37,11 +37,17 @@ You can install the released version of disk.frame from
 install.packages("disk.frame")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+If you are installing on Amazon SageMaker, you need to specify a repo. For example, to use the RStudio CRAN repo do
+
+```r
+install.packages("disk.frame", repo="https://cran.rstudio.com/")
+```
+
+The latest version can be installed from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("xiaodaigh/disk.frame")
+remotes::install_github("xiaodaigh/disk.frame")
 ```
 
 ## Vignette
