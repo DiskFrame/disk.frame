@@ -31,7 +31,6 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
       #furrr::future_map_dfr(cids, ~disk.frame::get_chunk(x, .x, full.names = TRUE))
       furrr::future_map_dfr(cids, ~get_chunk(x, .x))
       #purrr::map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
-      #future.apply::future_lapply(chunk_ids, function(.x) disk.frame::get_chunk(x, .x))
       #lapply(chunk_ids, function(chunk) get_chunk(x, chunk)) %>% rbindlist
     } else {
       purrr::map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
@@ -53,14 +52,14 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' 
 #' # clean up
 #' delete(cars.df)
-collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn"))) {
+collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn")), .progress = TRUE) {
   if(nchunks(x) > 0) {
     res <- NULL
     if (parallel) {
-      #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
-      res = future.apply::future_lapply(1:nchunks(x), function(.x) {
+      res = furrr::future_map(1:nchunks(x), function(.x) {
+      #res = future.apply::future_lapply(1:nchunks(x), function(.x) {
         get_chunk(x, .x)
-      })
+      }, .progress = .progress)
     } else {
       res = purrr::map(1:nchunks(x), ~get_chunk(x, .x))
     }

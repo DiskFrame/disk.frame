@@ -36,9 +36,10 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
                    overwrite = TRUE, header = header)
     dotdotdotorigarg = c(dotdotdot, origarg)
     
+    pt <- proc.time()
     if(.progress) {
       message("-- Converting CSVs to disk.frame --")
-      message("Converting individual CSVs to individual disk.frame (Stage 1 of 2):")
+      message(glue::glue("Converting {length(infile)} CSVs to a {nchunks} disk.frame (Stage 1 of 2):"))
     }
     outdf_tmp = furrr::future_imap(infile, ~{
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
@@ -46,8 +47,19 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       pryr::do_call(csv_to_disk.frame, dotdotdotorigarg1)
     }, .progress = .progress)
     
+    if(.progress) {
+      message(paste("Stage 1 or 2 took:", date.table::timetaken(pt)))
+    }
+    
     message("Row-binding the individual disk.frames together to form one large disk.frame (Stage 2 of 2):")
+    pt2 <- proc.time()
     outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
+    
+    if(.progress) {
+      message(paste("Stage 2 or 2 took:", date.table::timetaken(pt2)))
+      message(" ----------------------------------------------------- ")
+      message(paste("Stage 1 & 2 in total took:", date.table::timetaken(pt)))
+    }
     
     return(outdf)
   } else { # reading one file

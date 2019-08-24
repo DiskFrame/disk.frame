@@ -1,5 +1,6 @@
 #' Create a disk.frame from a folder
-#' @param path The path to store the output file or to a directory
+#' @param path The path to store the output file or to a directory. If the path
+#'   is a data.frame then as.disk.frame is applied to it
 #' @param backend The only available backend is fst at the moment
 #' @export
 #' @examples
@@ -10,17 +11,16 @@
 #' nchunks(df)
 #' # clean up
 #' delete(df)
-disk.frame <- function(path, backend = "fst") {
+disk.frame <- function(path, backend = "fst", ...) {
   
   # only fst backend is implemented at the moment
   stopifnot(backend == "fst")
   
-  if(dir.exists(path)) {
-    disk.frame_folder(path)
-  } else if (file.exists(path)) {
-    disk.frame_fst(path)
+  if("data.frame" %in% class(path)) {
+    as.disk.frame(path, ...)
+  } else if(dir.exists(path)) {
+    disk.frame(path)
   } else {
-    # if neither exists then create it
     fs::dir_create(path)
     disk.frame(path)
   }

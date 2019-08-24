@@ -1,4 +1,4 @@
-#' [ interface for disk.frame using fst backend
+#' \code{[} and \code{[[} data.table-like interface for disk.frame
 #' @param df a disk.frame
 #' @param ... same as data.table
 #' @param keep the columns to srckeep
@@ -26,8 +26,36 @@
   ag = globals::findGlobals(dotdotdot)
   ag = setdiff(ag, "") # "" can cause issues with future
   
+  
   res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
   #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+    chunk = get_chunk(df, chunk_id, keep = keep_for_future)
+    setDT(chunk)
+    expr <- quote(chunk)
+    expr <- c(expr, dotdotdot)
+    res <- do.call(`[`, expr)
+    res
+  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame"))
+  
+  if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
+    rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)
+  } else if(rbind)  {
+    unlist(res)
+  } else {
+    res
+  }
+}
+
+`[[.disk.frame` <- function(df, ..., keep = NULL, rbind = TRUE, use.names = TRUE, fill = FALSE, idcol = NULL) {
+  keep_for_future = keep
+  
+  dotdotdot = substitute(...()) #this is an alist
+  
+  ag = globals::findGlobals(dotdotdot)
+  ag = setdiff(ag, "") # "" can cause issues with future
+  
+  res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+    #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
     chunk = get_chunk(df, chunk_id, keep = keep_for_future)
     setDT(chunk)
     expr <- quote(chunk)
