@@ -100,6 +100,9 @@
     <li>
       <a href="../articles/intro.html">Introduction</a>
     </li>
+    <li>
+      <a href="../articles/vs-dask-juliadb.html">Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! anyone else wanna challenge?</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -163,26 +166,34 @@
 <span class='no'>diskf</span> <span class='kw'>=</span> <span class='fu'><a href='disk.frame.html'>disk.frame</a></span>(<span class='no'>df_path</span>)
 
 <span class='co'># add a chunk to diskf</span>
-<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07/tmp_add_chunk"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 1</span>
-#&gt; <span class='message'>nrow: 50</span>
-#&gt; <span class='message'>ncol: 2</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07/tmp_add_chunk"</span>
+#&gt; <span class='message'>nrow (at source): 50</span>
+#&gt; <span class='message'>ncol (at source): 2</span>
+#&gt; <span class='message'>nrow (post operations): ???</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 2</span>
-#&gt; <span class='message'>nrow: 100</span>
-#&gt; <span class='message'>ncol: 2</span></div><div class='input'>
+#&gt; <span class='message'>nrow (at source): 100</span>
+#&gt; <span class='message'>ncol (at source): 2</span>
+#&gt; <span class='message'>nrow (post operations): ???</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'>
 <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>diskf</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='no'>df2</span> <span class='kw'>=</span> <span class='fu'><a href='disk.frame.html'>disk.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"tmp_add_chunk2"</span>))
 
 <span class='co'># add chunks by specifying the chunk_id number; this is especially useful if</span>
 <span class='co'># you wish to add multiple chunk in parralel</span>
 
-<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07/tmp_add_chunk2"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 1</span>
-#&gt; <span class='message'>nrow: 1</span>
-#&gt; <span class='message'>ncol: 1</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07/tmp_add_chunk2"</span>
+#&gt; <span class='message'>nrow (at source): 1</span>
+#&gt; <span class='message'>ncol (at source): 1</span>
+#&gt; <span class='message'>nrow (post operations): ???</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 2</span>
-#&gt; <span class='message'>nrow: 2</span>
-#&gt; <span class='message'>ncol: 1</span></div><div class='input'>
+#&gt; <span class='message'>nrow (at source): 2</span>
+#&gt; <span class='message'>ncol (at source): 1</span>
+#&gt; <span class='message'>nrow (post operations): ???</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'>
 <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df2</span>) <span class='co'># 2</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>dir</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>df2</span>, <span class='st'>"path"</span>))</div><div class='output co'>#&gt; [1] "1.fst" "3.fst"</div><div class='input'><span class='co'># [1] "1.fst" "3.fst"</span>
 
