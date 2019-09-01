@@ -100,6 +100,9 @@
     <li>
       <a href="../articles/intro.html">Introduction</a>
     </li>
+    <li>
+      <a href="../articles/vs-dask-juliadb.html">Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! anyone else wanna challenge?</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -163,10 +166,12 @@
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span>
-<span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07\back_up_tmp_dir16a0337873a. You can recover there files until you restart your R session</span></div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpY1GP07\file16a05d027ee9.df"</span>
+<span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr\back_up_tmp_dir15d01b962b9f. You can recover there files until you restart your R session</span></div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpE3Efhr\file15d068365320.df"</span>
 #&gt; <span class='message'>nchunks: 3</span>
-#&gt; <span class='message'>nrow: 50</span>
-#&gt; <span class='message'>ncol: 2</span></div><div class='input'>
+#&gt; <span class='message'>nrow (at source): 50</span>
+#&gt; <span class='message'>ncol (at source): 2</span>
+#&gt; <span class='message'>nrow (post operations): ???</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'>
 <span class='no'>new_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>)
 <span class='co'># re-chunking cars.df to 4 chunks, shard by speed, and done "out-of-place" to a new directory</span>
 <span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>4</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>new_path</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='st'>"speed"</span>)</div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
