@@ -1,8 +1,8 @@
 ---
-title: "Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! anyone else wanna challenge?"
+title: "Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! anyone else wanna challenge?}
+  %\VignetteIndexEntry{Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 ## Intro
 
 This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmkark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.
+
+The title was 'inspired' by [this post titled "R beats Python! R beats Julia! Anyone else wanna challange R?"](https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/).
 
 # TL;DR
 For this simple benchmark, disk.frame is faster. But Dask has a more convenient syntax. JuliaDB.jl is not ready for prime time.
