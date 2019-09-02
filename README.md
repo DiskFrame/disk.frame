@@ -1,14 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# disk.frame
+# disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+
+Star us on Github
+<iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 <!-- badges: start -->
 
-![disk.frame logo](inst/figures/disk.frame.png?raw=true
-"disk.frame logo") <!-- badges: end -->
+<!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
+
+<!-- badges: end -->
 
 # Introduction
 
@@ -88,8 +93,7 @@ example, see [`chunkded`](https://github.com/edwindj/chunked)
 Furthermore, there is a row-limit of 2^31 for `data.frame`s in R; hence
 an alternate approach is needed to apply R to these large datasets. The
 chunking mechanism in `disk.frame` provides such an avenue to enable
-data manipulation beyond the 2^31 row
-limit.
+data manipulation beyond the 2^31 row limit.
 
 ### c) How is `disk.frame` different to previous “big” data solutions for R?
 
