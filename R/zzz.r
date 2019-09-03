@@ -12,7 +12,7 @@
     glue::glue(
     "\n\n## Message from disk.frame:
 We have {future::nbrOfWorkers()} workers to use with disk.frame.
-To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.")),
+To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.")),
     crayon::green("\n\n
 It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:\n\n
 ```r
