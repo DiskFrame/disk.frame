@@ -68,6 +68,9 @@
       <a href="../articles/intro.html">Introduction</a>
     </li>
     <li>
+      <a href="../articles/vs-dask-juliadb-2.html">Benchmarking disk.frame 2: disk.frame beats Dask again! disk.frame beats JuliaDB again! Anyone else wanna challenge?</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -88,7 +91,7 @@
       <h1>Quick Start</h1>
                         <h4 class="author">ZJ</h4>
             
-            <h4 class="date">2019-09-02</h4>
+            <h4 class="date">2019-09-03</h4>
       
       
       <div class="hidden name"><code>intro-disk-frame.Rmd</code></div>
@@ -150,10 +153,12 @@
 <a class="sourceLine" id="cb4-10" title="10">  <span class="dt">outdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>),</a>
 <a class="sourceLine" id="cb4-11" title="11">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb4-12" title="12">flights.df</a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpcrDYtb/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgH6kXN/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; nchunks: 6</span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; nrow (at source): 336776</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; ncol (at source): 19</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; nrow (post operations): ???</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; ncol (post operations): ???</span></a></code></pre></div>
 <p>You should now see a folder called <code>tmp_flights</code> with some files in it, namely <code>1.fst</code>, <code>2.fst</code>…. where each <code>fst</code> files is one chunk of the <code>disk.frame</code>.</p>
 </div>
 <div id="creating-a-disk-frame-from-csv" class="section level3">
@@ -172,10 +177,12 @@
 <a class="sourceLine" id="cb5-11" title="11">  <span class="dt">overwrite =</span> T)</a>
 <a class="sourceLine" id="cb5-12" title="12">  </a>
 <a class="sourceLine" id="cb5-13" title="13">flights.df</a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpcrDYtb/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgH6kXN/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; nchunks: 6</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; nrow (at source): 336776</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; ncol (at source): 19</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; nrow (post operations): ???</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; ncol (post operations): ???</span></a></code></pre></div>
 <p>If the CSV is too large to read in, then we can also use the <code>in_chunk_size</code> option to control how many rows to read in at once. For example to read in the data 100,000 rows at a time.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nycflights13)</a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(disk.frame)</a>
@@ -191,13 +198,15 @@
 <a class="sourceLine" id="cb6-12" title="12">  csv_path, </a>
 <a class="sourceLine" id="cb6-13" title="13">  <span class="dt">outdir =</span> df_path, </a>
 <a class="sourceLine" id="cb6-14" title="14">  <span class="dt">in_chunk_size =</span> <span class="dv">100000</span>)</a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; read 336776 rows from C:\Users\RTX2080\AppData\Local\Temp\RtmpcrDYtb/tmp_flights.csv</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; read 336776 rows from C:\Users\RTX2080\AppData\Local\Temp\RtmpgH6kXN/tmp_flights.csv</span></a>
 <a class="sourceLine" id="cb6-16" title="16">  </a>
 <a class="sourceLine" id="cb6-17" title="17">flights.df</a>
-<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpcrDYtb/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgH6kXN/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; nchunks: 4</span></a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; nrow (at source): 336776</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; ncol (at source): 19</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="co">#&gt; nrow (post operations): ???</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="co">#&gt; ncol (post operations): ???</span></a></code></pre></div>
 <p><code>disk.frame</code> also has a function <code>zip_to_disk.frame</code> that can convert every CSV in a zip file to <code>disk.frame</code>s.</p>
 </div>
 <div id="simple-dplyr-verbs-and-lazy-evaluation" class="section level3">
@@ -205,10 +214,12 @@
 <a href="#simple-dplyr-verbs-and-lazy-evaluation" class="anchor"></a>Simple <code>dplyr</code> verbs and lazy evaluation</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">flights.df1 &lt;-<span class="st"> </span><span class="kw">select</span>(flights.df, year<span class="op">:</span>day, arr_delay, dep_delay)</a>
 <a class="sourceLine" id="cb7-2" title="2">flights.df1</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpcrDYtb/tmp_flights.df"</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgH6kXN/tmp_flights.df"</span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; nchunks: 4</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; nrow: 336776</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; ncol: 19</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; nrow (at source): 336776</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; ncol (at source): 19</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; nrow (post operations): ???</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; ncol (post operations): ???</span></a></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(flights.df1)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; [1] "disk.frame"        "disk.frame.folder"</span></a></code></pre></div>
 <p>The class of <code>flights.df1</code> is also a <code>disk.frame</code> after the <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select</a></code> transformation. Also, <code>disk.frame</code> operations are by default (and where possible) <strong>lazy</strong>, meaning it doesn’t perform the operations right away. Instead, it waits until you call <code>collect</code>. Exceptions to this rule are the <code>*_join</code> operations which evaluated <em>eagerly</em> under certain conditions see <strong>Joins for disk.frame in-depth</strong> for details.</p>
@@ -664,26 +675,26 @@
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">flights.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_frac</span>(<span class="fl">0.01</span>) <span class="op">%&gt;%</span><span class="st"> </span>collect <span class="op">%&gt;%</span><span class="st"> </span>head</a>
 <a class="sourceLine" id="cb29-2" title="2"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb29-3" title="3"><span class="co">#&gt; 1 2013     1   8     1908           1910        -2     2240           2231</span></a>
-<a class="sourceLine" id="cb29-4" title="4"><span class="co">#&gt; 2 2013     1  10     1506           1510        -4     1744           1801</span></a>
-<a class="sourceLine" id="cb29-5" title="5"><span class="co">#&gt; 3 2013    10  15      754            740        14      938            945</span></a>
-<a class="sourceLine" id="cb29-6" title="6"><span class="co">#&gt; 4 2013     1  21     1553           1555        -2     1825           1846</span></a>
-<a class="sourceLine" id="cb29-7" title="7"><span class="co">#&gt; 5 2013    11   5      655            701        -6      812            831</span></a>
-<a class="sourceLine" id="cb29-8" title="8"><span class="co">#&gt; 6 2013    11  19     1459           1500        -1     1815           1755</span></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="co">#&gt; 1 2013    10   3     1228           1223         5     1331           1335</span></a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="co">#&gt; 2 2013     1  15      830            829         1     1122           1145</span></a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="co">#&gt; 3 2013    11   4     2329           2245        44       48           2355</span></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="co">#&gt; 4 2013    10  28      902            902         0     1156           1148</span></a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="co">#&gt; 5 2013     1  25     1655           1700        -5     1745           1813</span></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="co">#&gt; 6 2013     1  13     2021           2022        -1     2355           2328</span></a>
 <a class="sourceLine" id="cb29-9" title="9"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></a>
-<a class="sourceLine" id="cb29-10" title="10"><span class="co">#&gt; 1         9      B6     87  N651JB    JFK  SLC      296     1990   19</span></a>
-<a class="sourceLine" id="cb29-11" title="11"><span class="co">#&gt; 2       -17      UA    315  N574UA    EWR  MCO      131      937   15</span></a>
-<a class="sourceLine" id="cb29-12" title="12"><span class="co">#&gt; 3        -7      EV   4111  N15986    EWR  CHS       89      628    7</span></a>
-<a class="sourceLine" id="cb29-13" title="13"><span class="co">#&gt; 4       -21      UA   1550  N13248    EWR  LAS      312     2227   15</span></a>
-<a class="sourceLine" id="cb29-14" title="14"><span class="co">#&gt; 5       -19      B6   2702  N636JB    JFK  BUF       53      301    7</span></a>
-<a class="sourceLine" id="cb29-15" title="15"><span class="co">#&gt; 6        20      AA   2285  N5FFAA    JFK  MCO      138      944   15</span></a>
+<a class="sourceLine" id="cb29-10" title="10"><span class="co">#&gt; 1        -4      UA   1163  N37274    EWR  BOS       38      200   12</span></a>
+<a class="sourceLine" id="cb29-11" title="11"><span class="co">#&gt; 2       -23      UA   1601  N39461    EWR  FLL      156     1065    8</span></a>
+<a class="sourceLine" id="cb29-12" title="12"><span class="co">#&gt; 3        53      B6    234  N258JB    JFK  BTV       54      266   22</span></a>
+<a class="sourceLine" id="cb29-13" title="13"><span class="co">#&gt; 4         8      UA   1711  N14242    EWR  IAH      197     1400    9</span></a>
+<a class="sourceLine" id="cb29-14" title="14"><span class="co">#&gt; 5       -28      US   2136  N955UW    LGA  BOS       37      184   17</span></a>
+<a class="sourceLine" id="cb29-15" title="15"><span class="co">#&gt; 6        27      UA    299  N429UA    EWR  DFW      233     1372   20</span></a>
 <a class="sourceLine" id="cb29-16" title="16"><span class="co">#&gt;   minute            time_hour</span></a>
-<a class="sourceLine" id="cb29-17" title="17"><span class="co">#&gt; 1     10 2013-01-09T00:00:00Z</span></a>
-<a class="sourceLine" id="cb29-18" title="18"><span class="co">#&gt; 2     10 2013-01-10T20:00:00Z</span></a>
-<a class="sourceLine" id="cb29-19" title="19"><span class="co">#&gt; 3     40 2013-10-15T11:00:00Z</span></a>
-<a class="sourceLine" id="cb29-20" title="20"><span class="co">#&gt; 4     55 2013-01-21T20:00:00Z</span></a>
-<a class="sourceLine" id="cb29-21" title="21"><span class="co">#&gt; 5      1 2013-11-05T12:00:00Z</span></a>
-<a class="sourceLine" id="cb29-22" title="22"><span class="co">#&gt; 6      0 2013-11-19T20:00:00Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb29-17" title="17"><span class="co">#&gt; 1     23 2013-10-03T16:00:00Z</span></a>
+<a class="sourceLine" id="cb29-18" title="18"><span class="co">#&gt; 2     29 2013-01-15T13:00:00Z</span></a>
+<a class="sourceLine" id="cb29-19" title="19"><span class="co">#&gt; 3     45 2013-11-05T03:00:00Z</span></a>
+<a class="sourceLine" id="cb29-20" title="20"><span class="co">#&gt; 4      2 2013-10-28T13:00:00Z</span></a>
+<a class="sourceLine" id="cb29-21" title="21"><span class="co">#&gt; 5      0 2013-01-25T22:00:00Z</span></a>
+<a class="sourceLine" id="cb29-22" title="22"><span class="co">#&gt; 6     22 2013-01-14T01:00:00Z</span></a></code></pre></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">
