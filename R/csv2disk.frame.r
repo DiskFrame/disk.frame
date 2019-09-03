@@ -25,9 +25,36 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, ...) {
-  #browser()
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = "data.table", strategy = c("data.table", "readLines"), ...) {
   overwrite_check(outdir, overwrite)
+  strategy = match.arg(strategy)
+  if(backend == "data.table" & strategy == "data.table") {
+    csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+  } else if (backend == "data.table" & strategy == "readLines" & !is.null(in_chunk_size)) {
+    if (length(infile) == 1) {
+      # establish a read connection to the file
+      con = file(infile, "r")
+      on.exit(close(con))
+      xx = readLines(con, n = in_chunk_size)
+      diskf = disk.frame(outdir)
+      header_copy = header
+      while(length(xx) >= in_chunk_size) {
+        add_chunk(diskf, inmapfn(data.table::fread(text = xx, header = header_copy, ...)))
+        xx = readLines(con, n = in_chunk_size)
+        header_copy = FALSE
+      }
+      return(diskf)
+    } else {
+      stop("strategy = 'readLines' is not yet supported for multiple files")
+    }
+  } else {
+    stop("csv_to_disk.frame: this set of options is not supported")
+  }
+}
+
+
+csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
+                                                 in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, ...) {
   # reading multiple files
   if(length(infile) > 1) {
     dotdotdot = list(...)
@@ -39,23 +66,28 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     pt <- proc.time()
     if(.progress) {
       message("-- Converting CSVs to disk.frame --")
-      message(glue::glue("Converting {length(infile)} CSVs to a {nchunks} disk.frame each consisting of {nchunks} (Stage 1 of 2):"))
+      
+      message(glue::glue("Converting {length(infile)} CSVs to {nchunks} disk.frame each consisting of {nchunks} chunks (Stage 1 of 2):"))
     }
+    
     outdf_tmp = furrr::future_imap(infile, ~{
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
       
-      pryr::do_call(csv_to_disk.frame, dotdotdotorigarg1)
+      pryr::do_call(csv_to_disk.frame_data.table_backend, dotdotdotorigarg1)
     }, .progress = .progress)
     
     if(.progress) {
       message(paste("Stage 1 or 2 took:", data.table::timetaken(pt)))
+      message(" ")
     }
     
-    message("Row-binding the {nchunks} disk.frames together to form one large disk.frame (Stage 2 of 2):")
+    message(glue::glue("Row-binding the {nchunks} disk.frames together to form one large disk.frame (Stage 2 of 2):"))
+    message(glue::glue("Creating the disk.frame at {outdir}"))
     pt2 <- proc.time()
     outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
     
     if(.progress) {
+      
       message(paste("Stage 2 or 2 took:", data.table::timetaken(pt2)))
       message(" ----------------------------------------------------- ")
       message(paste("Stage 1 & 2 in total took:", data.table::timetaken(pt)))
@@ -119,7 +151,9 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       }
     } else { # so shard by some element
       if(is.null(in_chunk_size)) {
-        shard(inmapfn(data.table::fread(infile, header=header, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
+        return(
+          shard(inmapfn(data.table::fread(infile, header=header, ...)), shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = overwrite, compress = compress,...)
+        )
       } else {
         i <- 0
         tmpdir1 = tempfile(pattern="df_tmp")
@@ -187,6 +221,6 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     }
     df = disk.frame(outdir)
     df = add_meta(df, nchunks=disk.frame::nchunks(df), shardkey = shardby, shardchunks = nchunks, compress = compress)
-    df
+    return(df)
   }
 }
