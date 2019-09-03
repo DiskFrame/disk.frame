@@ -25,9 +25,13 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = "data.table", strategy = c("data.table", "readLines"), ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr"), strategy = c("data.table", "readLines"), ...) {
   overwrite_check(outdir, overwrite)
+  backend = match.arg(backend)
   strategy = match.arg(strategy)
+ 
+  
+  
   if(backend == "data.table" & strategy == "data.table") {
     csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
   } else if (backend == "data.table" & strategy == "readLines" & !is.null(in_chunk_size)) {
@@ -47,6 +51,13 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     } else {
       stop("strategy = 'readLines' is not yet supported for multiple files")
     }
+  } else if(backend == "readr") {
+    if(is.null(in_chunk_size)) {
+      stop("for readr backend, only in_chunk_size != NULL is supported")
+    } else if (!is.null(shardby)) {
+      stop("for readr backend, only shardby == NULL is supported")
+    }
+    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
   } else {
     stop("csv_to_disk.frame: this set of options is not supported")
   }
