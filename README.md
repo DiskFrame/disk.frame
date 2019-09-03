@@ -8,7 +8,8 @@
 
 <details>
 
-<summary>Star the Github if you like it\! It keeps me going\!</summary>
+<summary>Please take a moment to star the disk.frame Github repo if you
+like disk.frame. It keeps me going.</summary>
 <iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 </details>
@@ -53,12 +54,22 @@ And the development version from [GitHub](https://github.com/) with:
 devtools::install_github("xiaodaigh/disk.frame")
 ```
 
-## Vignette
+## Vignettes and articles
 
-Please see this vignette [Introduction to
-disk.frame](http://daizj.net/disk.frame/articles/intro-disk-frame.html)
-which replicates the `sparklyr` vignette for manipulating the
-`nycflights13` flights data.
+Please see these vignettes and articles about `disk.frame`
+
+  - [Quick start:
+    disk.frame](http://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    which replicates the `sparklyr` vignette for manipulating the
+    `nycflights13` flights data.
+  - [Ingesting data into
+    disk.frame](http://diskframe.com/articles/ingesting-data.html) which
+    lists some commons way of creating disk.frames
+  - [Using data.table syntax with
+    disk.frame](http://diskframe.com/articles/data-table-syntax.html)
+  - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
+  - [Benchmark 1: disk.frame vs Dask vs
+    JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
 
 ## Common questions
 
@@ -183,78 +194,129 @@ Alternatively, one may specify the number of workers using
 
 # Example usage
 
-``` r
-library(dplyr)
+```` r
 library(disk.frame)
-library(data.table)
-library(fst)
+#> Loading required package: dplyr
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+#> Loading required package: purrr
+#> 
+#> ## Message from disk.frame:
+#> We have 1 workers to use with disk.frame.
+#> To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.
+#> 
+#> 
+#> It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:
+#> 
+#> 
+#> ```r
+#> # this willl set disk.frame with multiple workers
+#> setup_disk.frame()
+#> # this will allow unlimited amount of data to be passed from worker to worker
+#> options(future.globals.maxSize = Inf)
+#> ```
+#> 
+#> Attaching package: 'disk.frame'
+#> The following objects are masked from 'package:purrr':
+#> 
+#>     imap, imap_dfr, map, map_dfr, map2
+#> The following objects are masked from 'package:base':
+#> 
+#>     colnames, ncol, nrow
+library(nycflights13)
 
-# you need to run this to make multiple workers
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
 setup_disk.frame()
+#> The number of workers available for disk.frame is 6
 # this allows large datasets to be transferred between sessions
 options(future.globals.maxSize = Inf)
 
-rows_per_chunk = 1e7
-# generate synthetic data
-tmpdir = "tmpfst"
-if(fs::dir_exists(tmpdir)) {
-  fs::dir_delete(tmpdir)
-}
+# convert the flights data.frame to a disk.frame
+# optionally, you may specify an outdir, otherwise, the 
+flights.df <- as.disk.frame(nycflights13::flights)
+````
 
-# write out nworkers chunks
-pt = proc.time()
+To find out where the disk.frame is stord on disk:
 
-df = disk.frame(tmpdir)
+``` r
+# where is the disk.frame stored
+attr(flights.df, "path")
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpWCHiyp\\file369c5a7d1507.df"
+```
 
-sapply(1:(nworkers*2), function(ii) {
-  system.time(ab <- data.table(a = runif(rows_per_chunk), b = runif(rows_per_chunk)) ) #102 seconds
-  add_chunk(df, ab, ii)
-  NULL
-})
-cat("Generating data took: ", timetaken(pt), "\n")
+A number of data.frame functions are implemented for disk.frame
 
-
-# read and output the disk.frame as it to assess "sequential" read-write performance
-pt = proc.time()
-df2 <- map(df, ~.x, outdir = "tmpfst2", lazy = F, overwrite = T)
-cat("Read and write took: ", timetaken(pt), "\n")
-
+``` r
 # get first few rows
-head(df)
+head(flights.df)
+#>    year month day dep_time sched_dep_time dep_delay arr_time
+#> 1: 2013     1   1      517            515         2      830
+#> 2: 2013     1   1      533            529         4      850
+#> 3: 2013     1   1      542            540         2      923
+#> 4: 2013     1   1      544            545        -1     1004
+#> 5: 2013     1   1      554            600        -6      812
+#> 6: 2013     1   1      554            558        -4      740
+#>    sched_arr_time arr_delay carrier flight tailnum origin dest air_time
+#> 1:            819        11      UA   1545  N14228    EWR  IAH      227
+#> 2:            830        20      UA   1714  N24211    LGA  IAH      227
+#> 3:            850        33      AA   1141  N619AA    JFK  MIA      160
+#> 4:           1022       -18      B6    725  N804JB    JFK  BQN      183
+#> 5:            837       -25      DL    461  N668DN    LGA  ATL      116
+#> 6:            728        12      UA   1696  N39463    EWR  ORD      150
+#>    distance hour minute           time_hour
+#> 1:     1400    5     15 2013-01-01 05:00:00
+#> 2:     1416    5     29 2013-01-01 05:00:00
+#> 3:     1089    5     40 2013-01-01 05:00:00
+#> 4:     1576    5     45 2013-01-01 05:00:00
+#> 5:      762    6      0 2013-01-01 06:00:00
+#> 6:      719    5     58 2013-01-01 05:00:00
+```
 
+``` r
 # get last few rows
-tail(df)
+tail(flights.df)
+#>    year month day dep_time sched_dep_time dep_delay arr_time
+#> 1: 2013     9  30       NA           1842        NA       NA
+#> 2: 2013     9  30       NA           1455        NA       NA
+#> 3: 2013     9  30       NA           2200        NA       NA
+#> 4: 2013     9  30       NA           1210        NA       NA
+#> 5: 2013     9  30       NA           1159        NA       NA
+#> 6: 2013     9  30       NA            840        NA       NA
+#>    sched_arr_time arr_delay carrier flight tailnum origin dest air_time
+#> 1:           2019        NA      EV   5274  N740EV    LGA  BNA       NA
+#> 2:           1634        NA      9E   3393    <NA>    JFK  DCA       NA
+#> 3:           2312        NA      9E   3525    <NA>    LGA  SYR       NA
+#> 4:           1330        NA      MQ   3461  N535MQ    LGA  BNA       NA
+#> 5:           1344        NA      MQ   3572  N511MQ    LGA  CLE       NA
+#> 6:           1020        NA      MQ   3531  N839MQ    LGA  RDU       NA
+#>    distance hour minute           time_hour
+#> 1:      764   18     42 2013-09-30 18:00:00
+#> 2:      213   14     55 2013-09-30 14:00:00
+#> 3:      198   22      0 2013-09-30 22:00:00
+#> 4:      764   12     10 2013-09-30 12:00:00
+#> 5:      419   11     59 2013-09-30 11:00:00
+#> 6:      431    8     40 2013-09-30 08:00:00
+```
 
+``` r
 # number of rows
-nrow(df)
+nrow(flights.df)
+#> [1] 336776
+```
 
+``` r
 # number of columns
-ncol(df)
+ncol(flights.df)
+#> [1] 19
 ```
 
 ## Example: dplyr verbs
-
-``` r
-df = disk.frame(tmpdir)
-
-df %>%
-  summarise(suma = sum(a)) %>% # this does a count per chunk
-  collect(parallel = T)
-
-# need a 2nd stage to finalise summing
-df %>%
-  summarise(suma = sum(a)) %>% # this does a count per chunk
-  collect(parallel = T) %>% 
-  summarise(suma = sum(suma)) 
-
-# filter
-pt = proc.time()
-system.time(df_filtered <- df %>% 
-              filter(a < 0.1))
-cat("filtering a < 0.1 took: ", timetaken(pt), "\n")
-nrow(df_filtered)
-```
 
 ### Group by
 
@@ -262,17 +324,84 @@ Group-by in disk.frame are performed within each chunk, hence a
 two-stage group by is required to obtain the correct group by results.
 The two-stage approach is preferred for performance reasons too.
 
+To perform group-by one needs to do it in two-stage approach as the
+group-bys are performed within each chunk. This will be addressed in a
+future package called `disk.frame.db`, but for now two-stage aggregation
+is the best to do group-bys in `disk.frame`.
+
+``` r
+flights.df = as.disk.frame(nycflights13::flights)
+
+flights.df %>%
+  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
+  group_by(year) %>% 
+  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  collect
+#> # A tibble: 6 x 2
+#>    year sum_dist
+#>   <int>    <dbl>
+#> 1  2013 57446059
+#> 2  2013 59302212
+#> 3  2013 56585094
+#> 4  2013 58476357
+#> 5  2013 59407019
+#> 6  2013 59000866
+```
+
+This is two-stage group-by in action
+
+``` r
+# need a 2nd stage to finalise summing
+flights.df %>%
+  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
+  group_by(year) %>% 
+  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  collect %>% 
+  group_by(year) %>% 
+  summarise(sum_dist = sum(sum_dist))
+#> # A tibble: 1 x 2
+#>    year  sum_dist
+#>   <int>     <dbl>
+#> 1  2013 350217607
+```
+
+Here an example of using `filter`
+
+``` r
+# filter
+pt = proc.time()
+df_filtered <-
+  flights.df %>% 
+  filter(month == 1)
+cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
+#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
+nrow(df_filtered)
+#> [1] 336776
+```
+
+You can mix group-by with other dplyr verbs as below
+
 ``` r
 pt = proc.time()
-res1 <- df %>% 
-  filter(b < 0.1) %>% 
-  mutate(blt005 = b < 0.05) %>% 
-  group_by(blt005) %>% 
-  summarise(suma = sum(a), n = n()) %>% 
+res1 <- flights.df %>% 
+  srckeep(c("month", "dep_delay")) %>% 
+  filter(month <= 6) %>% 
+  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
+  group_by(qtr) %>% 
+  summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
   collect %>%
-  group_by(blt005) %>% 
-  summarise(suma = sum(suma), n = sum(n)) %>% 
+  group_by(qtr) %>% 
+  summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
+  mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
+#> group by took:  1.470s elapsed (0.140s cpu)
+
+collect(res1)
+#> # A tibble: 2 x 4
+#>   qtr   sum_delay     n avg_delay
+#>   <chr>     <dbl> <int>     <dbl>
+#> 1 Q1       892053 80789      11.0
+#> 2 Q2      1319941 85369      15.5
 ```
 
 However, a one-stage `group_by` is possible with a `hard_group_by` to
@@ -281,68 +410,66 @@ reasons, as it can quite slow.
 
 ``` r
 pt = proc.time()
-res1 <- df %>% 
-  filter(b < 0.1) %>% 
-  mutate(blt005 = b < 0.05) %>% 
-  hard_group_by(blt005) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  summarise(suma = sum(a), n = n()) %>% 
-  collect(parallel = T)
-cat("group by took: ", timetaken(pt), "\n")
-```
+res1 <- flights.df %>% 
+  srckeep(c("month", "dep_delay")) %>% 
+  filter(month <= 6) %>% 
+  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
+  hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
+  collect
+#> Appending disk.frames:
+cat("group by took: ", data.table::timetaken(pt), "\n")
+#> group by took:  3.500s elapsed (0.290s cpu)
 
-### Other dplyr verbs
-
-``` r
-# keep only one var is faster
-pt = proc.time()
-res1 <- df %>% 
-  srckeep("a") %>% #keeping only the column `a` from the input
-  summarise(suma = sum(a), n = n()) %>% 
-  collect(parallel = T)
-cat("summarise keeping only one column ", timetaken(pt), "\n")
-
-# same operation without keeping
-pt = proc.time()
-res1 <- df %>% 
-  summarise(suma = sum(a), n = n()) %>% 
-  collect(parallel = T)
-cat("summarise without keeping", timetaken(pt), "\n")
+collect(res1)
+#> # A tibble: 2 x 2
+#>   qtr   avg_delay
+#>   <chr>     <dbl>
+#> 1 Q1         11.4
+#> 2 Q2         15.9
 ```
 
 ## Example: data.table syntax
 
 ``` r
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:purrr':
+#> 
+#>     transpose
+#> The following objects are masked from 'package:dplyr':
+#> 
+#>     between, first, last
 
-# count by chunks
-system.time(df_cnt_by_chunk <- df[,.N])
-pt = proc.time()
-system.time(sum(df[,.N])) # need a 2nd stage of summary
-cat("sum(df[,.N]) took: ", timetaken(pt), "\n")
+grp_by_stage1 = 
+  flights.df[
+    keep = c("month", "distance"), # this analysis only required "month" and "dist" so only load those
+    month <= 6, 
+    .(sum_dist = sum(distance)), 
+    .(qtr = ifelse(month <= 3, "Q1", "Q2"))
+    ]
 
-# filter
-pt = proc.time()
-system.time(df_filtered <- df[a < 0.1,])
-cat("df[a < 0.1,] took: ", timetaken(pt), "\n")
-nrow(df_filtered)
+grp_by_stage1
+#>    qtr sum_dist
+#> 1:  Q1 27188805
+#> 2:  Q1   953578
+#> 3:  Q1 53201567
+#> 4:  Q2  3383527
+#> 5:  Q2 58476357
+#> 6:  Q2 27397926
+```
 
-# group by
-pt = proc.time()
-system.time(res1 <- df[b < 0.1,.(sum_a = sum(a), .N), by = b < 0.05])
-cat("df[b < 0.1,.(sum_a = sum(a), .N), by = b < 0.05] took: ", timetaken(pt), "\n")
-# res1 has performed group by for each of the 4 chunks need to further summarise
-system.time(res2 <- res1[, .(sum(sum_a), sum(N)),b][, .(mean_a = V1/V2), b])
-res2 # abit painful to create mean, but currently only this low level interface; will do a dplyr on top later
+The result `grp_by_stage1` is a `data.table` so we can finish off the
+two-stage aggregation using data.table syntax
 
-# keep only one var is faster
-pt = proc.time()
-system.time(df[,.(sum(a)), keep = "a"][,sum(V1)]) # 1.17
-cat("df[,.(sum(a)), keep = 'a'] took: ", timetaken(pt), "\n")
+``` r
+grp_by_stage2 = grp_by_stage1[,.(sum_dist = sum(sum_dist)), qtr]
 
-# same operation without keeping
-pt = proc.time()
-system.time(df[,.(sum(a))][,sum(V1)]) #2.95
-cat("df[,.(sum(a))] took: ", timetaken(pt), "\n")
+grp_by_stage2
+#>    qtr sum_dist
+#> 1:  Q1 81343950
+#> 2:  Q2 89257810
 ```
 
 ## Hex logo
@@ -357,7 +484,7 @@ This project exists thanks to all the people who contribute.
 ## Open Collective
 
 If you like disk.frame and want to speed up its development or perhaps
-you have a feature request? Please considering sponsoring me on Open
+you have a feature request? Please consider sponsoring me on Open
 Collective
 
 ### Backers
