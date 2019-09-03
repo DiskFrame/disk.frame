@@ -45,8 +45,10 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   }
   
   if(is.numeric(n)) {
-    #filename = list.files(path, full.names = TRUE)[n]
     filename = file.path(path, paste0(n,".fst"))
+    if(!file.exists(filename)) {
+      filename = list.files(path, full.names = TRUE)[n]  
+    }
   } else {
     if (full.names) {
       filename = n
