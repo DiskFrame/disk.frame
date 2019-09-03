@@ -68,6 +68,9 @@
       <a href="../articles/intro.html">Introduction</a>
     </li>
     <li>
+      <a href="../articles/vs-dask-juliadb-2.html">Benchmarking disk.frame 2: disk.frame beats Dask again! disk.frame beats JuliaDB again! Anyone else wanna challenge?</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -191,19 +194,19 @@
 <a class="sourceLine" id="cb5-35" title="35"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span></a>
 <a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; The number of workers available for disk.frame is 6</span></a>
 <a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt;    0.01    0.08    3.46</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt;    0.01    0.06    3.44</span></a></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">time_to_convert_disk.frame =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>))[<span class="dv">3</span>]</a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
 <a class="sourceLine" id="cb6-3" title="3">time_to_convert_disk.frame</a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; elapsed </span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;    23.4</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;   23.82</span></a></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">time_to_agg_disk.frame =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(summ &lt;-<span class="st"> </span>df1[,.N, V1, <span class="dt">keep =</span> <span class="st">"V1"</span>][, .(<span class="dt">N =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(N)), V1])</a>
 <a class="sourceLine" id="cb7-2" title="2"></a>
 <a class="sourceLine" id="cb7-3" title="3">time_to_agg_disk.frame</a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    0.12    0.02    3.62</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    0.08    0.04    6.68</span></a></code></pre></div>
 <p>We can inspect the result as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">summ</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;                    V1   N</span></a>

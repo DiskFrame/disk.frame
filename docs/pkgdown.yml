@@ -7,5 +7,6 @@ articles:
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
   intro: intro.html
+  vs-dask-juliadb-2: vs-dask-juliadb-2.html
   vs-dask-juliadb: vs-dask-juliadb.html
 
