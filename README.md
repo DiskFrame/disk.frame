@@ -6,8 +6,12 @@
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
 
-Star us on Github
+<details>
+
+<summary>Star the Github if you like it\! It keeps me going\!</summary>
 <iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+</details>
 
 <!-- badges: start -->
 
@@ -147,7 +151,7 @@ functions.
 ### f) How is `disk.frame` different from multidplyr, partools and distributedR?
 
 The packages [multidplyr](https://github.com/tidyverse/multidplyr)
-doesn’t seem to be disk-focussed and hence does not allow arbitrarily
+doesn’t seem to be disk-focused and hence does not allow arbitrarily
 large dataset to be manipulated; the focus on parallel processing is
 similar to disk.frame though. For partools
 \[<https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/>\],
