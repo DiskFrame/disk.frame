@@ -35,11 +35,13 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   
   if (is.null(ram_size)) {
     if(.Platform$GUI == "RStudio") {
-      if(as.integer(strsplit(version,".", fixed)[1]) >= 6) {
+      majorv = as.integer(version$major)
+      minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+      if(majorv>=3 & minorv >= 6) {
         if(.Platform$OS.type == "windows") {
           ram_size = getOption("disk.frame.ram_size")
         }
-        if (is.na(ram_size)) {
+        if (is.null(ram_size)) {
           message("You are running RStudio with R 3.6 on Windows. There is a bug with memory detection.")
           message("The option disk.frame.ram_size is not set. Going to assume your ram_size is 16 (gigabyte)")
           message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
@@ -47,6 +49,7 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
         } 
       }
     }
+    
     # the amount of memory available in gigabytes
     if (Sys.info()[["sysname"]] == "Windows") {
       ram_size = memory.limit() / 1024

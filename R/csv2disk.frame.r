@@ -56,9 +56,12 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   # TODO detect these cases
   
   # user has requested chunk-wise reading but wants me to do it
-  if(in_chunk_size == "guess") {
+  
+  if(is.null(in_chunk_size)) {
     
-    library(bigreadr)
+  } else if(in_chunk_size == "guess") {
+    
+    #library(bigreadr)
     system.time(wc_l <- R.utils::countLines(infile))
     system.time(infos_split <- split_file(infile, every_nlines = 1e7))
     file_parts <- get_split_files(infos_split)
