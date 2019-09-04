@@ -50,7 +50,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
   chunk_reader = match.arg(chunk_reader)
-  browser()
+  #browser()
   
   # we need multiple backend because data.table has poor support for the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
