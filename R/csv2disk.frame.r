@@ -25,7 +25,7 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr"), strategy = c("data.table", "readLines"), ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr"), strategy = c("data.table", "readr", "readLines"), ...) {
   overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
   strategy = match.arg(strategy)
@@ -42,14 +42,67 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       xx = readLines(con, n = in_chunk_size)
       diskf = disk.frame(outdir)
       header_copy = header
-      while(length(xx) >= in_chunk_size) {
-        add_chunk(diskf, inmapfn(data.table::fread(text = xx, header = header_copy, ...)))
+      colnames_copy = NULL
+      while(length(xx) > 0) {
+        if(is.null(colnames_copy)) {
+          new_chunk = inmapfn(data.table::fread(text = xx, header = header_copy, ...))
+          colnames_copy = names(new_chunk)
+        } else {
+          #browser()
+          # TODO detect the correct delim; manually adding header
+          header_colnames = paste0(colnames_copy, collapse = ",")
+          xx = c(header_colnames, xx)
+          new_chunk = inmapfn(
+            data.table::fread(
+              text = xx, 
+              header = TRUE
+              , ...
+            )
+          )
+          
+        }
+
+        add_chunk(diskf, new_chunk)
         xx = readLines(con, n = in_chunk_size)
         header_copy = FALSE
       }
       return(diskf)
     } else {
       stop("strategy = 'readLines' is not yet supported for multiple files")
+    }
+  } else if (backend == "data.table" & strategy == "readr" & !is.null(in_chunk_size)) {
+    if (length(infile) == 1) {
+      diskf = disk.frame(outdir)
+
+      colnames_copy = NULL
+      readr::read_lines_chunked(file = infile, callback = function(xx, i) {
+        # browser()
+        if(is.null(colnames_copy)) {
+          new_chunk = inmapfn(
+            data.table::fread(
+              text = xx, 
+              header = header
+              , ...
+            )
+          )
+          colnames_copy <<- names(new_chunk)
+        } else {
+          header_colnames = paste0(colnames_copy, collapse = ",")
+          xx = c(header_colnames, xx)
+          new_chunk = inmapfn(
+            data.table::fread(
+              text = xx, 
+              header = TRUE
+              , ...
+            )
+          )
+        }
+        add_chunk(diskf, new_chunk)
+      }, chunk_size = in_chunk_size, progress = .progress)
+      
+      return(diskf)
+    } else {
+      stop("strategy = 'readr' is not yet supported for multiple files")
     }
   } else if(backend == "readr") {
     if(is.null(in_chunk_size)) {
