@@ -36,7 +36,7 @@
 add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
   # sometimes chunk_id is defined in terms of itself
   force(chunk_id)
-  
+  # browser()
   stopifnot("disk.frame" %in% class(df))
   if(!is_disk.frame(df)) {
     stop("can not add_chunk as this is not a disk.frame")
@@ -96,14 +96,14 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
         new_chunk = TRUE)
     
     merged_meta = full_join(new_chunk_meta, metas_df_summ, by=c("colnames"))
-    setDT(merged_meta)
+    data.table::setDT(merged_meta)
     
     # find out which vars are matched
     check_vars = full_join(
       new_chunk_meta[,.(colnames, new_chunk)], 
       metas_df[,.(colnames=unique(colnames), existing_df = TRUE)], by = "colnames")
     
-    setDT(check_vars)
+    data.table::setDT(check_vars)
     if(nrow(check_vars[is.na(new_chunk)]) > 0) {
       warning(
         glue::glue(
@@ -126,7 +126,8 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     metas_df_summ2 = metas_df_summ1[incompatible_types == TRUE,]
     
     if(nrow(metas_df_summ2)>0) {
-      message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added")
+      browser()
+      message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added\n")
       message(metas_df_summ2)
       stop("")
     }
