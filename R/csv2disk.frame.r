@@ -35,6 +35,7 @@
 #'   disk.frame::shard
 #' @importFrom pryr do_call
 #' @importFrom LaF detect_dm_csv process_blocks
+#' @importFrom bigreadr split_file get_split_files
 #' @export
 #' @examples
 #' tmpfile = tempfile()
@@ -46,11 +47,10 @@
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr", "LaF"), chunk_reader = c("data.table", "readr", "readLines"), ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr", "LaF"), chunk_reader = c("data.table", "bigreadr", "readr", "readLines"), ...) {
   overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
   chunk_reader = match.arg(chunk_reader)
-  #browser()
   
   # we need multiple backend because data.table has poor support for the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
@@ -124,6 +124,49 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     return(df_out)
   } else if(backend == "data.table" & chunk_reader == "data.table") {
     csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+  } else if (backend == "data.table" & chunk_reader == "bigreadr" & !is.null(in_chunk_size)) {
+    # use bigreadr to split the files
+    split_file_info = bigreadr::split_file(infile, every_nlines = in_chunk_size)
+    files_split = bigreadr::get_split_files(split_file_info)
+    
+    df1 = csv_to_disk.frame(
+      files_split[1], 
+      header = header, 
+      inmapfn = inmapfn, 
+      nchunks = nchunks,
+      shardby = shardby,
+      ...
+    )
+    
+    ddd = list(...)
+    
+    # do not apply colNames to the other chunks
+    dddcolClasses = ddd$colClasses
+    
+    # TODO fix colClasses
+    
+    #if()
+    
+    #ddd$colClasses = NULL
+    
+    colnames2set = names(df1)
+    
+    df2 = furrr::future_map(files_split[-1], function(filesx) {
+    #df2 = lapply(files_split[-1], function(filesx) {
+      do.call(csv_to_disk.frame, c(list(
+        filesx, 
+        header = FALSE, 
+        inmapfn = inmapfn, 
+        nchunks = nchunks,
+        shardby = shardby
+      ), ddd)) %>% delayed(~{
+        data.table::setDT(.x)
+        data.table::setnames(.x, names(.x), colnames2set)
+        .x
+      })
+    })
+    
+    return(rbindlist.disk.frame(c(list(df1), df2)))
   } else if (backend == "data.table" & chunk_reader == "readLines" & !is.null(in_chunk_size)) {
     if (length(infile) == 1) {
       # establish a read connection to the file
@@ -138,7 +181,6 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
           new_chunk = inmapfn(data.table::fread(text = xx, header = header_copy, ...))
           colnames_copy = names(new_chunk)
         } else {
-          #browser()
           # TODO detect the correct delim; manually adding header
           header_colnames = paste0(colnames_copy, collapse = ",")
           xx = c(header_colnames, xx)
@@ -166,7 +208,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
 
       colnames_copy = NULL
       readr::read_lines_chunked(file = infile, callback = function(xx, i) {
-        # browser()
+        
         if(is.null(colnames_copy)) {
           new_chunk = inmapfn(
             data.table::fread(
@@ -195,6 +237,13 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       stop("chunk_reader = 'readr' is not yet supported for multiple files")
     }
   } else if(backend == "readr") {
+    if(is.null(in_chunk_size)) {
+      stop("for readr backend, only in_chunk_size != NULL is supported")
+    } else if (!is.null(shardby)) {
+      stop("for readr backend, only shardby == NULL is supported")
+    }
+    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+  } else if (backend == "readr") {
     if(is.null(in_chunk_size)) {
       stop("for readr backend, only in_chunk_size != NULL is supported")
     } else if (!is.null(shardby)) {
