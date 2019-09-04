@@ -21,7 +21,8 @@
 #'
 #' # recommend nchunks based on file size ONLY CSV is implemented at the moment
 #' recommend_nchunks(1024^3)
-recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = FALSE), conservatism = 2, ram_size = NULL) {
+recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = FALSE), conservatism = 2, ram_size = df_ram_size()) {
+  
   dfsize = 0
   if ("data.frame" %in% class(df)) {
     # the df's size in gigabytes
@@ -32,45 +33,56 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   } else {
     dfsize = df/1024/1024/1024
   }
-  
-  if (is.null(ram_size)) {
-    if(.Platform$GUI == "RStudio") {
-      majorv = as.integer(version$major)
-      minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
-      if(majorv>=3 & minorv >= 6) {
-        if(.Platform$OS.type == "windows") {
-          ram_size = getOption("disk.frame.ram_size")
-        }
-        if (is.null(ram_size)) {
-          message("You are running RStudio with R 3.6 on Windows. There is a bug with memory detection.")
-          message("The option disk.frame.ram_size is not set. Going to assume your ram_size is 16 (gigabyte)")
-          message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
-          ram_size = 16
-        } 
-      }
-    }
-    
-    # the amount of memory available in gigabytes
-    if (Sys.info()[["sysname"]] == "Windows") {
-      ram_size = memory.limit() / 1024
-      #} else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
-    } else {
-      #ram_size = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
-      ram_size = benchmarkme::get_ram()/1024/1024/1024
-    } 
-    
-    if(is.na(ram_size)) {
-      warning("memory size not detected, Assumming you have at least 16G of RAM")
-      ram_size = 16
-    }
-    # assume at least 1G of RAM
-    ram_size = max(ram_size, 1, na.rm = TRUE)
-    
-  }
+
+  ram_size = df_ram_size()
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
   nc = parallel::detectCores(logical = FALSE)
   
   
   max(round(dfsize/ram_size*nc)*nc*conservatism, minchunks)
+}
+
+
+#' Get the size of RAM in gigabytes
+#'
+#' @return integer
+#' @export
+#'
+#' @examples
+df_ram_size <- function() {
+  ram_size = NULL
+  if(.Platform$GUI == "RStudio") {
+    majorv = as.integer(version$major)
+    minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+    if(majorv>=3 & minorv >= 6) {
+      if(.Platform$OS.type == "windows") {
+        ram_size = getOption("disk.frame.ram_size")
+      }
+      if (is.null(ram_size)) {
+        message("You are running RStudio with R 3.6 on Windows. There is a bug with memory detection.")
+        message("The option disk.frame.ram_size is not set. Going to assume your ram_size is 16 (gigabyte)")
+        message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
+        ram_size = 16
+      } 
+    }
+  }
+  
+  # the amount of memory available in gigabytes
+  if (Sys.info()[["sysname"]] == "Windows") {
+    ram_size = memory.limit() / 1024
+    #} else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
+  } else {
+    #ram_size = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
+    ram_size = benchmarkme::get_ram()/1024/1024/1024
+  } 
+  
+  if(is.na(ram_size)) {
+    warning("memory size not detected, Assumming you have at least 16G of RAM")
+    ram_size = 16
+  }
+  # assume at least 1G of RAM
+  ram_size = max(ram_size, 1, na.rm = TRUE)
+  
+  ram_size
 }
