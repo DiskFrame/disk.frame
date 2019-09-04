@@ -126,9 +126,9 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     metas_df_summ2 = metas_df_summ1[incompatible_types == TRUE,]
     
     if(nrow(metas_df_summ2)>0) {
-      browser()
+      #browser()
       message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added\n")
-      message(metas_df_summ2)
+      message(paste0(capture.output(metas_df_summ2), collapse = "\n"))
       stop("")
     }
   }

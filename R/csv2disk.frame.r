@@ -50,39 +50,77 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
   chunk_reader = match.arg(chunk_reader)
- 
+  browser()
+  
   # we need multiple backend because data.table has poor support for the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
   # TODO detect these cases
   
   # user has requested chunk-wise reading but wants me to do it
   
-  if(is.null(in_chunk_size)) {
+  #if(is.null(in_chunk_size)) {
     
-  } else if(in_chunk_size == "guess") {
+  #} else if(is.character(in_chunk_size) && in_chunk_size == "guess") {
     
     #library(bigreadr)
-    system.time(wc_l <- R.utils::countLines(infile))
-    system.time(infos_split <- split_file(infile, every_nlines = 1e7))
-    file_parts <- get_split_files(infos_split)
-    #NCmisc::file.split("c:/data/Performance_2003Q3.txt", size = 1e7)
+    # system.time(wc_l <- R.utils::countLines(infile))
+    # system.time(infos_split <- split_file(infile, every_nlines = 1e7))
+    # file_parts <- get_split_files(infos_split)
+   
+  #} else
+  if(is.numeric(in_chunk_size)) {
+    if(backend =="data.table" & chunk_reader == "data.table") {
+      rs = df_ram_size()
+      
+      if (any((sapply(infile, file.size)/1024^3)> rs)) {
+        message("csv_to_disk.frame: you are using backend = 'data.table' and chunk_reader = 'data.table'.")
+        message(glue::glue("But one of your input files is larger than available RAM {rs}."))
+        message("if the file(s) fail to read, please set chunk_reader = 'readLines' or chunk_reader = 'readr'.")
+        message("E.g. csv_to_disk.frame(..., chunk_reader = 'readr')")
+      }
+    }
+  }
+  
+  if(length(infile)>1) {
+    message("csv_to_disk.frame: you are trying to read multiple files.")
+    #param_names = names(list(...))
+    
+    if(backend == "data.table") {
+      #if (!"colClasses" %in% param_names) {
+      message("Please use colClasses to set column types to minimize the chance of a failed read")
+      #}
+    } else if (backend == "readr") {
+      #if (!"col_types" %in% param_names) {
+      message("Please use col_types to set column types to minimize the chance of a failed read")
+      #}
+    } else if (backed == "LaF") {
+      message("Please check the documentation of LaF for how to set column classes")
+    } else {
+      stop("csv_to_disk.frame: backend not supported")
+    }
   }
   
   if(backend == "LaF") {
-    if(length(file) > 1) {
+    if(length(infile) > 1) {
       stop("csv_to_disk.frame: backend = 'LaF' only supports single file, not multiple files as `infile`")
-    } else if(is.null(in_chunk_size)) {
+    } 
+    
+    if(is.null(in_chunk_size)) {
       stop("csv_to_disk.frame: backend = 'LaF' can only be used when in_chunk_size != NULL")
     }
   }
   
-  if(backend == "LaF" & !is.null(in_chunk_size) & length(file) == 1) {
+  if(backend == "LaF" & !is.null(in_chunk_size) & length(infile) == 1) {
     df_out = disk.frame(outdir)
-    dm = LaF::detect_dm_csv(filename, header = TRUE, ...)
-    LaF::process_blocks(open(dm), function(chunk, past) {
-      add_chunk(df_out, chunk)
+    dm = LaF::detect_dm_csv(infile, header = TRUE, ...)
+    LaF::process_blocks(LaF::laf_open(dm), function(chunk, past) {
+      if("data.frame" %in% class(chunk)) {
+        if(nrow(chunk) > 0 ) {
+          add_chunk(df_out, chunk)
+        }
+      }
       NULL
-    })
+    }, nrows = in_chunk_size)
     return(df_out)
   } else if(backend == "data.table" & chunk_reader == "data.table") {
     csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
