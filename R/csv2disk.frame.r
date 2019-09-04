@@ -4,37 +4,86 @@
 #' @importFrom pryr do_call
 #' @param infile The input CSV file or files
 #' @param outdir The directory to output the disk.frame to
-#' @param inmapfn A function to be applied to the chunk read in from CSV before the chunk is being written out. Commonly used to perform simple transformations. Defaults to the identity function (ie. no transformation)
+#' @param inmapfn A function to be applied to the chunk read in from CSV before
+#'   the chunk is being written out. Commonly used to perform simple
+#'   transformations. Defaults to the identity function (ie. no transformation)
 #' @param nchunks Number of chunks to output
-#' @param in_chunk_size When reading in the file, how many lines to read in at once. This is different to nchunks which controls how many chunks are output
-#' @param shardby The column(s) to shard the data by. For example suppose `shardby = c("col1","col2")`  then every row where the values `col1` and `col2` are the same will end up in the same chunk; this will allow merging by `col1` and `col2` to be more efficient
-#' @param compress For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.
+#' @param in_chunk_size When reading in the file, how many lines to read in at
+#'   once. This is different to nchunks which controls how many chunks are
+#'   output
+#' @param shardby The column(s) to shard the data by. For example suppose
+#'   `shardby = c("col1","col2")`  then every row where the values `col1` and
+#'   `col2` are the same will end up in the same chunk; this will allow merging
+#'   by `col1` and `col2` to be more efficient
+#' @param compress For fst backends it's a number between 0 and 100 where 100 is
+#'   the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
 #' @param header Whether the files have header. Defaults to TRUE
-#' @param .progress A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}
-#' @param ... passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard
+#' @param .progress A logical, for whether or not to print a progress bar for
+#'   multiprocess, multisession, and multicore plans. From {furrr}
+#' @param backend "data.table" or "readr". The CSV reader backend to choose:
+#'   disk.frame does not have its own CSV reader, it uses either
+#'   data.table::fread or readr::read_delimited
+#' @param chunk_reader Even if you choose a backend there can still be multiple
+#'   strategies on how to approach the CSV reads. For example, data.table::fread
+#'   tries to mmap the whole file which can cause the whole read process to
+#'   fail. In that case we can change the chunk_reader to "readLines" which uses the
+#'   readLines function to read chunk by chunk and still use data.table::fread
+#'   to process the chunks. There are currently no strategies for readr backend,
+#'   except the default one.
+#' @param ... passed to data.table::fread, disk.frame::as.disk.frame,
+#'   disk.frame::shard
 #' @importFrom pryr do_call
+#' @importFrom LaF detect_dm_csv process_blocks
 #' @export
-#' @examples 
+#' @examples
 #' tmpfile = tempfile()
 #' write.csv(cars, tmpfile)
 #' tmpdf = tempfile(fileext = ".df")
 #' df = csv_to_disk.frame(tmpfile, outdir = tmpdf, overwrite = TRUE)
-#' 
+#'
 #' # clean up
 #' fs::file_delete(tmpfile)
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
-                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr"), strategy = c("data.table", "readr", "readLines"), ...) {
+                              in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr", "LaF"), chunk_reader = c("data.table", "readr", "readLines"), ...) {
   overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
-  strategy = match.arg(strategy)
+  chunk_reader = match.arg(chunk_reader)
  
+  # we need multiple backend because data.table has poor support for the file is larger than RAM
+  # https://github.com/Rdatatable/data.table/issues/3526
+  # TODO detect these cases
   
+  # user has requested chunk-wise reading but wants me to do it
+  if(in_chunk_size == "guess") {
+    
+    library(bigreadr)
+    system.time(wc_l <- R.utils::countLines(infile))
+    system.time(infos_split <- split_file(infile, every_nlines = 1e7))
+    file_parts <- get_split_files(infos_split)
+    #NCmisc::file.split("c:/data/Performance_2003Q3.txt", size = 1e7)
+  }
   
-  if(backend == "data.table" & strategy == "data.table") {
+  if(backend == "LaF") {
+    if(length(file) > 1) {
+      stop("csv_to_disk.frame: backend = 'LaF' only supports single file, not multiple files as `infile`")
+    } else if(is.null(in_chunk_size)) {
+      stop("csv_to_disk.frame: backend = 'LaF' can only be used when in_chunk_size != NULL")
+    }
+  }
+  
+  if(backend == "LaF" & !is.null(in_chunk_size) & length(file) == 1) {
+    df_out = disk.frame(outdir)
+    dm = LaF::detect_dm_csv(filename, header = TRUE, ...)
+    LaF::process_blocks(open(dm), function(chunk, past) {
+      add_chunk(df_out, chunk)
+      NULL
+    })
+    return(df_out)
+  } else if(backend == "data.table" & chunk_reader == "data.table") {
     csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
-  } else if (backend == "data.table" & strategy == "readLines" & !is.null(in_chunk_size)) {
+  } else if (backend == "data.table" & chunk_reader == "readLines" & !is.null(in_chunk_size)) {
     if (length(infile) == 1) {
       # establish a read connection to the file
       con = file(infile, "r")
@@ -68,9 +117,9 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       }
       return(diskf)
     } else {
-      stop("strategy = 'readLines' is not yet supported for multiple files")
+      stop("chunk_reader = 'readLines' is not yet supported for multiple files")
     }
-  } else if (backend == "data.table" & strategy == "readr" & !is.null(in_chunk_size)) {
+  } else if (backend == "data.table" & chunk_reader == "readr" & !is.null(in_chunk_size)) {
     if (length(infile) == 1) {
       diskf = disk.frame(outdir)
 
@@ -102,7 +151,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       
       return(diskf)
     } else {
-      stop("strategy = 'readr' is not yet supported for multiple files")
+      stop("chunk_reader = 'readr' is not yet supported for multiple files")
     }
   } else if(backend == "readr") {
     if(is.null(in_chunk_size)) {
