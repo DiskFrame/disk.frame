@@ -25,7 +25,8 @@ Imports:
     future (>= 1.14.0),
     data.table (>= 1.12.2),
     crayon (>= 1.3.4),
-    benchmarkme (>= 1.0.2)
+    benchmarkme (>= 1.0.2),
+    LaF
 Depends:
     R (>= 3.5.0),
     dplyr (>= 0.8.3),

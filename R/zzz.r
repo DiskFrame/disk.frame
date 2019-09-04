@@ -23,6 +23,9 @@ options(future.globals.maxSize = Inf)
 ```
 \n\n"))
   
+  # TODO try to detect if using RStudio and 3.6
+  
+  
 }
 
 globalVariables(c(
