@@ -20,6 +20,7 @@
 #' delete(cars.df)
 #' delete(cars2.df)
 rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE) {
+  
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
   force(nchunks) 
@@ -31,6 +32,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
   stopifnot("disk.frame" %in% class(df))
   
   user_had_not_set_shard_by = is.null(shardby)
+  user_had_set_shard_by = !user_had_not_set_shard_by
 
   # back up the files if writing to the same directory
   if(outdir == attr(df,"path")) {
@@ -71,8 +73,10 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     shardby = existing_shardkey[[1]]
   }
 
-  if (identical(shardby, "") | is.null(shardby)) {
-    #browser()
+  if(user_had_set_shard_by) {
+    return(hard_group_by(df, shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE))
+  } else if (identical(shardby, "") | is.null(shardby)) {
+    # if no existing shardby 
     nr = nrow(df)
     nr_per_chunk = ceiling(nr/nchunks)
     used_so_far = 0
@@ -105,13 +109,15 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     }
     
     return(res)
-  } else {
+  } else if(!is.null(shardby)) { # if there is existing shard by; shardby has been replaced with new shard by
     if(user_had_not_set_shard_by) {
       warning("shardby = NULL; but there are already shardkey's defined for this disk.frame. Therefore a rechunk algorithm that preserves the shardkey's has been applied and this algorithm is slower than an algorithm that doesn't use a shardkey.")
     }
     
     # using some maths we can cut down on the number of operations
     nc = nchunks(df)
+    
+    # TODO 
     # if the number of possible new chunk ids is one then no need to perform anything. just merge those
     possibles_new_chunk_id = purrr::map(1:nc, ~unique((.x-1 + (0:(nchunks-1))*nc) %% nchunks)+1)
     lp = purrr::map_int(possibles_new_chunk_id,length)
@@ -125,10 +131,11 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     })
     
     # for those that don't need to be resharded
+    tmp_fdlr = tempfile("rechunk_shard")
+    fs::dir_create(tmp_fdlr)
+
     oks = furrr::future_map(which(lp == 1), function(i) {
       file_chunk = file.path(attr(df, "path"), i %>% paste0(".fst"))
-      tmp_fdlr = tempfile("rechunk_shard")
-      fs::dir_create(tmp_fdlr)
       fs::file_move(file_chunk, file.path(tmp_fdlr, possibles_new_chunk_id[[i]] %>% paste0(".fst")))
       disk.frame(tmp_fdlr)
     })
@@ -138,5 +145,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     
     res = add_meta(new_one, nchunks = nchunks(new_one), shardkey = shardby, shardchunks = nchunks)
     return(res)
+  } else {
+    stop("rechunk: option not supported")
   }
 }

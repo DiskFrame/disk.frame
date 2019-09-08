@@ -54,15 +54,18 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' # clean up
 #' delete(cars.df)
 collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn"))) {
+  cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
+  
+  
   if(nchunks(x) > 0) {
     res <- NULL
     if (parallel) {
       #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
-      res = future.apply::future_lapply(1:nchunks(x), function(.x) {
-        get_chunk(x, .x)
+      res = future.apply::future_lapply(cids, function(.x) {
+        get_chunk(x, .x, full.names = TRUE)
       })
     } else {
-      res = purrr::map(1:nchunks(x), ~get_chunk(x, .x))
+      res = purrr::map(cids, ~get_chunk(x, .x, full.names = TRUE))
     }
     if (simplify) {
       return(simplify2array(res))
