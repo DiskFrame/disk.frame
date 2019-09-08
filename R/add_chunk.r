@@ -36,7 +36,7 @@
 add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
   # sometimes chunk_id is defined in terms of itself
   force(chunk_id)
-  # browser()
+  # 
   stopifnot("disk.frame" %in% class(df))
   if(!is_disk.frame(df)) {
     stop("can not add_chunk as this is not a disk.frame")
@@ -126,7 +126,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     metas_df_summ2 = metas_df_summ1[incompatible_types == TRUE,]
     
     if(nrow(metas_df_summ2)>0) {
-      #browser()
+      #
       message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added\n")
       message(paste0(capture.output(metas_df_summ2), collapse = "\n"))
       stop("")

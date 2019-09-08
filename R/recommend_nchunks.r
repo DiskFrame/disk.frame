@@ -27,6 +27,8 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
   if ("data.frame" %in% class(df)) {
     # the df's size in gigabytes
     dfsize = as.numeric(pryr::object_size(df))/1024/1024/1024
+  } else if ("disk.frame" %in% class(df)) {
+    return(nchunks(df))
   } else if (is.numeric(df) & type == "csv") {
     # assume that df is the estimated number of bytes of the data
     dfsize = df/1024/1024/1024

@@ -16,10 +16,12 @@
 #' # clean up cars.df
 #' delete(iris.df)
 shard <- function(df, shardby, outdir = tempfile(fileext = ".df"), ..., nchunks = recommend_nchunks(df), overwrite = FALSE) {
+  force(nchunks)
   overwrite_check(outdir, overwrite)
   
+  
   if("data.frame" %in% class(df)) {
-    setDT(df)
+    data.table::setDT(df)
     if(length(shardby) == 1) {
       code = glue::glue("df[,.out.disk.frame.id := hashstr2i(as.character({shardby}), nchunks)]")
     } else {
@@ -34,10 +36,13 @@ shard <- function(df, shardby, outdir = tempfile(fileext = ".df"), ..., nchunks 
       }
     )
     
+    stopifnot(".out.disk.frame.id" %in% names(df))
+    
     res = write_disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = TRUE, shardby = shardby, shardchunks = nchunks)  
     return(res)
   } else if ("disk.frame" %in% class(df)){
-    return(rechunk(df, shardby = shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE))
+    nchunks_rechunk = nchunks
+    return(rechunk(df, shardby = shardby, nchunks = nchunks_rechunk, outdir = outdir, overwrite = TRUE))
   }
 }
 

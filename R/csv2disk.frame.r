@@ -126,47 +126,46 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
     csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
   } else if (backend == "data.table" & chunk_reader == "bigreadr" & !is.null(in_chunk_size)) {
     # use bigreadr to split the files
-    split_file_info = bigreadr::split_file(infile, every_nlines = in_chunk_size)
-    files_split = bigreadr::get_split_files(split_file_info)
+    tf = tempfile()
+    pt = proc.time()
+    message(" ----------------------------------------------------- ")
+    message(glue::glue("Stage 1 of 2: splitting the file {infile} into smallers files:"))
+    message(glue::glue("Destination: {tf}"))
+    message(" ----------------------------------------------------- ")
     
-    df1 = csv_to_disk.frame(
-      files_split[1], 
-      header = header, 
+    split_file_info = bigreadr::split_file(
+      infile, 
+      every_nlines = in_chunk_size, 
+      prefix_out = tf,
+      repeat_header = header)
+    files_split = bigreadr::get_split_files(split_file_info)
+    message(paste("Stage 1 of 2 took:", data.table::timetaken(pt)))
+    message(" ----------------------------------------------------- ")
+    
+    pt2 = proc.time()
+    message(glue::glue("Stage 2 of 2: Converting the smaller files into disk.frame"))
+    message(" ----------------------------------------------------- ")
+    
+    res = csv_to_disk.frame(
+      files_split, 
+      outdir = outdir,
       inmapfn = inmapfn, 
       nchunks = nchunks,
-      shardby = shardby,
-      ...
-    )
+      shardby = shardby, 
+      compress = compress, 
+      overwrite = overwrite, 
+      header = header, 
+      .progress = .progress,
+      backend = backend,
+      ...)
     
-    ddd = list(...)
+    message(paste("Stage 2 of 2 took:", data.table::timetaken(pt2)))
+    message(" ----------------------------------------------------- ")
     
-    # do not apply colNames to the other chunks
-    dddcolClasses = ddd$colClasses
+    message(paste("Stage 2 & 2 took:", data.table::timetaken(pt)))
+    message(" ----------------------------------------------------- ")
     
-    # TODO fix colClasses
-    
-    #if()
-    
-    #ddd$colClasses = NULL
-    
-    colnames2set = names(df1)
-    
-    df2 = furrr::future_map(files_split[-1], function(filesx) {
-    #df2 = lapply(files_split[-1], function(filesx) {
-      do.call(csv_to_disk.frame, c(list(
-        filesx, 
-        header = FALSE, 
-        inmapfn = inmapfn, 
-        nchunks = nchunks,
-        shardby = shardby
-      ), ddd)) %>% delayed(~{
-        data.table::setDT(.x)
-        data.table::setnames(.x, names(.x), colnames2set)
-        .x
-      })
-    })
-    
-    return(rbindlist.disk.frame(c(list(df1), df2)))
+    return(res)
   } else if (backend == "data.table" & chunk_reader == "readLines" & !is.null(in_chunk_size)) {
     if (length(infile) == 1) {
       # establish a read connection to the file
@@ -207,7 +206,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       diskf = disk.frame(outdir)
 
       colnames_copy = NULL
-      readr::read_lines_chunked(file = infile, callback = function(xx, i) {
+      readr::read_lines_chunked(file = infile, callback = readr::SideEffectChunkCallback$new(function(xx, i) {
         
         if(is.null(colnames_copy)) {
           new_chunk = inmapfn(
@@ -230,7 +229,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
           )
         }
         add_chunk(diskf, new_chunk)
-      }, chunk_size = in_chunk_size, progress = .progress)
+      }), chunk_size = in_chunk_size, progress = .progress)
       
       return(diskf)
     } else {
@@ -291,7 +290,7 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     
     if(.progress) {
       
-      message(paste("Stage 2 or 2 took:", data.table::timetaken(pt2)))
+      message(paste("Stage 2 of 2 took:", data.table::timetaken(pt2)))
       message(" ----------------------------------------------------- ")
       message(paste("Stage 1 & 2 in total took:", data.table::timetaken(pt)))
     }

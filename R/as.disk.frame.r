@@ -25,9 +25,10 @@
 #' delete(cars_new_location.df)
 #' delete(cars_chunks.df)
 as.disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = recommend_nchunks(df), overwrite = FALSE, shardby = NULL, compress = 50,...) {
+  
   stopifnot("data.frame" %in% class(df))
   overwrite_check(outdir, overwrite)
-  setDT(df)
+  data.table::setDT(df)
   
   if (is.null(shardby)) {
     odfi = rep(1:nchunks, each = ceiling(nrow(df)/nchunks))

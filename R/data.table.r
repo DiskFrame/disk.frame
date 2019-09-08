@@ -29,7 +29,7 @@
   res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
   #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
     chunk = get_chunk(df, chunk_id, keep = keep_for_future)
-    setDT(chunk)
+    data.table::setDT(chunk)
     expr <- quote(chunk)
     expr <- c(expr, dotdotdot)
     res <- do.call(`[`, expr)
