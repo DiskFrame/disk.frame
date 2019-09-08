@@ -117,7 +117,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     # using some maths we can cut down on the number of operations
     nc = nchunks(df)
     
-    # TODO 
+    # TODO there is bug here! If the chunks are in numbers form!
     # if the number of possible new chunk ids is one then no need to perform anything. just merge those
     possibles_new_chunk_id = purrr::map(1:nc, ~unique((.x-1 + (0:(nchunks-1))*nc) %% nchunks)+1)
     lp = purrr::map_int(possibles_new_chunk_id,length)

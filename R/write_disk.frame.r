@@ -22,7 +22,15 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
-write_disk.frame <- function(df, outdir = tempfile(fileext = ".df"), nchunks = nchunks.disk.frame(df), overwrite = FALSE, shardby=NULL, compress = 50, ...) {
+write_disk.frame <- function(
+  df, 
+  outdir = tempfile(fileext = ".df"), 
+  nchunks = ifelse(
+    "disk.frame"%in% class(df), 
+    nchunks.disk.frame(df), 
+    recommend_nchunks(df)), 
+  overwrite = FALSE, 
+  shardby=NULL, compress = 50, ...) {
   
   force(nchunks)
   overwrite_check(outdir, overwrite)
