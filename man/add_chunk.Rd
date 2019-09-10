@@ -11,15 +11,23 @@ add_chunk(df, chunk, chunk_id = NULL, full.names = FALSE)
 
 \item{chunk}{a data.frame to be added as a chunk}
 
-\item{chunk_id}{a numeric number indicating the id of the chunk. If NULL it will be set to the largest chunk_id + 1}
+\item{chunk_id}{a numeric number indicating the id of the chunk. If NULL it
+will be set to the largest chunk_id + 1}
 
-\item{full.names}{whether the chunk_id name match should be to the full file path not just the file name}
+\item{full.names}{whether the chunk_id name match should be to the full file
+path not just the file name}
 }
 \value{
 disk.frame
 }
 \description{
-Add a chunk to the disk.frame
+If no chunkd_id is specified, then the chunk is added at the end as the
+largest numbered file, "n.fst".
+}
+\details{
+The function is the preferred way to add a chunk to a disk.frame. It
+  performs checks on the types to make sure that the new chunk doesn't have
+  different types to the disk.frame.
 }
 \examples{
 # create a disk.frame

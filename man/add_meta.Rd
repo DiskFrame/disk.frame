@@ -19,7 +19,7 @@ add_meta(df, ..., nchunks = nchunks.disk.frame(df), shardkey = "",
 \item{shardchunks}{The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number}
 }
 \description{
-Add metadata to the disk.frame
+This is the only mechanism to add metadata to a disk.frame at the moment.
 }
 \examples{
 cars.df = as.disk.frame(cars)

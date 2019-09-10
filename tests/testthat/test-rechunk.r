@@ -75,7 +75,7 @@ test_that("testing rechunk 5 to 7", {
 
 
 teardown({
-  fs::dir_delete("tmp_rechunks1.df")
+  fs::dir_delete("tmp_rechunks.df")
   fs::dir_delete("tmp_rechunks2.df")
   fs::dir_delete("tmp_rechunks3.df")
   fs::dir_delete("tmp_rechunks4.df")

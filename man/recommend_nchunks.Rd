@@ -5,20 +5,28 @@
 \title{Recommend number of chunks based on input size}
 \usage{
 recommend_nchunks(df, type = "csv",
-  minchunks = parallel::detectCores(logical = FALSE), conservatism = 2)
+  minchunks = parallel::detectCores(logical = FALSE), conservatism = 2,
+  ram_size = df_ram_size())
 }
 \arguments{
-\item{df}{a disk.frame or the file size in bytes of a CSV file holding the data}
+\item{df}{a disk.frame or the file size in bytes of a CSV file holding the
+data}
 
-\item{type}{only = "csv" is supported. It indicates the file type corresponding to file size `df`}
+\item{type}{only = "csv" is supported. It indicates the file type
+corresponding to file size `df`}
 
-\item{minchunks}{the minimum number of chunks. Defaults to the number of CPU cores (without hyper-threading)}
+\item{minchunks}{the minimum number of chunks. Defaults to the number of CPU
+cores (without hyper-threading)}
 
-\item{conservatism}{a multiplier to the recommended number of chunks. The more chunks the smaller the chunk size and more likely that each chunk can fit into RAM}
+\item{conservatism}{a multiplier to the recommended number of chunks. The
+more chunks the smaller the chunk size and more likely that each chunk can
+fit into RAM}
+
+\item{ram_size}{The amount of RAM available which is usually computed. Except on RStudio with R3.6+}
 }
 \description{
-Computes the recommended number of chunks to break a data.frame into. It can
-accept filesizes in bytes (as integer) or a data.frame
+Computes the recommended number of chunks to break a data.frame
+into. It can accept filesizes in bytes (as integer) or a data.frame
 }
 \examples{
 # recommend nchunks based on data.frame

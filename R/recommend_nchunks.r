@@ -50,7 +50,7 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
 #'
 #' @return integer of RAM in gigabyte (GB)
 #' @export
-#' @import bit64 as.integer64.character
+#' @importFrom bit64 as.integer64.character
 #' @examples
 df_ram_size <- function() {
   ram_size = NULL

@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Using data.table syntax with disk.frame • disk.frame</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Using data.table syntax with disk.frame">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.999</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -85,6 +86,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -101,7 +103,7 @@
 <div id="disk-frame-supports-data-table-syntax" class="section level2">
 <h2 class="hasAnchor">
 <a href="#disk-frame-supports-data-table-syntax" class="anchor"></a><code>disk.frame</code> supports <code>data.table</code> syntax</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(disk.frame)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="co">#&gt; Loading required package: dplyr</span></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-4" title="4"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
@@ -112,48 +114,51 @@
 <a class="sourceLine" id="cb1-9" title="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-10" title="10"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
 <a class="sourceLine" id="cb1-11" title="11"><span class="co">#&gt; Loading required package: purrr</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co">#&gt; ## Message from disk.frame:</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co">#&gt; We have 1 workers to use with disk.frame.</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co">#&gt; To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></a>
-<a class="sourceLine" id="cb1-16" title="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-17" title="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-18" title="18"><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co">#&gt; Registered S3 method overwritten by 'pryr':</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">#&gt;   method      from</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">#&gt;   print.bytes Rcpp</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co">#&gt; ## Message from disk.frame:</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="co">#&gt; We have 1 workers to use with disk.frame.</span></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="co">#&gt; To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></a>
 <a class="sourceLine" id="cb1-19" title="19"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-20" title="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-21" title="21"><span class="co">#&gt; ```r</span></a>
-<a class="sourceLine" id="cb1-22" title="22"><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></a>
-<a class="sourceLine" id="cb1-23" title="23"><span class="co">#&gt; setup_disk.frame()</span></a>
-<a class="sourceLine" id="cb1-24" title="24"><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></a>
-<a class="sourceLine" id="cb1-25" title="25"><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></a>
-<a class="sourceLine" id="cb1-26" title="26"><span class="co">#&gt; ```</span></a>
-<a class="sourceLine" id="cb1-27" title="27"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-28" title="28"><span class="co">#&gt; Attaching package: 'disk.frame'</span></a>
-<a class="sourceLine" id="cb1-29" title="29"><span class="co">#&gt; The following objects are masked from 'package:purrr':</span></a>
+<a class="sourceLine" id="cb1-21" title="21"><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-23" title="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-24" title="24"><span class="co">#&gt; ```r</span></a>
+<a class="sourceLine" id="cb1-25" title="25"><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></a>
+<a class="sourceLine" id="cb1-26" title="26"><span class="co">#&gt; setup_disk.frame()</span></a>
+<a class="sourceLine" id="cb1-27" title="27"><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></a>
+<a class="sourceLine" id="cb1-29" title="29"><span class="co">#&gt; ```</span></a>
 <a class="sourceLine" id="cb1-30" title="30"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-31" title="31"><span class="co">#&gt;     imap, imap_dfr, map, map_dfr, map2</span></a>
-<a class="sourceLine" id="cb1-32" title="32"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
+<a class="sourceLine" id="cb1-31" title="31"><span class="co">#&gt; Attaching package: 'disk.frame'</span></a>
+<a class="sourceLine" id="cb1-32" title="32"><span class="co">#&gt; The following objects are masked from 'package:purrr':</span></a>
 <a class="sourceLine" id="cb1-33" title="33"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-34" title="34"><span class="co">#&gt;     colnames, ncol, nrow</span></a>
-<a class="sourceLine" id="cb1-35" title="35"></a>
-<a class="sourceLine" id="cb1-36" title="36"><span class="co"># set-up disk.frame to use multiple workers</span></a>
-<a class="sourceLine" id="cb1-37" title="37"><span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/interactive">interactive</a></span>()) {</a>
-<a class="sourceLine" id="cb1-38" title="38">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
-<a class="sourceLine" id="cb1-39" title="39">  <span class="co"># highly recommended, however it is pun into interactive() for CRAN because</span></a>
-<a class="sourceLine" id="cb1-40" title="40">  <span class="co"># change user options are not allowed on CRAN</span></a>
-<a class="sourceLine" id="cb1-41" title="41">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)  </a>
-<a class="sourceLine" id="cb1-42" title="42">} <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb1-43" title="43">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-44" title="44">}</a>
-<a class="sourceLine" id="cb1-45" title="45"><span class="co">#&gt; The number of workers available for disk.frame is 2</span></a>
-<a class="sourceLine" id="cb1-46" title="46"></a>
-<a class="sourceLine" id="cb1-47" title="47"></a>
-<a class="sourceLine" id="cb1-48" title="48"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nycflights13)</a>
+<a class="sourceLine" id="cb1-34" title="34"><span class="co">#&gt;     imap, imap_dfr, map, map_dfr, map2</span></a>
+<a class="sourceLine" id="cb1-35" title="35"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
+<a class="sourceLine" id="cb1-36" title="36"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-37" title="37"><span class="co">#&gt;     colnames, ncol, nrow</span></a>
+<a class="sourceLine" id="cb1-38" title="38"></a>
+<a class="sourceLine" id="cb1-39" title="39"><span class="co"># set-up disk.frame to use multiple workers</span></a>
+<a class="sourceLine" id="cb1-40" title="40"><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span>()) {</a>
+<a class="sourceLine" id="cb1-41" title="41">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
+<a class="sourceLine" id="cb1-42" title="42">  <span class="co"># highly recommended, however it is pun into interactive() for CRAN because</span></a>
+<a class="sourceLine" id="cb1-43" title="43">  <span class="co"># change user options are not allowed on CRAN</span></a>
+<a class="sourceLine" id="cb1-44" title="44">  <span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)  </a>
+<a class="sourceLine" id="cb1-45" title="45">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb1-46" title="46">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-47" title="47">}</a>
+<a class="sourceLine" id="cb1-48" title="48"><span class="co">#&gt; The number of workers available for disk.frame is 2</span></a>
 <a class="sourceLine" id="cb1-49" title="49"></a>
-<a class="sourceLine" id="cb1-50" title="50"><span class="co"># create a disk.frame</span></a>
-<a class="sourceLine" id="cb1-51" title="51">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights, <span class="dt">outdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(),<span class="st">"flights13"</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-50" title="50"></a>
+<a class="sourceLine" id="cb1-51" title="51"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a>
+<a class="sourceLine" id="cb1-52" title="52"></a>
+<a class="sourceLine" id="cb1-53" title="53"><span class="co"># create a disk.frame</span></a>
+<a class="sourceLine" id="cb1-54" title="54">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights, <span class="dt">outdir =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(),<span class="st">"flights13"</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>In the following example, I will use the <code>.N</code> from the <code>data.table</code> package to count the unique combinations <code>year</code> and <code>month</code> within each chunk.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; Attaching package: 'data.table'</span></a>
 <a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; The following object is masked from 'package:purrr':</span></a>
@@ -162,18 +167,18 @@
 <a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></a>
 <a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt;     between, first, last</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(disk.frame)</a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb2-11" title="11"></a>
-<a class="sourceLine" id="cb2-12" title="12">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(),<span class="st">"flights13"</span>))</a>
+<a class="sourceLine" id="cb2-12" title="12">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/disk.frame.html">disk.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(),<span class="st">"flights13"</span>))</a>
 <a class="sourceLine" id="cb2-13" title="13"></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(flights.df)</a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(flights.df)</a>
 <a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span></a>
 <a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span></a>
 <a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt;  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       </span></a>
 <a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; [13] "origin"         "dest"           "air_time"       "distance"      </span></a>
 <a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span></a>
 <a class="sourceLine" id="cb2-20" title="20"></a>
-<a class="sourceLine" id="cb2-21" title="21">flights.df[,.N, .(year, month), keep =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"year"</span>, <span class="st">"month"</span>)]</a>
+<a class="sourceLine" id="cb2-21" title="21">flights.df[,.N, .(year, month), keep =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>, <span class="st">"month"</span>)]</a>
 <a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt;     year month     N</span></a>
 <a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt;  1: 2013     1 27004</span></a>
 <a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt;  2: 2013    10 28889</span></a>
@@ -194,7 +199,7 @@
 <a class="sourceLine" id="cb2-39" title="39"><span class="co">#&gt; 17: 2013     9 27574</span></a></code></pre></div>
 <p>All <code>data.table</code> syntax are supported. However, <code>disk.frame</code> adds the ability to load only those columns required for the analysis using the <code>keep =</code> option. In the above analysis, only the <code>year</code> and <code>month</code> variables are required and hence <code>keep = c("year", "month")</code> was used.</p>
 <p>Alternatively, we can use the <code>srckeep</code> function to achieve the same, e.g.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(flights.df, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"year"</span>, <span class="st">"month"</span>))[,.N, .(year, month)]</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(flights.df, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>, <span class="st">"month"</span>))[,.N, .(year, month)]</a></code></pre></div>
 <div id="external-variables-are-captured" class="section level3">
 <h3 class="hasAnchor">
 <a href="#external-variables-are-captured" class="anchor"></a>External variables are captured</h3>
@@ -211,6 +216,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -223,17 +229,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

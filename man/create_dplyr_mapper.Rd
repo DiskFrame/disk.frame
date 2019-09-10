@@ -2,7 +2,7 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{create_dplyr_mapper}
 \alias{create_dplyr_mapper}
-\title{A function to make it easier to create dplyr function for disk.frame}
+\title{Create dplyr function for disk.frame}
 \usage{
 create_dplyr_mapper(dplyr_fn, warning_msg = NULL)
 }
@@ -12,5 +12,9 @@ create_dplyr_mapper(dplyr_fn, warning_msg = NULL)
 \item{warning_msg}{The warning message to display when invoking the mapper}
 }
 \description{
-A function to make it easier to create dplyr function for disk.frame
+A function to make it easier to create functions like \code{filter}
+}
+\examples{
+
+
 }
