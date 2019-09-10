@@ -101,6 +101,9 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   }
   
   if(backend == "LaF") {
+    if(!requireNamespace("LaF")) {
+      stop("You need to install the LaF package to use backend = 'LaF'. To install: install.packages('LaF')")
+    }
     if(length(infile) > 1) {
       stop("csv_to_disk.frame: backend = 'LaF' only supports single file, not multiple files as `infile`")
     } 

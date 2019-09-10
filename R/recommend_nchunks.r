@@ -48,39 +48,53 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
 
 #' Get the size of RAM in gigabytes
 #'
-#' @return integer
+#' @return integer of RAM in gigabyte (GB)
 #' @export
-#'
+#' @import bit64 as.integer64.character
 #' @examples
 df_ram_size <- function() {
   ram_size = NULL
-  if(.Platform$GUI == "RStudio") {
-    majorv = as.integer(version$major)
-    minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
-    if(majorv>=3 & minorv >= 6) {
-      if(.Platform$OS.type == "windows") {
-        ram_size = getOption("disk.frame.ram_size")
-      }
-      if (is.null(ram_size)) {
-        message("You are running RStudio with R 3.6 on Windows. There is a bug with memory detection.")
-        message("The option disk.frame.ram_size is not set. Going to assume your ram_size is 16 (gigabyte)")
-        message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
-        ram_size = 16
-      } 
-    }
-  }
-  
   # the amount of memory available in gigabytes
   if (Sys.info()[["sysname"]] == "Windows") {
-    ram_size = memory.limit() / 1024
-    #} else if (Sys.info()[["sysname"]] %in% c("Linux","Darwin")) {
+    if(.Platform$GUI == "RStudio") {
+      majorv = as.integer(version$major)
+      minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+      if(majorv>=3 & minorv >= 6) {
+        ram_size <- system("wmic MemoryChip get Capacity", intern=TRUE) %>% 
+          map(~strsplit(.x, " ")) %>% 
+          unlist %>% 
+          map(~bit64::as.integer64.character(.x)/1024^3) %>% 
+          unlist %>% 
+          sum(na.rm=TRUE)
+        
+        if(is.na(ram_size)) {
+          if (is.null(ram_size)) {
+            message("You are running RStudio with R 3.6+ on Windows. There is a bug with RAM size detection.")
+            message("And disk.frame can't determine your RAM size using manual methods.")
+            message("Going to assume your RAM size is 16GB (gigabyte). The program will continue to run.")
+            message("")
+            message("")
+            message("Please report a bug at https://github.com/xiaodaigh/disk.frame/issues")
+            message("Include this in your bug report:")
+            message(system("wmic MemoryChip get Capacity", intern=TRUE))
+            message("")
+            message("")
+            #message("The option disk.frame.ram_size is not set. 
+            #message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
+            ram_size = 16
+          }
+        }
+      }
+    } else {
+      ram_size = memory.limit()/1024
+    }
   } else {
     #ram_size = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
     ram_size = benchmarkme::get_ram()/1024/1024/1024
   } 
   
   if(is.na(ram_size)) {
-    warning("memory size not detected, Assumming you have at least 16G of RAM")
+    warning("RAM size not detected. Assumme you have at least 16GB of RAM")
     ram_size = 16
   }
   # assume at least 1G of RAM
