@@ -1,4 +1,7 @@
-#' Bring the disk.frame into R as data.table/data.frame or as a list 
+#' Bring the disk.frame into R
+#'
+#' Bring the disk.frame into RAM by loading the data and running all lazy
+#' operations as data.table/data.frame or as a list
 #' @param x a disk.frame
 #' @param parallel if TRUE the collection is performed in parallel. By default
 #'   if there are delayed/lazy steps then it will be parallel, otherwise it will
@@ -11,12 +14,12 @@
 #' @importFrom furrr future_map_dfr future_options
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
-#' @return data.frame/data.table
-#' @examples 
+#' @return collect return a data.frame/data.table
+#' @examples
 #' cars.df = as.disk.frame(cars)
 #' # use collect to bring the data into RAM as a data.table/data.frame
 #' collect(cars.df)
-#' 
+#'
 #' # clean up
 #' delete(cars.df)
 #' @export
@@ -44,7 +47,7 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' @param simplify Should the result be simplified to array
 #' @export
 #' @rdname collect
-#' @return list
+#' @return collect_list returns a list
 #' @examples
 #' cars.df = as.disk.frame(cars)
 #' 

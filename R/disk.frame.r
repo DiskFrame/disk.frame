@@ -27,6 +27,8 @@ disk.frame <- function(path, backend = "fst") {
 }
 
 #' Add metadata to the disk.frame
+#' 
+#' This is the only mechanism to add metadata to a disk.frame at the moment.
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom fs dir_create file_create
 #' @param df a disk.frame
