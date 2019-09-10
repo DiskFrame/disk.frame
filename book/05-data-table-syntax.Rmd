@@ -1,5 +1,6 @@
 ---
 title: "Using data.table syntax with disk.frame"
+author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using data.table syntax with disk.frame}

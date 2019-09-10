@@ -1,7 +1,6 @@
 ---
 title: "Quick Start"
 author: "ZJ"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basic Data Operations - nycflights13}

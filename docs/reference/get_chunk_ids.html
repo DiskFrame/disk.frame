@@ -104,13 +104,10 @@
       <a href="../articles/intro-disk-frame.html">Quick Start</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Introduction</a>
+      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb-2.html">Benchmarking disk.frame 2: disk.frame beats Dask again! disk.frame beats JuliaDB again! Anyone else wanna challenge?</a>
-    </li>
-    <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
 </li>
@@ -169,12 +166,12 @@
 <span class='co'># return the integer-string chunk IDs</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] "1" "2" "3" "4" "5" "6"</div><div class='input'>
 <span class='co'># return the file name chunk IDs</span>
-<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/1.fst"
-#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/2.fst"
-#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/3.fst"
-#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/4.fst"
-#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/5.fst"
-#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6tJVlV\\file19f82fa5324c.df/6.fst"</div><div class='input'>
+<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/1.fst"
+#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/2.fst"
+#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/3.fst"
+#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/4.fst"
+#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/5.fst"
+#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpqwdPKZ\\file260857045347.df/6.fst"</div><div class='input'>
 <span class='co'># return the file name chunk IDs with file extension</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>strip_extension</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "1.fst" "2.fst" "3.fst" "4.fst" "5.fst" "6.fst"</div><div class='input'>
 <span class='co'># clean up cars.df</span>

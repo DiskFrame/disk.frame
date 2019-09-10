@@ -1,5 +1,6 @@
 ---
 title: "Ingesting Data"
+author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Ingesting Data}

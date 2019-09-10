@@ -7,13 +7,6 @@ documentclass: book
 description: "disk.frame is the R framework for manipulating larger-than-RAM data"
 ---
 
-# The story of how `disk.frame` came to be
-I was working at one of Australia's biggest banks and their shiny new SAS server was experiencing huge instability issues. As a result, we had to run SAS on our laptops to perform huge amounts of data manipulation. A simple SQL query can take around 20 minutes.
-
-I had enough.
-
-That's why I created `disk.frame` - a larger-than-RAM data manipulation framework for R. The same query is now 10 seconds.
-
 # Introduction
 
 The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
