@@ -1,35 +1,45 @@
 #' Add a chunk to the disk.frame
+#'
+#' If no chunkd_id is specified, then the chunk is added at the end as the
+#' largest numbered file, "n.fst".
+#'
+#' @details The function is the preferred way to add a chunk to a disk.frame. It
+#'   performs checks on the types to make sure that the new chunk doesn't have
+#'   different types to the disk.frame.
+#'
 #' @param df the disk.frame to add a chunk to
 #' @param chunk a data.frame to be added as a chunk
-#' @param chunk_id a numeric number indicating the id of the chunk. If NULL it will be set to the largest chunk_id + 1
-#' @param full.names whether the chunk_id name match should be to the full file path not just the file name
+#' @param chunk_id a numeric number indicating the id of the chunk. If NULL it
+#'   will be set to the largest chunk_id + 1
+#' @param full.names whether the chunk_id name match should be to the full file
+#'   path not just the file name
 #' @importFrom data.table data.table
 #' @export
 #' @return disk.frame
-#' @examples 
+#' @examples
 #' # create a disk.frame
 #' df_path = file.path(tempdir(), "tmp_add_chunk")
 #' diskf = disk.frame(df_path)
-#' 
+#'
 #' # add a chunk to diskf
 #' add_chunk(diskf, cars)
 #' add_chunk(diskf, cars)
-#' 
+#'
 #' nchunks(diskf) # 2
-#' 
+#'
 #' df2 = disk.frame(file.path(tempdir(), "tmp_add_chunk2"))
-#' 
+#'
 #' # add chunks by specifying the chunk_id number; this is especially useful if
 #' # you wish to add multiple chunk in parralel
-#' 
+#'
 #' add_chunk(df2, data.frame(chunk=1), 1)
 #' add_chunk(df2, data.frame(chunk=2), 3)
-#' 
+#'
 #' nchunks(df2) # 2
-#' 
+#'
 #' dir(attr(df2, "path"))
 #' # [1] "1.fst" "3.fst"
-#' 
+#'
 #' # clean up
 #' delete(diskf)
 #' delete(df2)

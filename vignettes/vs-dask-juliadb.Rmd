@@ -1,8 +1,9 @@
 ---
-title: "Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?"
+title: "Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?"
+author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Benchmarking disk.frame 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?}
+  %\VignetteIndexEntry{Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

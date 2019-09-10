@@ -1,4 +1,6 @@
 #' @importFrom readr DataFrameCallback
+#' @noRd
+#' @noMd
 csv_to_disk.frame_readr <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
                               in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, delim=",", ...) {
   overwrite_check(outdir, overwrite)

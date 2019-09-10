@@ -3,7 +3,7 @@
 \name{collect.disk.frame}
 \alias{collect.disk.frame}
 \alias{collect_list}
-\title{Bring the disk.frame into R as data.table/data.frame or as a list}
+\title{Bring the disk.frame into R}
 \usage{
 \method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x,
   "lazyfn")))
@@ -26,12 +26,13 @@ hence parallel = FALSE is a better choice}
 \item{simplify}{Should the result be simplified to array}
 }
 \value{
-data.frame/data.table
+collect return a data.frame/data.table
 
-list
+collect_list returns a list
 }
 \description{
-Bring the disk.frame into R as data.table/data.frame or as a list
+Bring the disk.frame into RAM by loading the data and running all lazy
+operations as data.table/data.frame or as a list
 }
 \examples{
 cars.df = as.disk.frame(cars)

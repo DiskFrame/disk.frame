@@ -8,30 +8,54 @@ csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
   inmapfn = base::I,
   nchunks = recommend_nchunks(sum(file.size(infile))),
   in_chunk_size = NULL, shardby = NULL, compress = 50,
-  overwrite = TRUE, header = TRUE, .progress = TRUE, ...)
+  overwrite = TRUE, header = TRUE, .progress = TRUE,
+  backend = c("data.table", "readr", "LaF"),
+  chunk_reader = c("bigreadr", "data.table", "readr", "readLines"), ...)
 }
 \arguments{
 \item{infile}{The input CSV file or files}
 
 \item{outdir}{The directory to output the disk.frame to}
 
-\item{inmapfn}{A function to be applied to the chunk read in from CSV before the chunk is being written out. Commonly used to perform simple transformations. Defaults to the identity function (ie. no transformation)}
+\item{inmapfn}{A function to be applied to the chunk read in from CSV before
+the chunk is being written out. Commonly used to perform simple
+transformations. Defaults to the identity function (ie. no transformation)}
 
 \item{nchunks}{Number of chunks to output}
 
-\item{in_chunk_size}{When reading in the file, how many lines to read in at once. This is different to nchunks which controls how many chunks are output}
+\item{in_chunk_size}{When reading in the file, how many lines to read in at
+once. This is different to nchunks which controls how many chunks are
+output}
 
-\item{shardby}{The column(s) to shard the data by. For example suppose `shardby = c("col1","col2")`  then every row where the values `col1` and `col2` are the same will end up in the same chunk; this will allow merging by `col1` and `col2` to be more efficient}
+\item{shardby}{The column(s) to shard the data by. For example suppose
+`shardby = c("col1","col2")`  then every row where the values `col1` and
+`col2` are the same will end up in the same chunk; this will allow merging
+by `col1` and `col2` to be more efficient}
 
-\item{compress}{For fst backends it's a number between 0 and 100 where 100 is the highest compression ratio.}
+\item{compress}{For fst backends it's a number between 0 and 100 where 100 is
+the highest compression ratio.}
 
 \item{overwrite}{Whether to overwrite the existing directory}
 
 \item{header}{Whether the files have header. Defaults to TRUE}
 
-\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
+\item{.progress}{A logical, for whether or not to print a progress bar for
+multiprocess, multisession, and multicore plans. From {furrr}}
 
-\item{...}{passed to data.table::fread, disk.frame::as.disk.frame, disk.frame::shard}
+\item{backend}{"data.table" or "readr". The CSV reader backend to choose:
+disk.frame does not have its own CSV reader, it uses either
+data.table::fread or readr::read_delimited}
+
+\item{chunk_reader}{Even if you choose a backend there can still be multiple
+strategies on how to approach the CSV reads. For example, data.table::fread
+tries to mmap the whole file which can cause the whole read process to
+fail. In that case we can change the chunk_reader to "readLines" which uses the
+readLines function to read chunk by chunk and still use data.table::fread
+to process the chunks. There are currently no strategies for readr backend,
+except the default one.}
+
+\item{...}{passed to data.table::fread, disk.frame::as.disk.frame,
+disk.frame::shard}
 }
 \description{
 Convert CSV file(s) to disk.frame format

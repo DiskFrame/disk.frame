@@ -6,8 +6,9 @@
 \title{Write disk.frame to disk}
 \usage{
 write_disk.frame(df, outdir = tempfile(fileext = ".df"),
-  nchunks = nchunks.disk.frame(df), overwrite = FALSE,
-  shardby = NULL, compress = 50, ...)
+  nchunks = ifelse("disk.frame" \%in\% class(df), nchunks.disk.frame(df),
+  recommend_nchunks(df)), overwrite = FALSE, shardby = NULL,
+  compress = 50, ...)
 
 output_disk.frame(...)
 }
@@ -27,10 +28,8 @@ output_disk.frame(...)
 \item{...}{passed to map.disk.frame}
 }
 \description{
-Write a data.frame/disk.frame to a disk.frame location. If df is a
-data.frame, then df must contain the column .out.disk.frame.id. This is
-intended to be a low-level version of writing disk.frames. Using the
-as.disk.frame function is recommended for most cases
+Write a data.frame/disk.frame to a disk.frame location. If df is a data.frame
+then using the as.disk.frame function is recommended for most cases
 }
 \examples{
 cars.df = as.disk.frame(cars)
