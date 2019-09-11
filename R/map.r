@@ -59,9 +59,18 @@ map.default <- function(.x, .f, ...) {
 #' @export
 map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()), .progress = TRUE) {
   .f = purrr::as_mapper(.f)
-  
   if(lazy) {
-    attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), list(list(func = .f, vars_and_pkgs = vars_and_pkgs)))
+    attr(.x, "lazyfn") = 
+      c(
+        attr(.x, "lazyfn"), 
+        list(
+          list(
+            func = .f, 
+            vars_and_pkgs = vars_and_pkgs, 
+            dotdotdot = list(...)
+          )
+        )
+      )
     return(.x)
   }
   
@@ -85,10 +94,16 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
   
   cid = get_chunk_ids(.x, full.names = TRUE)
   
-  res = future.apply::future_lapply(1:length(files), function(ii) {
+  dotdotdot = list(...)
+  
+  res = future.apply::future_lapply(1:length(files), function(ii, ...) {
     #res = lapply(1:length(files), function(ii) {
     ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
-    res = .f(ds)
+    
+    res = .f(ds, ...)
+    
+    #res = do.call(.f, c(ds, dotdotdot))
+    
     if(!is.null(outdir)) {
       if(nrow(res) == 0) {
         warning(glue::glue("The output chunk has 0 row, therefore chunk {ii} NOT written"))
@@ -99,7 +114,7 @@ map.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nch
     } else {
       return(res)
     }
-  })
+  }, ...)
   
   if(!is.null(outdir)) {
     return(disk.frame(outdir))
