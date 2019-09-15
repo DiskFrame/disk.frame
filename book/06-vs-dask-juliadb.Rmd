@@ -3,7 +3,7 @@ title: "Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone el
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?}
+  %\VignetteIndexEntry{benchmark-1}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

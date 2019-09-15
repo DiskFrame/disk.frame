@@ -3,7 +3,7 @@ title: "Using data.table syntax with disk.frame"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using data.table syntax with disk.frame}
+  %\VignetteIndexEntry{using-data.table-syntax}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -61,7 +61,7 @@ srckeep(flights.df, c("year", "month"))[,.N, .(year, month)]
 
 ### External variables are captured
 
-`disk.frame` sends the computaion to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in the other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.
+`disk.frame` sends the computation to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in the other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.
 
 ```{r var_detect, dependson='setup_data_table'}
 y = 42 

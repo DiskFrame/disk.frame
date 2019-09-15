@@ -16,6 +16,7 @@
 \alias{lazy.disk.frame}
 \alias{delayed}
 \alias{delayed.disk.frame}
+\alias{chunk_lapply}
 \title{Apply the same function to all chunks}
 \usage{
 map(.x, .f, ...)
@@ -54,6 +55,8 @@ lazy(.x, .f, ...)
 delayed(.x, .f, ...)
 
 \method{delayed}{disk.frame}(.x, .f, ...)
+
+chunk_lapply(...)
 }
 \arguments{
 \item{.x}{a disk.frame}

@@ -63,15 +63,12 @@
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
-    </li>
-    <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -108,7 +105,7 @@
 <h2 class="hasAnchor">
 <a href="#workers-and-parallelism" class="anchor"></a>Workers and parallelism</h2>
 <p>Parallelism in <code>disk.frame</code> is achieved using the <a href="https://cran.r-project.org/package=future"><code>future</code> package</a>. When performing many tasks, <code>disk.frame</code> uses multiple workers, where each <em>worker</em> is an R session, to perform the tasks in parallel.</p>
-<p>It is recommended that you should running these to set-up immedidately after you <code><a href="https://rdrr.io/r/base/library.html">library(disk.frame)</a></code>. For example:</p>
+<p>It is recommended that you should running these to set-up immediately after you <code><a href="https://rdrr.io/r/base/library.html">library(disk.frame)</a></code>. For example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
 <a class="sourceLine" id="cb1-3" title="3"></a>
@@ -148,7 +145,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

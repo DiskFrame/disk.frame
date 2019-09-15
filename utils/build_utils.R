@@ -32,6 +32,10 @@ df_setup_vignette <- function() {
   lf = list.files("book", pattern="*.Rmd")
   lf = lf[!is.na(as.integer(sapply(lf, function(x) substr(x, 1, 2))))]
   
+  
+  lf = lf[lf != "06-vs-dask-juliadb.Rmd"]
+  lf = lf[lf != "01-intro.Rmd"]
+  
   purrr::walk(lf, function(file) {
     fs::file_copy(
       file.path("book", file), 
@@ -42,6 +46,9 @@ df_setup_vignette <- function() {
 
 df_check <- function() {
   df_setup_vignette()
+  devtools::clean_vignettes()
+  
+  devtools::document()
   
   # rename tests
   if(fs::dir_exists("tests")) {

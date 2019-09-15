@@ -47,17 +47,11 @@ You can install the released version of disk.frame from
 install.packages("disk.frame")
 ```
 
-If you are installing on Amazon SageMaker, you need to specify a repo. For example, to use the RStudio CRAN repo do
-
-```r
-install.packages("disk.frame", repo="https://cran.rstudio.com/")
-```
-
-The latest version can be installed from [GitHub](https://github.com/) with:
+And the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-remotes::install_github("xiaodaigh/disk.frame")
+devtools::install_github("xiaodaigh/disk.frame")
 ```
 
 ## Vignettes and articles
@@ -212,10 +206,13 @@ library(disk.frame)
 #> 
 #>     intersect, setdiff, setequal, union
 #> Loading required package: purrr
+#> Registered S3 method overwritten by 'pryr':
+#>   method      from
+#>   print.bytes Rcpp
 #> 
 #> ## Message from disk.frame:
 #> We have 1 workers to use with disk.frame.
-#> To change that use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.
+#> To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.
 #> 
 #> 
 #> It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:
@@ -248,12 +245,12 @@ options(future.globals.maxSize = Inf)
 flights.df <- as.disk.frame(nycflights13::flights)
 ````
 
-To find out where the disk.frame is stord on disk:
+To find out where the disk.frame is stored on disk:
 
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpWCHiyp\\file369c5a7d1507.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8wzlwB\\file349c2f8f65d9.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -380,7 +377,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.010s elapsed (0.010s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -400,7 +397,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.470s elapsed (0.140s cpu)
+#> group by took:  0.580s elapsed (0.170s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -425,7 +422,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  3.500s elapsed (0.290s cpu)
+#> group by took:  1.160s elapsed (0.280s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

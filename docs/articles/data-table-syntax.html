@@ -63,15 +63,12 @@
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
-    </li>
-    <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -201,7 +198,7 @@
 <div id="external-variables-are-captured" class="section level3">
 <h3 class="hasAnchor">
 <a href="#external-variables-are-captured" class="anchor"></a>External variables are captured</h3>
-<p><code>disk.frame</code> sends the computaion to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren’t visible in the other R sessions, but <code>disk.frame</code> uses the <code>future</code> package’s variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.</p>
+<p><code>disk.frame</code> sends the computation to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren’t visible in the other R sessions, but <code>disk.frame</code> uses the <code>future</code> package’s variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">y =<span class="st"> </span><span class="dv">42</span> </a>
 <a class="sourceLine" id="cb4-2" title="2">some_fn &lt;-<span class="st"> </span><span class="cf">function</span>(x) x</a>
 <a class="sourceLine" id="cb4-3" title="3"></a>
@@ -233,7 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

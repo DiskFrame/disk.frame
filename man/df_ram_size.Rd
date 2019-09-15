@@ -12,3 +12,7 @@ integer of RAM in gigabyte (GB)
 \description{
 Get the size of RAM in gigabytes
 }
+\examples{
+# returns the RAM size in gigabyte (GB)
+df_ram_size() 
+}

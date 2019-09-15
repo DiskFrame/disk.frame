@@ -40,7 +40,8 @@ tests_manual$
 ^doc$
 ^Meta$
 ^rsconnect$
-book$
+^book$
+^book-pre$
 inst/nyc-taxi/$
 tutorial$
 tutorials$
@@ -48,3 +49,4 @@ Meta$
 add_chunk_readr.r
 build_utils.R
 utils$
+^misc$

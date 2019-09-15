@@ -3,7 +3,7 @@ title: "Ingesting Data"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Ingesting Data}
+  %\VignetteIndexEntry{ingesting-data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -76,13 +76,15 @@ some.df = csv_to_disk.frame(c("some/path/file1.csv", "some/path/file2.csv"))
 some.df = csv_to_disk.frame(list.files("some/path"))
 ```
 
-## Inputing CSV files chunk-wise
+## Ingesting CSV files chunk-wise
 The `csv_to_disk.frame(path, ...)` function reads the file located at `path` in full into RAM but sometimes the CSV file may be too large to read in one go, as that would require loading the whole file into RAM. In that case, you can read the files chunk-by-chunk by using the `in_chunk_size` argument which controls how many rows you read in per chunk
 
 ```r
 # to read in 1 million (=1e6) rows per chunk
 csv_to_disk.frame(path, in_chunk_size = 1e6)
 ```
+
+When `in_chunk_size` is specified, the input file is split into many smaller files using `bigreadr`'s split file functions. This is generally the fastest way to ingest large CSVs, as the split files can be processed in parallel using all CPU cores. But the disk space requirement is doubled because the split files are as large as the original file. If you run out of disk space, then you must clean R's temporary folder at `tempdir()` and choose another `chunk_reader` e.g. `csv_to_disk.frame(..., chunk_reader = "LaF")`.
 
 ## Sharding
 One of the most important aspects of `disk.frame` is sharding. One can shard a `disk.frame` at read time by using the `shardby`
