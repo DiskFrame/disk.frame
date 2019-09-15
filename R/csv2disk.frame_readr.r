@@ -1,4 +1,4 @@
-#' @importFrom readr DataFrameCallback
+#@importFrom readr DataFrameCallback
 #' @noRd
 #' @noMd
 csv_to_disk.frame_readr <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 

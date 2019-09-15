@@ -3,7 +3,7 @@ title: "Concepts for disk.frame"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Concepts for disk.frame}
+  %\VignetteIndexEntry{concepts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,7 +23,7 @@ A `disk.frame` is nothing more a folder and in that folder there should be [`fst
 ## Workers and parallelism
 Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. 
 
-It is recommended that you should running these to set-up immedidately after you `library(disk.frame)`. For example:
+It is recommended that you should running these to set-up immediately after you `library(disk.frame)`. For example:
 
 ```r
 library(disk.frame)

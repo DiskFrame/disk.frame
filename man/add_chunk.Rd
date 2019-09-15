@@ -21,7 +21,7 @@ path not just the file name}
 disk.frame
 }
 \description{
-If no chunkd_id is specified, then the chunk is added at the end as the
+If no chunk_id is specified, then the chunk is added at the end as the
 largest numbered file, "n.fst".
 }
 \details{

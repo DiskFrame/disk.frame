@@ -36,7 +36,7 @@
 
 
 <meta property="og:title" content="Add a chunk to the disk.frame — add_chunk" />
-<meta property="og:description" content="If no chunkd_id is specified, then the chunk is added at the end as the
+<meta property="og:description" content="If no chunk_id is specified, then the chunk is added at the end as the
 largest numbered file, &quot;n.fst&quot;." />
 <meta name="twitter:card" content="summary" />
 
@@ -102,15 +102,12 @@ largest numbered file, &quot;n.fst&quot;." />
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
-    </li>
-    <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -134,7 +131,7 @@ largest numbered file, &quot;n.fst&quot;." />
     </div>
 
     <div class="ref-description">
-    <p>If no chunkd_id is specified, then the chunk is added at the end as the
+    <p>If no chunk_id is specified, then the chunk is added at the end as the
 largest numbered file, "n.fst".</p>
     </div>
 
@@ -178,12 +175,12 @@ path not just the file name</p></td>
 <span class='no'>diskf</span> <span class='kw'>=</span> <span class='fu'><a href='disk.frame.html'>disk.frame</a></span>(<span class='no'>df_path</span>)
 
 <span class='co'># add a chunk to diskf</span>
-<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpqwdPKZ/tmp_add_chunk"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQtGf4m/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 1</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 2</span>
 #&gt; <span class='message'>nrow (post operations): ???</span>
-#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpqwdPKZ/tmp_add_chunk"</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>diskf</span>, <span class='no'>cars</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQtGf4m/tmp_add_chunk"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow (at source): 100</span>
 #&gt; <span class='message'>ncol (at source): 2</span>
@@ -195,12 +192,12 @@ path not just the file name</p></td>
 <span class='co'># add chunks by specifying the chunk_id number; this is especially useful if</span>
 <span class='co'># you wish to add multiple chunk in parralel</span>
 
-<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpqwdPKZ/tmp_add_chunk2"</span>
+<span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>1</span>), <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQtGf4m/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 1</span>
 #&gt; <span class='message'>nrow (at source): 1</span>
 #&gt; <span class='message'>ncol (at source): 1</span>
 #&gt; <span class='message'>nrow (post operations): ???</span>
-#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpqwdPKZ/tmp_add_chunk2"</span>
+#&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'>add_chunk</span>(<span class='no'>df2</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chunk</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQtGf4m/tmp_add_chunk2"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow (at source): 2</span>
 #&gt; <span class='message'>ncol (at source): 1</span>
@@ -232,7 +229,7 @@ path not just the file name</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

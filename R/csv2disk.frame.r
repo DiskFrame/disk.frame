@@ -34,7 +34,7 @@
 #' @param ... passed to data.table::fread, disk.frame::as.disk.frame,
 #'   disk.frame::shard
 #' @importFrom pryr do_call
-#' @importFrom LaF detect_dm_csv process_blocks
+#@importFrom LaF detect_dm_csv process_blocks
 #' @importFrom bigreadr split_file get_split_files
 #' @export
 #' @examples
@@ -94,7 +94,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       #if (!"col_types" %in% param_names) {
       message("Please use col_types to set column types to minimize the chance of a failed read")
       #}
-    } else if (backed == "LaF") {
+    } else if (backend == "LaF") {
       message("Please check the documentation of LaF for how to set column classes")
     } else {
       stop("csv_to_disk.frame: backend not supported")

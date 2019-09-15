@@ -1,6 +1,6 @@
 #' Add a chunk to the disk.frame
 #'
-#' If no chunkd_id is specified, then the chunk is added at the end as the
+#' If no chunk_id is specified, then the chunk is added at the end as the
 #' largest numbered file, "n.fst".
 #'
 #' @details The function is the preferred way to add a chunk to a disk.frame. It
@@ -14,6 +14,7 @@
 #' @param full.names whether the chunk_id name match should be to the full file
 #'   path not just the file name
 #' @importFrom data.table data.table
+#' @importFrom utils capture.output
 #' @export
 #' @return disk.frame
 #' @examples
@@ -138,7 +139,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     if(nrow(metas_df_summ2)>0) {
       #
       message("the belows types are incompatible between the new chunk and the disk.frame; this chunk can not be added\n")
-      message(paste0(capture.output(metas_df_summ2), collapse = "\n"))
+      message(paste0(utils::capture.output(metas_df_summ2), collapse = "\n"))
       stop("")
     }
   }

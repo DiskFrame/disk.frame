@@ -129,7 +129,7 @@ options(future.globals.maxSize = Inf)
 flights.df <- as.disk.frame(nycflights13::flights)
 ```
 
-To find out where the disk.frame is stord on disk:
+To find out where the disk.frame is stored on disk:
 ```{r, dependson='setup'}
 # where is the disk.frame stored
 attr(flights.df, "path")

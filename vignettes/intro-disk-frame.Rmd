@@ -1,9 +1,9 @@
 ---
-title: "Quick Start"
+title: "Quick Start: Basic Operations with nycflights13"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Basic Data Operations - nycflights13}
+  %\VignetteIndexEntry{quick-start}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

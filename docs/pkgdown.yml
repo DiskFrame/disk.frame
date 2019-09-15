@@ -1,11 +1,9 @@
 pandoc: 2.7.2
-pkgdown: 1.4.0
+pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   concepts: concepts.html
   data-table-syntax: data-table-syntax.html
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
-  intro: intro.html
-  vs-dask-juliadb: vs-dask-juliadb.html
 
