@@ -7,4 +7,6 @@ articles:
   glm: glm.html
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
+  intro: intro.html
+  vs-dask-juliadb: vs-dask-juliadb.html
 
