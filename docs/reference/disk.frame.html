@@ -98,6 +98,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+    </li>
+    <li>
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
@@ -151,7 +154,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"cars"</span>)
-<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpqO4yqy/cars"</span>
+<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpwHMqGN/cars"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 2</span>

@@ -2,3 +2,5 @@
 *.R
 intro-disk-frame_cache
 data-table-syntax_cache
+_book
+_bookdown_files
