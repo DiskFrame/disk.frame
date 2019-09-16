@@ -65,6 +65,7 @@ Please see these vignettes and articles about `disk.frame`
   - [Ingesting data into
     disk.frame](http://diskframe.com/articles/ingesting-data.html) which
     lists some commons way of creating disk.frames
+  - [Fitting GLMs (including logistic regression)](http://diskframe.com/articles/glm.html) introduces the `dfglm` function for fitting generalised linear models
   - [Using data.table syntax with
     disk.frame](http://diskframe.com/articles/data-table-syntax.html)
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
