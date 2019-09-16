@@ -109,6 +109,12 @@ file to disk.frame format" />
     <li>
       <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
+    <li>
+      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+    </li>
+    <li>
+      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -184,7 +190,7 @@ file to disk.frame format</p>
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpwHMqGN\file308c43a2529f.df/Users/RTX2080/AppData/Local/Temp/RtmpwHMqGN/file308c3c8a4e0f.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpSICjbC\filefe0106c6623.df/Users/RTX2080/AppData/Local/Temp/RtmpSICjbC/filefe02a6137d3.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 3</span>
