@@ -1,7 +1,7 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.1.1
+Version: 0.1.1.999
 Date: 2019-09-15
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
   role = c("aut", "cre"))
@@ -44,7 +44,10 @@ Suggests:
     shiny,
     LaF,
     readr,
-    rstudioapi
+    rstudioapi,
+    biglm,
+    speedglm,
+    broom
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.1
