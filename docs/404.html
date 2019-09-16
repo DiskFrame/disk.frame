@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Recommend number of chunks based on input size — recommend_nchunks • disk.frame</title>
+<title>Page not found (404) • disk.frame</title>
 
 
 <!-- jquery -->
@@ -29,16 +29,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Recommend number of chunks based on input size — recommend_nchunks" />
-<meta property="og:description" content="Computes the recommended number of chunks to break a data.frame
-into. It can accept filesizes in bytes (as integer) or a data.frame" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Page not found (404)" />
 
 
 
@@ -57,7 +54,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -69,7 +66,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">disk.frame</a>
+        <a class="navbar-link" href="index.html">disk.frame</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.999</span>
       </span>
     </div>
@@ -77,13 +74,13 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,21 +90,21 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="articles/concepts.html">Concepts for disk.frame</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -123,68 +120,17 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Recommend number of chunks based on input size</h1>
-    
-    <div class="hidden name"><code>recommend_nchunks.Rd</code></div>
+      <h1>Page not found (404)</h1>
     </div>
 
-    <div class="ref-description">
-    <p>Computes the recommended number of chunks to break a data.frame
-into. It can accept filesizes in bytes (as integer) or a data.frame</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>recommend_nchunks</span>(<span class='no'>df</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"csv"</span>,
-  <span class='kw'>minchunks</span> <span class='kw'>=</span> <span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='kw'>conservatism</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>ram_size</span> <span class='kw'>=</span> <span class='fu'><a href='df_ram_size.html'>df_ram_size</a></span>())</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>df</th>
-      <td><p>a disk.frame or the file size in bytes of a CSV file holding the
-data</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>only = "csv" is supported. It indicates the file type
-corresponding to file size `df`</p></td>
-    </tr>
-    <tr>
-      <th>minchunks</th>
-      <td><p>the minimum number of chunks. Defaults to the number of CPU
-cores (without hyper-threading)</p></td>
-    </tr>
-    <tr>
-      <th>conservatism</th>
-      <td><p>a multiplier to the recommended number of chunks. The
-more chunks the smaller the chunk size and more likely that each chunk can
-fit into RAM</p></td>
-    </tr>
-    <tr>
-      <th>ram_size</th>
-      <td><p>The amount of RAM available which is usually computed. Except on RStudio with R3.6+</p></td>
-    </tr>
-    </table>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># recommend nchunks based on data.frame</span>
-<span class='fu'>recommend_nchunks</span>(<span class='no'>cars</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
-<span class='co'># recommend nchunks based on file size ONLY CSV is implemented at the moment</span>
-<span class='fu'>recommend_nchunks</span>(<span class='fl'>1024</span>^<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] 6</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+Content not found. Please use links in the navbar.
 
   </div>
+
 </div>
+
 
 
       <footer>
