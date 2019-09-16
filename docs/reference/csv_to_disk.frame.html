@@ -98,6 +98,9 @@
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
+      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+    </li>
+    <li>
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
@@ -224,7 +227,7 @@ disk.frame::shard</p></td>
 <span class='no'>df</span> <span class='kw'>=</span> <span class='fu'>csv_to_disk.frame</span>(<span class='no'>tmpfile</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='no'>tmpdf</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># clean up</span>
-<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/fs/man/delete.html'>file_delete</a></span>(<span class='no'>tmpfile</span>)
+<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/delete.html'>file_delete</a></span>(<span class='no'>tmpfile</span>)
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

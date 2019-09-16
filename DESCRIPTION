@@ -47,7 +47,8 @@ Suggests:
     rstudioapi,
     biglm,
     speedglm,
-    broom
+    broom,
+    learnr
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.1

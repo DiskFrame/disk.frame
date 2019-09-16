@@ -50,3 +50,4 @@ add_chunk_readr.r
 build_utils.R
 utils$
 ^misc$
+^inst/tutorials/glm\.Rmd$

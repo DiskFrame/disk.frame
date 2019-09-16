@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   concepts: concepts.html
   data-table-syntax: data-table-syntax.html
+  glm: glm.html
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
 

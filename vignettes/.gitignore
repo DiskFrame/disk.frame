@@ -1,2 +1,5 @@
 data-table-syntax_cache
 intro-disk-frame_cache
+*.html
+*.R
+glm_cache
