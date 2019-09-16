@@ -72,6 +72,12 @@ Please see these vignettes and articles about `disk.frame`
   - [Benchmark 1: disk.frame vs Dask vs
     JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
 
+### Interested in learning {disk.frame} in a structured course?
+
+Please register your interest at:
+
+https://leanpub.com/c/taminglarger-than-ramwithdiskframe
+
 ## Common questions
 
 ### a) What is `disk.frame` and why create it?
