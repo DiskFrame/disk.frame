@@ -46,7 +46,7 @@ df_setup_vignette <- function() {
 
 df_check <- function() {
   df_setup_vignette()
-  devtools::clean_vignettes()
+  #devtools::clean_vignettes()
   
   devtools::document()
   

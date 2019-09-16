@@ -1,3 +1,7 @@
+## Re-Submission 2 for v0.1.1
+* Gotten rid of the cached files in vignettes which caused an error
+* Updated date in DESCRIPTION
+
 ## Submission 1 for v0.1.1
 * Bug fixes and minor enhancements
 

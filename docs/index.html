@@ -11,8 +11,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Larger-than-RAM Disk-Based Data Manipulation Framework">
-<meta property="og:description" content="A disk-based data manipulation tool for working with arbitrarily
-    large datasets as long as they fit on disk.">
+<meta property="og:description" content="A disk-based data manipulation tool for working with 
+  large-than-RAM datasets. Aims to lower the barrier-to-entry for 
+  manipulating large datasets by adhering closely to popular and 
+  familiar data manipulation paradigms like dplyr verbs and 
+  data.table syntax.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -32,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.999</span>
       </span>
     </div>
 
@@ -106,10 +109,10 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of disk.frame from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"disk.frame"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"disk.frame"</span>)</span></code></pre></div>
 <p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"xiaodaigh/disk.frame"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"xiaodaigh/disk.frame"</span>)</span></code></pre></div>
 </div>
 <div id="vignettes-and-articles" class="section level2">
 <h2 class="hasAnchor">
@@ -170,10 +173,10 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <a href="#set-up-diskframe" class="anchor"></a>Set-up <code>disk.frame</code>
 </h2>
 <p><code>disk.frame</code> works best if it can process multiple data chunks in parallel. The best way to set-up <code>disk.frame</code> so that each CPU core runs a background worker is by using</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co"># this allows large datasets to be transferred between sessions</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># this allows large datasets to be transferred between sessions</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span></code></pre></div>
 <p>The <code><a href="reference/setup_disk.frame.html">setup_disk.frame()</a></code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
 <p>Alternatively, one may specify the number of workers using <code><a href="reference/setup_disk.frame.html">setup_disk.frame(workers = n)</a></code>.</p>
 </div>
@@ -181,111 +184,111 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <div id="example-usage" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-usage" class="anchor"></a>Example usage</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt; Loading required package: dplyr</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt; Loading required package: purrr</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; Registered S3 method overwritten by 'pryr':</span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt;   method      from</span></a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt;   print.bytes Rcpp</span></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; ## Message from disk.frame:</span></a>
-<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; We have 1 workers to use with disk.frame.</span></a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></a>
-<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt; ```r</span></a>
-<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></a>
-<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt; setup_disk.frame()</span></a>
-<a class="sourceLine" id="cb4-27" title="27"><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></a>
-<a class="sourceLine" id="cb4-28" title="28"><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></a>
-<a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt; ```</span></a>
-<a class="sourceLine" id="cb4-30" title="30"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-31" title="31"><span class="co">#&gt; Attaching package: 'disk.frame'</span></a>
-<a class="sourceLine" id="cb4-32" title="32"><span class="co">#&gt; The following objects are masked from 'package:purrr':</span></a>
-<a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-34" title="34"><span class="co">#&gt;     imap, imap_dfr, map, map_dfr, map2</span></a>
-<a class="sourceLine" id="cb4-35" title="35"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb4-36" title="36"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-37" title="37"><span class="co">#&gt;     colnames, ncol, nrow</span></a>
-<a class="sourceLine" id="cb4-38" title="38"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</a>
-<a class="sourceLine" id="cb4-39" title="39"></a>
-<a class="sourceLine" id="cb4-40" title="40"><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></a>
-<a class="sourceLine" id="cb4-41" title="41"><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
-<a class="sourceLine" id="cb4-42" title="42"><span class="co">#&gt; The number of workers available for disk.frame is 6</span></a>
-<a class="sourceLine" id="cb4-43" title="43"><span class="co"># this allows large datasets to be transferred between sessions</span></a>
-<a class="sourceLine" id="cb4-44" title="44"><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</a>
-<a class="sourceLine" id="cb4-45" title="45"></a>
-<a class="sourceLine" id="cb4-46" title="46"><span class="co"># convert the flights data.frame to a disk.frame</span></a>
-<a class="sourceLine" id="cb4-47" title="47"><span class="co"># optionally, you may specify an outdir, otherwise, the </span></a>
-<a class="sourceLine" id="cb4-48" title="48">flights.df &lt;-<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; Loading required package: dplyr</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; </span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; </span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; Loading required package: purrr</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; Registered S3 method overwritten by 'pryr':</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;   method      from</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt;   print.bytes Rcpp</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; </span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; ## Message from disk.frame:</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; We have 1 workers to use with disk.frame.</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; </span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; </span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; </span></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; </span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; ```r</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; setup_disk.frame()</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; ```</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; </span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; Attaching package: 'disk.frame'</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; The following objects are masked from 'package:purrr':</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; </span></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt;     imap, imap_dfr, map, map_dfr, map2</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; </span></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt;     colnames, ncol, nrow</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</span>
+<span id="cb4-39"><a href="#cb4-39"></a></span>
+<span id="cb4-40"><a href="#cb4-40"></a><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a><span class="co"># this allows large datasets to be transferred between sessions</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span>
+<span id="cb4-45"><a href="#cb4-45"></a></span>
+<span id="cb4-46"><a href="#cb4-46"></a><span class="co"># convert the flights data.frame to a disk.frame</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a><span class="co"># optionally, you may specify an outdir, otherwise, the </span></span>
+<span id="cb4-48"><a href="#cb4-48"></a>flights.df &lt;-<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</span></code></pre></div>
 <p>To find out where the disk.frame is stored on disk:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># where is the disk.frame stored</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8wzlwB\\file349c2f8f65d9.df"</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># where is the disk.frame stored</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8wzlwB\\file349c2f8f65d9.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># get first few rows</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; 1: 2013     1   1      517            515         2      830</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; 2: 2013     1   1      533            529         4      850</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; 3: 2013     1   1      542            540         2      923</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt; 4: 2013     1   1      544            545        -1     1004</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; 5: 2013     1   1      554            600        -6      812</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; 6: 2013     1   1      554            558        -4      740</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt; 1:            819        11      UA   1545  N14228    EWR  IAH      227</span></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; 2:            830        20      UA   1714  N24211    LGA  IAH      227</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; 3:            850        33      AA   1141  N619AA    JFK  MIA      160</span></a>
-<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; 4:           1022       -18      B6    725  N804JB    JFK  BQN      183</span></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; 5:            837       -25      DL    461  N668DN    LGA  ATL      116</span></a>
-<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt; 6:            728        12      UA   1696  N39463    EWR  ORD      150</span></a>
-<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt;    distance hour minute           time_hour</span></a>
-<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; 1:     1400    5     15 2013-01-01 05:00:00</span></a>
-<a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; 2:     1416    5     29 2013-01-01 05:00:00</span></a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; 3:     1089    5     40 2013-01-01 05:00:00</span></a>
-<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; 4:     1576    5     45 2013-01-01 05:00:00</span></a>
-<a class="sourceLine" id="cb6-22" title="22"><span class="co">#&gt; 5:      762    6      0 2013-01-01 06:00:00</span></a>
-<a class="sourceLine" id="cb6-23" title="23"><span class="co">#&gt; 6:      719    5     58 2013-01-01 05:00:00</span></a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># get last few rows</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(flights.df)</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; 1: 2013     9  30       NA           1842        NA       NA</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 2: 2013     9  30       NA           1455        NA       NA</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; 3: 2013     9  30       NA           2200        NA       NA</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; 4: 2013     9  30       NA           1210        NA       NA</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; 5: 2013     9  30       NA           1159        NA       NA</span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt; 6: 2013     9  30       NA            840        NA       NA</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt; 1:           2019        NA      EV   5274  N740EV    LGA  BNA       NA</span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt; 2:           1634        NA      9E   3393    &lt;NA&gt;    JFK  DCA       NA</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt; 3:           2312        NA      9E   3525    &lt;NA&gt;    LGA  SYR       NA</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt; 4:           1330        NA      MQ   3461  N535MQ    LGA  BNA       NA</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 5:           1344        NA      MQ   3572  N511MQ    LGA  CLE       NA</span></a>
-<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; 6:           1020        NA      MQ   3531  N839MQ    LGA  RDU       NA</span></a>
-<a class="sourceLine" id="cb7-17" title="17"><span class="co">#&gt;    distance hour minute           time_hour</span></a>
-<a class="sourceLine" id="cb7-18" title="18"><span class="co">#&gt; 1:      764   18     42 2013-09-30 18:00:00</span></a>
-<a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; 2:      213   14     55 2013-09-30 14:00:00</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt; 3:      198   22      0 2013-09-30 22:00:00</span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt; 4:      764   12     10 2013-09-30 12:00:00</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt; 5:      419   11     59 2013-09-30 11:00:00</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt; 6:      431    8     40 2013-09-30 08:00:00</span></a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># number of rows</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(flights.df)</a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; [1] 336776</span></a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># number of columns</span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="kw"><a href="reference/ncol_nrow.html">ncol</a></span>(flights.df)</a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt; [1] 19</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># get first few rows</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; 1: 2013     1   1      517            515         2      830</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 2: 2013     1   1      533            529         4      850</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 3: 2013     1   1      542            540         2      923</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 4: 2013     1   1      544            545        -1     1004</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 5: 2013     1   1      554            600        -6      812</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; 6: 2013     1   1      554            558        -4      740</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; 1:            819        11      UA   1545  N14228    EWR  IAH      227</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; 2:            830        20      UA   1714  N24211    LGA  IAH      227</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 3:            850        33      AA   1141  N619AA    JFK  MIA      160</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; 4:           1022       -18      B6    725  N804JB    JFK  BQN      183</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; 5:            837       -25      DL    461  N668DN    LGA  ATL      116</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; 6:            728        12      UA   1696  N39463    EWR  ORD      150</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt;    distance hour minute           time_hour</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; 1:     1400    5     15 2013-01-01 05:00:00</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; 2:     1416    5     29 2013-01-01 05:00:00</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; 3:     1089    5     40 2013-01-01 05:00:00</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; 4:     1576    5     45 2013-01-01 05:00:00</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt; 5:      762    6      0 2013-01-01 06:00:00</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="co">#&gt; 6:      719    5     58 2013-01-01 05:00:00</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get last few rows</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(flights.df)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; 1: 2013     9  30       NA           1842        NA       NA</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt; 2: 2013     9  30       NA           1455        NA       NA</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; 3: 2013     9  30       NA           2200        NA       NA</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt; 4: 2013     9  30       NA           1210        NA       NA</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; 5: 2013     9  30       NA           1159        NA       NA</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt; 6: 2013     9  30       NA            840        NA       NA</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt; 1:           2019        NA      EV   5274  N740EV    LGA  BNA       NA</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt; 2:           1634        NA      9E   3393    &lt;NA&gt;    JFK  DCA       NA</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt; 3:           2312        NA      9E   3525    &lt;NA&gt;    LGA  SYR       NA</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt; 4:           1330        NA      MQ   3461  N535MQ    LGA  BNA       NA</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; 5:           1344        NA      MQ   3572  N511MQ    LGA  CLE       NA</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="co">#&gt; 6:           1020        NA      MQ   3531  N839MQ    LGA  RDU       NA</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co">#&gt;    distance hour minute           time_hour</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="co">#&gt; 1:      764   18     42 2013-09-30 18:00:00</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="co">#&gt; 2:      213   14     55 2013-09-30 14:00:00</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co">#&gt; 3:      198   22      0 2013-09-30 22:00:00</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="co">#&gt; 4:      764   12     10 2013-09-30 12:00:00</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="co">#&gt; 5:      419   11     59 2013-09-30 11:00:00</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co">#&gt; 6:      431    8     40 2013-09-30 08:00:00</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># number of rows</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(flights.df)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># number of columns</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="kw"><a href="reference/ncol_nrow.html">ncol</a></span>(flights.df)</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt; [1] 19</span></span></code></pre></div>
 <div id="example-dplyr-verbs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-dplyr-verbs" class="anchor"></a>Example: dplyr verbs</h2>
@@ -294,123 +297,123 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <a href="#group-by" class="anchor"></a>Group by</h3>
 <p>Group-by in disk.frame are performed within each chunk, hence a two-stage group by is required to obtain the correct group by results. The two-stage approach is preferred for performance reasons too.</p>
 <p>To perform group-by one needs to do it in two-stage approach as the group-bys are performed within each chunk. This will be addressed in a future package called <code>disk.frame.db</code>, but for now two-stage aggregation is the best to do group-bys in <code>disk.frame</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">flights.df =<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</a>
-<a class="sourceLine" id="cb10-2" title="2"></a>
-<a class="sourceLine" id="cb10-3" title="3">flights.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>,<span class="st">"distance"</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># keep only carrier and distance columns</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this does a count per chunk</span></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="st">  </span>collect</a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt; # A tibble: 6 x 2</span></a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="co">#&gt;    year sum_dist</span></a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt;   &lt;int&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt; 1  2013 57446059</span></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="co">#&gt; 2  2013 59302212</span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="co">#&gt; 3  2013 56585094</span></a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="co">#&gt; 4  2013 58476357</span></a>
-<a class="sourceLine" id="cb10-15" title="15"><span class="co">#&gt; 5  2013 59407019</span></a>
-<a class="sourceLine" id="cb10-16" title="16"><span class="co">#&gt; 6  2013 59000866</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>flights.df =<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>flights.df <span class="op">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>,<span class="st">"distance"</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># keep only carrier and distance columns</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this does a count per chunk</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">  </span>collect</span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; # A tibble: 6 x 2</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;    year sum_dist</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;   &lt;int&gt;    &lt;dbl&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; 1  2013 57446059</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt; 2  2013 59302212</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt; 3  2013 56585094</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt; 4  2013 58476357</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; 5  2013 59407019</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; 6  2013 59000866</span></span></code></pre></div>
 <p>This is two-stage group-by in action</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># need a 2nd stage to finalise summing</span></a>
-<a class="sourceLine" id="cb11-2" title="2">flights.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>,<span class="st">"distance"</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># keep only carrier and distance columns</span></a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this does a count per chunk</span></a>
-<a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span>collect <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_dist))</a>
-<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt;    year  sum_dist</span></a>
-<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt;   &lt;int&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; 1  2013 350217607</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># need a 2nd stage to finalise summing</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>flights.df <span class="op">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"year"</span>,<span class="st">"distance"</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># keep only carrier and distance columns</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this does a count per chunk</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="st">  </span>collect <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_dist))</span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt;    year  sum_dist</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt;   &lt;int&gt;     &lt;dbl&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt; 1  2013 350217607</span></span></code></pre></div>
 <p>Here an example of using <code>filter</code></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># filter</span></a>
-<a class="sourceLine" id="cb12-2" title="2">pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb12-3" title="3">df_filtered &lt;-</a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt; filtering a &lt; 0.1 took:  0.010s elapsed (0.010s cpu)</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt; [1] 336776</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># filter</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</span>
+<span id="cb12-3"><a href="#cb12-3"></a>df_filtered &lt;-</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.010s elapsed (0.010s cpu)</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb13-2" title="2">res1 &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"dep_delay"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(dep_delay, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="st">  </span>collect <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="st">  </span><span class="kw">group_by</span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</a>
-<a class="sourceLine" id="cb13-12" title="12"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb13-13" title="13"><span class="co">#&gt; group by took:  0.580s elapsed (0.170s cpu)</span></a>
-<a class="sourceLine" id="cb13-14" title="14"></a>
-<a class="sourceLine" id="cb13-15" title="15"><span class="kw">collect</span>(res1)</a>
-<a class="sourceLine" id="cb13-16" title="16"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
-<a class="sourceLine" id="cb13-17" title="17"><span class="co">#&gt;   qtr   sum_delay     n avg_delay</span></a>
-<a class="sourceLine" id="cb13-18" title="18"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb13-19" title="19"><span class="co">#&gt; 1 Q1       892053 80789      11.0</span></a>
-<a class="sourceLine" id="cb13-20" title="20"><span class="co">#&gt; 2 Q2      1319941 85369      15.5</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</span>
+<span id="cb13-2"><a href="#cb13-2"></a>res1 &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"dep_delay"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw">group_by</span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(dep_delay, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="st">  </span>collect <span class="op">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="st">  </span><span class="kw">group_by</span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; group by took:  0.580s elapsed (0.170s cpu)</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="kw">collect</span>(res1)</span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;   qtr   sum_delay     n avg_delay</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt; 1 Q1       892053 80789      11.0</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt; 2 Q2      1319941 85369      15.5</span></span></code></pre></div>
 <p>However, a one-stage <code>group_by</code> is possible with a <code>hard_group_by</code> to first rechunk the disk.frame. This <strong>not</strong> recommended for performance reasons, as it can quite slow.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</a>
-<a class="sourceLine" id="cb14-2" title="2">res1 &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"dep_delay"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-6" title="6"><span class="st">  </span><span class="kw"><a href="reference/hard_group_by.html">hard_group_by</a></span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span></a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dep_delay, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-8" title="8"><span class="st">  </span>collect</a>
-<a class="sourceLine" id="cb14-9" title="9"><span class="co">#&gt; Appending disk.frames:</span></a>
-<a class="sourceLine" id="cb14-10" title="10"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb14-11" title="11"><span class="co">#&gt; group by took:  1.160s elapsed (0.280s cpu)</span></a>
-<a class="sourceLine" id="cb14-12" title="12"></a>
-<a class="sourceLine" id="cb14-13" title="13"><span class="kw">collect</span>(res1)</a>
-<a class="sourceLine" id="cb14-14" title="14"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb14-15" title="15"><span class="co">#&gt;   qtr   avg_delay</span></a>
-<a class="sourceLine" id="cb14-16" title="16"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-17" title="17"><span class="co">#&gt; 1 Q1         11.4</span></a>
-<a class="sourceLine" id="cb14-18" title="18"><span class="co">#&gt; 2 Q2         15.9</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>pt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span>()</span>
+<span id="cb14-2"><a href="#cb14-2"></a>res1 &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">  </span><span class="kw"><a href="reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"dep_delay"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw"><a href="reference/hard_group_by.html">hard_group_by</a></span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dep_delay, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span>collect</span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt; Appending disk.frames:</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; group by took:  1.160s elapsed (0.280s cpu)</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="kw">collect</span>(res1)</span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt;   qtr   avg_delay</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a><span class="co">#&gt; 1 Q1         11.4</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a><span class="co">#&gt; 2 Q2         15.9</span></span></code></pre></div>
 </div>
 </div>
 <div id="example-datatable-syntax" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-datatable-syntax" class="anchor"></a>Example: data.table syntax</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt; Attaching package: 'data.table'</span></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt; The following object is masked from 'package:purrr':</span></a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="co">#&gt;     transpose</span></a>
-<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></a>
-<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt;     between, first, last</span></a>
-<a class="sourceLine" id="cb15-10" title="10"></a>
-<a class="sourceLine" id="cb15-11" title="11">grp_by_stage1 =<span class="st"> </span></a>
-<a class="sourceLine" id="cb15-12" title="12"><span class="st">  </span>flights.df[</a>
-<a class="sourceLine" id="cb15-13" title="13">    keep =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span></a>
-<a class="sourceLine" id="cb15-14" title="14">    month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, </a>
-<a class="sourceLine" id="cb15-15" title="15">    .(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)), </a>
-<a class="sourceLine" id="cb15-16" title="16">    .(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))</a>
-<a class="sourceLine" id="cb15-17" title="17">    ]</a>
-<a class="sourceLine" id="cb15-18" title="18"></a>
-<a class="sourceLine" id="cb15-19" title="19">grp_by_stage1</a>
-<a class="sourceLine" id="cb15-20" title="20"><span class="co">#&gt;    qtr sum_dist</span></a>
-<a class="sourceLine" id="cb15-21" title="21"><span class="co">#&gt; 1:  Q1 27188805</span></a>
-<a class="sourceLine" id="cb15-22" title="22"><span class="co">#&gt; 2:  Q1   953578</span></a>
-<a class="sourceLine" id="cb15-23" title="23"><span class="co">#&gt; 3:  Q1 53201567</span></a>
-<a class="sourceLine" id="cb15-24" title="24"><span class="co">#&gt; 4:  Q2  3383527</span></a>
-<a class="sourceLine" id="cb15-25" title="25"><span class="co">#&gt; 5:  Q2 58476357</span></a>
-<a class="sourceLine" id="cb15-26" title="26"><span class="co">#&gt; 6:  Q2 27397926</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt; </span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; Attaching package: 'data.table'</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; The following object is masked from 'package:purrr':</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; </span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt;     transpose</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt; </span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;     between, first, last</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a></span>
+<span id="cb15-11"><a href="#cb15-11"></a>grp_by_stage1 =<span class="st"> </span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="st">  </span>flights.df[</span>
+<span id="cb15-13"><a href="#cb15-13"></a>    keep =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>    month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, </span>
+<span id="cb15-15"><a href="#cb15-15"></a>    .(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)), </span>
+<span id="cb15-16"><a href="#cb15-16"></a>    .(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))</span>
+<span id="cb15-17"><a href="#cb15-17"></a>    ]</span>
+<span id="cb15-18"><a href="#cb15-18"></a></span>
+<span id="cb15-19"><a href="#cb15-19"></a>grp_by_stage1</span>
+<span id="cb15-20"><a href="#cb15-20"></a><span class="co">#&gt;    qtr sum_dist</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="co">#&gt; 1:  Q1 27188805</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="co">#&gt; 2:  Q1   953578</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#&gt; 3:  Q1 53201567</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a><span class="co">#&gt; 4:  Q2  3383527</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a><span class="co">#&gt; 5:  Q2 58476357</span></span>
+<span id="cb15-26"><a href="#cb15-26"></a><span class="co">#&gt; 6:  Q2 27397926</span></span></code></pre></div>
 <p>The result <code>grp_by_stage1</code> is a <code>data.table</code> so we can finish off the two-stage aggregation using data.table syntax</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">grp_by_stage2 =<span class="st"> </span>grp_by_stage1[,.(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_dist)), qtr]</a>
-<a class="sourceLine" id="cb16-2" title="2"></a>
-<a class="sourceLine" id="cb16-3" title="3">grp_by_stage2</a>
-<a class="sourceLine" id="cb16-4" title="4"><span class="co">#&gt;    qtr sum_dist</span></a>
-<a class="sourceLine" id="cb16-5" title="5"><span class="co">#&gt; 1:  Q1 81343950</span></a>
-<a class="sourceLine" id="cb16-6" title="6"><span class="co">#&gt; 2:  Q2 89257810</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>grp_by_stage2 =<span class="st"> </span>grp_by_stage1[,.(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_dist)), qtr]</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>grp_by_stage2</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co">#&gt;    qtr sum_dist</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#&gt; 1:  Q1 81343950</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="co">#&gt; 2:  Q2 89257810</span></span></code></pre></div>
 </div>
 <div id="hex-logo" class="section level2">
 <h2 class="hasAnchor">
