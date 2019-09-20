@@ -59,8 +59,9 @@ write_disk.frame <- function(
     if(".out.disk.frame.id" %in% names(df)) {
       df[,{
         if (base::nrow(.SD) > 0) {
-          if(any(purrr::map_lgl(.SD, is.list))){
-            stop("The data frame contains list-columns, which are not yet supported by disk.frame. Remove these columns to create a disk.frame")
+          list_columns = purrr::map_lgl(.SD, is.list)
+          if(any(list_columns)){
+            stop(glue::glue("The data frame contains these list-columns: '{paste0(names(.SD)[list_columns], collapse='\', \'')}'. List-columns are not yet supported by disk.frame. Remove these columns to create a disk.frame"))
           } else {
             fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), compress = compress)
             NULL
