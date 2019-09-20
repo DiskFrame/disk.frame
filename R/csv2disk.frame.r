@@ -240,19 +240,22 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       stop("chunk_reader = 'readr' is not yet supported for multiple files")
     }
   } else if(backend == "readr") {
-    if(is.null(in_chunk_size)) {
-      stop("for readr backend, only in_chunk_size != NULL is supported")
-    } else if (!is.null(shardby)) {
-      stop("for readr backend, only shardby == NULL is supported")
-    }
-    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
-  } else if (backend == "readr") {
-    if(is.null(in_chunk_size)) {
-      stop("for readr backend, only in_chunk_size != NULL is supported")
-    } else if (!is.null(shardby)) {
-      stop("for readr backend, only shardby == NULL is supported")
-    }
-    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+    # if(is.null(in_chunk_size)) {
+    #   stop("for readr backend, only in_chunk_size != NULL is supported")
+    # } else if (!is.null(shardby)) {
+    #   stop("for readr backend, only shardby == NULL is supported")
+    # }
+    csv_to_disk.frame_readr(
+      infile, 
+      outdir=outdir, 
+      inmapfn=inmapfn, 
+      nchunks=nchunks, 
+      in_chunk_size=in_chunk_size, 
+      shardby=shardby, 
+      compress=compress, 
+      overwrite=TRUE, 
+      col_names=header, 
+      .progress=.progress, ...)
   } else {
     stop("csv_to_disk.frame: this set of options is not supported")
   }

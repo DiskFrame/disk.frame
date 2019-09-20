@@ -36,6 +36,25 @@ test_that("csv2disk.frame works with shard", {
   expect_equal(ncol(dff), 9)
 })
 
+test_that("csv2disk.frame tests readr", {
+  library(dplyr)
+  library(disk.frame)
+  library(data.table)
+  library(nycflights13)
+  
+  # convert from a data frame
+  flights <- flights %>%
+    dplyr::mutate(date = as.Date(paste(year, month, day, sep = "-")))
+  str(flights) # time_hour is POSIXct
+  
+  flights.df <- as.disk.frame(
+    flights,
+    outdir = file.path(tempdir(), "tmp_flights.df"),
+    overwrite = TRUE)
+  flights.df
+  str(collect(flights.df)) 
+})
+
 teardown({
   fs::dir_delete("tmp_pls_delete_csv2df.df")
   fs::dir_delete("tmp_pls_delete_csv2df2.df")
