@@ -48,10 +48,17 @@
 #' delete(df)
 csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
                               in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, header = TRUE, .progress = TRUE, backend = c("data.table", "readr", "LaF"), chunk_reader = c("bigreadr", "data.table", "readr", "readLines"), ...) {
-  
-  overwrite_check(outdir, overwrite)
   backend = match.arg(backend)
   chunk_reader = match.arg(chunk_reader)
+
+  if(backend == "readr" | chunk_reader == "readr") {
+    if(!requireNamespace("readr")) {
+      stop("csv_to_disk.frame: You have chosen backend = 'readr' or chunk_reader = 'readr'. But `readr` package is not installed. To install run: `install_packages(\"readr\")`")
+    }
+  }
+  
+  
+  overwrite_check(outdir, overwrite)
   
   # we need multiple backend because data.table has poor support for the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
@@ -240,19 +247,22 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       stop("chunk_reader = 'readr' is not yet supported for multiple files")
     }
   } else if(backend == "readr") {
-    if(is.null(in_chunk_size)) {
-      stop("for readr backend, only in_chunk_size != NULL is supported")
-    } else if (!is.null(shardby)) {
-      stop("for readr backend, only shardby == NULL is supported")
-    }
-    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
-  } else if (backend == "readr") {
-    if(is.null(in_chunk_size)) {
-      stop("for readr backend, only in_chunk_size != NULL is supported")
-    } else if (!is.null(shardby)) {
-      stop("for readr backend, only shardby == NULL is supported")
-    }
-    csv_to_disk.frame_readr(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+    # if(is.null(in_chunk_size)) {
+    #   stop("for readr backend, only in_chunk_size != NULL is supported")
+    # } else if (!is.null(shardby)) {
+    #   stop("for readr backend, only shardby == NULL is supported")
+    # }
+    csv_to_disk.frame_readr(
+      infile, 
+      outdir=outdir, 
+      inmapfn=inmapfn, 
+      nchunks=nchunks, 
+      in_chunk_size=in_chunk_size, 
+      shardby=shardby, 
+      compress=compress, 
+      overwrite=TRUE, 
+      col_names=header, 
+      .progress=.progress, ...)
   } else {
     stop("csv_to_disk.frame: this set of options is not supported")
   }
