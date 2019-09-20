@@ -65,7 +65,9 @@ Please see these vignettes and articles about `disk.frame`
   - [Ingesting data into
     disk.frame](http://diskframe.com/articles/ingesting-data.html) which
     lists some commons way of creating disk.frames
-  - [Fitting GLMs (including logistic regression)](http://diskframe.com/articles/glm.html) introduces the `dfglm` function for fitting generalised linear models
+  - [Fitting GLMs (including logistic
+    regression)](http://diskframe.com/articles/glm.html) introduces the
+    `dfglm` function for fitting generalised linear models
   - [Using data.table syntax with
     disk.frame](http://diskframe.com/articles/data-table-syntax.html)
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
@@ -76,7 +78,7 @@ Please see these vignettes and articles about `disk.frame`
 
 Please register your interest at:
 
-https://leanpub.com/c/taminglarger-than-ramwithdiskframe
+<https://leanpub.com/c/taminglarger-than-ramwithdiskframe>
 
 ## Common questions
 
@@ -257,7 +259,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8wzlwB\\file349c2f8f65d9.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4EaYfb\\file129c72e22e94.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -384,7 +386,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.010s elapsed (0.010s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -404,7 +406,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.580s elapsed (0.170s cpu)
+#> group by took:  0.880s elapsed (0.130s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -429,7 +431,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.160s elapsed (0.280s cpu)
+#> group by took:  1.110s elapsed (0.280s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

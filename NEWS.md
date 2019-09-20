@@ -1,3 +1,7 @@
+# disk.frame 0.1.2
+* fit GLMs with `dfglm`
+* fixed so that dplyr function also work in mutate
+
 # disk.frame 0.1.1
 
 * Allowed `map` to accept multiple arguments. Thanks Knut Jägersberg for suggestion
