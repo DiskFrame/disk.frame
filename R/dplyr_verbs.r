@@ -58,7 +58,9 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
       })
       
       code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
-      eval(parse(text=rlang::as_label(code)), envir = this_env)
+      #browser()
+      rlang::eval_tidy(code)
+      #eval(parse(text=rlang::as_label(code)), envir = this_env)
     }, lazy = TRUE)
   }
   return_func
@@ -365,7 +367,7 @@ record <- function(.data, cmd){
 # Internal methods
 # @param .data the disk.frame
 # @param cmds the list of function to play back
-play <- function(.data, cmds=NULL){
+play <- function(.data, cmds=NULL) {
   for (cmd in cmds){
     if (typeof(cmd) == "closure") {
       .data <- cmd(.data)
@@ -381,6 +383,7 @@ play <- function(.data, cmds=NULL){
           assign(ng[i], g, pos = an_env)
         }
       }
+      #browser()
       .data <- do.call(cmd$func, c(list(.data),cmd$dotdotdot), envir = an_env)
     }
   }

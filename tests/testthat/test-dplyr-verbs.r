@@ -49,6 +49,28 @@ test_that("testing mutate", {
     collect
   
   expect_equal(nrow(df), 100)
+  
+  # need to test
+  value <- as.disk.frame(tibble(char = LETTERS,
+                                num = 1:26))
+  df2 = value %>%
+    dplyr::mutate(b =  case_when(
+      char %in% c("A", "B", "C") ~ "1",
+      TRUE ~ char)) %>% 
+    collect
+  
+  expect_equal(ncol(df2), 3)
+  
+  # testing
+  fn = function(a, b) {
+    a+b
+  }
+  
+  df3 = value %>%
+    dplyr::mutate(b =  fn(num, num)) %>%
+    collect
+  
+  expect_equal(ncol(df3), 3)
 })
 
 # TODO figure out why it fails
