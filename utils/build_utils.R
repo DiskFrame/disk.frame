@@ -33,8 +33,9 @@ df_setup_vignette <- function() {
   lf = lf[!is.na(as.integer(sapply(lf, function(x) substr(x, 1, 2))))]
   
   
-  #lf = lf[lf != "06-vs-dask-juliadb.Rmd"]
-  #lf = lf[lf != "01-intro.Rmd"]
+  # lf = lf[lf != "08-more-epic.Rmd"]
+  # lf = lf[lf != "06-vs-dask-juliadb.Rmd"]
+  # lf = lf[lf != "01-intro.Rmd"]
   
   purrr::walk(lf, function(file) {
     fs::file_copy(

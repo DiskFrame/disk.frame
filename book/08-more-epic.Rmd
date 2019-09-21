@@ -142,7 +142,7 @@ which yielded
 #>    user  system elapsed 
 #>   75.79   47.89  216.42
 ```
-As you can see this takes longer than loading the individual files approach. I am working on a guess the `in_chunk_size` feature so that `in_chunk_size="guess"` will work in the future, so the user doesn't have to input a manual `in_chunk_size`.
+As you can see, this takes longer than loading the individual files approach. I am working on a guess the `in_chunk_size` feature so that `in_chunk_size="guess"` will work in the future, so the user doesn't have to input a manual `in_chunk_size`.
 
 ### Load one large-file (no splitting)
 
@@ -259,4 +259,4 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 ### Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
-[I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
+[ am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)

@@ -110,6 +110,9 @@
       <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
+      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -204,9 +207,14 @@ multiprocess, multisession, and multicore plans. From furrr</p></td>
     </tr>
     <tr>
       <th>backend</th>
-      <td><p>"data.table" or "readr". The CSV reader backend to choose:
-disk.frame does not have its own CSV reader, it uses either
-data.table::fread or readr::read_delimited</p></td>
+      <td><p>The CSV reader backend to choose: "data.table" or "readr". 
+disk.frame does not have its own CSV reader. It uses either
+data.table::fread or readr::read_delimited. It is worth noting that
+data.table::fread does not detect dates and all dates are imported as
+strings, and you are encouraged to use fasttime to convert the strings to
+date. You can use the `inmapfn` to do that. However, if you want automatic
+date detection, then backend="readr" may suit your needs. However, readr
+is often slower than data.table, hence data.table is chosen as the default.</p></td>
     </tr>
     <tr>
       <th>chunk_reader</th>

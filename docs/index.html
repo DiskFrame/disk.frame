@@ -76,6 +76,9 @@
       <a href="articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
+      <a href="articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+    </li>
+    <li>
       <a href="articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -138,6 +141,12 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <li><a href="http://diskframe.com/articles/concepts.html">disk.frame concepts</a></li>
 <li><a href="http://diskframe.com/articles/vs-dask-juliadb.html">Benchmark 1: disk.frame vs Dask vs JuliaDB</a></li>
 </ul>
+<div id="interested-in-learning-diskframe-in-a-structured-course" class="section level3">
+<h3 class="hasAnchor">
+<a href="#interested-in-learning-diskframe-in-a-structured-course" class="anchor"></a>Interested in learning {disk.frame} in a structured course?</h3>
+<p>Please register your interest at:</p>
+<p><a href="https://leanpub.com/c/taminglarger-than-ramwithdiskframe" class="uri">https://leanpub.com/c/taminglarger-than-ramwithdiskframe</a></p>
+</div>
 </div>
 <div id="common-questions" class="section level2">
 <h2 class="hasAnchor">
@@ -246,7 +255,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># where is the disk.frame stored</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp8wzlwB\\file349c2f8f65d9.df"</span></span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6J5pkQ\\filef404a533825.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># get first few rows</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</span>
@@ -344,7 +353,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.010s elapsed (0.010s cpu)</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.020s elapsed (0.020s cpu)</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</span>
 <span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below</p>
@@ -360,7 +369,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; group by took:  0.580s elapsed (0.170s cpu)</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; group by took:  0.560s elapsed (0.140s cpu)</span></span>
 <span id="cb13-14"><a href="#cb13-14"></a></span>
 <span id="cb13-15"><a href="#cb13-15"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
@@ -379,7 +388,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span>collect</span>
 <span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt; Appending disk.frames:</span></span>
 <span id="cb14-10"><a href="#cb14-10"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; group by took:  1.160s elapsed (0.280s cpu)</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; group by took:  1.140s elapsed (0.250s cpu)</span></span>
 <span id="cb14-12"><a href="#cb14-12"></a></span>
 <span id="cb14-13"><a href="#cb14-13"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
@@ -435,6 +444,11 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <h2 class="hasAnchor">
 <a href="#contributors" class="anchor"></a>Contributors</h2>
 <p>This project exists thanks to all the people who contribute. <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&amp;button=false"></a></p>
+</div>
+<div id="current-priorities" class="section level2">
+<h2 class="hasAnchor">
+<a href="#current-priorities" class="anchor"></a>Current Priorities</h2>
+<p>The work priorities at this stage are 1. Bugs and urgent feature implementations 2. More vignettes covering every aspect of disk.frame 3. Comprehensive Tests 4. Comprehensive Documentation 5. More features</p>
 </div>
 <div id="open-collective" class="section level2">
 <h2 class="hasAnchor">

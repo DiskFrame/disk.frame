@@ -29,14 +29,14 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The `disk.frame` package aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
+How can I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? Use `{disk.frame}`!
 
-In a nutshell, `disk.frame` makes use of two simple ideas
+In a nutshell, `{disk.frame}` makes use of two simple ideas
 
 1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 
 2) provide a convenient API to manipulate these chunks
 
-`disk.frame` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
+`{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
 ## Installation
 
@@ -61,13 +61,14 @@ Please see these vignettes and articles about `disk.frame`
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into disk.frame](http://diskframe.com/articles/ingesting-data.html) which lists some commons way of creating disk.frames
+  - [`{disk.frame}` can be more epic!](http://diskframe.com/articles/more-epic.html) shows some ways of loading large CSVs and the importance of `srckeep`
   - [Fitting GLMs (including logistic regression)](http://diskframe.com/articles/glm.html) introduces the `dfglm` function for fitting generalised linear models
   - [Using data.table syntax with disk.frame](http://diskframe.com/articles/data-table-syntax.html)
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
   - [Benchmark 1: disk.frame vs Dask vs
     JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
 
-### Interested in learning {disk.frame} in a structured course?
+### Interested in learning `{disk.frame}` in a structured course?
 
 Please register your interest at:
 
@@ -128,7 +129,7 @@ Alternatively, one may specify the number of workers using `setup_disk.frame(wor
 
 # Example usage
 ```{r setup}
-library(disk.frame)
+suppressPackageStartupMessages(library(disk.frame))
 library(nycflights13)
 
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
@@ -275,10 +276,19 @@ grp_by_stage2
 This project exists thanks to all the people who contribute. 
 <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
 
+## Current Priorities
+
+The work priorities at this stage are
+1. Bugs and urgent feature implementations
+2. More vignettes covering every aspect of disk.frame
+3. Comprehensive Tests
+4. Comprehensive Documentation
+5. More features
+
 
 ## Open Collective 
 
-If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider sponsoring me on Open Collective
+If you like `{disk.frame}` and want to speed up its development or perhaps you have a feature request? Please consider sponsoring `{disk.frame}` on Open Collective
 
 ### Backers
 
@@ -291,13 +301,11 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ### Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
+Support `{disk.frame}` development by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
 
  [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
 
 ## Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
-[![Contact me on Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/evalparse)
-
-I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com) to get 10% discount off the hourly rate.
+I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
