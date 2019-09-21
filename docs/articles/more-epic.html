@@ -209,7 +209,7 @@
 <span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
 <span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt;    user  system elapsed </span></span>
 <span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt;   75.79   47.89  216.42</span></span></code></pre></div>
-<p>As you can see this takes longer than loading the individual files approach. I am working on a guess the <code>in_chunk_size</code> feature so that <code>in_chunk_size="guess"</code> will work in the future, so the user doesn’t have to input a manual <code>in_chunk_size</code>.</p>
+<p>As you can see, this takes longer than loading the individual files approach. I am working on a guess the <code>in_chunk_size</code> feature so that <code>in_chunk_size="guess"</code> will work in the future, so the user doesn’t have to input a manual <code>in_chunk_size</code>.</p>
 </div>
 <div id="load-one-large-file-no-splitting" class="section level3">
 <h3 class="hasAnchor">
@@ -232,6 +232,12 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt;  591.32   26.94  599.08</span></span></code></pre></div>
 <p>As can be seen <code>LaF</code> works and can detect the column types automatically. However it is slower than the default backend which is <code>data.table</code>.</p>
+</div>
+<div id="summary" class="section level3">
+<h3 class="hasAnchor">
+<a href="#summary" class="anchor"></a>Summary</h3>
+<p>Here is a chart summarising the performance of the various approaches for reading large CSVs on my computer</p>
+<p><img src="more-epic_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 </div>
 <div id="can-disk-frame-be-even-more-epic" class="section level2">
@@ -261,12 +267,7 @@
 <span id="cb13-8"><a href="#cb13-8"></a>(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</span>
 <span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; Time difference of 15.62312 secs</span></span></code></pre></div>
 <p>On my computer, with <code>srckeep</code> the timing is only ~3 seconds and without it is 16 seconds!</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>data1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Approach =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"with `srckeep`"</span>, <span class="st">"no `srckeep`"</span>), <span class="dt">Timing =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">3</span>, <span class="dv">16</span>))</span>
-<span id="cb14-3"><a href="#cb14-3"></a>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data1) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Approach, <span class="dt">weight =</span> Timing)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"30GB CSV group-by summarize"</span>) <span class="op">+</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"Seconds"</span>)</span></code></pre></div>
+<p><img src="more-epic_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
@@ -308,7 +309,7 @@
 <div id="contact-me-for-consulting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h3>
-<p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> [ am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
+<p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
 </div>
 </div>
   </div>

@@ -178,6 +178,26 @@ and the timings were
 
 As can be seen `LaF` works and can detect the column types automatically. However it is slower than the default backend which is `data.table`.
 
+### Summary
+Here is a chart summarising the performance of the various approaches for reading large CSVs on my computer
+
+```{r echo=FALSE}
+library(ggplot2)
+ggplot(data.frame(
+  Approach = c(
+    "1. Individual files",
+    "2. One large file (splitting)",
+    "3. One large file (no splitting) - LaF backend"),
+  `Timing (seconds)` = c(
+    168,
+    216.42,
+    599.08
+  )
+)) + 
+  geom_bar(aes(x = Approach, weight = `Timing..seconds.`)) +
+  ggtitle("Timings for for loading a particular 30GB CSV") + 
+  ylab("Seconds")
+```
 
 ## Can {disk.frame} be even more "epic"?
 
@@ -214,7 +234,7 @@ mean_dep_delay <- flights.df %>%
 
 On my computer, with `srckeep` the timing is only ~3 seconds and without it is 16 seconds!
 
-```r
+```{r echo=FALSE}
 library(ggplot2)
 data1 = data.frame(Approach = c("with `srckeep`", "no `srckeep`"), Timing = c(3, 16))
 ggplot2::ggplot(data1) + 
@@ -259,4 +279,4 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 ### Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
-[ am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
+I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
