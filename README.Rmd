@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
 
 <details>
   <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going.</summary>
@@ -37,6 +39,11 @@ In a nutshell, `{disk.frame}` makes use of two simple ideas
 2) provide a convenient API to manipulate these chunks
 
 `{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
+
+## Sponsors
+
+<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
+
 
 ## Installation
 
@@ -112,6 +119,12 @@ Finally, Spark can only apply functions that are implemented for Spark, whereas 
 ### f) How is `disk.frame` different from multidplyr, partools and distributedR?
 
 The packages [multidplyr](https://github.com/tidyverse/multidplyr) doesn't seem to be disk-focused and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/], it seems to use it's own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package [`distributedR`](https://github.com/vertica/DistributedR) hasn't been updated for a few years and also seems to require its own functions and verbs.
+
+## Backers
+
+I would like to thank our backer:
+
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
 ## Set-up `disk.frame`
 `disk.frame` works best if it can process multiple data chunks in parallel. The best way to set-up `disk.frame` so that each CPU core runs a background worker is by using
@@ -279,11 +292,13 @@ This project exists thanks to all the people who contribute.
 ## Current Priorities
 
 The work priorities at this stage are
-1. Bugs and urgent feature implementations
-2. More vignettes covering every aspect of disk.frame
-3. Comprehensive Tests
-4. Comprehensive Documentation
-5. More features
+
+1. Bugs 
+2. Urgent feature implementations that can improve an awful user-experience
+3. More vignettes covering every aspect of disk.frame
+4. Comprehensive Tests
+5. Comprehensive Documentation
+6. More features
 
 
 ## Open Collective 
@@ -296,14 +311,11 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-
-
-### Sponsors
+## Sponsors
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
 
- [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
+<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
 
 ## Contact me for consulting
 
