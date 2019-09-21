@@ -487,6 +487,8 @@ Support `{disk.frame}` development by becoming a sponsor. Your logo will
 show up here with a link to your website. \[[Become a
 sponsor](https://opencollective.com/diskframe#sponsor)\]
 
+<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
+
 [![Sponsors on Open
 Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 
