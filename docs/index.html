@@ -113,10 +113,15 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>The <code>disk.frame</code> package aims to be the answer to the question: how do I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
-<p>In a nutshell, <code>disk.frame</code> makes use of two simple ideas</p>
+<p>How can I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)? Use <code>{disk.frame}</code>!</p>
+<p>In a nutshell, <code>{disk.frame}</code> makes use of two simple ideas</p>
 <p>1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 2) provide a convenient API to manipulate these chunks</p>
-<p><code>disk.frame</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em> that require distributing processing over many computers to be effective.</p>
+<p><code>{disk.frame}</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em> that require distributing processing over many computers to be effective.</p>
+<div id="sponsors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sponsors" class="anchor"></a>Sponsors</h2>
+<p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -136,6 +141,9 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <li>
 <a href="http://diskframe.com/articles/ingesting-data.html">Ingesting data into disk.frame</a> which lists some commons way of creating disk.frames</li>
 <li>
+<a href="http://diskframe.com/articles/more-epic.html"><code>{disk.frame}</code> can be more epic!</a> shows some ways of loading large CSVs and the importance of <code>srckeep</code>
+</li>
+<li>
 <a href="http://diskframe.com/articles/glm.html">Fitting GLMs (including logistic regression)</a> introduces the <code>dfglm</code> function for fitting generalised linear models</li>
 <li><a href="http://diskframe.com/articles/data-table-syntax.html">Using data.table syntax with disk.frame</a></li>
 <li><a href="http://diskframe.com/articles/concepts.html">disk.frame concepts</a></li>
@@ -143,7 +151,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 </ul>
 <div id="interested-in-learning-diskframe-in-a-structured-course" class="section level3">
 <h3 class="hasAnchor">
-<a href="#interested-in-learning-diskframe-in-a-structured-course" class="anchor"></a>Interested in learning {disk.frame} in a structured course?</h3>
+<a href="#interested-in-learning-diskframe-in-a-structured-course" class="anchor"></a>Interested in learning <code>{disk.frame}</code> in a structured course?</h3>
 <p>Please register your interest at:</p>
 <p><a href="https://leanpub.com/c/taminglarger-than-ramwithdiskframe" class="uri">https://leanpub.com/c/taminglarger-than-ramwithdiskframe</a></p>
 </div>
@@ -188,6 +196,12 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>The packages <a href="https://github.com/tidyverse/multidplyr">multidplyr</a> doesn’t seem to be disk-focused and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [<a href="https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/" class="uri">https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/</a>], it seems to use it’s own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package <a href="https://github.com/vertica/DistributedR"><code>distributedR</code></a> hasn’t been updated for a few years and also seems to require its own functions and verbs.</p>
 </div>
 </div>
+<div id="backers" class="section level2">
+<h2 class="hasAnchor">
+<a href="#backers" class="anchor"></a>Backers</h2>
+<p>I would like to thank our backer:</p>
+<p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
+</div>
 <div id="set-up-diskframe" class="section level2">
 <h2 class="hasAnchor">
 <a href="#set-up-diskframe" class="anchor"></a>Set-up <code>disk.frame</code>
@@ -204,58 +218,22 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <div id="example-usage" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-usage" class="anchor"></a>Example usage</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; Loading required package: dplyr</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; </span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; </span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;     filter, lag</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; </span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; Loading required package: purrr</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; Registered S3 method overwritten by 'pryr':</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;   method      from</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt;   print.bytes Rcpp</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; </span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; ## Message from disk.frame:</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; We have 1 workers to use with disk.frame.</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; </span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; </span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; </span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; </span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; ```r</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; setup_disk.frame()</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></span>
-<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; ```</span></span>
-<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; </span></span>
-<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; Attaching package: 'disk.frame'</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; The following objects are masked from 'package:purrr':</span></span>
-<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; </span></span>
-<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt;     imap, imap_dfr, map, map_dfr, map2</span></span>
-<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; </span></span>
-<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt;     colnames, ncol, nrow</span></span>
-<span id="cb4-38"><a href="#cb4-38"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</span>
-<span id="cb4-39"><a href="#cb4-39"></a></span>
-<span id="cb4-40"><a href="#cb4-40"></a><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></span>
-<span id="cb4-41"><a href="#cb4-41"></a><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
-<span id="cb4-42"><a href="#cb4-42"></a><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
-<span id="cb4-43"><a href="#cb4-43"></a><span class="co"># this allows large datasets to be transferred between sessions</span></span>
-<span id="cb4-44"><a href="#cb4-44"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span>
-<span id="cb4-45"><a href="#cb4-45"></a></span>
-<span id="cb4-46"><a href="#cb4-46"></a><span class="co"># convert the flights data.frame to a disk.frame</span></span>
-<span id="cb4-47"><a href="#cb4-47"></a><span class="co"># optionally, you may specify an outdir, otherwise, the </span></span>
-<span id="cb4-48"><a href="#cb4-48"></a>flights.df &lt;-<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame))</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nycflights13)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># this allows large datasets to be transferred between sessions</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># convert the flights data.frame to a disk.frame</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co"># optionally, you may specify an outdir, otherwise, the </span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>flights.df &lt;-<span class="st"> </span><span class="kw"><a href="reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</span></code></pre></div>
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># where is the disk.frame stored</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp6J5pkQ\\filef404a533825.df"</span></span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpAJPjKV\\file169038777420.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># get first few rows</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</span>
@@ -353,7 +331,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.020s elapsed (0.020s cpu)</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.020s elapsed (0.010s cpu)</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</span>
 <span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below</p>
@@ -369,7 +347,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; group by took:  0.560s elapsed (0.140s cpu)</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; group by took:  0.590s elapsed (0.110s cpu)</span></span>
 <span id="cb13-14"><a href="#cb13-14"></a></span>
 <span id="cb13-15"><a href="#cb13-15"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
@@ -388,7 +366,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span>collect</span>
 <span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt; Appending disk.frames:</span></span>
 <span id="cb14-10"><a href="#cb14-10"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; group by took:  1.140s elapsed (0.250s cpu)</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; group by took:  1.160s elapsed (0.290s cpu)</span></span>
 <span id="cb14-12"><a href="#cb14-12"></a></span>
 <span id="cb14-13"><a href="#cb14-13"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
@@ -448,31 +426,37 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <div id="current-priorities" class="section level2">
 <h2 class="hasAnchor">
 <a href="#current-priorities" class="anchor"></a>Current Priorities</h2>
-<p>The work priorities at this stage are 1. Bugs and urgent feature implementations 2. More vignettes covering every aspect of disk.frame 3. Comprehensive Tests 4. Comprehensive Documentation 5. More features</p>
+<p>The work priorities at this stage are</p>
+<ol>
+<li>Bugs</li>
+<li>Urgent feature implementations that can improve an awful user-experience</li>
+<li>More vignettes covering every aspect of disk.frame</li>
+<li>Comprehensive Tests</li>
+<li>Comprehensive Documentation</li>
+<li>More features</li>
+</ol>
 </div>
 <div id="open-collective" class="section level2">
 <h2 class="hasAnchor">
 <a href="#open-collective" class="anchor"></a>Open Collective</h2>
-<p>If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider sponsoring me on Open Collective</p>
-<div id="backers" class="section level3">
+<p>If you like <code>{disk.frame}</code> and want to speed up its development or perhaps you have a feature request? Please consider sponsoring <code>{disk.frame}</code> on Open Collective</p>
+<div id="backers-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#backers" class="anchor"></a>Backers</h3>
+<a href="#backers-1" class="anchor"></a>Backers</h3>
 <p>Thank you to all our backers! 🙏 [<a href="https://opencollective.com/diskframe#backer">Become a backer</a>]</p>
 <p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
-<p><a href="#backers"><img src="https://opencollective.com/diskframe/backers/badge.svg" alt="Backers on Open Collective"></a></p>
 </div>
-<div id="sponsors" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sponsors" class="anchor"></a>Sponsors</h3>
-<p>Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
-<p><a href="#sponsors"><img src="https://opencollective.com/diskframe/sponsors/badge.svg" alt="Sponsors on Open Collective"></a></p>
 </div>
+<div id="sponsors-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sponsors-1" class="anchor"></a>Sponsors</h2>
+<p>Support <code>{disk.frame}</code> development by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
+<p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
 </div>
 <div id="contact-me-for-consulting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h2>
-<p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> <a href="https://www.codementor.io/evalparse"><img src="https://cdn.codementor.io/badges/contact_me_github.svg" alt="Contact me on Codementor"></a></p>
-<p>I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a> to get 10% discount off the hourly rate.</p>
+<p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
 </div>
 </div>
 
@@ -508,6 +492,8 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=disk.frame"><embed src="https://cranlogs.r-pkg.org/badges/disk.frame"></embed></a></li>
 <li><a href="https://cran.r-project.org/package=disk.frame"><embed src="http://cranlogs.r-pkg.org/badges/grand-total/disk.frame"></embed></a></li>
+<li><a href="#backers"><img src="https://opencollective.com/diskframe/backers/badge.svg" alt="Backers on Open Collective"></a></li>
+<li><a href="#sponsors"><img src="https://opencollective.com/diskframe/sponsors/badge.svg" alt="Sponsors on Open Collective"></a></li>
 </ul>
 </div>
 </div>

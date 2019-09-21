@@ -5,6 +5,10 @@
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Backers on Open
+Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+[![Sponsors on Open
+Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 
 <details>
 
@@ -36,6 +40,10 @@ Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for *medium data*
 which are datasets that are too large for RAM but not quite large enough
 to qualify as *big data* that require distributing processing over many
 computers to be effective.
+
+## Sponsors
+
+<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
 
 ## Installation
 
@@ -183,6 +191,12 @@ on existing verbs provided by data.table and dplyr. The package
 updated for a few years and also seems to require its own functions and
 verbs.
 
+## Backers
+
+I would like to thank our backer:
+
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
+
 ## Set-up `disk.frame`
 
 `disk.frame` works best if it can process multiple data chunks in
@@ -225,7 +239,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpsjdX8e\\file3e846437041.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpAJPjKV\\file169038777420.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -352,7 +366,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -372,7 +386,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.890s elapsed (0.130s cpu)
+#> group by took:  0.590s elapsed (0.110s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -397,7 +411,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.110s elapsed (0.390s cpu)
+#> group by took:  1.160s elapsed (0.290s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2
@@ -461,9 +475,15 @@ This project exists thanks to all the people who contribute.
 
 ## Current Priorities
 
-The work priorities at this stage are 1. Bugs and urgent feature
-implementations 2. More vignettes covering every aspect of disk.frame 3.
-Comprehensive Tests 4. Comprehensive Documentation 5. More features
+The work priorities at this stage are
+
+1.  Bugs
+2.  Urgent feature implementations that can improve an awful
+    user-experience
+3.  More vignettes covering every aspect of disk.frame
+4.  Comprehensive Tests
+5.  Comprehensive Documentation
+6.  More features
 
 ## Open Collective
 
@@ -478,19 +498,13 @@ backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-[![Backers on Open
-Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-
-### Sponsors
+## Sponsors
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will
 show up here with a link to your website. \[[Become a
 sponsor](https://opencollective.com/diskframe#sponsor)\]
 
 <a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
-
-[![Sponsors on Open
-Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 
 ## Contact me for consulting
 
