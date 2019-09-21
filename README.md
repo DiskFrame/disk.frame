@@ -22,17 +22,16 @@ like disk.frame. It keeps me going.</summary>
 
 # Introduction
 
-The `disk.frame` package aims to be the answer to the question: how do I
-manipulate structured tabular data that doesn’t fit into Random Access
-Memory (RAM)?
+How can I manipulate structured tabular data that doesn’t fit into
+Random Access Memory (RAM)? Use `{disk.frame}`\!
 
-In a nutshell, `disk.frame` makes use of two simple ideas
+In a nutshell, `{disk.frame}` makes use of two simple ideas
 
 1)  split up a larger-than-RAM dataset into chunks and store each chunk
     in a separate file inside a folder and
 2)  provide a convenient API to manipulate these chunks
 
-`disk.frame` performs a similar role to distributed systems such as
+`{disk.frame}` performs a similar role to distributed systems such as
 Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for *medium data*
 which are datasets that are too large for RAM but not quite large enough
 to qualify as *big data* that require distributing processing over many
@@ -65,6 +64,9 @@ Please see these vignettes and articles about `disk.frame`
   - [Ingesting data into
     disk.frame](http://diskframe.com/articles/ingesting-data.html) which
     lists some commons way of creating disk.frames
+  - [`{disk.frame}` can be more
+    epic\!](http://diskframe.com/articles/more-epic.html) shows some
+    ways of loading large CSVs and the importance of `srckeep`
   - [Fitting GLMs (including logistic
     regression)](http://diskframe.com/articles/glm.html) introduces the
     `dfglm` function for fitting generalised linear models
@@ -74,7 +76,7 @@ Please see these vignettes and articles about `disk.frame`
   - [Benchmark 1: disk.frame vs Dask vs
     JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
 
-### Interested in learning {disk.frame} in a structured course?
+### Interested in learning `{disk.frame}` in a structured course?
 
 Please register your interest at:
 
@@ -203,44 +205,8 @@ Alternatively, one may specify the number of workers using
 
 # Example usage
 
-```` r
-library(disk.frame)
-#> Loading required package: dplyr
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Loading required package: purrr
-#> Registered S3 method overwritten by 'pryr':
-#>   method      from
-#>   print.bytes Rcpp
-#> 
-#> ## Message from disk.frame:
-#> We have 1 workers to use with disk.frame.
-#> To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.
-#> 
-#> 
-#> It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:
-#> 
-#> 
-#> ```r
-#> # this willl set disk.frame with multiple workers
-#> setup_disk.frame()
-#> # this will allow unlimited amount of data to be passed from worker to worker
-#> options(future.globals.maxSize = Inf)
-#> ```
-#> 
-#> Attaching package: 'disk.frame'
-#> The following objects are masked from 'package:purrr':
-#> 
-#>     imap, imap_dfr, map, map_dfr, map2
-#> The following objects are masked from 'package:base':
-#> 
-#>     colnames, ncol, nrow
+``` r
+suppressPackageStartupMessages(library(disk.frame))
 library(nycflights13)
 
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
@@ -252,14 +218,14 @@ options(future.globals.maxSize = Inf)
 # convert the flights data.frame to a disk.frame
 # optionally, you may specify an outdir, otherwise, the 
 flights.df <- as.disk.frame(nycflights13::flights)
-````
+```
 
 To find out where the disk.frame is stored on disk:
 
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4EaYfb\\file129c72e22e94.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpsjdX8e\\file3e846437041.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -386,7 +352,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -406,7 +372,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.880s elapsed (0.130s cpu)
+#> group by took:  0.890s elapsed (0.130s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -431,7 +397,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.110s elapsed (0.280s cpu)
+#> group by took:  1.110s elapsed (0.390s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2
@@ -493,11 +459,17 @@ grp_by_stage2
 This project exists thanks to all the people who contribute.
 <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
 
+## Current Priorities
+
+The work priorities at this stage are 1. Bugs and urgent feature
+implementations 2. More vignettes covering every aspect of disk.frame 3.
+Comprehensive Tests 4. Comprehensive Documentation 5. More features
+
 ## Open Collective
 
-If you like disk.frame and want to speed up its development or perhaps
-you have a feature request? Please consider sponsoring me on Open
-Collective
+If you like `{disk.frame}` and want to speed up its development or
+perhaps you have a feature request? Please consider sponsoring
+`{disk.frame}` on Open Collective
 
 ### Backers
 
@@ -511,8 +483,8 @@ Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
 
 ### Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here
-with a link to your website. \[[Become a
+Support `{disk.frame}` development by becoming a sponsor. Your logo will
+show up here with a link to your website. \[[Become a
 sponsor](https://opencollective.com/diskframe#sponsor)\]
 
 [![Sponsors on Open
@@ -521,9 +493,6 @@ Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
 ## Contact me for consulting
 
 **Do you need help with machine learning and data science in R, Python,
-or Julia?** [![Contact me on
-Codementor](https://cdn.codementor.io/badges/contact_me_github.svg)](https://www.codementor.io/evalparse)
-
-I am available for Machine Learning/Data Science/R/Python/Julia
-consulting\! [Email me](mailto:dzj@analytixware.com) to get 10% discount
-off the hourly rate.
+or Julia?** I am available for Machine Learning/Data
+Science/R/Python/Julia consulting\! [Email
+me](mailto:dzj@analytixware.com)

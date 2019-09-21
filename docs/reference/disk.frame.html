@@ -110,6 +110,9 @@
       <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
+      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -160,7 +163,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"cars"</span>)
-<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpSICjbC/cars"</span>
+<span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>outdir</span><span class='kw'>=</span><span class='no'>path</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpWALkuu/cars"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 2</span>

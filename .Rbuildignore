@@ -51,3 +51,4 @@ build_utils.R
 utils$
 ^misc$
 ^inst/tutorials/glm\.Rmd$
+^vignettes/more-epic\.Rmd$

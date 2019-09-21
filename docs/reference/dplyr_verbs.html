@@ -111,6 +111,9 @@ and `arrange` performs the actions within each chunk" />
       <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
+      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -289,7 +292,8 @@ and `arrange` performs the actions within each chunk</p>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>speed2</span> <span class='kw'>=</span> <span class='no'>speed</span> * <span class='no'>mult</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>speed</span> <span class='kw'>&lt;</span> <span class='fl'>50</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='kw'>speed1</span> <span class='kw'>=</span> <span class='no'>speed</span>) <span class='kw'>%&gt;%</span>
-  <span class='no'>collect</span></div><div class='output co'>#&gt; <span class='error'>Error: object 'mult' not found</span></div><div class='input'>
+  <span class='no'>collect</span>
+
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>

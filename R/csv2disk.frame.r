@@ -21,9 +21,14 @@
 #' @param header Whether the files have header. Defaults to TRUE
 #' @param .progress A logical, for whether or not to print a progress bar for
 #'   multiprocess, multisession, and multicore plans. From {furrr}
-#' @param backend "data.table" or "readr". The CSV reader backend to choose:
-#'   disk.frame does not have its own CSV reader, it uses either
-#'   data.table::fread or readr::read_delimited
+#' @param backend The CSV reader backend to choose: "data.table" or "readr". 
+#'   disk.frame does not have its own CSV reader. It uses either
+#'   data.table::fread or readr::read_delimited. It is worth noting that
+#'   data.table::fread does not detect dates and all dates are imported as
+#'   strings, and you are encouraged to use {fasttime} to convert the strings to
+#'   date. You can use the `inmapfn` to do that. However, if you want automatic
+#'   date detection, then backend="readr" may suit your needs. However, readr
+#'   is often slower than data.table, hence data.table is chosen as the default.
 #' @param chunk_reader Even if you choose a backend there can still be multiple
 #'   strategies on how to approach the CSV reads. For example, data.table::fread
 #'   tries to mmap the whole file which can cause the whole read process to

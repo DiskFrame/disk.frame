@@ -72,6 +72,9 @@
       <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
+      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+    </li>
+    <li>
       <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
   </ul>
@@ -203,19 +206,19 @@
 <span id="cb5-38"><a href="#cb5-38"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span></span>
 <span id="cb5-39"><a href="#cb5-39"></a><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
 <span id="cb5-40"><a href="#cb5-40"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb5-41"><a href="#cb5-41"></a><span class="co">#&gt;    0.04    0.02    4.20</span></span></code></pre></div>
+<span id="cb5-41"><a href="#cb5-41"></a><span class="co">#&gt;    0.00    0.05    4.33</span></span></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>time_to_convert_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>))[<span class="dv">3</span>]</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a>time_to_convert_disk.frame</span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; elapsed </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   21.03</span></span></code></pre></div>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   72.11</span></span></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>time_to_agg_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(summ &lt;-<span class="st"> </span>df1[,.N, V1, <span class="dt">keep =</span> <span class="st">"V1"</span>][, .(<span class="dt">N =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(N)), V1])</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
 <span id="cb7-3"><a href="#cb7-3"></a>time_to_agg_disk.frame</span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    0.09    0.03    5.94</span></span></code></pre></div>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    0.15    0.02    7.08</span></span></code></pre></div>
 <p>We can inspect the result as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>summ</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt;                   V1   N</span></span>

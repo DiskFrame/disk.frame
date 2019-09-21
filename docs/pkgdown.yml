@@ -8,5 +8,6 @@ articles:
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
   intro: intro.html
+  more-epic: more-epic.html
   vs-dask-juliadb: vs-dask-juliadb.html
 
