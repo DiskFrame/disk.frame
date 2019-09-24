@@ -32,7 +32,7 @@
 #' @param warning_msg The warning message to display when invoking the mapper
 #' @importFrom rlang enquos quo
 #' @export
-create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
+create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL, as.data.frame = TRUE) {
   return_func <- function(.data, ...) {
     if (!is.null(warning_msg)) {
       warning(warning_msg)
@@ -57,7 +57,12 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL) {
         attr(x, ".Environment") = this_env
       })
       
-      code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
+      if(as.data.frame) {
+        code = rlang::quo(dplyr_fn(as.data.frame(.x), !!!quo_dotdotdot))
+      } else {
+        code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
+      }
+      
       #browser()
       rlang::eval_tidy(code)
       #eval(parse(text=rlang::as_label(code)), envir = this_env)

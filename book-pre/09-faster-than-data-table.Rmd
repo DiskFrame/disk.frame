@@ -1,0 +1,139 @@
+---
+title: "Can disk.frame be faster than data.table?"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Someone had asked for a benchmark of disk.frame vs data.table
+https://www.reddit.com/r/rstats/comments/d7b77x/diskframe_can_be_more_epic/f0z6zqn?utm_source=share&utm_medium=web2x
+
+It is right in that disk.frame's advantage over data.table is that it can handle larger than-RAM datasets. or many operations, disk.frame actually uses data.table in the background, so it's speed limit is data.table.
+
+So do not use disk.frame when data.table would suffice
+
+But I made a benchmark to show the difference in speed. Adn something surprised me. 
+
+I replicated the nycnights13::flights dataset 100 times and 1000 times and did a group-by on each. As you can see, disk.frame doesn't perform that bad. In order to use data.table for this task I am using up a huge chunk of my 64GB RAM which isn't always feasible, 50 disk.frame is a pretty good choice for large datasets.
+
+In the process, I might have found a HUGE bug! {disk.frame} operations seems to MUCH slower inside functions. I need to check this out
+
+In the case when the data is really large like nights replicated 1000 times, and if your RAM isn't large enough then a lot ofJwap to disk will happen which can slow down the operations, as shown below
+
+
+
+```{r setup}
+library(data.table)
+library(disk.frame)
+setup_disk.frame()
+
+# bench_disk.frame_data.table_group_by <- function(data1, n) {
+#   browser()
+system.time(flights_100 <- rbindlist(lapply(1:100, function(x) nycflights13::flights)))
+
+#bench_disk.frame_data.table_group_by(flights_1000, 1000)
+
+# flights 100 -------------------------------------------------------------
+
+data1 = flights_100
+
+setDT(data1)
+
+a.sharded.df = as.disk.frame(data1, shardby = c("year", "month", "day"))
+a.not_sharded.df = as.disk.frame(data1)
+
+force(a.sharded.df)
+force(a.not_sharded.df)
+
+data.table_timing = system.time(data1[,.(mean_dep_time = mean(dep_time, na.rm=T)), .(year, month, day)])[3]
+
+gc()
+disk.frame_sharded_timing = system.time(
+  a.sharded.df[
+    ,
+    .(mean_dep_time = mean(dep_time, na.rm=TRUE)), 
+    .(year, month, day),
+    keep = c("year", "month","day", "dep_time")])[3]
+
+gc()
+disk.frame_not_sharded_timing = system.time(
+  a.not_sharded.df[
+    ,
+    .(
+      sum_dep_time = sum(dep_time, na.rm=TRUE),
+      n = sum(!is.na(dep_time))
+    ), 
+    .(year, month, day),
+    keep = c("year", "month","day", "dep_time")][
+      ,
+      .(mean_dep_time = sum(sum_dep_time)/sum(n)),
+      .(year, month, day)
+      ])[3]
+
+barplot(
+  c(data.table_timing, disk.frame_sharded_timing, disk.frame_not_sharded_timing),
+  names.arg = c("data.table", "sharded disk.frame", "not sharded disk.frame"), 
+  main = glue::glue("flights duplicated {n}  times group-by year, month, day"),
+  ylab = "Seconds")
+```
+# flights 1000 ------------------------------------------------------------
+
+```r
+gc()
+#system.time(bench_disk.frame_data.table_group_by(flights_100, 100))
+system.time(flights_1000 <- rbindlist(lapply(1:10, function(x) flights_100)))
+rm(flights_100)
+gc()
+
+
+setDT(flights_1000)
+
+a.sharded.df = as.disk.frame(flights_1000, shardby = c("year", "month", "day"))
+a.not_sharded.df = as.disk.frame(flights_1000)
+
+gc()
+data.table_timing = system.time(flights_1000[,.(mean_dep_time = mean(dep_time, na.rm=T)), .(year, month, day)])[3]
+rm(flights_1000)
+gc()
+
+disk.frame_sharded_timing = system.time(
+  a.sharded.df[
+    ,
+    .(mean_dep_time = mean(dep_time, na.rm=TRUE)), 
+    .(year, month, day),
+    keep = c("year", "month","day", "dep_time")])[3]
+
+
+disk.frame_not_sharded_timing = system.time(
+  a.not_sharded.df[
+    ,
+    .(
+      sum_dep_time = sum(dep_time, na.rm=TRUE),
+      n = sum(!is.na(dep_time))
+    ), 
+    .(year, month, day),
+    keep = c("year", "month","day", "dep_time")][
+      ,
+      .(mean_dep_time = sum(sum_dep_time)/sum(n)),
+      .(year, month, day)
+      ])[3]
+
+n=1000
+barplot(
+  c(data.table_timing, disk.frame_sharded_timing, disk.frame_not_sharded_timing),
+  names.arg = c("data.table", "sharded disk.frame", "not sharded disk.frame"), 
+  main = glue::glue("flights duplicated {n}  times group-by year, month, day"),
+  ylab = "Seconds")
+```
+
+One thing I am Surprised by is that sharded disk.frame is slower than not sharded.  
+Sharded means that the chunks on disk is already grouped by the group-by variables,  
+so only a one-stage aggregation is required, but it's actually slower than the not  
+sharded disk.frame which requires a two-stage approach. Interesting! I am glad I did  
+this benchmark.
+
+See gist  [](https://gist.github.com/xiaodaigh/e2040f00385f1d5363246519a90bab13) 
