@@ -498,7 +498,7 @@ backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-## Sponsors
+### Sponsors
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will
 show up here with a link to your website. \[[Become a
