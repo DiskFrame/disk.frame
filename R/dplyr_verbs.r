@@ -306,6 +306,12 @@ summarize_at.disk.frame <- create_dplyr_mapper(dplyr::summarize_at)
 #' @importFrom dplyr summarize_if
 summarize_if.disk.frame <- create_dplyr_mapper(dplyr::summarize_if)
 
+#' @family dplyr verbs
+#' @export
+#' @rdname dplyr_verbs
+#' @importFrom dplyr distinct
+distinct.disk.frame <- create_dplyr_mapper(dplyr::distinct, warning_msg = "the `distinct` function applies distinct chunk-wise")
+
 #' The shard keys of the disk.frame
 #' @return character
 #' @export
