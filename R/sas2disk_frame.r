@@ -4,6 +4,7 @@
 #' @param nchunks number of chunks
 #' @param sas2csvpath path to sas2csv.exe
 #' @param sep separater of the CSV file, defaults to |
+#' @family ingesting data
 #' @noRd
 sas_to_csv <- function(infile, chunk, nchunks = disk.frame::recommend_nchunks(fs::file_size(infile)), sas2csvpath = "sas2csv/sas2csv.exe", sep="|") {
   if(!file.exists(sas2csvpath)) {
@@ -25,6 +26,7 @@ sas_to_csv <- function(infile, chunk, nchunks = disk.frame::recommend_nchunks(fs
 #' @param sep separater of the intermediate CSV file, defaults to |
 #' @param remove_csv TRUE/FALSE. Remove the intermediate CSV after usage?
 #' @importFrom future %<-%
+#' @family ingesting data
 #' @noRd
 sas_to_disk.frame = function(inpath, outpath, nchunks = disk.frame::recommend_nchunks(inpath), sas2csvpath = "sas2csv/sas2csv.exe", sep = "|", remove_csv = T) {
   files = file.path(outpath, paste0(1:nchunks,".fst"))

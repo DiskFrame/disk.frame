@@ -75,3 +75,7 @@ df = csv_to_disk.frame(tmpfile, outdir = tmpdf, overwrite = TRUE)
 fs::file_delete(tmpfile)
 delete(df)
 }
+\seealso{
+Other ingesting data: \code{\link{zip_to_disk.frame}}
+}
+\concept{ingesting data}

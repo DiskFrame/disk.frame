@@ -74,7 +74,6 @@ foverlaps.disk.frame <-
     furrr::future_map(1:nrow(df3), function(row) {
     #future.apply::future_lapply(1:nrow(df3), function(row) {
     #lapply(1:nrow(df3), function(row) {
-      #
       chunk_id = df3[row, chunk_id]
       
       data1 = get_chunk(df1, chunk_id)

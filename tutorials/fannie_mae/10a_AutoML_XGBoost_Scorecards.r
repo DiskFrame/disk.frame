@@ -6,14 +6,14 @@ acqall_dev = disk.frame(file.path(outpath, "appl_mdl_data_sampled_dev2"))
 
 # 5d develop a function to test all variables
 check_which_is_best <- function(df, target, features, monotone_constraints, format_fns, weight=NULL) {
-  #browser()
+  
   prev_pred = NULL
   ws = NULL
   vars_scr = NULL
   
   while(length(features) > 0) {
     # try every var
-    #browser()
+    
     res = furrr::future_map(1:length(features), ~add_var_to_scorecard(
     #res = purrr::map(1:length(features), ~add_var_to_scorecard(
       df, 

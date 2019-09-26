@@ -15,11 +15,5 @@
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
-sample_frac.disk.frame <- function(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...) {
-  if(!is.null(weight)) {
-    stop("sample_frac(..., weight =) is not implemented yet")
-  }
-  
-  delayed(tbl, ~sample_frac(.x, size, replace, weight, .env, ...))
-}
+sample_frac.disk.frame <- create_dplyr_mapper(dplyr::sample_frac, warning_msg = "sample_frac: for disk.frames weight = is not supported")
 

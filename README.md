@@ -5,10 +5,10 @@
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Backers on Open
-Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
 [![Sponsors on Open
 Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
+[![Backers on Open
+Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
 
 <details>
 
@@ -59,6 +59,13 @@ And the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("devtools")
 devtools::install_github("xiaodaigh/disk.frame")
+```
+
+On some platforms, such as SageMaker, you may need to explicitly specify
+a repo like this
+
+``` r
+install.packages("disk.frame", repo="https://cran.rstudio.com")
 ```
 
 ## Vignettes and articles
@@ -239,7 +246,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpAJPjKV\\file169038777420.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpC8JcvL\\file329071494076.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -366,7 +373,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
+#> filtering a < 0.1 took:  0.000s elapsed (0.000s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -386,7 +393,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.590s elapsed (0.110s cpu)
+#> group by took:  0.560s elapsed (0.090s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -411,7 +418,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.160s elapsed (0.290s cpu)
+#> group by took:  1.080s elapsed (0.270s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2
@@ -498,7 +505,7 @@ backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-### Sponsors
+### ponsors
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will
 show up here with a link to your website. \[[Become a
