@@ -41,6 +41,7 @@
 #' @importFrom pryr do_call
 #@importFrom LaF detect_dm_csv process_blocks
 #' @importFrom bigreadr split_file get_split_files
+#' @family ingesting data
 #' @export
 #' @examples
 #' tmpfile = tempfile()
@@ -138,7 +139,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       NULL
     }, nrows = in_chunk_size)
     return(df_out)
-  } else if(backend == "data.table" & chunk_reader == "data.table") {
+  } else if(backend == "data.table" & (is.null(in_chunk_size) | chunk_reader == "data.table")) {
     csv_to_disk.frame_data.table_backend(
       infile, 
       outdir, 

@@ -8,7 +8,7 @@ setup({
 
 test_that("testing semi_join where right is data.frame", {
   a = disk.frame("tmp_sample_frac.df")
-  a40 = sample_frac(a, 0.4) %>% collect
+  expect_warning(a40 <- sample_frac(a, 0.4) %>% collect)
   
   expect_equal(nrow(a40), 40)
 })

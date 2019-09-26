@@ -10,6 +10,7 @@
 #' @importFrom future.apply future_lapply
 #' @importFrom utils unzip
 #' @export
+#' @family ingesting data
 #' @return a list of disk.frame
 #' @examples 
 #' # create a zip file containing a csv

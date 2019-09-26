@@ -44,3 +44,7 @@ unlink(csvfile)
 unlink(zipfile)
 delete(zip.df[[1]])
 }
+\seealso{
+Other ingesting data: \code{\link{csv_to_disk.frame}}
+}
+\concept{ingesting data}

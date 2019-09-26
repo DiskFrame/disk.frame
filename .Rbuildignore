@@ -52,3 +52,4 @@ utils$
 ^misc$
 ^inst/tutorials/glm\.Rmd$
 ^vignettes/more-epic\.Rmd$
+^vignettes/faster-than-data-table\.Rmd$
