@@ -10,7 +10,7 @@ stream_shglm <- function(df) {
   i = 0
   is = sample(nchunks(df), replace = F)
   function(reset = F) {
-    #browser()
+    
     if(reset) {
       print("you've reset")
       i <<- 0
@@ -61,7 +61,7 @@ kk <- function() {
     j <- j + 1
     si = sample(nchunks(acqall_dev1), nchunks(acqall_dev1)*0.7)
     osi = setdiff(1:nchunks(acqall_dev1), si)
-    #browser()
+    
     system.time(a <- map_dfr(si, ~{
       ii <- ii + 1
       i = .x

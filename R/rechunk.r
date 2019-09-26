@@ -73,6 +73,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     shardby = existing_shardkey[[1]]
   }
 
+
   if(user_had_set_shard_by) {
     return(hard_group_by(df, shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE))
   } else if (identical(shardby, "") | is.null(shardby)) {

@@ -1,7 +1,7 @@
 context("test-group_by")
 
 setup({
-  #browser()
+  
   df = disk.frame:::gen_datatable_synthetic(1e3+11)
   data.table::fwrite(df, "tmp_pls_delete_gb.csv")
 })

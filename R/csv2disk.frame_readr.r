@@ -4,7 +4,7 @@
 csv_to_disk.frame_readr <- function(infile, outdir = tempfile(fileext = ".df"), inmapfn = base::I, nchunks = recommend_nchunks(sum(file.size(infile))), 
                               in_chunk_size = NULL, shardby = NULL, compress=50, overwrite = TRUE, col_names = TRUE, .progress = TRUE, delim=",", ...) {
   overwrite_check(outdir, overwrite)
-  #browser()
+  #
   df = disk.frame(outdir)
   
   # TODO check header

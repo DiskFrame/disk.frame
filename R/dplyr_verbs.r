@@ -67,9 +67,13 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL, as.data.frame = TR
         code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
       }
       
-      #browser()
-      rlang::eval_tidy(code)
-      #eval(parse(text=rlang::as_label(code)), envir = this_env)
+      # ZJ: we need both approaches. TRUST ME
+      # TODO better NSE at some point
+      tryCatch({
+        rlang::eval_tidy(code)
+      }, error = function(e) {
+        eval(parse(text=rlang::as_label(code)), envir = this_env)
+      })
     }, lazy = TRUE)
   }
   return_func
@@ -399,7 +403,7 @@ play <- function(.data, cmds=NULL) {
           assign(ng[i], g, pos = an_env)
         }
       }
-      #browser()
+      #
       .data <- do.call(cmd$func, c(list(.data),cmd$dotdotdot), envir = an_env)
     }
   }

@@ -138,8 +138,19 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       NULL
     }, nrows = in_chunk_size)
     return(df_out)
-  } else if(backend == "data.table" & is.null(in_chunk_size)) {
-    csv_to_disk.frame_data.table_backend(infile, outdir, inmapfn, nchunks, in_chunk_size, shardby, compress, overwrite, header, .progress, ...)
+  } else if(backend == "data.table" & chunk_reader == "data.table") {
+    csv_to_disk.frame_data.table_backend(
+      infile, 
+      outdir, 
+      inmapfn, 
+      nchunks, 
+      in_chunk_size, 
+      shardby, 
+      compress, 
+      overwrite, 
+      header, 
+      .progress, ...
+    )
   } else if (backend == "data.table" & chunk_reader == "bigreadr" & !is.null(in_chunk_size)) {
     # use bigreadr to split the files
     tf = tempfile()

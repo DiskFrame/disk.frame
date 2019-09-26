@@ -29,7 +29,7 @@
 #' # clean up
 #' delete(cars.df)
 dfglm <- function(formula, data, ..., glm_backend = c("biglm", "speedglm")) {
-  #browser()
+  #
   glm_backend = match.arg(glm_backend)
   
   stopifnot(is_disk.frame(data))

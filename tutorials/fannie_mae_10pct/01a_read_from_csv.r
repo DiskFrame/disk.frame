@@ -41,7 +41,7 @@ res = future.apply::future_mapply(function(relative_file_pathi, full_file_pathi)
     #compress = compress, 
     in_chunk_size = nreadin, 
     overwrite = T)
-  #browser()
+  
   df
 }, relative_file_path, full_file_path, SIMPLIFY = F)
 print(timetaken(pt))

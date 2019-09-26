@@ -13,7 +13,7 @@ stream_shglm <- function(df) {
   i = 0
   is = sample(nchunks(df), replace = F)
   function(reset = F) {
-    #browser()
+    
     if(reset) {
       print("you've reset")
       i <<- 0
