@@ -141,11 +141,11 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
 
     res1 <- NULL
     if(typeof(by) == "character") {
-      eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))
+      eval(parse(text = glue::glue('res1 = chunk_group_by(res, {paste(by,collapse=",")})')))
     } else if(length(by) == 1) {
       res1 = res %>% dplyr::group_by({{by}}) 
     } else {
-      eval(parse(text = glue::glue('res1 = group_by(res, {paste(by,collapse=",")})')))
+      eval(parse(text = glue::glue('res1 = chunk_group_by(res, {paste(by,collapse=",")})')))
     }
     
     res1
@@ -170,7 +170,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
       fs::dir_delete(attr(.x, "path"))
     })
     
-    res1 = res %>% dplyr::group_by(!!!syms(by))
+    res1 = res %>% chunk_group_by(!!!syms(by))
     
     res1
   })

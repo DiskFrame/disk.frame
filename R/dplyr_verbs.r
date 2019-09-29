@@ -160,7 +160,15 @@ transmute.disk.frame <- create_dplyr_mapper(dplyr::transmute)
 #' @export
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
-arrange.disk.frame <- create_dplyr_mapper(dplyr::arrange, "disk.frame only sorts (arange) WITHIN each chunk")
+arrange.disk.frame <- function(...) {
+  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+}
+
+#' @family dplyr verbs
+#' @export
+#' @importFrom dplyr arrange
+#' @rdname dplyr_verbs
+chunk_arrange <- create_dplyr_mapper(dplyr::arrange)
 
 #' @family dplyr verbs
 #' @export
@@ -318,7 +326,15 @@ summarize_if.disk.frame <- create_dplyr_mapper(dplyr::summarize_if)
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr distinct
-distinct.disk.frame <- create_dplyr_mapper(dplyr::distinct, warning_msg = "the `distinct` function applies distinct chunk-wise")
+distinct.disk.frame <- function(...) {
+  stop("`distinct.disk.frame` is not available. Please use `chunk_distinct`")
+}
+
+#' @family dplyr verbs
+#' @export
+#' @rdname dplyr_verbs
+#' @importFrom dplyr distinct
+chunk_distinct.disk.frame <- create_dplyr_mapper(dplyr::distinct, warning_msg = "the `distinct` function applies distinct chunk-wise")
 
 #' The shard keys of the disk.frame
 #' @return character
@@ -368,7 +384,11 @@ groups.disk.frame <- function(x){
 #   }, lazy = TRUE)
 # }
 #group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, warning_msg = "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
-group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by)
+group_by.disk.frame <- function(...) {
+  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+}
+  
+chunk_group_by <- create_dplyr_mapper(dplyr::group_by)
 
 #' @export
 #' @rdname dplyr_verbs
@@ -403,11 +423,8 @@ play <- function(.data, cmds=NULL) {
           assign(ng[i], g, pos = an_env)
         }
       }
-      #
       .data <- do.call(cmd$func, c(list(.data),cmd$dotdotdot), envir = an_env)
     }
   }
   .data
 }
-
-

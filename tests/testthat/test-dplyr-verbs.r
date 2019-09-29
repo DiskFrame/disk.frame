@@ -124,9 +124,13 @@ test_that("testing transmute", {
 test_that("testing arrange", {
   b = disk.frame("tmp_b_dv.df")
   
-  expect_warning(df <- b %>%
+  expect_error(df <- b %>%
     mutate(random_unif = runif(dplyr::n())) %>% 
     arrange(desc(random_unif)))
+  
+  df <- b %>%
+    mutate(random_unif = runif(dplyr::n())) %>% 
+    chunk_arrange(desc(random_unif))
   
   x = purrr::map_lgl(1:nchunks(df), ~{
     is.unsorted(.x) == FALSE

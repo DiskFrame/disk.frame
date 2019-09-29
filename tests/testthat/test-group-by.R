@@ -13,8 +13,15 @@ test_that("group_by", {
     group_by(id1) %>% 
     summarise(mv1 = mean(v1))
   
-  dff1 <- dff %>% 
+  expect_error({
+    dff %>% 
     group_by(id1, id2) %>%
+    summarise(mv1 = mean(v1)) %>% 
+    collect
+  })
+  
+  dff1 <- dff %>% 
+    chunk_group_by(id1, id2) %>%
     summarise(mv1 = mean(v1)) %>% 
     collect
 
