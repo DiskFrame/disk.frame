@@ -248,7 +248,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpYDBYgK\\file36342204610f.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpWKrQRd\\file1bac44f56d98.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -335,8 +335,8 @@ flights.df = as.disk.frame(nycflights13::flights)
 
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect
 #> # A tibble: 6 x 2
 #>    year sum_dist
@@ -355,8 +355,8 @@ This is two-stage group-by in action
 # need a 2nd stage to finalise summing
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect %>% 
   group_by(year) %>% 
   summarise(sum_dist = sum(sum_dist))
@@ -375,7 +375,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.010s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.000s elapsed (0.000s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -388,14 +388,14 @@ res1 <- flights.df %>%
   srckeep(c("month", "dep_delay")) %>% 
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  group_by(qtr) %>% 
-  summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
+  chunk_group_by(qtr) %>% 
+  chunk_summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
   collect %>%
   group_by(qtr) %>% 
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.260s elapsed (0.160s cpu)
+#> group by took:  0.620s elapsed (0.140s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -416,11 +416,11 @@ res1 <- flights.df %>%
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
   hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
+  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.580s elapsed (0.360s cpu)
+#> group by took:  1.150s elapsed (0.330s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

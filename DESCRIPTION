@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.1.1.999
-Date: 2019-09-15
+Version: 0.2.0.999
+Date: 2019-09-29
 Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
@@ -54,5 +54,5 @@ LinkingTo:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
-URL: http://diskframe.com
+URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

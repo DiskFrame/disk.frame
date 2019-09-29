@@ -207,8 +207,8 @@ flights.df = as.disk.frame(nycflights13::flights)
 
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect
 ```
 
@@ -217,8 +217,8 @@ This is two-stage group-by in action
 # need a 2nd stage to finalise summing
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect %>% 
   group_by(year) %>% 
   summarise(sum_dist = sum(sum_dist))
@@ -244,8 +244,8 @@ res1 <- flights.df %>%
   srckeep(c("month", "dep_delay")) %>% 
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  group_by(qtr) %>% 
-  summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
+  chunk_group_by(qtr) %>% 
+  chunk_summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
   collect %>%
   group_by(qtr) %>% 
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
@@ -263,7 +263,7 @@ res1 <- flights.df %>%
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
   hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
+  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
   collect
 cat("group by took: ", data.table::timetaken(pt), "\n")
 

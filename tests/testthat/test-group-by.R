@@ -22,7 +22,7 @@ test_that("group_by", {
   
   dff1 <- dff %>% 
     chunk_group_by(id1, id2) %>%
-    summarise(mv1 = mean(v1)) %>% 
+    chunk_summarise(mv1 = mean(v1)) %>% 
     collect
 
   
@@ -38,7 +38,7 @@ test_that("test hard_group_by on disk.frame", {
   
   dff1 <- dff %>% 
       hard_group_by(id1, id2) %>%
-      summarise(mv1 = mean(v1)) %>% collect
+      chunk_summarise(mv1 = mean(v1)) %>% collect
   
   expect_equal(nrow(dff1), nrow(dff_res))
 })

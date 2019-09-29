@@ -139,11 +139,11 @@ test_that("testing arrange", {
   expect_true(all(x))
 })
 
-test_that("testing summarise", {
+test_that("testing chunk_summarise", {
   b = disk.frame("tmp_b_dv.df")
   
   df = b %>%
-    summarise(suma = sum(a)) %>% 
+    chunk_summarise(suma = sum(a)) %>% 
     collect %>% 
     summarise(suma = sum(suma))
   

@@ -172,12 +172,6 @@ chunk_arrange <- create_dplyr_mapper(dplyr::arrange)
 
 #' @family dplyr verbs
 #' @export
-#' @importFrom dplyr summarise
-#' @rdname dplyr_verbs
-summarise.disk.frame <- create_dplyr_mapper(dplyr::summarise)
-
-#' @family dplyr verbs
-#' @export
 #' @importFrom dplyr tally
 #' @rdname dplyr_verbs
 tally.disk.frame <- create_dplyr_mapper(dplyr::tally)
@@ -206,7 +200,29 @@ add_tally.disk.frame <- create_dplyr_mapper(dplyr::add_tally)
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
+chunk_summarize <- create_dplyr_mapper(dplyr::summarize)
+
+#' @family dplyr verbs
+#' @export
+#' @importFrom dplyr summarise
+#' @rdname dplyr_verbs
+chunk_summarise <- create_dplyr_mapper(dplyr::summarise)
+
+#' @family dplyr verbs
+#' @export
+#' @importFrom dplyr summarize
+#' @rdname dplyr_verbs
+summarize.disk.frame <- function(...) {
+  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+}
+
+#' @family dplyr verbs
+#' @export
+#' @importFrom dplyr summarize
+#' @rdname dplyr_verbs
+summarise.disk.frame <- function(...) {
+  stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+}
 
 #' @family dplyr verbs
 #' @export
@@ -290,37 +306,37 @@ select_if.disk.frame <- create_dplyr_mapper(dplyr::select_if)
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarise_all
-summarise_all.disk.frame <- create_dplyr_mapper(dplyr::summarise_all)
+chunk_summarise_all <- create_dplyr_mapper(dplyr::summarise_all)
 
 #' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarise_at
-summarise_at.disk.frame <- create_dplyr_mapper(dplyr::summarise_at)
+chunk_summarise_at <- create_dplyr_mapper(dplyr::summarise_at)
 
 #' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize
-summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize)
+chunk_summarize <- create_dplyr_mapper(dplyr::summarize)
 
 #' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_all
-summarize_all.disk.frame <- create_dplyr_mapper(dplyr::summarize_all)
+chunk_summarize_all <- create_dplyr_mapper(dplyr::summarize_all)
 
 #' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_at
-summarize_at.disk.frame <- create_dplyr_mapper(dplyr::summarize_at)
+chunk_summarize_at <- create_dplyr_mapper(dplyr::summarize_at)
 
 #' @family dplyr verbs
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_if
-summarize_if.disk.frame <- create_dplyr_mapper(dplyr::summarize_if)
+chunk_summarize_if <- create_dplyr_mapper(dplyr::summarize_if)
 
 #' @family dplyr verbs
 #' @export
@@ -334,7 +350,7 @@ distinct.disk.frame <- function(...) {
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr distinct
-chunk_distinct.disk.frame <- create_dplyr_mapper(dplyr::distinct, warning_msg = "the `distinct` function applies distinct chunk-wise")
+chunk_distinct <- create_dplyr_mapper(dplyr::distinct, warning_msg = "the `distinct` function applies distinct chunk-wise")
 
 #' The shard keys of the disk.frame
 #' @return character
@@ -387,7 +403,10 @@ groups.disk.frame <- function(x){
 group_by.disk.frame <- function(...) {
   stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
 }
-  
+
+#' @export
+#' @family dplyr verbs
+#' @rdname group_by
 chunk_group_by <- create_dplyr_mapper(dplyr::group_by)
 
 #' @export

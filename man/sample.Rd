@@ -4,10 +4,11 @@
 \alias{sample_frac.disk.frame}
 \title{Sample n rows from a disk.frame}
 \usage{
-\method{sample_frac}{disk.frame}(tbl, size = 1, replace = FALSE,
-  weight = NULL, .env = NULL, ...)
+\method{sample_frac}{disk.frame}(.data, ...)
 }
 \arguments{
+\item{...}{passed to dplyr}
+
 \item{tbl}{a disk.frame}
 
 \item{size}{the proportion/fraction of rows to sample}
@@ -17,8 +18,6 @@
 \item{weight}{weight of each row. NOT implemented}
 
 \item{.env}{for compatibility}
-
-\item{...}{passed to dplyr}
 }
 \description{
 Sample n rows from a disk.frame

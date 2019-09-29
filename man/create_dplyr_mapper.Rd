@@ -4,7 +4,7 @@
 \alias{create_dplyr_mapper}
 \title{Create dplyr function for disk.frame}
 \usage{
-create_dplyr_mapper(dplyr_fn, warning_msg = NULL)
+create_dplyr_mapper(dplyr_fn, warning_msg = NULL, as.data.frame = TRUE)
 }
 \arguments{
 \item{dplyr_fn}{The dplyr function to create a mapper for}
