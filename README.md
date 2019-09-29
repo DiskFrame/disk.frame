@@ -84,7 +84,7 @@ Please see these vignettes and articles about `{disk.frame}`
     ways of loading large CSVs and the importance of `srckeep`
   - [Fitting GLMs (including logistic
     regression)](http://diskframe.com/articles/glm.html) introduces the
-    `dfglm` function for fitting generalised linear models
+    `dfglm` function for fitting generalized linear models
   - [Using data.table syntax with
     disk.frame](http://diskframe.com/articles/data-table-syntax.html)
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
@@ -248,7 +248,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpYDBYgK\\file36342204610f.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpIJu9dm\\filea3433d27db7.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -326,7 +326,7 @@ two-stage group by is required to obtain the correct group by results.
 The two-stage approach is preferred for performance reasons too.
 
 To perform group-by one needs to do it in two-stage approach as the
-group-bys are performed within each chunk. This will be addressed in a
+group-by’s are performed within each chunk. This will be addressed in a
 future package called `disk.frame.db`, but for now two-stage aggregation
 is the best to do group-bys in `{disk.frame}`.
 
@@ -335,8 +335,8 @@ flights.df = as.disk.frame(nycflights13::flights)
 
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect
 #> # A tibble: 6 x 2
 #>    year sum_dist
@@ -355,8 +355,8 @@ This is two-stage group-by in action
 # need a 2nd stage to finalise summing
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  group_by(year) %>% 
-  summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+  chunk_group_by(year) %>% 
+  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect %>% 
   group_by(year) %>% 
   summarise(sum_dist = sum(sum_dist))
@@ -375,7 +375,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.010s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -388,14 +388,14 @@ res1 <- flights.df %>%
   srckeep(c("month", "dep_delay")) %>% 
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  group_by(qtr) %>% 
-  summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
+  chunk_group_by(qtr) %>% 
+  chunk_summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
   collect %>%
   group_by(qtr) %>% 
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.260s elapsed (0.160s cpu)
+#> group by took:  0.620s elapsed (0.190s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -416,11 +416,11 @@ res1 <- flights.df %>%
   filter(month <= 6) %>% 
   mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
   hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
+  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.580s elapsed (0.360s cpu)
+#> group by took:  1.480s elapsed (0.310s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

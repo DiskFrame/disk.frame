@@ -1,4 +1,7 @@
 ^.*\.Rproj$
+^\.github$
+^manuscript$
+^cran-mirror$
 ^\.Rproj\.user$
 NAMESPACE_ok$
 NAMESPACE_20190205$

@@ -10,12 +10,15 @@
 \alias{mutate.disk.frame}
 \alias{transmute.disk.frame}
 \alias{arrange.disk.frame}
-\alias{summarise.disk.frame}
+\alias{chunk_arrange}
 \alias{tally.disk.frame}
 \alias{count.disk.frame}
 \alias{add_count.disk.frame}
 \alias{add_tally.disk.frame}
+\alias{chunk_summarize}
+\alias{chunk_summarise}
 \alias{summarize.disk.frame}
+\alias{summarise.disk.frame}
 \alias{do.disk.frame}
 \alias{group_by_all.disk.frame}
 \alias{group_by_at.disk.frame}
@@ -29,11 +32,13 @@
 \alias{select_all.disk.frame}
 \alias{select_at.disk.frame}
 \alias{select_if.disk.frame}
-\alias{summarise_all.disk.frame}
-\alias{summarise_at.disk.frame}
-\alias{summarize_all.disk.frame}
-\alias{summarize_at.disk.frame}
-\alias{summarize_if.disk.frame}
+\alias{chunk_summarise_all}
+\alias{chunk_summarise_at}
+\alias{chunk_summarize_all}
+\alias{chunk_summarize_at}
+\alias{chunk_summarize_if}
+\alias{distinct.disk.frame}
+\alias{chunk_distinct}
 \alias{glimpse.disk.frame}
 \title{The dplyr verbs implemented for disk.frame}
 \usage{
@@ -53,9 +58,9 @@ filter_at.disk.frame(.data, ...)
 
 \method{transmute}{disk.frame}(.data, ...)
 
-\method{arrange}{disk.frame}(.data, ...)
+\method{arrange}{disk.frame}(...)
 
-\method{summarise}{disk.frame}(.data, ...)
+chunk_arrange(.data, ...)
 
 tally.disk.frame(.data, ...)
 
@@ -65,7 +70,13 @@ add_count.disk.frame(.data, ...)
 
 add_tally.disk.frame(.data, ...)
 
-\method{summarize}{disk.frame}(.data, ...)
+chunk_summarize(.data, ...)
+
+chunk_summarise(.data, ...)
+
+\method{summarize}{disk.frame}(...)
+
+\method{summarise}{disk.frame}(...)
 
 \method{do}{disk.frame}(.data, ...)
 
@@ -93,17 +104,21 @@ select_at.disk.frame(.data, ...)
 
 select_if.disk.frame(.data, ...)
 
-summarise_all.disk.frame(.data, ...)
+chunk_summarise_all(.data, ...)
 
-summarise_at.disk.frame(.data, ...)
+chunk_summarise_at(.data, ...)
 
-\method{summarize}{disk.frame}(.data, ...)
+chunk_summarize(.data, ...)
 
-summarize_all.disk.frame(.data, ...)
+chunk_summarize_all(.data, ...)
 
-summarize_at.disk.frame(.data, ...)
+chunk_summarize_at(.data, ...)
 
-summarize_if.disk.frame(.data, ...)
+chunk_summarize_if(.data, ...)
+
+\method{distinct}{disk.frame}(...)
+
+chunk_distinct(.data, ...)
 
 \method{glimpse}{disk.frame}(.data, ...)
 }
@@ -134,6 +149,16 @@ cars2 = cars.df \%>\%
 delete(cars.df)
 }
 \seealso{
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
+Other dplyr verbs: \code{\link{group_by.disk.frame}}
+
 Other dplyr verbs: \code{\link{group_by.disk.frame}}
 
 Other dplyr verbs: \code{\link{group_by.disk.frame}}

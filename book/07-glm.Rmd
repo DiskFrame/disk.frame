@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, cache=TRUE}
 suppressPackageStartupMessages(library(disk.frame))
 
 if(interactive()) {

@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Someone wrote a blog about {disk.frame} being "epic"
-Mr Bruno Rodrigues had kindly written [a nice blog post titled '{disk.frame} is epic'](https://www.brodrigues.co/blog/2019-09-03-disk_frame/). In the post, he compared {disk.frame}'s performance vs Spark's on doing a simple group-by operation. The task is done on a single-machine and hence is not the ideal use-case for Spark. However, in [an earlier post](https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/), Bruno had shown how Spark can be used for this use case. This is symtomatic of what I call the "pre-mature adoption of Spark syndrome". It's not hard to find examples where Spark is used when a more light-weight tool like Dask or {disk.frame} could be more efficient. There is no need to use a sledgehammer to crack a nut. In data science, what a "nut" can represent is getting larger and larger. Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and Python, as many machines back then were still 32bit and hence did not have more than 4GB of RAM in general. Nowadays, 16GB laptop are common place, so any file less than 4GB in size can be considered a "nut". Furthermore, if you use a tool like {disk.frame} which keeps the data on-disk until you need to process it, then the "nut" you can crack is now substantially larger than 4GB. I would argue, the sledgeheammer that is Spark should only be considered for _much_ larger datasets. I don't want to put a number to it, but the largest dataset I have dealt with is [the Fannie Mae dataset](https://docs.rapids.ai/datasets/mortgage-data) which is about 200GB in size in CSV format.
+Mr Bruno Rodrigues had kindly written [a nice blog post titled '{disk.frame} is epic'](https://www.brodrigues.co/blog/2019-09-03-disk_frame/). In the post, he compared {disk.frame}'s performance vs Spark's on doing a simple group-by operation. The task is done on a single-machine and hence is not the ideal use-case for Spark. However, in [an earlier post](https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/), Bruno had shown how Spark can be used for this use case. This is symptomatic of what I call the "premature adoption of Spark syndrome". It's not hard to find examples where Spark is used when a more light-weight tool like Dask or {disk.frame} could be more efficient. There is no need to use a sledgehammer to crack a nut. In data science, what a "nut" can represent is getting larger and larger. Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and Python, as many machines back then were still 32bit and hence did not have more than 4GB of RAM in general. Nowadays, 16GB laptop are common place, so any file less than 4GB in size can be considered a "nut". Furthermore, if you use a tool like {disk.frame} which keeps the data on-disk until you need to process it, then the "nut" you can crack is now substantially larger than 4GB. I would argue, the sledgehammer that is Spark should only be considered for _much_ larger datasets. I don't want to put a number to it, but the largest dataset I have dealt with is [the Fannie Mae dataset](https://docs.rapids.ai/datasets/mortgage-data) which is about 200GB in size in CSV format.
 
 ## How to make {disk.frame} more 'epic'?
 
@@ -85,7 +85,7 @@ which yielded
 #>    0.51    0.32  168.72
 ```
 
-As you can see the the 303 files are converted to a `disk.frame` in about ~3mins, this actually alot faster than Spark.
+As you can see the the 303 files are converted to a `disk.frame` in about ~3mins, this much faster than Spark.
 
 ### Load one large-file (splitting)
 
@@ -161,7 +161,7 @@ system.time(flights.df <- csv_to_disk.frame(
   backend = "LaF"))
 ```
 
-there were mulitple warnings
+there were multiple warnings
 
 ```r
 #> Loading required namespace: LaF
@@ -179,7 +179,7 @@ and the timings were
 As can be seen `LaF` works and can detect the column types automatically. However it is slower than the default backend which is `data.table`.
 
 ### Summary
-Here is a chart summarising the performance of the various approaches for reading large CSVs on my computer
+Here is a chart summarizing the performance of the various approaches for reading large CSVs on my computer
 
 ```{r echo=FALSE}
 library(ggplot2)
@@ -201,7 +201,7 @@ ggplot(data.frame(
 
 ## Can {disk.frame} be even more "epic"?
 
-Well yes! We can actually speed up the group-by operation that Bruno did by using `srckeep`. The use of `srckeep` can't be emphasised enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.
+Well yes! We can actually speed up the group-by operation that Bruno did by using `srckeep`. The use of `srckeep` can't be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.
 
 ```r
 tic = Sys.time()
@@ -209,8 +209,8 @@ tic = Sys.time()
 # doing group-by in two-stages which is annoying; I am working on something better
 mean_dep_delay <- flights.df %>%
   srckeep(c("YEAR", "MONTH", "DAY_OF_MONTH", "DEP_DELAY")) %>%
-  group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
-  summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
+  chunk_group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
+  chunk_summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
   collect() %>% 
   group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
   summarise(mean_delay = sum(sum_delay)/sum(n))
@@ -223,8 +223,8 @@ Compare the above the to timing without `srckeep`
 ```r
 tic = Sys.time()
 mean_dep_delay <- flights.df %>%
-  group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
-  summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
+  chunk_group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
+  chunk_summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
   collect() %>% 
   group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
   summarise(mean_delay = sum(sum_delay)/sum(n))

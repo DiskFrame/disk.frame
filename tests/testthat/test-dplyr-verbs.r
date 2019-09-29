@@ -35,8 +35,21 @@ test_that("testing filter", {
   expect_setequal(nrow(df), 10)
 })
 
+test_that("testing filter - global vars", {
+  b = disk.frame("tmp_b_dv.df")
+  
+  one_hundred = 100
+  
+  df = b %>% 
+    filter(a <= one_hundred, b <= 10) %>% 
+    collect
+  
+  expect_setequal(nrow(df), 10)
+})
+
 test_that("testing mutate", {
   b = disk.frame("tmp_b_dv.df")
+  
   
   df = b %>% 
     mutate(d = a + b) %>% 
@@ -71,23 +84,32 @@ test_that("testing mutate", {
     collect
   
   expect_equal(ncol(df3), 3)
+  
+  
+  global_var = 100
+  
+  df4 = value %>%
+    dplyr::mutate(b =  fn(num, num), d = global_var*2) %>%
+    collect
+  
+  expect_equal(ncol(df4), 4)
+  expect_true(all(df4$d == 200))
 })
 
-# TODO figure out why it fails
-# test_that("testing mutate user-defined function", {
-#   b = disk.frame("tmp_b_dv.df")
-#   
-#   
-#   udf = function(a1, b1) {
-#     a1 + b1
-#   }
-#   
-#   df = b %>%
-#     mutate(d = udf(a,b)) %>%
-#     collect
-#   
-#   expect_setequal(sum(df$d), sum(df$a, df$b))
-# })
+test_that("testing mutate user-defined function", {
+   b = disk.frame("tmp_b_dv.df")
+   
+   
+   udf = function(a1, b1) {
+     a1 + b1
+   }
+   
+   df = b %>%
+     mutate(d = udf(a,b)) %>%
+     collect
+   
+   expect_setequal(sum(df$d), sum(df$a, df$b))
+})
 
 test_that("testing transmute", {
   b = disk.frame("tmp_b_dv.df")
@@ -102,9 +124,13 @@ test_that("testing transmute", {
 test_that("testing arrange", {
   b = disk.frame("tmp_b_dv.df")
   
-  expect_warning(df <- b %>%
+  expect_error(df <- b %>%
     mutate(random_unif = runif(dplyr::n())) %>% 
     arrange(desc(random_unif)))
+  
+  df <- b %>%
+    mutate(random_unif = runif(dplyr::n())) %>% 
+    chunk_arrange(desc(random_unif))
   
   x = purrr::map_lgl(1:nchunks(df), ~{
     is.unsorted(.x) == FALSE
@@ -113,11 +139,11 @@ test_that("testing arrange", {
   expect_true(all(x))
 })
 
-test_that("testing summarise", {
+test_that("testing chunk_summarise", {
   b = disk.frame("tmp_b_dv.df")
   
   df = b %>%
-    summarise(suma = sum(a)) %>% 
+    chunk_summarise(suma = sum(a)) %>% 
     collect %>% 
     summarise(suma = sum(suma))
   
