@@ -17,9 +17,9 @@ knitr::opts_chunk$set(
 
 ## Intro
 
-This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmkark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.
+This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.
 
-The title was 'inspired' by [this post titled "R beats Python! R beats Julia! Anyone else wanna challange R?"](https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/).
+The title was 'inspired' by [this post titled "R beats Python! R beats Julia! Anyone else wanna challenge R?"](https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/).
 
 # TL;DR
 For this simple benchmark, disk.frame is faster. But Dask has a more convenient syntax. JuliaDB.jl is not ready for prime time.
@@ -28,12 +28,13 @@ For this simple benchmark, disk.frame is faster. But Dask has a more convenient 
 #### Timings
 Please note I have not tried to record the precise times over many runs, but I aim illustrate the magnitude of speed of the different packages
 ```{r}
+library(ggplot2)
+
 df = data.frame(
   tool = c("disk.frame", "Dask", "JuliaDB.jl"),
   timing = c(22, 50, 76)
 )
 
-library(ggplot2)
 ggplot(df) +
   geom_bar(aes(x = tool, weight = timing), stat = "count") + 
   ylab("seconds") +
@@ -142,7 +143,7 @@ a.to_parquet("c:/data/p03.parquet")
 print(datetime.now() - startTime)  # 50 seconds
 ```
 
-and we can see tht converting to Parquet takes more time than `csv_to_disk.frame`. Now to test Dask's ability to aggregate a simple use-case, we can also load only column into RAM to speed up the analysis.
+and we can see that converting to Parquet takes more time than `csv_to_disk.frame`. Now to test Dask's ability to aggregate a simple use-case, we can also load only column into RAM to speed up the analysis.
 
 ```python
 startTime = datetime.now()
@@ -190,7 +191,7 @@ using LambdaFn
 
 Unfortunately, it's much slower than both disk.frame and Dask.
 
-As a side note, I can use OnlineStats.jl to do aggregation (relatively) efficiently. I think OnlineStats is one of the bright spots for JuliaDB, as it has powerful online-algorithms that allows you to combine statistics by computing those statistics in chunks and combining the resutls from each chunk. It's a shame that JuliaDB is not mature enough to make it shine more brightly. For an example of what it can do, see the example to compute the mean of `Column6` grouped by `Column1`
+As a side note, I can use OnlineStats.jl to do aggregation (relatively) efficiently. I think OnlineStats is one of the bright spots for JuliaDB, as it has powerful online-algorithms that allows you to combine statistics by computing those statistics in chunks and combining the results from each chunk. It's a shame that JuliaDB is not mature enough to make it shine more brightly. For an example of what it can do, see the example to compute the mean of `Column6` grouped by `Column1`
 
 ```julia
 @time groupreduce(Mean(), a, :Column1, select = :Column6)
@@ -211,6 +212,6 @@ Also, it's astounding that the output file is 17GB in size and the original CSV 
 ```
 
 ## Conclusion
-It is somewhat surprising that disk.frame is the speed king in this benchmark study, but I can't take any of the credit as the speediness of disk.frame is due to the authors of fst, future (and parallel), and data.table. It's also no surprise that Julia's medium-data tool lags behind Python's and R's, because it's a pattern noticed elsewhere in the data ecosystem. Julia's niche and strength at this point is in computational problems that require lots of computation that do not necessarily invovled large amounts of input data (the Celeste project appears to be an exception but I think the computational demand there dominate the data demand).
+It is somewhat surprising that disk.frame is the speed king in this benchmark study, but I can't take any of the credit as the speediness of disk.frame is due to the authors of fst, future (and parallel), and data.table. It's also no surprise that Julia's medium-data tool lags behind Python's and R's, because it's a pattern noticed elsewhere in the data ecosystem. Julia's niche and strength at this point is in computational problems that require lots of computation that do not necessarily involved large amounts of input data (the Celeste project appears to be an exception but I think the computational demand there dominate the data demand).
 
 Although disk.frame is the fastest, it's syntax is not as convenient as Dask's. Using Dask is almost the same as using pandas. In contrast, when using disk.frame, the user needs to be aware that operations happen in chunks, and hence a "two-stage" group-by is required. However, this will be addressed in a future planned package disk.frame.db which is will allow the user to "forget" the underlying architecture is made of chunks, and just focus on higher-level data operations.

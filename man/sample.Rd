@@ -7,17 +7,9 @@
 \method{sample_frac}{disk.frame}(.data, ...)
 }
 \arguments{
-\item{...}{passed to dplyr}
+\item{.data}{a disk.frame}
 
-\item{tbl}{a disk.frame}
-
-\item{size}{the proportion/fraction of rows to sample}
-
-\item{replace}{TRUE to sample with replacement; FALSE to sample without replacement}
-
-\item{weight}{weight of each row. NOT implemented}
-
-\item{.env}{for compatibility}
+\item{...}{passed to dplyr::samle_frac}
 }
 \description{
 Sample n rows from a disk.frame

@@ -2,7 +2,7 @@
 #' 
 #' Define a function that can be used to feed data into speedglm and biglm
 #' 
-#' @param df a disk.frame
+#' @param data a disk.frame
 #' @param verbose Whether to print the status of data loading. Default to TRUE
 #' 
 #' @return return a function, fn, that can be used as the data argument in biglm::bigglm or speedglm::shglm

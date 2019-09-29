@@ -48,7 +48,8 @@ Suggests:
     biglm,
     speedglm,
     broom,
-    learnr
+    learnr,
+    ggplot2
 LinkingTo: 
     Rcpp
 RoxygenNote: 6.1.1

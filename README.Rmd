@@ -79,7 +79,7 @@ Please see these vignettes and articles about `{disk.frame}`
     `nycflights13` flights data.
   - [Ingesting data into `{disk.frame}`](http://diskframe.com/articles/ingesting-data.html) which lists some commons way of creating disk.frames
   - [`{disk.frame}` can be more epic!](http://diskframe.com/articles/more-epic.html) shows some ways of loading large CSVs and the importance of `srckeep`
-  - [Fitting GLMs (including logistic regression)](http://diskframe.com/articles/glm.html) introduces the `dfglm` function for fitting generalised linear models
+  - [Fitting GLMs (including logistic regression)](http://diskframe.com/articles/glm.html) introduces the `dfglm` function for fitting generalized linear models
   - [Using data.table syntax with disk.frame](http://diskframe.com/articles/data-table-syntax.html)
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
   - [Benchmark 1: disk.frame vs Dask vs
@@ -201,7 +201,7 @@ ncol(flights.df)
 ### Group by
 Group-by in disk.frame are performed within each chunk, hence a two-stage group by is required to obtain the correct group by results. The two-stage approach is preferred for performance reasons too.
 
-To perform group-by one needs to do it in two-stage approach as the group-bys are performed within each chunk. This will be addressed in a future package called `disk.frame.db`, but for now two-stage aggregation is the best to do group-bys in `{disk.frame}`.
+To perform group-by one needs to do it in two-stage approach as the group-by's are performed within each chunk. This will be addressed in a future package called `disk.frame.db`, but for now two-stage aggregation is the best to do group-bys in `{disk.frame}`.
 ```{r flights_df, dependson='setup'}
 flights.df = as.disk.frame(nycflights13::flights)
 

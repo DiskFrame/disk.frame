@@ -30,6 +30,7 @@
 #' 
 #' @param dplyr_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
+#' @param as.data.frame force the input chunk of a data.frame; needed for dtplyr
 #' @importFrom rlang enquos quo
 #' @export
 create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL, as.data.frame = TRUE) {
@@ -161,7 +162,7 @@ transmute.disk.frame <- create_dplyr_mapper(dplyr::transmute)
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
 arrange.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is in preparation for a more powerful `arrange` that sorts the whole disk.frame")
 }
 
 #' @family dplyr verbs
@@ -213,7 +214,7 @@ chunk_summarise <- create_dplyr_mapper(dplyr::summarise)
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
 summarize.disk.frame <- function(...) {
-  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
 }
 
 #' @family dplyr verbs
@@ -221,7 +222,7 @@ summarize.disk.frame <- function(...) {
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
 summarise.disk.frame <- function(...) {
-  stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+  stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
 }
 
 #' @family dplyr verbs
@@ -401,7 +402,7 @@ groups.disk.frame <- function(x){
 # }
 #group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, warning_msg = "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
 group_by.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `arrange` that sorts the whole disk.frame")
+  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
 }
 
 #' @export
