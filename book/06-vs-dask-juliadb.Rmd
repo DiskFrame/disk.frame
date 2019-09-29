@@ -114,8 +114,8 @@ Another way to perform the analysis is to use `dplyr` syntax to perform a two-st
 ```r
 df1 %>% 
   srckeep("V1") %>% 
-  group_by(V1) %>% 
-  summarise(N = n()) %>% 
+  chunk_group_by(V1) %>% 
+  chunk_summarise(N = n()) %>% 
   collect %>% 
   group_by(V1) %>% 
   summarise(N = sum(N)) %>% 

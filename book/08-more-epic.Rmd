@@ -209,8 +209,8 @@ tic = Sys.time()
 # doing group-by in two-stages which is annoying; I am working on something better
 mean_dep_delay <- flights.df %>%
   srckeep(c("YEAR", "MONTH", "DAY_OF_MONTH", "DEP_DELAY")) %>%
-  group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
-  summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
+  chunk_group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
+  chunk_summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
   collect() %>% 
   group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
   summarise(mean_delay = sum(sum_delay)/sum(n))
@@ -223,8 +223,8 @@ Compare the above the to timing without `srckeep`
 ```r
 tic = Sys.time()
 mean_dep_delay <- flights.df %>%
-  group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
-  summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
+  chunk_group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
+  chunk_summarise(sum_delay = sum(DEP_DELAY, na.rm = TRUE), n = n()) %>%
   collect() %>% 
   group_by(YEAR, MONTH, DAY_OF_MONTH) %>%
   summarise(mean_delay = sum(sum_delay)/sum(n))
