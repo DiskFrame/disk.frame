@@ -2,9 +2,12 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{group_by.disk.frame}
 \alias{group_by.disk.frame}
+\alias{chunk_group_by}
 \title{Group by within each disk.frame}
 \usage{
 \method{group_by}{disk.frame}(.data, ...)
+
+chunk_group_by(.data, ...)
 }
 \arguments{
 \item{.data}{a disk.frame}
@@ -19,6 +22,8 @@ reorganizes the chunks by the shard key.
 }
 \seealso{
 hard_group_by
+
+Other dplyr verbs: \code{\link{select.disk.frame}}
 
 Other dplyr verbs: \code{\link{select.disk.frame}}
 }

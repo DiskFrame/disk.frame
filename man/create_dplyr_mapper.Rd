@@ -4,12 +4,14 @@
 \alias{create_dplyr_mapper}
 \title{Create dplyr function for disk.frame}
 \usage{
-create_dplyr_mapper(dplyr_fn, warning_msg = NULL)
+create_dplyr_mapper(dplyr_fn, warning_msg = NULL, as.data.frame = TRUE)
 }
 \arguments{
 \item{dplyr_fn}{The dplyr function to create a mapper for}
 
 \item{warning_msg}{The warning message to display when invoking the mapper}
+
+\item{as.data.frame}{force the input chunk of a data.frame; needed for dtplyr}
 }
 \description{
 A function to make it easier to create functions like \code{filter}
