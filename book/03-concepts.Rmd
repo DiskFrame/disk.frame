@@ -1,9 +1,9 @@
 ---
-title: "Concepts for disk.frame"
+title: "Key disk.frame concepts"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{concepts}
+  %\VignetteIndexEntry{Key disk.frame concepts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

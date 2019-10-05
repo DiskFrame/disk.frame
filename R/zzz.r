@@ -14,9 +14,9 @@
 We have {future::nbrOfWorkers()} workers to use with disk.frame.
 To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.")),
     crayon::green("\n\n
-It is recommended that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:\n\n
+It is recommended that you run the following immediately to set up disk.frame with multiple workers in order to parallelize your operations:\n\n
 ```r
-# this willl set up disk.frame with multiple workers
+# this will set up disk.frame with multiple workers
 setup_disk.frame()
 # this will allow unlimited amount of data to be passed from worker to worker
 options(future.globals.maxSize = Inf)

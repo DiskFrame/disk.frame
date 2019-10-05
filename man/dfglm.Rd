@@ -2,7 +2,7 @@
 % Please edit documentation in R/glm.r
 \name{dfglm}
 \alias{dfglm}
-\title{Fit generalized linear model (glm) with disk.frame}
+\title{Fit generalized linear models (glm) with disk.frame}
 \usage{
 dfglm(formula, data, ..., glm_backend = c("biglm", "speedglm"))
 }
@@ -14,15 +14,15 @@ dfglm(formula, data, ..., glm_backend = c("biglm", "speedglm"))
 \item{...}{Additional arguments}
 
 \item{glm_backend}{Which package to use for fitting GLMs. The default is
-{biglm}, which has known issues with factor level if different levels are
-present in different chunks. The {speedglm} is more robust, but does not
+"biglm", which has known issues with factor level if different levels are
+present in different chunks. The "speedglm" option is more robust, but does not
 implement `predict` which makes prediction and implementation impossible.}
 }
 \value{
 An object of class \code{bigglm}
 }
 \description{
-Fits GLMs using {speedglm} or {biglm}. The return object will be exactly as
+Fits GLMs using `{speedglm}` or `{biglm}`. The return object will be exactly as
 those return by those functions. This is a convenience wrapper
 }
 \details{
