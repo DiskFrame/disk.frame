@@ -36,7 +36,7 @@ disk.frame <- function(path, backend = "fst") {
 #' @param shardkey the shard key
 #' @param shardchunks The number of chunks to shard to. Sometimes the number of actual file chunks is different to the number of intended chunks. In this case the shardchunks is the intended number
 #' @param ... any other metadata the user wishes to keep.
-#' @export
+# @export
 #' @examples
 #' cars.df = as.disk.frame(cars)
 #' 
