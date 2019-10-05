@@ -5,14 +5,14 @@
 \alias{chunk_group_by}
 \title{Group by within each disk.frame}
 \usage{
-\method{group_by}{disk.frame}(...)
+\method{group_by}{disk.frame}(.data, ...)
 
 chunk_group_by(.data, ...)
 }
 \arguments{
-\item{...}{same as the dplyr::group_by}
-
 \item{.data}{a disk.frame}
+
+\item{...}{same as the dplyr::group_by}
 }
 \description{
 The disk.frame group by operation perform group WITHIN each chunk. This is

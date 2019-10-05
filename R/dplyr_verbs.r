@@ -161,9 +161,7 @@ transmute.disk.frame <- create_dplyr_mapper(dplyr::transmute)
 #' @export
 #' @importFrom dplyr arrange
 #' @rdname dplyr_verbs
-arrange.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is in preparation for a more powerful `arrange` that sorts the whole disk.frame")
-}
+arrange.disk.frame =create_dplyr_mapper(dplyr::arrange, warning_msg="`arrange.disk.frame` is now deprecated. Please use `chunk_arrange` instead. This is in preparation for a more powerful `arrange` that sorts the whole disk.frame")
 
 #' @family dplyr verbs
 #' @export
@@ -213,17 +211,19 @@ chunk_summarise <- create_dplyr_mapper(dplyr::summarise)
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarize.disk.frame <- function(...) {
-  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
-}
+summarize.disk.frame <- create_dplyr_mapper(dplyr::summarize, warning_msg="`summarize.disk.frame` is now deprecated. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
+  #function(...) {
+  #stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
+#}
 
 #' @family dplyr verbs
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarise.disk.frame <- function(...) {
-  stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
-}
+summarise.disk.frame <- create_dplyr_mapper(dplyr::summarise, warning_msg="`summarise.disk.frame` is now deprecated. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
+#function(...) {
+#   stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
+# }
 
 #' @family dplyr verbs
 #' @export
@@ -401,9 +401,10 @@ groups.disk.frame <- function(x){
 #   }, lazy = TRUE)
 # }
 #group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, warning_msg = "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
-group_by.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
-}
+group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, warning_msg="`group_by.disk.frame` is now deprecated. Please use `chunk_group_by` instead. This is in preparation for a more powerful `group_by` framework")
+#function(...) {
+  #stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
+#}
 
 #' @export
 #' @family dplyr verbs
