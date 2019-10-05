@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
       </span>
     </div>
 
@@ -110,8 +110,8 @@
 <div id="intro" class="section level2">
 <h2 class="hasAnchor">
 <a href="#intro" class="anchor"></a>Intro</h2>
-<p>This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmkark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.</p>
-<p>The title was ‘inspired’ by <a href="https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/">this post titled “R beats Python! R beats Julia! Anyone else wanna challange R?”</a>.</p>
+<p>This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.</p>
+<p>The title was ‘inspired’ by <a href="https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/">this post titled “R beats Python! R beats Julia! Anyone else wanna challenge R?”</a>.</p>
 </div>
 <div id="tldr" class="section level1">
 <h1 class="hasAnchor">
@@ -121,16 +121,17 @@
 <h4 class="hasAnchor">
 <a href="#timings" class="anchor"></a>Timings</h4>
 <p>Please note I have not tried to record the precise times over many runs, but I aim illustrate the magnitude of speed of the different packages</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  <span class="dt">tool =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span>),</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="dt">timing =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">22</span>, <span class="dv">50</span>, <span class="dv">76</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">ggplot</span>(df) <span class="op">+</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tool, <span class="dt">weight =</span> timing), <span class="dt">stat =</span> <span class="st">"count"</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"seconds"</span>) <span class="op">+</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"Convert to desired format timing"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">tool =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span>),</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="dt">timing =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">22</span>, <span class="dv">50</span>, <span class="dv">76</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">ggplot</span>(df) <span class="op">+</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tool, <span class="dt">weight =</span> timing), <span class="dt">stat =</span> <span class="st">"count"</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"seconds"</span>) <span class="op">+</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"Convert to desired format timing"</span>)</span></code></pre></div>
 <p><img src="vs-dask-juliadb_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>Next up is timings for the simple aggregation</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</span>
@@ -186,11 +187,11 @@
 <span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></span>
 <span id="cb5-19"><a href="#cb5-19"></a><span class="co">#&gt; </span></span>
 <span id="cb5-20"><a href="#cb5-20"></a><span class="co">#&gt; </span></span>
-<span id="cb5-21"><a href="#cb5-21"></a><span class="co">#&gt; It is recommend that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a><span class="co">#&gt; It is recommended that you run the following immediately to setup disk.frame with multiple workers in order to parallelize your operations:</span></span>
 <span id="cb5-22"><a href="#cb5-22"></a><span class="co">#&gt; </span></span>
 <span id="cb5-23"><a href="#cb5-23"></a><span class="co">#&gt; </span></span>
 <span id="cb5-24"><a href="#cb5-24"></a><span class="co">#&gt; ```r</span></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="co">#&gt; # this willl set disk.frame with multiple workers</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a><span class="co">#&gt; # this willl set up disk.frame with multiple workers</span></span>
 <span id="cb5-26"><a href="#cb5-26"></a><span class="co">#&gt; setup_disk.frame()</span></span>
 <span id="cb5-27"><a href="#cb5-27"></a><span class="co">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></span>
 <span id="cb5-28"><a href="#cb5-28"></a><span class="co">#&gt; options(future.globals.maxSize = Inf)</span></span>
@@ -206,19 +207,19 @@
 <span id="cb5-38"><a href="#cb5-38"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span></span>
 <span id="cb5-39"><a href="#cb5-39"></a><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
 <span id="cb5-40"><a href="#cb5-40"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb5-41"><a href="#cb5-41"></a><span class="co">#&gt;    0.07    0.02    4.34</span></span></code></pre></div>
+<span id="cb5-41"><a href="#cb5-41"></a><span class="co">#&gt;    0.01    0.05    4.35</span></span></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>time_to_convert_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>))[<span class="dv">3</span>]</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a>time_to_convert_disk.frame</span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; elapsed </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   23.73</span></span></code></pre></div>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   23.96</span></span></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>time_to_agg_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(summ &lt;-<span class="st"> </span>df1[,.N, V1, <span class="dt">keep =</span> <span class="st">"V1"</span>][, .(<span class="dt">N =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(N)), V1])</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
 <span id="cb7-3"><a href="#cb7-3"></a>time_to_agg_disk.frame</span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    0.09    0.06    6.11</span></span></code></pre></div>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    0.14    0.05    6.47</span></span></code></pre></div>
 <p>We can inspect the result as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>summ</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt;                   V1   N</span></span>
@@ -236,8 +237,8 @@
 <p>Another way to perform the analysis is to use <code>dplyr</code> syntax to perform a two-stage “group-by” which is:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>df1 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="st">"V1"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">group_by</span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">N =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">N =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-5"><a href="#cb9-5"></a><span class="st">  </span>collect <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-6"><a href="#cb9-6"></a><span class="st">  </span><span class="kw">group_by</span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-7"><a href="#cb9-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">N =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(N)) <span class="op">%&gt;%</span><span class="st"> </span></span></code></pre></div>
@@ -258,7 +259,7 @@
 <span id="cb10-9"><a href="#cb10-9"></a>startTime <span class="op">=</span> datetime.now()</span>
 <span id="cb10-10"><a href="#cb10-10"></a>a.to_parquet(<span class="st">"c:/data/p03.parquet"</span>)</span>
 <span id="cb10-11"><a href="#cb10-11"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 50 seconds</span></span></code></pre></div>
-<p>and we can see tht converting to Parquet takes more time than <code>csv_to_disk.frame</code>. Now to test Dask’s ability to aggregate a simple use-case, we can also load only column into RAM to speed up the analysis.</p>
+<p>and we can see that converting to Parquet takes more time than <code>csv_to_disk.frame</code>. Now to test Dask’s ability to aggregate a simple use-case, we can also load only column into RAM to speed up the analysis.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>startTime <span class="op">=</span> datetime.now()</span>
 <span id="cb11-2"><a href="#cb11-2"></a>a <span class="op">=</span> dd.read_parquet(<span class="st">"c:/data/p03.parquet"</span>, columns<span class="op">=</span><span class="st">"var0"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3"></a>aa <span class="op">=</span> a.value_counts().compute()</span>
@@ -292,7 +293,7 @@
 <div class="sourceCode" id="cb14"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>using LambdaFn</span>
 <span id="cb14-2"><a href="#cb14-2"></a>@time groupby(@λ(size(_,<span class="fl">1</span>)), a, :Column1) <span class="co"># 6</span></span></code></pre></div>
 <p>Unfortunately, it’s much slower than both disk.frame and Dask.</p>
-<p>As a side note, I can use OnlineStats.jl to do aggregation (relatively) efficiently. I think OnlineStats is one of the bright spots for JuliaDB, as it has powerful online-algorithms that allows you to combine statistics by computing those statistics in chunks and combining the resutls from each chunk. It’s a shame that JuliaDB is not mature enough to make it shine more brightly. For an example of what it can do, see the example to compute the mean of <code>Column6</code> grouped by <code>Column1</code></p>
+<p>As a side note, I can use OnlineStats.jl to do aggregation (relatively) efficiently. I think OnlineStats is one of the bright spots for JuliaDB, as it has powerful online-algorithms that allows you to combine statistics by computing those statistics in chunks and combining the results from each chunk. It’s a shame that JuliaDB is not mature enough to make it shine more brightly. For an example of what it can do, see the example to compute the mean of <code>Column6</code> grouped by <code>Column1</code></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>@time groupreduce(Mean(), a, :Column1, select = :Column6)</span></code></pre></div>
 <p>You may have noticed that we have not converted JuliaDB.jl to disk. Here we will try that</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>@time JuliaDB.save(a, <span class="st">"c:/data/.jldb"</span>) <span class="co"># 26s</span></span></code></pre></div>
@@ -304,7 +305,7 @@
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
-<p>It is somewhat surprising that disk.frame is the speed king in this benchmark study, but I can’t take any of the credit as the speediness of disk.frame is due to the authors of fst, future (and parallel), and data.table. It’s also no surprise that Julia’s medium-data tool lags behind Python’s and R’s, because it’s a pattern noticed elsewhere in the data ecosystem. Julia’s niche and strength at this point is in computational problems that require lots of computation that do not necessarily invovled large amounts of input data (the Celeste project appears to be an exception but I think the computational demand there dominate the data demand).</p>
+<p>It is somewhat surprising that disk.frame is the speed king in this benchmark study, but I can’t take any of the credit as the speediness of disk.frame is due to the authors of fst, future (and parallel), and data.table. It’s also no surprise that Julia’s medium-data tool lags behind Python’s and R’s, because it’s a pattern noticed elsewhere in the data ecosystem. Julia’s niche and strength at this point is in computational problems that require lots of computation that do not necessarily involved large amounts of input data (the Celeste project appears to be an exception but I think the computational demand there dominate the data demand).</p>
 <p>Although disk.frame is the fastest, it’s syntax is not as convenient as Dask’s. Using Dask is almost the same as using pandas. In contrast, when using disk.frame, the user needs to be aware that operations happen in chunks, and hence a “two-stage” group-by is required. However, this will be addressed in a future planned package disk.frame.db which is will allow the user to “forget” the underlying architecture is made of chunks, and just focus on higher-level data operations.</p>
 </div>
 </div>

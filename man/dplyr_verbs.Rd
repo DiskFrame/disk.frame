@@ -58,7 +58,7 @@ filter_at.disk.frame(.data, ...)
 
 \method{transmute}{disk.frame}(.data, ...)
 
-\method{arrange}{disk.frame}(...)
+\method{arrange}{disk.frame}(.data, ...)
 
 chunk_arrange(.data, ...)
 
@@ -74,9 +74,9 @@ chunk_summarize(.data, ...)
 
 chunk_summarise(.data, ...)
 
-\method{summarize}{disk.frame}(...)
+\method{summarize}{disk.frame}(.data, ...)
 
-\method{summarise}{disk.frame}(...)
+\method{summarise}{disk.frame}(.data, ...)
 
 \method{do}{disk.frame}(.data, ...)
 
@@ -147,84 +147,5 @@ cars2 = cars.df \%>\%
 
 # clean up cars.df
 delete(cars.df)
-}
-\seealso{
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
-
-Other dplyr verbs: \code{\link{group_by.disk.frame}}
 }
 \concept{dplyr verbs}

@@ -15,12 +15,6 @@ knitr::opts_chunk$set(
 ```
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-
-
 <details>
   <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going.</summary>
 <iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
@@ -28,6 +22,12 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
+[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
+[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+[![Travis build status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
@@ -330,7 +330,7 @@ If you like `{disk.frame}` and want to speed up its development or perhaps you h
 
 ### Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/diskframe#backer)]
+Thank you to all our backers! [[Become a backer](https://opencollective.com/diskframe#backer)]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 

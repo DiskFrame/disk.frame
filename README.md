@@ -3,13 +3,6 @@
 
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Sponsors on Open
-Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
-[![Backers on Open
-Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-
 <details>
 
 <summary>Please take a moment to star the disk.frame Github repo if you
@@ -22,6 +15,16 @@ like disk.frame. It keeps me going.</summary>
 
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
 
+[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Sponsors on Open
+Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
+[![Backers on Open
+Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
+[![Travis build
+status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
@@ -248,7 +251,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpIJu9dm\\filea3433d27db7.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpstAhab\\file2ffc6304721e.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -375,7 +378,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.000s elapsed (0.000s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -395,7 +398,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.620s elapsed (0.190s cpu)
+#> group by took:  0.940s elapsed (0.180s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -420,7 +423,7 @@ res1 <- flights.df %>%
   collect
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.480s elapsed (0.310s cpu)
+#> group by took:  1.480s elapsed (0.280s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2
@@ -512,7 +515,7 @@ perhaps you have a feature request? Please consider sponsoring
 
 ### Backers
 
-Thank you to all our backers\! 🙏 \[[Become a
+Thank you to all our backers\! \[[Become a
 backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>

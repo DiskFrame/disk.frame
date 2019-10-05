@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 <div id="someone-wrote-a-blog-about-disk-frame-being-epic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#someone-wrote-a-blog-about-disk-frame-being-epic" class="anchor"></a>Someone wrote a blog about {disk.frame} being “epic”</h2>
-<p>Mr Bruno Rodrigues had kindly written <a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/">a nice blog post titled ‘{disk.frame} is epic’</a>. In the post, he compared {disk.frame}’s performance vs Spark’s on doing a simple group-by operation. The task is done on a single-machine and hence is not the ideal use-case for Spark. However, in <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/">an earlier post</a>, Bruno had shown how Spark can be used for this use case. This is symtomatic of what I call the “pre-mature adoption of Spark syndrome”. It’s not hard to find examples where Spark is used when a more light-weight tool like Dask or {disk.frame} could be more efficient. There is no need to use a sledgehammer to crack a nut. In data science, what a “nut” can represent is getting larger and larger. Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and Python, as many machines back then were still 32bit and hence did not have more than 4GB of RAM in general. Nowadays, 16GB laptop are common place, so any file less than 4GB in size can be considered a “nut”. Furthermore, if you use a tool like {disk.frame} which keeps the data on-disk until you need to process it, then the “nut” you can crack is now substantially larger than 4GB. I would argue, the sledgeheammer that is Spark should only be considered for <em>much</em> larger datasets. I don’t want to put a number to it, but the largest dataset I have dealt with is <a href="https://docs.rapids.ai/datasets/mortgage-data">the Fannie Mae dataset</a> which is about 200GB in size in CSV format.</p>
+<p>Mr Bruno Rodrigues had kindly written <a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/">a nice blog post titled ‘{disk.frame} is epic’</a>. In the post, he compared {disk.frame}’s performance vs Spark’s on doing a simple group-by operation. The task is done on a single-machine and hence is not the ideal use-case for Spark. However, in <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/">an earlier post</a>, Bruno had shown how Spark can be used for this use case. This is symptomatic of what I call the “premature adoption of Spark syndrome”. It’s not hard to find examples where Spark is used when a more light-weight tool like Dask or {disk.frame} could be more efficient. There is no need to use a sledgehammer to crack a nut. In data science, what a “nut” can represent is getting larger and larger. Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and Python, as many machines back then were still 32bit and hence did not have more than 4GB of RAM in general. Nowadays, 16GB laptop are common place, so any file less than 4GB in size can be considered a “nut”. Furthermore, if you use a tool like {disk.frame} which keeps the data on-disk until you need to process it, then the “nut” you can crack is now substantially larger than 4GB. I would argue, the sledgehammer that is Spark should only be considered for <em>much</em> larger datasets. I don’t want to put a number to it, but the largest dataset I have dealt with is <a href="https://docs.rapids.ai/datasets/mortgage-data">the Fannie Mae dataset</a> which is about 200GB in size in CSV format.</p>
 </div>
 <div id="how-to-make-disk-frame-more-epic" class="section level2">
 <h2 class="hasAnchor">
@@ -161,7 +161,7 @@
 <span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:02:48 elapsed (0.510s cpu)</span></span>
 <span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;    user  system elapsed </span></span>
 <span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;    0.51    0.32  168.72</span></span></code></pre></div>
-<p>As you can see the the 303 files are converted to a <code>disk.frame</code> in about ~3mins, this actually alot faster than Spark.</p>
+<p>As you can see the the 303 files are converted to a <code>disk.frame</code> in about ~3mins, this much faster than Spark.</p>
 </div>
 <div id="load-one-large-file-splitting" class="section level3">
 <h3 class="hasAnchor">
@@ -224,7 +224,7 @@
 <span id="cb9-7"><a href="#cb9-7"></a>  <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(path_to_data, <span class="st">"combined.csv"</span>),</span>
 <span id="cb9-8"><a href="#cb9-8"></a>  <span class="dt">in_chunk_size =</span> in_chunk_size,</span>
 <span id="cb9-9"><a href="#cb9-9"></a>  <span class="dt">backend =</span> <span class="st">"LaF"</span>))</span></code></pre></div>
-<p>there were mulitple warnings</p>
+<p>there were multiple warnings</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">#&gt; Loading required namespace: LaF</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="co">#&gt; Warning in FUN(X[[i]], ...): Unsupported type 'logical'; using default type</span></span>
 <span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; 'string'</span></span></code></pre></div>
@@ -236,21 +236,21 @@
 <div id="summary" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h3>
-<p>Here is a chart summarising the performance of the various approaches for reading large CSVs on my computer</p>
+<p>Here is a chart summarizing the performance of the various approaches for reading large CSVs on my computer</p>
 <p><img src="more-epic_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 </div>
 <div id="can-disk-frame-be-even-more-epic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-disk-frame-be-even-more-epic" class="anchor"></a>Can {disk.frame} be even more “epic”?</h2>
-<p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasised enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.</p>
+<p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</span>
 <span id="cb12-2"><a href="#cb12-2"></a></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a>mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-9"><a href="#cb12-9"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
 <span id="cb12-10"><a href="#cb12-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</span>
@@ -259,8 +259,8 @@
 <p>Compare the above the to timing without <code>srckeep</code></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</span>
 <span id="cb13-2"><a href="#cb13-2"></a>mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
 <span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
 <span id="cb13-7"><a href="#cb13-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</span>
