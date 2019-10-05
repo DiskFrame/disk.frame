@@ -160,7 +160,7 @@
 <span id="cb4-10"><a href="#cb4-10"></a>  <span class="dt">outdir =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"tmp_flights.df"</span>),</span>
 <span id="cb4-11"><a href="#cb4-11"></a>  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb4-12"><a href="#cb4-12"></a>flights.df</span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.df"</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.df"</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; nchunks: 6</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; nrow (at source): 336776</span></span>
 <span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; ncol (at source): 19</span></span>
@@ -184,7 +184,7 @@
 <span id="cb5-11"><a href="#cb5-11"></a>  <span class="dt">overwrite =</span> T)</span>
 <span id="cb5-12"><a href="#cb5-12"></a>  </span>
 <span id="cb5-13"><a href="#cb5-13"></a>flights.df</span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.df"</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.df"</span></span>
 <span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; nchunks: 6</span></span>
 <span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; nrow (at source): 336776</span></span>
 <span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; ncol (at source): 19</span></span>
@@ -206,10 +206,10 @@
 <span id="cb6-13"><a href="#cb6-13"></a>  <span class="dt">outdir =</span> df_path, </span>
 <span id="cb6-14"><a href="#cb6-14"></a>  <span class="dt">in_chunk_size =</span> <span class="dv">100000</span>)</span>
 <span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; Stage 1 of 2: splitting the file C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.csv into smallers files:</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf\file14d07ae37060</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; Stage 1 of 2: splitting the file C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.csv into smallers files:</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5\file2a94416e3c89</span></span>
 <span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; Stage 1 of 2 took: 0.170s elapsed (0.100s cpu)</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; Stage 1 of 2 took: 0.190s elapsed (0.140s cpu)</span></span>
 <span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
 <span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; Stage 2 of 2: Converting the smaller files into disk.frame</span></span>
 <span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
@@ -217,21 +217,21 @@
 <span id="cb6-24"><a href="#cb6-24"></a><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></span>
 <span id="cb6-25"><a href="#cb6-25"></a><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></span>
 <span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt; Converting 4 CSVs to 6 disk.frame each consisting of 6 chunks (Stage 1 of 2):</span></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; Stage 1 or 2 took: 1.580s elapsed (0.060s cpu)</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; Stage 1 or 2 took: 1.660s elapsed (0.040s cpu)</span></span>
 <span id="cb6-28"><a href="#cb6-28"></a><span class="co">#&gt; </span></span>
 <span id="cb6-29"><a href="#cb6-29"></a><span class="co">#&gt; Row-binding the 6 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></span>
-<span id="cb6-30"><a href="#cb6-30"></a><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.df</span></span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.df</span></span>
 <span id="cb6-31"><a href="#cb6-31"></a><span class="co">#&gt; Appending disk.frames:</span></span>
-<span id="cb6-32"><a href="#cb6-32"></a><span class="co">#&gt; Stage 2 of 2 took: 0.750s elapsed (0.110s cpu)</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="co">#&gt; Stage 2 of 2 took: 0.750s elapsed (0.140s cpu)</span></span>
 <span id="cb6-33"><a href="#cb6-33"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb6-34"><a href="#cb6-34"></a><span class="co">#&gt; Stage 1 &amp; 2 in total took: 2.330s elapsed (0.170s cpu)</span></span>
-<span id="cb6-35"><a href="#cb6-35"></a><span class="co">#&gt; Stage 2 of 2 took: 2.330s elapsed (0.170s cpu)</span></span>
+<span id="cb6-34"><a href="#cb6-34"></a><span class="co">#&gt; Stage 1 &amp; 2 in total took: 2.410s elapsed (0.180s cpu)</span></span>
+<span id="cb6-35"><a href="#cb6-35"></a><span class="co">#&gt; Stage 2 of 2 took: 2.410s elapsed (0.180s cpu)</span></span>
 <span id="cb6-36"><a href="#cb6-36"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb6-37"><a href="#cb6-37"></a><span class="co">#&gt; Stage 2 &amp; 2 took: 2.500s elapsed (0.270s cpu)</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a><span class="co">#&gt; Stage 2 &amp; 2 took: 2.600s elapsed (0.320s cpu)</span></span>
 <span id="cb6-38"><a href="#cb6-38"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
 <span id="cb6-39"><a href="#cb6-39"></a>  </span>
 <span id="cb6-40"><a href="#cb6-40"></a>flights.df</span>
-<span id="cb6-41"><a href="#cb6-41"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.df"</span></span>
+<span id="cb6-41"><a href="#cb6-41"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.df"</span></span>
 <span id="cb6-42"><a href="#cb6-42"></a><span class="co">#&gt; nchunks: 6</span></span>
 <span id="cb6-43"><a href="#cb6-43"></a><span class="co">#&gt; nrow (at source): 336776</span></span>
 <span id="cb6-44"><a href="#cb6-44"></a><span class="co">#&gt; ncol (at source): 19</span></span>
@@ -244,7 +244,7 @@
 <a href="#simple-dplyr-verbs-and-lazy-evaluation" class="anchor"></a>Simple <code>dplyr</code> verbs and lazy evaluation</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>flights.df1 &lt;-<span class="st"> </span><span class="kw">select</span>(flights.df, year<span class="op">:</span>day, arr_delay, dep_delay)</span>
 <span id="cb7-2"><a href="#cb7-2"></a>flights.df1</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpQHizpf/tmp_flights.df"</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpgFXpQ5/tmp_flights.df"</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; nchunks: 6</span></span>
 <span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt; nrow (at source): 336776</span></span>
 <span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; ncol (at source): 19</span></span>
@@ -727,26 +727,26 @@
 <span id="cb29-2"><a href="#cb29-2"></a><span class="co">#&gt; Warning in sample_frac.disk.frame(., 0.01): sample_frac: for disk.frames</span></span>
 <span id="cb29-3"><a href="#cb29-3"></a><span class="co">#&gt; weight = is not supported</span></span>
 <span id="cb29-4"><a href="#cb29-4"></a><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></span>
-<span id="cb29-5"><a href="#cb29-5"></a><span class="co">#&gt; 1 2013    12  20      820            822        -2      930            951</span></span>
-<span id="cb29-6"><a href="#cb29-6"></a><span class="co">#&gt; 2 2013     1  14     1516           1520        -4     1849           1842</span></span>
-<span id="cb29-7"><a href="#cb29-7"></a><span class="co">#&gt; 3 2013     1  11     1543           1555       -12     1754           1810</span></span>
-<span id="cb29-8"><a href="#cb29-8"></a><span class="co">#&gt; 4 2013     1   9      640            645        -5      750            808</span></span>
-<span id="cb29-9"><a href="#cb29-9"></a><span class="co">#&gt; 5 2013     1   2      845            842         3     1102           1059</span></span>
-<span id="cb29-10"><a href="#cb29-10"></a><span class="co">#&gt; 6 2013    12  19      842            836         6     1051           1034</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="co">#&gt; 1 2013     5  25     2053           2100        -7     2305           2338</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a><span class="co">#&gt; 2 2013    12  28     2052           2053        -1     2316           2333</span></span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="co">#&gt; 3 2013     1  10     1559           1600        -1     1717           1732</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a><span class="co">#&gt; 4 2013     5  15     1454           1459        -5     1705           1732</span></span>
+<span id="cb29-9"><a href="#cb29-9"></a><span class="co">#&gt; 5 2013    12  23     1730           1730         0     2050           2101</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="co">#&gt; 6 2013    12  30     1325           1325         0     1417           1428</span></span>
 <span id="cb29-11"><a href="#cb29-11"></a><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></span>
-<span id="cb29-12"><a href="#cb29-12"></a><span class="co">#&gt; 1       -21      EV   4409  N12921    EWR  RIC       51      277    8</span></span>
-<span id="cb29-13"><a href="#cb29-13"></a><span class="co">#&gt; 2         7      DL   2115  N363NW    LGA  MIA      163     1096   15</span></span>
-<span id="cb29-14"><a href="#cb29-14"></a><span class="co">#&gt; 3       -16      EV   3820  N15980    EWR  SDF      111      642   15</span></span>
-<span id="cb29-15"><a href="#cb29-15"></a><span class="co">#&gt; 4       -18      B6    102  N632JB    JFK  BUF       56      301    6</span></span>
-<span id="cb29-16"><a href="#cb29-16"></a><span class="co">#&gt; 5         3      EV   4255  N34110    EWR  CHS      108      628    8</span></span>
-<span id="cb29-17"><a href="#cb29-17"></a><span class="co">#&gt; 6        17      EV   4711  N13997    EWR  STL      144      872    8</span></span>
+<span id="cb29-12"><a href="#cb29-12"></a><span class="co">#&gt; 1       -33      B6    399  N505JB    LGA  MCO      119      950   21</span></span>
+<span id="cb29-13"><a href="#cb29-13"></a><span class="co">#&gt; 2       -17      EV   4645  N14974    EWR  JAX      125      820   20</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a><span class="co">#&gt; 3       -15      9E   3453  N601LR    JFK  BOS       39      187   16</span></span>
+<span id="cb29-15"><a href="#cb29-15"></a><span class="co">#&gt; 4       -27      DL   2347  N661DN    LGA  ATL      106      762   14</span></span>
+<span id="cb29-16"><a href="#cb29-16"></a><span class="co">#&gt; 5       -11      DL   2593  N713TW    JFK  SLC      283     1990   17</span></span>
+<span id="cb29-17"><a href="#cb29-17"></a><span class="co">#&gt; 6       -11      EV   4249  N13956    EWR  BWI       38      169   13</span></span>
 <span id="cb29-18"><a href="#cb29-18"></a><span class="co">#&gt;   minute            time_hour</span></span>
-<span id="cb29-19"><a href="#cb29-19"></a><span class="co">#&gt; 1     22 2013-12-20T13:00:00Z</span></span>
-<span id="cb29-20"><a href="#cb29-20"></a><span class="co">#&gt; 2     20 2013-01-14T20:00:00Z</span></span>
-<span id="cb29-21"><a href="#cb29-21"></a><span class="co">#&gt; 3     55 2013-01-11T20:00:00Z</span></span>
-<span id="cb29-22"><a href="#cb29-22"></a><span class="co">#&gt; 4     45 2013-01-09T11:00:00Z</span></span>
-<span id="cb29-23"><a href="#cb29-23"></a><span class="co">#&gt; 5     42 2013-01-02T13:00:00Z</span></span>
-<span id="cb29-24"><a href="#cb29-24"></a><span class="co">#&gt; 6     36 2013-12-19T13:00:00Z</span></span></code></pre></div>
+<span id="cb29-19"><a href="#cb29-19"></a><span class="co">#&gt; 1      0 2013-05-26T01:00:00Z</span></span>
+<span id="cb29-20"><a href="#cb29-20"></a><span class="co">#&gt; 2     53 2013-12-29T01:00:00Z</span></span>
+<span id="cb29-21"><a href="#cb29-21"></a><span class="co">#&gt; 3      0 2013-01-10T21:00:00Z</span></span>
+<span id="cb29-22"><a href="#cb29-22"></a><span class="co">#&gt; 4     59 2013-05-15T18:00:00Z</span></span>
+<span id="cb29-23"><a href="#cb29-23"></a><span class="co">#&gt; 5     30 2013-12-23T22:00:00Z</span></span>
+<span id="cb29-24"><a href="#cb29-24"></a><span class="co">#&gt; 6     25 2013-12-30T18:00:00Z</span></span></code></pre></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">
