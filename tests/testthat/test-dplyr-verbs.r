@@ -124,7 +124,7 @@ test_that("testing transmute", {
 test_that("testing arrange", {
   b = disk.frame("tmp_b_dv.df")
   
-  expect_error(df <- b %>%
+  expect_warning(df <- b %>%
     mutate(random_unif = runif(dplyr::n())) %>% 
     arrange(desc(random_unif)))
   
@@ -149,6 +149,15 @@ test_that("testing chunk_summarise", {
   
   expect_equal(df$suma, collect(b)$a %>% sum)
 })
+
+test_that("testing mutate within function works", {
+  test_f <- function(params, x_df){
+    x_df %>% mutate(aha = params[1]*cyl + params[2]*disp)
+  }
+  
+  expect_true("aha" %in% names(test_f(c(1, 2), mtcars)))
+})
+
 
 teardown({
   fs::dir_delete("tmp_b_dv.df")

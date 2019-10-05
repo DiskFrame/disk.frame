@@ -13,7 +13,7 @@ test_that("group_by", {
     group_by(id1) %>% 
     summarise(mv1 = mean(v1))
   
-  expect_error({
+  expect_warning({
     dff %>% 
     group_by(id1, id2) %>%
     summarise(mv1 = mean(v1)) %>% 
