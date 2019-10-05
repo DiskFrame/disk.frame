@@ -50,3 +50,5 @@ src-x64
 *.zip
 
 *.ok
+
+cran-mirror/
