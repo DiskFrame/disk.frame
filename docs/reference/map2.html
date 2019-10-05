@@ -70,7 +70,7 @@ gets run by .f(x.chunk, y.chunk)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
       </span>
     </div>
 
@@ -181,7 +181,7 @@ chunk_id</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>map2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/data.table/man/rbindlist.html'>rbindlist</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
+<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>map2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html'>rbindlist</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
 <span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;      speed dist
 #&gt;   1:     4    2
 #&gt;   2:     4   10
