@@ -28,6 +28,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
+[![Travis build status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
@@ -330,7 +332,7 @@ If you like `{disk.frame}` and want to speed up its development or perhaps you h
 
 ### Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/diskframe#backer)]
+Thank you to all our backers! Ã°Å¸â„¢Â [[Become a backer](https://opencollective.com/diskframe#backer)]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 

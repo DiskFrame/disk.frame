@@ -22,6 +22,10 @@ like disk.frame. It keeps me going.</summary>
 
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
 
+[![Travis build
+status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
@@ -248,7 +252,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpYDBYgK\\file36342204610f.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpassiTR\\file7d45c49579a.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -338,6 +342,12 @@ flights.df %>%
   group_by(year) %>% 
   summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
   collect
+#> Warning in group_by.disk.frame(., year): `group_by.disk.frame` is now
+#> deprecated. Please use `chunk_group_by` instead. This is in preparation for
+#> a more powerful `group_by` framework
+#> Warning in summarise.disk.frame(., sum_dist = sum(distance)):
+#> `summarise.disk.frame` is now deprecated. Please use `chunk_summarise`
+#> instead. This is in preparation for a more powerful `group_by` framework
 #> # A tibble: 6 x 2
 #>    year sum_dist
 #>   <int>    <dbl>
@@ -360,6 +370,12 @@ flights.df %>%
   collect %>% 
   group_by(year) %>% 
   summarise(sum_dist = sum(sum_dist))
+#> Warning in group_by.disk.frame(., year): `group_by.disk.frame` is now
+#> deprecated. Please use `chunk_group_by` instead. This is in preparation for
+#> a more powerful `group_by` framework
+#> Warning in summarise.disk.frame(., sum_dist = sum(distance)):
+#> `summarise.disk.frame` is now deprecated. Please use `chunk_summarise`
+#> instead. This is in preparation for a more powerful `group_by` framework
 #> # A tibble: 1 x 2
 #>    year  sum_dist
 #>   <int>     <dbl>
@@ -375,7 +391,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.010s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -394,8 +410,15 @@ res1 <- flights.df %>%
   group_by(qtr) %>% 
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
+#> Warning in group_by.disk.frame(., qtr): `group_by.disk.frame` is now
+#> deprecated. Please use `chunk_group_by` instead. This is in preparation for
+#> a more powerful `group_by` framework
+#> Warning in summarise.disk.frame(., sum_delay = sum(dep_delay, na.rm
+#> = TRUE), : `summarise.disk.frame` is now deprecated. Please use
+#> `chunk_summarise` instead. This is in preparation for a more powerful
+#> `group_by` framework
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.260s elapsed (0.160s cpu)
+#> group by took:  0.620s elapsed (0.170s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -419,8 +442,12 @@ res1 <- flights.df %>%
   summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
   collect
 #> Appending disk.frames:
+#> Warning in summarise.disk.frame(., avg_delay = mean(dep_delay,
+#> na.rm = TRUE)): `summarise.disk.frame` is now deprecated. Please use
+#> `chunk_summarise` instead. This is in preparation for a more powerful
+#> `group_by` framework
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.580s elapsed (0.360s cpu)
+#> group by took:  1.820s elapsed (0.370s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2
@@ -512,7 +539,7 @@ perhaps you have a feature request? Please consider sponsoring
 
 ### Backers
 
-Thank you to all our backers\! 🙏 \[[Become a
+Thank you to all our backers\! Ã°Å¸â„¢Â \[[Become a
 backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
