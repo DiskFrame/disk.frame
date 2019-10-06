@@ -19,3 +19,14 @@ group_by_aggregation <- function(chunkfn, agg, finalize) {
   class(res) <- "disk.frame.agg"
   res
 }
+
+library(disk.frame)
+a = disk.frame::as.disk.frame(mtcars)
+
+meanreduce = function(df, by ) {
+  df %>% 
+    map(~{
+      .x %>% 
+        group_by()
+    })
+}
