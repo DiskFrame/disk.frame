@@ -25,3 +25,12 @@ test_that("as.disk.frame fails if data frame has list-columns", {
 
     expect_error(as.disk.frame(df, "tmp_write_disk.frame", overwrite = TRUE, nchunks = 6))
 })
+
+test_that("write_disk.frame shard works", {
+  mtcars_df = as.disk.frame(mtcars, outdir = "mt_shard_by_cyl", shardby = c("cyl","vs"), nchunks = 3, overwrite = TRUE)
+  
+  res = mtcars_df %>% collect_list
+  expect_equal(length(res), 3)
+  testthat::expect_type(res, "list")
+  
+})

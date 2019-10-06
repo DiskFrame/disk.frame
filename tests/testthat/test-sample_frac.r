@@ -6,11 +6,13 @@ setup({
   as.disk.frame(a, "tmp_sample_frac.df", nchunks = 5, overwrite = T)
 })
 
-test_that("testing semi_join where right is data.frame", {
+test_that("testing sample_frac", {
   a = disk.frame("tmp_sample_frac.df")
-  expect_warning(a40 <- sample_frac(a, 0.4) %>% collect)
+  a40 <- sample_frac(a, 0.4) %>% collect
   
   expect_equal(nrow(a40), 40)
+  
+  expect_error(a40 <- sample_frac(a, 0.4, weight = 1) %>% collect)
 })
 
 teardown({
