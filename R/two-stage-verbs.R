@@ -23,10 +23,17 @@ group_by_aggregation <- function(chunkfn, agg, finalize) {
 library(disk.frame)
 a = disk.frame::as.disk.frame(mtcars)
 
-meanreduce = function(df, by ) {
+meanreduce = function(df, by, vars) {
+  vars1 = purrr::map(vars, ~{
+    glue("`_sum{.x}` = sum(.x)")
+  }) %>% 
+    paste("tmp123456789 = n()", collapse = ", ")
+  
+  # TODO fix this
   df %>% 
-    map(~{
-      .x %>% 
-        group_by()
-    })
+    group_by({{by}}) %>% 
+    summarise() %>% 
+    collect %>% 
+    group_by({{by}}) %>% 
+    summarise()
 }
