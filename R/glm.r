@@ -1,14 +1,14 @@
-#' Fit generalized linear model (glm) with disk.frame
+#' Fit generalized linear models (glm) with disk.frame
 #'
 #' @inherit biglm::bigglm
 #' 
 #' @description  
-#' Fits GLMs using {speedglm} or {biglm}. The return object will be exactly as
+#' Fits GLMs using `{speedglm}` or `{biglm}`. The return object will be exactly as
 #' those return by those functions. This is a convenience wrapper
 #'
 #' @param glm_backend Which package to use for fitting GLMs. The default is
-#'   {biglm}, which has known issues with factor level if different levels are
-#'   present in different chunks. The {speedglm} is more robust, but does not
+#'   "biglm", which has known issues with factor level if different levels are
+#'   present in different chunks. The "speedglm" option is more robust, but does not
 #'   implement `predict` which makes prediction and implementation impossible.
 #'
 #' @family Machine Learning (ML)

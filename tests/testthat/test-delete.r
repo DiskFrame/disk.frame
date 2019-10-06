@@ -1,12 +1,12 @@
 context("test-delete")
 
 setup({
-  #setup_disk.frame(workers = 1)
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_del_delete", overwrite=T)
+  setup_disk.frame(workers = 2)
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), file.path(tempdir(), "tmp_del_delete"), overwrite = TRUE)
 })
 
 test_that("data.table .N", {
-  df = disk.frame("tmp_del_delete")
+  df = disk.frame(file.path(tempdir(), "tmp_del_delete"))
   p = attr(df, "path")
   expect_true(fs::dir_exists(p))
   

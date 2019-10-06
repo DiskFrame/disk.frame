@@ -2,11 +2,11 @@ context("test-dplyr-verbs")
 
 setup({
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_b_dv.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_b_dv.df"), nchunks = 5, overwrite = T)
 })
 
 test_that("testing select", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df = b %>% 
     select(a) %>% 
@@ -16,7 +16,7 @@ test_that("testing select", {
 })
 
 test_that("testing rename", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df = b %>% 
     rename(a_new_name = a) %>% 
@@ -26,7 +26,7 @@ test_that("testing rename", {
 })
 
 test_that("testing filter", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df = b %>% 
     filter(a <= 100, b <= 10) %>% 
@@ -36,7 +36,7 @@ test_that("testing filter", {
 })
 
 test_that("testing filter - global vars", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   one_hundred = 100
   
@@ -48,7 +48,7 @@ test_that("testing filter - global vars", {
 })
 
 test_that("testing mutate", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   
   df = b %>% 
@@ -97,7 +97,7 @@ test_that("testing mutate", {
 })
 
 test_that("testing mutate user-defined function", {
-   b = disk.frame("tmp_b_dv.df")
+   b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
    
    
    udf = function(a1, b1) {
@@ -112,7 +112,7 @@ test_that("testing mutate user-defined function", {
 })
 
 test_that("testing transmute", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df = b %>% 
     transmute(d = a + b) %>% 
@@ -122,7 +122,7 @@ test_that("testing transmute", {
 })
 
 test_that("testing arrange", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   expect_warning(df <- b %>%
     mutate(random_unif = runif(dplyr::n())) %>% 
@@ -140,7 +140,7 @@ test_that("testing arrange", {
 })
 
 test_that("testing chunk_summarise", {
-  b = disk.frame("tmp_b_dv.df")
+  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df = b %>%
     chunk_summarise(suma = sum(a)) %>% 
@@ -160,5 +160,5 @@ test_that("testing mutate within function works", {
 
 
 teardown({
-  fs::dir_delete("tmp_b_dv.df")
+  fs::dir_delete(file.path(tempdir(), "tmp_b_dv.df"))
 })

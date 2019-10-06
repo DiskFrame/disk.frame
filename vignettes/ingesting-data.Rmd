@@ -3,7 +3,7 @@ title: "Ingesting Data"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ingesting-data}
+  %\VignetteIndexEntry{Ingesting data including CSVs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

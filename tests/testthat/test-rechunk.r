@@ -5,9 +5,9 @@ setup({
 
 test_that("testing rechunk 5 to 4", {
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_rechunks.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_rechunks.df"), nchunks = 5, overwrite = T)
 
-  b = disk.frame("tmp_rechunks.df")
+  b = disk.frame(file.path(tempdir(), "tmp_rechunks.df"))
   
   b = rechunk(b, 4)
   expect_equal(nrow(b), 100)
@@ -22,9 +22,9 @@ test_that("testing rechunk 5 to 4", {
 
 test_that("testing rechunk 5 to 3", {
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_rechunks2.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_rechunks2.df"), nchunks = 5, overwrite = T)
   
-  b = disk.frame("tmp_rechunks2.df")
+  b = disk.frame(file.path(tempdir(), "tmp_rechunks2.df"))
   
   b = rechunk(b, 3)
   expect_equal(nrow(b), 100)
@@ -39,9 +39,9 @@ test_that("testing rechunk 5 to 3", {
 
 test_that("testing rechunk 5 to 6", {
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_rechunks3.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_rechunks3.df"), nchunks = 5, overwrite = T)
   
-  b = disk.frame("tmp_rechunks3.df")
+  b = disk.frame(file.path(tempdir(), "tmp_rechunks3.df"))
   
   b = rechunk(b, 6)
   expect_equal(nrow(b), 100)
@@ -56,9 +56,9 @@ test_that("testing rechunk 5 to 6", {
 
 test_that("testing rechunk 5 to 7", {
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_rechunks4.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_rechunks4.df"), nchunks = 5, overwrite = T)
   
-  b = disk.frame("tmp_rechunks4.df")
+  b = disk.frame(file.path(tempdir(), "tmp_rechunks4.df"))
   
   b = rechunk(b, 7)
   expect_equal(nrow(b), 100)
@@ -75,8 +75,8 @@ test_that("testing rechunk 5 to 7", {
 
 
 teardown({
-  fs::dir_delete("tmp_rechunks.df")
-  fs::dir_delete("tmp_rechunks2.df")
-  fs::dir_delete("tmp_rechunks3.df")
-  fs::dir_delete("tmp_rechunks4.df")
+  fs::dir_delete(file.path(tempdir(), "tmp_rechunks.df"))
+  fs::dir_delete(file.path(tempdir(), "tmp_rechunks2.df"))
+  fs::dir_delete(file.path(tempdir(), "tmp_rechunks3.df"))
+  fs::dir_delete(file.path(tempdir(), "tmp_rechunks4.df"))
 })

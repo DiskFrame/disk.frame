@@ -22,7 +22,8 @@ df_build_site <- function() {
   pkgdown::build_site()
 }
 
-df_setup_vignette <- function() {
+df_setup_vignette <- function(excl = "") {
+  
   # remove cache
   purrr::walk(list.dirs("vignettes/",recursive = FALSE), ~{
     fs::dir_delete(.x)
@@ -33,9 +34,8 @@ df_setup_vignette <- function() {
   lf = lf[!is.na(as.integer(sapply(lf, function(x) substr(x, 1, 2))))]
   
   
-  # lf = lf[lf != "08-more-epic.Rmd"]
-  # lf = lf[lf != "06-vs-dask-juliadb.Rmd"]
-  # lf = lf[lf != "01-intro.Rmd"]
+  lf = lf[sapply(lf, function(x) !(x %in% excl))]
+  
   
   purrr::walk(lf, function(file) {
     fs::file_copy(
@@ -46,7 +46,7 @@ df_setup_vignette <- function() {
 }
 
 df_check <- function() {
-  df_setup_vignette()
+  df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"))
   #devtools::clean_vignettes()
   
   devtools::document()

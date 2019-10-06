@@ -2,11 +2,11 @@ context("test-map")
 
 setup({
   b = data.frame(a = 51:150, b = 1:100)
-  as.disk.frame(b, "tmp_map.df", nchunks = 5, overwrite = T)
+  as.disk.frame(b, file.path(tempdir(), "tmp_map.df"), nchunks = 5, overwrite = T)
 })
 
 test_that("testing map lazy", {
-  b = disk.frame("tmp_map.df")
+  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
   df = b %>% map(~.x[1])
@@ -21,7 +21,7 @@ test_that("testing map lazy", {
 })
 
 test_that("testing map eager", {
-  b = disk.frame("tmp_map.df")
+  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
   df = b %>% map(~.x[1], lazy = F)
@@ -34,7 +34,7 @@ test_that("testing map eager", {
 })
 
 test_that("testing delayed", {
-  b = disk.frame("tmp_map.df")
+  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
   df = b %>% delayed(~.x[1])
@@ -48,7 +48,7 @@ test_that("testing delayed", {
 
 
 test_that("testing map_dfr", {
-  b = disk.frame("tmp_map.df")
+  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
   df = b %>% map_dfr(~.x[1,])
@@ -58,7 +58,7 @@ test_that("testing map_dfr", {
 
 
 test_that("testing imap", {
-  b = disk.frame("tmp_map.df")
+  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
   df = b %>% imap_dfr(~{
@@ -72,5 +72,5 @@ test_that("testing imap", {
 
 
 teardown({
-  fs::dir_delete("tmp_map.df")
+  fs::dir_delete(file.path(tempdir(), "tmp_map.df"))
 })
