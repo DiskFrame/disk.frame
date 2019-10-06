@@ -1,10 +1,9 @@
 # disk.frame 0.2.1
-* removed group_by, arrange, summarise
+* deprecated group_by, arrange, summarise
 * add chunk_group_by, chunk_arrange, chunk_summarise
-
-# disk.frame 0.1.2
 * fit GLMs with `dfglm`
-* fixed so that dplyr function also work in mutate
+* fixed so that dplyr function also work in mutate even with ~ in the name
+* fixed disk.frame so that in works in functions too
 
 # disk.frame 0.1.1
 

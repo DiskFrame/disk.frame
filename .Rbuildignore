@@ -60,4 +60,5 @@ utils$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^report_files$
 ^appveyor\.yml$

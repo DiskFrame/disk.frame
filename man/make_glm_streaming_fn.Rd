@@ -9,7 +9,7 @@ make_glm_streaming_fn(data, verbose = FALSE)
 \arguments{
 \item{data}{a disk.frame}
 
-\item{verbose}{Whether to print the status of data loading. Default to TRUE}
+\item{verbose}{Whether to print the status of data loading. Default to FALSE}
 }
 \value{
 return a function, fn, that can be used as the data argument in biglm::bigglm or speedglm::shglm

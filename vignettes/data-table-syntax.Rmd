@@ -3,7 +3,7 @@ title: "Using data.table syntax with disk.frame"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{using-data.table-syntax}
+  %\VignetteIndexEntry{Using data.table syntax}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
