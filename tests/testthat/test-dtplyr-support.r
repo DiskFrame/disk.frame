@@ -35,6 +35,7 @@ test_that("testing dtplyr", {
   # lazy_dt.default <- function(...) {
   #   dtplyr::lazy_dt(...)
   # }
+  expect_true(TRUE)
 })
 
 

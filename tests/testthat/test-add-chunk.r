@@ -1,49 +1,41 @@
 context("test-add-chunk")
 
 setup({
-  setup_disk.frame(workers = 1)
+  setup_disk.frame(workers = 2)
 })
 
 test_that("testing add chunk without naming chunk_id", {
   a = data.frame(a = 1:100, b = 1:100)
   
-  as.disk.frame(a, "tmp_a.df", overwrite = TRUE)
-  as.disk.frame(a, "tmp_a1.df", overwrite = TRUE)
-  
-  a = disk.frame("tmp_a.df")
+  a1 = as.disk.frame(a, overwrite = TRUE)
   
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
   
-  add_chunk(a, b)
-  expect_equal(nrow(a), 200)
+  add_chunk(a1, b)
+  expect_equal(nrow(a1), 200)
   
-  add_chunk(a, d)
-  expect_equal(nrow(a), 250)
+  add_chunk(a1, d)
+  expect_equal(nrow(a1), 250)
   
-  fs::dir_delete("tmp_a1.df")
+  delete(a1)
 })
 
 test_that("testing add chunk by naming chunk_id", {
   a = data.frame(a = 1:100, b = 1:100)
   
-  as.disk.frame(a, "tmp_a1.df", overwrite = T)
-  
-  a = disk.frame("tmp_a1.df")
-  
+  a1 = as.disk.frame(a, overwrite = TRUE)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
   
-  add_chunk(a, b, chunk_id = nchunks(a)+2)
-  expect_equal(nrow(a), 200)
+  add_chunk(a1, b, chunk_id = nchunks(a1)+2)
+  expect_equal(nrow(a1), 200)
   
-  add_chunk(a, d, chunk_id = nchunks(a)+2)
-  expect_equal(nrow(a), 250)
+  add_chunk(a1, d, chunk_id = nchunks(a1)+2)
+  expect_equal(nrow(a1), 250)
   
-  fs::dir_delete("tmp_a1.df")
+  delete(a1)
 })
 
 teardown({
-  # fs::dir_delete("tmp_a.df")
-  # fs::dir_delete("tmp_a1.df")
 })

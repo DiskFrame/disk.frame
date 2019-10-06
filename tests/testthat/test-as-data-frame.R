@@ -8,5 +8,7 @@ test_that("as.data.frame works", {
   expect_s3_class(dff, "data.frame")
   expect_s3_class(dft, "data.table")
   expect_equal(nrow(dff), 1e5+11)
+  
+  delete(df)
 })
 
