@@ -1,4 +1,4 @@
-# disk.frame 0.2.1
+# disk.frame 0.2.0
 * deprecated group_by, arrange, summarise
 * add chunk_group_by, chunk_arrange, chunk_summarise
 * fit GLMs with `dfglm`
