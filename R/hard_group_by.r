@@ -80,6 +80,7 @@ progressbar <- function(df) {
 #' @param overwrite overwrite the out put directory
 #' @param add same as dplyr::group_by
 #' @param .drop same as dplyr::group_by
+#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
 #' @export
 #' @examples
 #' iris.df = as.disk.frame(iris, nchunks = 2)
@@ -108,10 +109,18 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 #' @importFrom purrr map
 #' @importFrom purrr map
 #' @export
-hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE) {
+hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
+  stopifnot(shardby_function %in% c("hash", "sort"))
+  
+  if (shardby_function == "sort" && is.null(sort_splits)){
+    sort_splits <- map(df, sample_n, size=ceiling(nchunks / disk.frame::nchunks(df))) %>% 
+      select(...) %>%
+      collect() %>%
+      sample_n(size=(nchunks-1))
+  }
   
   # test if the unlist it will error
   
@@ -126,7 +135,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     # shard and create temporary diskframes
     tmp_df  = map(df, function(df1) {
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
     
     
@@ -155,11 +164,13 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     by = rlang::enquos(...) %>% 
       substr(2, nchar(.))
     
+
+    
     # shard and create temporary diskframes
     tmp_df  = map(df, function(df1) {
       ##browser
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
     
     # now rbindlist
