@@ -109,17 +109,40 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 #' @importFrom purrr map
 #' @importFrom purrr map
 #' @export
-hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
+hard_group_by.disk.frame <- function(
+    df, 
+    ..., 
+    outdir=tempfile("tmp_disk_frame_hard_group_by"), 
+    nchunks = disk.frame::nchunks(df), 
+    overwrite = TRUE, 
+    shardby_function="hash", 
+    sort_splits=NULL, 
+    desc_vars=NULL, 
+    sort_split_sample_size=100
+  ) {
+  
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
   stopifnot(shardby_function %in% c("hash", "sort"))
   
   if (shardby_function == "sort" && is.null(sort_splits)){
-    sort_splits <- map(df, sample_n, size=ceiling(nchunks / disk.frame::nchunks(df))) %>% 
+    # Sample enough per chunk to generate reasonable splits
+    sample_size_per_chunk = ceiling(nchunks / disk.frame::nchunks(df)) * sort_split_sample_size
+    
+    # Sample and sort
+    sort_splits_sample <- map(df, sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
       select(...) %>%
       collect() %>%
-      sample_n(size=(nchunks-1))
+      arrange(!!!syms(...))
+    
+    # If 100 chunks, this return get 99 splits based on percentiles.
+    ntiles <- round((1:(nchunks-1)) * (nrow(sort_splits_sample) / (nchunks)))
+    
+    # Get splits. May lead to less than nchunks if duplicates are selected.
+    sort_splits <- sort_splits_sample %>% 
+      slice(ntiles) %>%
+      distinct()
   }
   
   # test if the unlist it will error
