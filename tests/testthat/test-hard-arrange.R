@@ -7,7 +7,7 @@ setup({
 })
 
 
-test_that("test hard_arrange on disk.frame", {
+test_that("test hard_arrange on disk.frame, single factor", {
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
@@ -17,7 +17,9 @@ test_that("test hard_arrange on disk.frame", {
   sorted_df <- sorted_dff %>% collect
   
   expect_true(!is.unsorted(sorted_df$id1))
-  
+})
+
+test_that("test hard_arrange on disk.frame, two and three factors", {    
   # Sort ascending, two levels
   sorted_dff <- dff %>% hard_arrange(id1, id4)
   sorted_df <- sorted_dff %>% collect
@@ -27,6 +29,18 @@ test_that("test hard_arrange on disk.frame", {
   )
   expect_true(!is.unsorted(sorted_df$id1_id4))
   
+  # Sort ascending, three levels, from already partially sorted disk frame
+  sorted_dff2 <- sorted_dff %>% hard_arrange(id1, id4, id6)
+  sorted_df2 <- sorted_dff2 %>% collect
+  
+  sorted_df2$id1_id4_id6 <- paste0(
+    sorted_df2$id1,
+    formatC(sorted_df2$id4, width=3, format="d", flag= "0"),
+    formatC(sorted_df2$id6, width=3, format="d", flag= "0"))
+  expect_true(!is.unsorted(sorted_df2$id1_id4_id6))
+})
+
+test_that("test hard_arrange on disk.frame, two factors", { 
   # Sort decending, two levels
   desc_dff <- dff %>% hard_arrange(desc(id4), id2)
   desc_dff <- desc_dff %>% collect
@@ -39,17 +53,6 @@ test_that("test hard_arrange on disk.frame", {
     formatC(max(desc_dff$id4) - desc_dff$id4, width=3, format="d", flag= "0"), 
     desc_dff$id2)
   expect_true(!is.unsorted(-desc_dff$id4))
-  
-  # Sort ascending, three levels, from already partially sorted disk frame
-  sorted_dff2 <- sorted_dff %>% hard_arrange(id1, id4, id6)
-  sorted_df2 <- sorted_dff2 %>% collect
-
-  sorted_df2$id1_id4_id6 <- paste0(
-    sorted_df2$id1,
-    formatC(sorted_df2$id4, width=3, format="d", flag= "0"),
-    formatC(sorted_df2$id6, width=3, format="d", flag= "0"))
-  expect_true(!is.unsorted(sorted_df2$id1_id4_id6))
-  
 })
 
 test_that("test hard_arrange on data.frame", {
@@ -67,6 +70,6 @@ test_that("test hard_arrange on data.frame", {
 })
 
 teardown({
-  fs::file_delete("tmp_pls_delete_gb.csv")
-  fs::dir_delete("tmp_pls_delete_gb.df")
+  fs::file_delete(file.path(tempdir(), "tmp_pls_delete_gb.csv"))
+  fs::dir_delete(file.path(tempdir(), "tmp_pls_delete_gb.df"))
 })
