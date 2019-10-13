@@ -19,7 +19,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
-rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE) {
+rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
   
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
@@ -75,7 +75,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
 
 
   if(user_had_set_shard_by) {
-    return(hard_group_by(df, shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE))
+    return(hard_group_by(df, shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars))
   } else if (identical(shardby, "") | is.null(shardby)) {
     # if no existing shardby 
     nr = nrow(df)

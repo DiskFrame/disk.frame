@@ -30,7 +30,7 @@ write_disk.frame <- function(
     nchunks.disk.frame(df),
     recommend_nchunks(df)),
   overwrite = FALSE,
-  shardby=NULL, compress = 50, ...) {
+  shardby=NULL, compress = 50, shardby_function="hash", sort_splits=NULL, desc_vars=NULL, ...) {
 
   force(nchunks)
   overwrite_check(outdir, overwrite)
@@ -52,6 +52,8 @@ write_disk.frame <- function(
             overwrite = TRUE,
             shardby = shardby,
             compress = compress,
+            shardby_function=shardby_function, 
+            sort_splits=sort_splits, desc_vars=desc_vars,
             ...
             )
     }
