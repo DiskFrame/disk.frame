@@ -36,7 +36,6 @@ hard_arrange.data.frame <- function(df, ...) {
 
 #' @rdname hard_arrange
 #' @importFrom purrr map
-#' @importFrom purrr map
 #' @export
 hard_arrange.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_arrange"), nchunks = disk.frame::nchunks(df), overwrite = TRUE) {
   overwrite_check(outdir, overwrite)
