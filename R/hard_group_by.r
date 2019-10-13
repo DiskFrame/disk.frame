@@ -107,7 +107,6 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 
 #' @rdname hard_group_by
 #' @importFrom purrr map
-#' @importFrom purrr map
 #' @export
 hard_group_by.disk.frame <- function(
     df, 
@@ -133,8 +132,16 @@ hard_group_by.disk.frame <- function(
     # Sample and sort
     sort_splits_sample <- map(df, sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
       select(...) %>%
-      collect() %>%
-      arrange(!!!syms(...))
+      collect()
+    
+    # NSE
+    tryCatch({
+      sort_splits_sample <- sort_splits_sample %>%
+        arrange(!!!syms(...))
+    }, error = function(e) {
+      sort_splits_sample <- sort_splits_sample %>%
+        arrange(...)
+    })
     
     # If 100 chunks, this return get 99 splits based on percentiles.
     ntiles <- round((1:(nchunks-1)) * (nrow(sort_splits_sample) / (nchunks)))
