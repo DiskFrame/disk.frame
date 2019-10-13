@@ -8,32 +8,40 @@
 # shard_by_rule <- splitstr2i(split_values)
 # code = glue::glue("df[,.out.disk.frame.id := {shard_by_rule}]")
 
+# Escapes strings
+escape <- function(x) {
+  if(is.character(x)){
+    paste0("\"", x, "\"")
+  } else {
+    x
+  }
+}
+
+# Switch condition - returns
+# ({name} < {split_value} | ({name} == {split_value} ...
+
+switchcond <- function(name, split_values, desc_vars){ 
+  paste0("(",
+         name, 
+         ifelse(name %in% desc_vars, " < ", " > "),
+         escape(split_values[,name]), 
+         " | (",
+         name, 
+         " == ",
+         escape(split_values[,name])
+  )
+}
+
+# Composes the switch conditions, so each split row becomes
+# ({name1} < {split_value1} | ({name1} == {split_value1} & 
+#    ({name2} < {split_value2} | ({name2} == {split_value2} ...)))) * 1
+# the sum of the split row is the id
 sortablestr2i <- function(split_values, desc_vars){
-  escape <- function(x) {
-    if(is.character(x)){
-      paste0("\"", x, "\"")
-    } else {
-      x
-    }
-  }
-  
-  switchcond <- function(name){ 
-      paste0("(",
-             name, 
-             ifelse(name %in% desc_vars, " < ", " > "),
-             escape(split_values[,name]), 
-             " | (",
-             name, 
-             " == ",
-             escape(split_values[,name])
-             )
-  }
-  
   do.call(
     paste,
     c(
       lapply(
-        as.list(do.call(paste, c(lapply(colnames(split_values), switchcond), sep=" & "))),
+        as.list(do.call(paste, c(lapply(colnames(split_values), switchcond, split_values, desc_vars), sep=" & "))),
         function(x) { paste0("(", x, paste0(rep(")", ncol(split_values) * 2 + 1), collapse = ""), "* 1")}
       ),
     sep = " + "
