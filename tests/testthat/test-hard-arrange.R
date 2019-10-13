@@ -19,7 +19,11 @@ test_that("test hard_arrange on disk.frame, single factor", {
   expect_true(!is.unsorted(sorted_df$id1))
 })
 
-test_that("test hard_arrange on disk.frame, two and three factors", {    
+test_that("test hard_arrange on disk.frame, two and three factors", {   
+  dff = csv_to_disk.frame(
+    file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
+    file.path(tempdir(), "tmp_pls_delete_gb.df"))
+  
   # Sort ascending, two levels
   sorted_dff <- dff %>% hard_arrange(id1, id4)
   sorted_df <- sorted_dff %>% collect
@@ -41,6 +45,10 @@ test_that("test hard_arrange on disk.frame, two and three factors", {
 })
 
 test_that("test hard_arrange on disk.frame, two factors", { 
+  dff = csv_to_disk.frame(
+    file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
+    file.path(tempdir(), "tmp_pls_delete_gb.df"))
+    
   # Sort decending, two levels
   desc_dff <- dff %>% hard_arrange(desc(id4), id2)
   desc_dff <- desc_dff %>% collect
