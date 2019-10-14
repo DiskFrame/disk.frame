@@ -7,8 +7,12 @@ setup({
 })
 
 test_that("test hard_arrange on disk.frame, single chunk", {
-  iris.df = as.disk.frame(iris, nchunks = 1)
+  # Randomise rows since rows are already sorted
+  iris.df = as.disk.frame(sample_n(iris, nrow(iris)), nchunks = 1)
   iris_hard.df = hard_arrange(iris.df, Species)
+  
+  # Check sort
+  expect_true(!is.unsorted(iris_hard.df$Species))
 })
 
 test_that("test hard_arrange on disk.frame, single variable", {
@@ -44,24 +48,24 @@ test_that("test hard_arrange on disk.frame, two and three variables", {
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
   
+  dfp <- read.csv(file.path(tempdir(), "tmp_pls_delete_gb.csv"))
+  
   # Sort ascending, two levels
-  sorted_dff <- dff %>% hard_arrange(id1, id4)
-  sorted_df <- sorted_dff %>% collect
-  sorted_df$id1_id4 <- paste0(
-    sorted_df$id1, 
-    formatC(sorted_df$id4, width=3, format="d", flag= "0")
-  )
-  expect_true(!is.unsorted(sorted_df$id1_id4))
+  sorted_dff <- dff %>% hard_arrange(id1, id4) %>% collect
+  sorted_dfp <- dff %>% collect %>% dplyr::arrange(id1, id4) 
+  
+  # Compare vs dplyr
+  expect_true(all(sorted_dff$id1 == sorted_dfp$id1))
+  expect_true(all(sorted_dff$id4 == sorted_dfp$id4))
   
   # Sort ascending, three levels, from already partially sorted disk frame
-  sorted_dff2 <- sorted_dff %>% hard_arrange(id1, id4, id6)
-  sorted_df2 <- sorted_dff2 %>% collect
+  sorted_dff2 <- sorted_dff %>% hard_arrange(id1, id4, id6) %>% collect
+  sorted_dfp2 <- dff %>% collect %>% dplyr::arrange(id1, id4, id6) 
   
-  sorted_df2$id1_id4_id6 <- paste0(
-    sorted_df2$id1,
-    formatC(sorted_df2$id4, width=3, format="d", flag= "0"),
-    formatC(sorted_df2$id6, width=3, format="d", flag= "0"))
-  expect_true(!is.unsorted(sorted_df2$id1_id4_id6))
+  # Compare vs dplyr
+  expect_true(all(sorted_dff2$id1 == sorted_dfp2$id1))
+  expect_true(all(sorted_dff2$id4 == sorted_dfp2$id4))
+  expect_true(all(sorted_dff2$id6 == sorted_dfp2$id6))  
 })
 
 test_that("test hard_arrange on disk.frame, two factors", { 
@@ -83,18 +87,22 @@ test_that("test hard_arrange on disk.frame, two factors", {
   expect_true(!is.unsorted(-desc_dff$id4))
 })
 
-test_that("test hard_arrange on data.frame", {
+test_that("test hard_arrange on data.frame vs dplyr", {
   df = disk.frame:::gen_datatable_synthetic(1e3+11)
   
   # Sort ascending
-  sorted_dff <- df %>% hard_arrange(id1, id4)
-  sorted_df <- sorted_dff %>% collect
-  expect_true(!is.unsorted(sorted_df$id1))
+  sorted_dff <- df %>% hard_arrange(id1, id4) %>% collect
+  sorted_dfp <- df %>% dplyr::arrange(id1, id4)
+  
+  expect_true(all(sorted_dff$id1 == sorted_dfp$id1))
+  expect_true(all(sorted_dff$id4 == sorted_dfp$id4))
   
   # Sort decending
-  desc_dff <- df %>% hard_arrange(desc(id4), id2)
-  desc_df <- desc_dff %>% collect
-  expect_true(!is.unsorted(-desc_df$id4))
+  desc_dff <- df %>% hard_arrange(desc(id4), id2) %>% collect
+  desc_dfp <- df %>% dplyr::arrange(desc(id4), id2) 
+  
+  expect_true(all(sorted_dff$id4 == sorted_dfp$id4))
+  expect_true(all(sorted_dff$id2 == sorted_dfp$dfp))  
 })
 
 teardown({
