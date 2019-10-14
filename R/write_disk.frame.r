@@ -8,6 +8,9 @@
 #' @param overwrite overwrite output directory
 #' @param shardby the columns to shard by
 #' @param compress compression ratio for fst files
+#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
+#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
+#' @param desc_vars for the "sort" shardby function, the variables to sort descending. 
 #' @param ... passed to map.disk.frame
 #' @export
 #' @import fst fs

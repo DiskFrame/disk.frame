@@ -8,10 +8,27 @@
 # shard_by_rule <- splitstr2i(split_values)
 # code = glue::glue("df[,.out.disk.frame.id := {shard_by_rule}]")
 
-# Escapes strings
-escape <- function(x) {
-  if(is.character(x)){
+# Check if date
+is.date <- function(x) inherits(x, 'Date')
+
+# Escapes names
+# Factors are converted to numbers
+escape_name <- function(name, x) {
+  if(is.factor(x)){
+    paste0("as.numeric(", name, ")")
+  } else {
+    name
+  }
+}
+
+# Escapes values
+# Strings and dates are quoted
+# Factors are converted to number
+escape_value <- function(x) {
+  if(is.character(x) | is.date(x)){
     paste0("\"", x, "\"")
+  } else if(is.factor(x)){
+    as.numeric(x)
   } else {
     x
   }
@@ -22,13 +39,13 @@ escape <- function(x) {
 
 switchcond <- function(name, split_values, desc_vars){ 
   paste0("(",
-         name, 
+         escape_name(name, split_values[,name]), 
          ifelse(name %in% desc_vars, " < ", " > "),
-         escape(split_values[,name]), 
+         escape_value(split_values[,name]), 
          " | (",
          name, 
          " == ",
-         escape(split_values[,name])
+         escape_value(split_values[,name])
   )
 }
 

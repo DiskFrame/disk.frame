@@ -81,6 +81,9 @@ progressbar <- function(df) {
 #' @param add same as dplyr::group_by
 #' @param .drop same as dplyr::group_by
 #' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
+#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
+#' @param desc_vars for the "sort" shardby function, the variables to sort descending.
+#' @param sort_split_sample_size for the "sort" shardby function, if sort_splits is null, the number of rows to sample per chunk for random splits.
 #' @export
 #' @examples
 #' iris.df = as.disk.frame(iris, nchunks = 2)

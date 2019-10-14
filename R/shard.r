@@ -6,6 +6,7 @@
 #' @param overwrite If TRUE then the chunks are overwritten
 #' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
 #' @param sort_splits If shardby_function is "sort", the split values for sharding
+#' @param desc_vars for the "sort" shardby function, the variables to sort descending.
 #' @param ... not used
 #' @importFrom data.table setDT
 #' @importFrom glue glue

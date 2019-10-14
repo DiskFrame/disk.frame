@@ -6,8 +6,12 @@ setup({
   data.table::fwrite(df, file.path(tempdir(), "tmp_pls_delete_gb.csv"))
 })
 
+test_that("test hard_arrange on disk.frame, single chunk", {
+  iris.df = as.disk.frame(iris, nchunks = 1)
+  iris_hard.df = hard_arrange(iris.df, Species)
+})
 
-test_that("test hard_arrange on disk.frame, single factor", {
+test_that("test hard_arrange on disk.frame, single variable", {
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
@@ -19,7 +23,23 @@ test_that("test hard_arrange on disk.frame, single factor", {
   expect_true(!is.unsorted(sorted_df$id1))
 })
 
-test_that("test hard_arrange on disk.frame, two and three factors", {   
+test_that("test hard_arrange on disk.frame, factor data type", {
+  iris.df = as.disk.frame(sample_n(iris, nrow(iris)), nchunks = 2)
+  iris_hard.df = hard_arrange(iris.df, Species)
+
+  expect_true(!is.unsorted(iris_hard.df$Species))  
+})
+
+test_that("test hard_arrange on disk.frame, date data type", {
+  dff = csv_to_disk.frame(
+    file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
+    file.path(tempdir(), "tmp_pls_delete_gb.df"))
+  sorted_dff <- dff %>% hard_arrange(date1)
+  
+  expect_true(!is.unsorted(sorted_dff$date1))    
+})
+
+test_that("test hard_arrange on disk.frame, two and three variables", {   
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
