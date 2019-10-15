@@ -13,7 +13,6 @@
 #' @param ram_size The amount of RAM available which is usually computed. Except on RStudio with R3.6+
 #' @importFrom pryr object_size
 #' @importFrom utils memory.limit
-#' @importFrom benchmarkme get_ram
 #' @export
 #' @examples
 #' # recommend nchunks based on data.frame
@@ -92,7 +91,11 @@ df_ram_size <- function() {
     }
   } else {
     #ram_size = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
-    ram_size = benchmarkme::get_ram()/1024/1024/1024
+    a = system('grep MemTotal /proc/meminfo', intern = TRUE)
+    l = strsplit(a, " ")[[1]]
+    l = as.numeric(l[length(l)-1])
+    ram_size = l/1024^2
+    #ram_size = benchmarkme::get_ram()/1024/1024/1024
   } 
   
   if(is.na(ram_size)) {
