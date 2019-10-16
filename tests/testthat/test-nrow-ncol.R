@@ -11,7 +11,7 @@ test_that("nrow ncol", {
     file.path(tempdir(), "tmp_pls_delete.df"))
   
   expect_equal(nrow(dff), 1e3+11)
-  expect_equal(ncol(dff), 9)
+  expect_equal(ncol(dff), 10)
 })
 
 teardown({
