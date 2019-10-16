@@ -133,7 +133,7 @@ hard_group_by.disk.frame <- function(
     sample_size_per_chunk = ceiling(nchunks / disk.frame::nchunks(df)) * sort_split_sample_size
     
     # Sample and sort
-    sort_splits_sample <- map(df, sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
+    sort_splits_sample <- map(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
       select(...) %>%
       collect()
     
@@ -151,7 +151,7 @@ hard_group_by.disk.frame <- function(
     
     # Get splits. May lead to less than nchunks if duplicates are selected.
     sort_splits <- sort_splits_sample %>% 
-      slice(ntiles) %>%
+      dplyr::slice(ntiles) %>%
       distinct()
   }
   
