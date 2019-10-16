@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -92,7 +92,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -146,7 +149,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>rechunk</span>(<span class='no'>df</span>, <span class='no'>nchunks</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>df</span>, <span class='st'>"path"</span>), <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>, <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,6 +175,18 @@
       <th>overwrite</th>
       <td><p>overwrite the output directory</p></td>
     </tr>
+    <tr>
+      <th>shardby_function</th>
+      <td><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></td>
+    </tr>
+    <tr>
+      <th>sort_splits</th>
+      <td><p>for the "sort" shardby function, a dataframe with the split values.</p></td>
+    </tr>
+    <tr>
+      <th>desc_vars</th>
+      <td><p>for the "sort" shardby function, the variables to sort descending.</p></td>
+    </tr>
     </table>
 
 
@@ -179,7 +195,7 @@
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span>
-<span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpCyM61Q\back_up_tmp_dir844ae02eda. You can recover there files until you restart your R session</span></div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCyM61Q\file8446f5f4b82.df"</span>
+<span class='fu'>rechunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpoJGo9K\back_up_tmp_dir52842fb6dd7. You can recover there files until you restart your R session</span></div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpoJGo9K\file5287dee31ba.df"</span>
 #&gt; <span class='message'>nchunks: 3</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 2</span>

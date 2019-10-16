@@ -3,6 +3,7 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   concepts: concepts.html
+  convenience-features: convenience-features.html
   data-table-syntax: data-table-syntax.html
   glm: glm.html
   ingesting-data: ingesting-data.html

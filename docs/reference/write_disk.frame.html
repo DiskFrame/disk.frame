@@ -70,7 +70,7 @@ then using the as.disk.frame function is recommended for most cases" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -93,7 +93,10 @@ then using the as.disk.frame function is recommended for most cases" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -150,7 +153,8 @@ then using the as.disk.frame function is recommended for most cases</p>
     <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
   <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='st'>"disk.frame"</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>df</span>), <span class='fu'><a href='nchunks.html'>nchunks.disk.frame</a></span>(<span class='no'>df</span>),
   <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>)), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='no'>...</span>)
+  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>, <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>output_disk.frame</span>(<span class='no'>...</span>)</pre>
 
@@ -180,6 +184,18 @@ then using the as.disk.frame function is recommended for most cases</p>
     <tr>
       <th>compress</th>
       <td><p>compression ratio for fst files</p></td>
+    </tr>
+    <tr>
+      <th>shardby_function</th>
+      <td><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></td>
+    </tr>
+    <tr>
+      <th>sort_splits</th>
+      <td><p>for the "sort" shardby function, a dataframe with the split values.</p></td>
+    </tr>
+    <tr>
+      <th>desc_vars</th>
+      <td><p>for the "sort" shardby function, the variables to sort descending.</p></td>
     </tr>
     <tr>
       <th>...</th>
