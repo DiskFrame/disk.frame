@@ -1,18 +1,20 @@
 context("test-data.table [")
 
 setup({
+  library(data.table)
   setup_disk.frame(workers = 2)
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_col_delete", overwrite=T, nchunks = 8)
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), file.path(tempdir(), "tmp_col_delete"), overwrite=T, nchunks = 8)
 })
 
 test_that("data.table .N", {
-  df = disk.frame("tmp_col_delete")
+  library(data.table)
+  df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
   expect_warning(res <- sum(unlist(df[,.N])))
   expect_equal(res , 1e5+11)
 })
 
 test_that("data.table .N+y V1", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
   if(interactive()) {
     y = 2
     
@@ -27,5 +29,5 @@ test_that("data.table .N+y V1", {
 })
 
 teardown({
-  fs::dir_delete("tmp_col_delete")
+  fs::dir_delete(file.path(tempdir(), "tmp_col_delete"))
 })

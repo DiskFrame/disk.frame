@@ -8,7 +8,8 @@
 write_disk.frame(df, outdir = tempfile(fileext = ".df"),
   nchunks = ifelse("disk.frame" \%in\% class(df), nchunks.disk.frame(df),
   recommend_nchunks(df)), overwrite = FALSE, shardby = NULL,
-  compress = 50, ...)
+  compress = 50, shardby_function = "hash", sort_splits = NULL,
+  desc_vars = NULL, ...)
 
 output_disk.frame(...)
 }
@@ -24,6 +25,12 @@ output_disk.frame(...)
 \item{shardby}{the columns to shard by}
 
 \item{compress}{compression ratio for fst files}
+
+\item{shardby_function}{splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks}
+
+\item{sort_splits}{for the "sort" shardby function, a dataframe with the split values.}
+
+\item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
 
 \item{...}{passed to map.disk.frame}
 }

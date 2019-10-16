@@ -2,11 +2,11 @@ context("test-get_chunk_ids")
 
 setup({
   #setup_disk.frame(workers = 1)
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_del_delete", overwrite=T)
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), file.path(tempdir(), "tmp_del_delete"), overwrite=T)
 })
 
 test_that("get_chunk_ids", {
-  df = disk.frame("tmp_del_delete")
+  df = disk.frame(file.path(tempdir(), "tmp_del_delete"))
   
   gci = get_chunk_ids(df)
   expect_type(get_chunk_ids(df), "character")
@@ -16,5 +16,5 @@ test_that("get_chunk_ids", {
 })
 
 teardown({
-  fs::dir_delete("tmp_del_delete")
+  fs::dir_delete(file.path(tempdir(), "tmp_del_delete"))
 })

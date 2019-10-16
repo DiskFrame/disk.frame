@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -58,7 +58,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/concepts.html">Concepts for disk.frame</a>
+      <a href="articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -237,7 +240,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># where is the disk.frame stored</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpstAhab\\file2ffc6304721e.df"</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2JaPvM\\file1878c9d20d2.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get first few rows</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</span>
@@ -336,7 +339,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.000s elapsed (0.000s cpu)</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.010s elapsed (0.010s cpu)</span></span>
 <span id="cb13-8"><a href="#cb13-8"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</span>
 <span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below</p>
@@ -352,7 +355,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb14-10"><a href="#cb14-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb14-11"><a href="#cb14-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; group by took:  0.940s elapsed (0.180s cpu)</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; group by took:  0.620s elapsed (0.160s cpu)</span></span>
 <span id="cb14-14"><a href="#cb14-14"></a></span>
 <span id="cb14-15"><a href="#cb14-15"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
@@ -371,7 +374,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb15-8"><a href="#cb15-8"></a><span class="st">  </span>collect</span>
 <span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt; Appending disk.frames:</span></span>
 <span id="cb15-10"><a href="#cb15-10"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; group by took:  1.480s elapsed (0.280s cpu)</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; group by took:  1.160s elapsed (0.240s cpu)</span></span>
 <span id="cb15-12"><a href="#cb15-12"></a></span>
 <span id="cb15-13"><a href="#cb15-13"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
@@ -446,10 +449,10 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <a href="#blogs-and-other-resources" class="anchor"></a>Blogs and other resources</h2>
 <table class="table">
 <colgroup>
-<col width="62%">
-<col width="7%">
-<col width="4%">
-<col width="25%">
+<col width="52%">
+<col width="5%">
+<col width="3%">
+<col width="38%">
 </colgroup>
 <thead><tr class="header">
 <th>Title</th>
@@ -473,22 +476,29 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <code>{disk.frame}</code> was number 3</td>
 </tr>
 <tr class="odd">
-<td><a href="https://emmavestesson.netlify.com/2019/07/user2019/">Emma goes to useR! 2019</a></td>
-<td>Emma Vestesson</td>
-<td>20190716</td>
-<td>The first mention of <code>{disk.frame}</code> in a blog post</td>
-</tr>
-<tr class="even">
 <td><a href="https://www.youtube.com/watch?v=3XMTyi_H4q4">useR! 2019 presentation video</a></td>
 <td>Dai ZJ</td>
 <td>20190803</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY">useR! 2019 presentation slides</a></td>
 <td>Dai ZJ</td>
 <td>20190803</td>
 <td></td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/">Split-apply-combine for Maximum Likelihood Estimation of a linear model</a></td>
+<td>Bruno Rodriguez</td>
+<td>20191006</td>
+<td>
+<code>{disk.frame}</code> used in helping to create a maximum likelihood estimation program for linear models</td>
+</tr>
+<tr class="even">
+<td><a href="https://emmavestesson.netlify.com/2019/07/user2019/">Emma goes to useR! 2019</a></td>
+<td>Emma Vestesson</td>
+<td>20190716</td>
+<td>The first mention of <code>{disk.frame}</code> in a blog post</td>
 </tr>
 </tbody>
 </table>

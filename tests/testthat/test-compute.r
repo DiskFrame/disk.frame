@@ -1,12 +1,12 @@
 context("test-compute")
 
 setup({
-  #setup_disk.frame(workers = 1)
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_col_delete", overwrite=T)
+  setup_disk.frame(workers = 2)
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), file.path(tempdir(),"tmp_compute_delete"), overwrite=T)
 })
 
 test_that("compute works on simple data", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
   dff = compute(df)
   
   expect_equal(nrow(dff), 1e5+11)
@@ -14,7 +14,7 @@ test_that("compute works on simple data", {
 })
 
 test_that("compute works on lazy stream", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
   df = map(df, lazy = T, ~{
     .x[1:10, ]
   })
@@ -24,7 +24,7 @@ test_that("compute works on lazy stream", {
 })
 
 test_that("compute works on lazy stream followed by dplyr", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
   df = map(df, lazy = T, ~{
     .x[1:10, ]
   }) %>% select(id1, id4)
@@ -37,7 +37,7 @@ test_that("compute works on lazy stream followed by dplyr", {
 
 
 test_that("compute works on dplyr::select followed by lazy", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
   df = df %>% select(id1, id4) %>%
     map(lazy = T, ~{
       .x[1:10, ]
@@ -51,5 +51,5 @@ test_that("compute works on dplyr::select followed by lazy", {
 
 
 teardown({
-  fs::dir_delete("tmp_col_delete")
+  fs::dir_delete(file.path(tempdir(),"tmp_compute_delete"))
 })

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -92,7 +92,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -146,18 +149,45 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>sample_frac</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>sample_frac</span>(<span class='no'>tbl</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>a disk.frame</p></td>
+      <th>tbl</th>
+      <td><p>tbl of data.</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>For <code>sample_n()</code>, the number of rows to select.
+For <code>sample_frac()</code>, the fraction of rows to select.
+If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p></td>
+    </tr>
+    <tr>
+      <th>replace</th>
+      <td><p>Sample with or without replacement?</p></td>
+    </tr>
+    <tr>
+      <th>weight</th>
+      <td><p>Sampling weights. This must evaluate to a vector of
+non-negative numbers the same length as the input. Weights are
+automatically standardised to sum to 1.</p>
+<p>This argument is automatically <a href='https://rlang.r-lib.org/reference/quotation.html'>quoted</a> and later
+<a href='https://rlang.r-lib.org/reference/eval_tidy.html'>evaluated</a> in the context of the data
+frame. It supports <a href='https://rlang.r-lib.org/reference/quasiquotation.html'>unquoting</a>. See
+<code>vignette("programming")</code> for an introduction to these concepts.</p></td>
+    </tr>
+    <tr>
+      <th>.env</th>
+      <td><p>This variable is deprecated and no longer has any
+effect. To evaluate <code>weight</code> in a particular context, you can
+now unquote a <a href='https://rlang.r-lib.org/reference/quosure.html'>quosure</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed to dplyr::samle_frac</p></td>
+      <td><p>ignored</p></td>
     </tr>
     </table>
 
@@ -165,7 +195,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
-<span class='fu'>collect</span>(<span class='fu'>sample_frac</span>(<span class='no'>cars.df</span>, <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: sample_frac: for disk.frames weight = is not supported</span></div><div class='output co'>#&gt;    speed dist
+<span class='fu'>collect</span>(<span class='fu'>sample_frac</span>(<span class='no'>cars.df</span>, <span class='fl'>0.5</span>))</div><div class='output co'>#&gt;    speed dist
 #&gt; 1      4   10
 #&gt; 2      9   10
 #&gt; 3     10   18

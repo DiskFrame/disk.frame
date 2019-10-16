@@ -12,7 +12,9 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
 \method{hard_group_by}{disk.frame}(df, ...,
   outdir = tempfile("tmp_disk_frame_hard_group_by"),
-  nchunks = disk.frame::nchunks(df), overwrite = TRUE)
+  nchunks = disk.frame::nchunks(df), overwrite = TRUE,
+  shardby_function = "hash", sort_splits = NULL, desc_vars = NULL,
+  sort_split_sample_size = 100)
 }
 \arguments{
 \item{df}{a disk.frame}
@@ -28,6 +30,14 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 \item{nchunks}{The number of chunks in the output. Defaults = nchunks.disk.frame(df)}
 
 \item{overwrite}{overwrite the out put directory}
+
+\item{shardby_function}{splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks}
+
+\item{sort_splits}{for the "sort" shardby function, a dataframe with the split values.}
+
+\item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
+
+\item{sort_split_sample_size}{for the "sort" shardby function, if sort_splits is null, the number of rows to sample per chunk for random splits.}
 }
 \description{
 A hard_group_by is a group by that also reorganizes the chunks to ensure that

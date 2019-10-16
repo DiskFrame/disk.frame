@@ -1,11 +1,11 @@
 context("test-collect")
 
 setup({
-  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), "tmp_col_delete", overwrite=T)
+  df = as.disk.frame(disk.frame:::gen_datatable_synthetic(1e5+11), file.path(tempdir(),"tmp_col_delete"), overwrite=T)
 })
 
 test_that("collect works on simple data", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_col_delete"))
   dff = dplyr::collect(df)
   expect_equal(nrow(dff), 1e5+11)
   expect_s3_class(dff, "data.frame")
@@ -13,7 +13,7 @@ test_that("collect works on simple data", {
 })
 
 test_that("collect works on lazy stream", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_col_delete"))
   df = map(df, lazy = T, ~{
     .x[1:10, ]
   })
@@ -24,7 +24,7 @@ test_that("collect works on lazy stream", {
 })
 
 test_that("collect works on lazy stream followed by dplyr", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_col_delete"))
   df = map(df, lazy = T, ~{
     .x[1:10, ]
   }) %>% select(id1, id4)
@@ -38,7 +38,7 @@ test_that("collect works on lazy stream followed by dplyr", {
 
 
 test_that("collect works on dplyr::select followed by lazy", {
-  df = disk.frame("tmp_col_delete")
+  df = disk.frame(file.path(tempdir(),"tmp_col_delete"))
   df = df %>% select(id1, id4) %>%
     map.disk.frame(lazy = T, ~{
       .x[1:10, ]
@@ -53,5 +53,5 @@ test_that("collect works on dplyr::select followed by lazy", {
 
 
 teardown({
-  fs::dir_delete("tmp_col_delete")
+  fs::dir_delete(file.path(tempdir(),"tmp_col_delete"))
 })

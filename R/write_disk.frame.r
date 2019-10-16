@@ -8,6 +8,9 @@
 #' @param overwrite overwrite output directory
 #' @param shardby the columns to shard by
 #' @param compress compression ratio for fst files
+#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
+#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
+#' @param desc_vars for the "sort" shardby function, the variables to sort descending. 
 #' @param ... passed to map.disk.frame
 #' @export
 #' @import fst fs
@@ -30,7 +33,7 @@ write_disk.frame <- function(
     nchunks.disk.frame(df),
     recommend_nchunks(df)),
   overwrite = FALSE,
-  shardby=NULL, compress = 50, ...) {
+  shardby=NULL, compress = 50, shardby_function="hash", sort_splits=NULL, desc_vars=NULL, ...) {
 
   force(nchunks)
   overwrite_check(outdir, overwrite)
@@ -52,6 +55,8 @@ write_disk.frame <- function(
             overwrite = TRUE,
             shardby = shardby,
             compress = compress,
+            shardby_function=shardby_function, 
+            sort_splits=sort_splits, desc_vars=desc_vars,
             ...
             )
     }

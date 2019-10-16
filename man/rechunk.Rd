@@ -5,7 +5,8 @@
 \title{Increase or decrease the number of chunks in the disk.frame}
 \usage{
 rechunk(df, nchunks, outdir = attr(df, "path"), shardby = NULL,
-  overwrite = TRUE)
+  overwrite = TRUE, shardby_function = "hash", sort_splits = NULL,
+  desc_vars = NULL)
 }
 \arguments{
 \item{df}{the disk.frame to rechunk}
@@ -17,6 +18,12 @@ rechunk(df, nchunks, outdir = attr(df, "path"), shardby = NULL,
 \item{shardby}{the shardkeys}
 
 \item{overwrite}{overwrite the output directory}
+
+\item{shardby_function}{splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks}
+
+\item{sort_splits}{for the "sort" shardby function, a dataframe with the split values.}
+
+\item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
 }
 \description{
 Increase or decrease the number of chunks in the disk.frame

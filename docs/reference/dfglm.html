@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit generalized linear model (glm) with disk.frame — dfglm • disk.frame</title>
+<title>Fit generalized linear models (glm) with disk.frame — dfglm • disk.frame</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Fit generalized linear model (glm) with disk.frame — dfglm" />
-<meta property="og:description" content="Fits GLMs using speedglm or biglm. The return object will be exactly as
+<meta property="og:title" content="Fit generalized linear models (glm) with disk.frame — dfglm" />
+<meta property="og:description" content="Fits GLMs using `speedglm` or `biglm`. The return object will be exactly as
 those return by those functions. This is a convenience wrapper" />
 <meta name="twitter:card" content="summary" />
 
@@ -70,7 +70,7 @@ those return by those functions. This is a convenience wrapper" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -93,7 +93,10 @@ those return by those functions. This is a convenience wrapper" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -137,13 +140,13 @@ those return by those functions. This is a convenience wrapper" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit generalized linear model (glm) with disk.frame</h1>
+    <h1>Fit generalized linear models (glm) with disk.frame</h1>
     
     <div class="hidden name"><code>dfglm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Fits GLMs using speedglm or biglm. The return object will be exactly as
+    <p>Fits GLMs using `speedglm` or `biglm`. The return object will be exactly as
 those return by those functions. This is a convenience wrapper</p>
     </div>
 
@@ -167,8 +170,8 @@ those return by those functions. This is a convenience wrapper</p>
     <tr>
       <th>glm_backend</th>
       <td><p>Which package to use for fitting GLMs. The default is
-biglm, which has known issues with factor level if different levels are
-present in different chunks. The speedglm is more robust, but does not
+"biglm", which has known issues with factor level if different levels are
+present in different chunks. The "speedglm" option is more robust, but does not
 implement `predict` which makes prediction and implementation impossible.</p></td>
     </tr>
     </table>
