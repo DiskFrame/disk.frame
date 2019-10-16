@@ -1,6 +1,6 @@
 # disk.frame 0.2.1
 * got rid of benchmarkme as a dependency
-
+* added `hard_arrange`
 
 # disk.frame 0.2.0
 * deprecated group_by, arrange, summarise

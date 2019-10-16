@@ -22,10 +22,10 @@ make_glm_streaming_fn <- function(data, verbose = FALSE) {
   
   chunkids = disk.frame::get_chunk_ids(data, strip_extension = FALSE)
   is = sample(length(chunkids), replace = FALSE)
-  verbose_copy = verbose
+  verbose = verbose
   nchunks_copy = length(chunkids)
   
-  function(reset = FALSE, verbose = verbose_copy) {
+  function(reset = FALSE) {
     if(reset) {
       if(verbose) {
         print("disk.frame stream has been reset; next read will be from beginning")
