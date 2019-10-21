@@ -3,8 +3,10 @@ Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
 Version: 0.2.1
 Date: 2019-10-15
-Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
-  role = c("aut", "cre"))
+Authors@R: c(
+  person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
+  person("Jacky", "Poon", role = c("ctb"))
+  )
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
 Description: A disk-based data manipulation tool for working with 
   large-than-RAM datasets. Aims to lower the barrier-to-entry for 
