@@ -298,9 +298,13 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     
     pt <- proc.time()
     if(.progress) {
-      message("-- Converting CSVs to disk.frame --")
-      
-      message(glue::glue("Converting {length(infile)} CSVs to {nchunks} disk.frame each consisting of {nchunks} chunks (Stage 1 of 2):"))
+      message("=================================================")
+      message("")
+      message(" ----------------------------------------------------- ")
+      message("-- Converting CSVs to disk.frame -- Stage 1 of 2:")
+      message("")
+      message(glue::glue("Converting {length(infile)} CSVs to {nchunks} disk.frames each consisting of {nchunks} chunks"))
+      message("")
     }
     
     outdf_tmp = furrr::future_imap(infile, ~{
@@ -310,12 +314,17 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     }, .progress = .progress)
     
     if(.progress) {
-      message(paste("Stage 1 or 2 took:", data.table::timetaken(pt)))
+      message(paste("-- Converting CSVs to disk.frame -- Stage 1 or 2 took:", data.table::timetaken(pt)))
+      message(" ----------------------------------------------------- ")
       message(" ")
     }
     
-    message(glue::glue("Row-binding the {nchunks} disk.frames together to form one large disk.frame (Stage 2 of 2):"))
+    message(" ----------------------------------------------------- ")
+    message("-- Converting CSVs to disk.frame -- Stage 2 of 2:")
+    message("")
+    message(glue::glue("Row-binding the {nchunks} disk.frames together to form one large disk.frame:"))
     message(glue::glue("Creating the disk.frame at {outdir}"))
+    message("")
     pt2 <- proc.time()
     outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
     
