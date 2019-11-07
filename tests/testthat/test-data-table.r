@@ -31,7 +31,7 @@ test_that("data.table .N+y V1", {
 test_that("data.table do not return a data.table", {
   library(data.table)
   df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
-  res = df[,.(.N), rbind=FALSE]
+  expect_warning(res <- df[,.(.N), rbind=FALSE])
   expect_equal(typeof(res), "list")
   expect_equal(length(res), 8)
 })

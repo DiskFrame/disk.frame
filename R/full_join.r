@@ -8,7 +8,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(join.df)
-full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_full_join"), overwrite = TRUE, merge_by_chunk_id) {
+full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_full_join"), overwrite = TRUE, merge_by_chunk_id, .progress = FALSE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -34,7 +34,7 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
+      return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = map2(x, y, ~{
         if(is.null(.y)) {
@@ -43,7 +43,7 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
           return(.y)
         }
         full_join(.x, .y, by = by, copy = copy)
-      }, outdir = outdir, overwrite = overwrite)
+      }, outdir = outdir, overwrite = overwrite, .progress = .progress)
       return(res)
     } else {
       # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine

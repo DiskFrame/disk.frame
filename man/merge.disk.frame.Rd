@@ -28,7 +28,7 @@ Merge function for disk.frames
 \examples{
 b = as.disk.frame(data.frame(a = 51:150, b = 1:100))
 d = as.disk.frame(data.frame(a = 151:250, b = 1:100))
-bd.df = merge(b, d, by = "b")
+bd.df = merge(b, d, by = "b", merge_by_chunk_id = TRUE)
 
 # clean up cars.df
 delete(b)
