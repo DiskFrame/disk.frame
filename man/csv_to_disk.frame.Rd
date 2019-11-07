@@ -5,66 +5,120 @@
 \title{Convert CSV file(s) to disk.frame format}
 \usage{
 csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
-  inmapfn = base::I,
-  nchunks = recommend_nchunks(sum(file.size(infile))),
-  in_chunk_size = NULL, shardby = NULL, compress = 50,
-  overwrite = TRUE, header = TRUE, .progress = TRUE,
-  backend = c("data.table", "readr", "LaF"),
-  chunk_reader = c("bigreadr", "data.table", "readr", "readLines"), ...)
+  header_row = NULL, backend = c("data.table", "readr", "LaF"),
+  backend_args = list(), nchunks = NULL, chunk_reader = c("readr",
+  "readLines", "LaF"), max_percent_ram = 0.5, inmapfn = base::I,
+  compress = 50, overwrite = TRUE, shardby = NULL,
+  .progress = TRUE)
 }
 \arguments{
 \item{infile}{The input CSV file or files}
 
-\item{outdir}{The directory to output the disk.frame to}
+\item{outdir}{The directory to output the disk.frame.}
+
+\item{header_row}{Whether the files have header. Defaults to NULL, in which case \code{\link{header_row_index}}
+will be used to guess the correct header index. Can be set to TRUE, FALSE, or a positive integer if the 
+header row is not the first line of the file. May be an integer vector with a length equal to the length of infile.}
+
+\item{backend}{The CSV reader backend to choose: "data.table", "readr", or "LaF," which will use
+\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}, respectively.}
+
+\item{backend_args}{List of arguments to pass to the backend function 
+(\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}).}
+
+\item{nchunks}{Number of chunks to output. May be an integer vector with a length equal to the length of infile.
+If NULL (default), then the number of chunks will be estimated using \code{\link{estimate_chunks_needed}}.}
+
+\item{chunk_reader}{The method to read each file chunk into memory: "readLines," "readr," or "LaF,"
+which will use \code{\link[base]{readLines}}, \code{\link[readr]{read_lines_chunked}}, or 
+\code{\link[Laf]{process_blocks}}, respectively.}
+
+\item{max_percent_ram}{Maximum percentage of ram to use when estimating the number of chunks using \code{\link{estimate_chunks_needed}}.}
 
 \item{inmapfn}{A function to be applied to the chunk read in from CSV before
 the chunk is being written out. Commonly used to perform simple
 transformations. Defaults to the identity function (ie. no transformation)}
-
-\item{nchunks}{Number of chunks to output}
-
-\item{in_chunk_size}{When reading in the file, how many lines to read in at
-once. This is different to nchunks which controls how many chunks are
-output}
-
-\item{shardby}{The column(s) to shard the data by. For example suppose
-`shardby = c("col1","col2")`  then every row where the values `col1` and
-`col2` are the same will end up in the same chunk; this will allow merging
-by `col1` and `col2` to be more efficient}
 
 \item{compress}{For fst backends it's a number between 0 and 100 where 100 is
 the highest compression ratio.}
 
 \item{overwrite}{Whether to overwrite the existing directory}
 
-\item{header}{Whether the files have header. Defaults to TRUE}
+\item{shardby}{The column(s) to shard the data by. For example suppose
+`shardby = c("col1","col2")`  then every row where the values `col1` and
+`col2` are the same will end up in the same chunk; this will allow merging
+by `col1` and `col2` to be more efficient.}
 
 \item{.progress}{A logical, for whether or not to print a progress bar for
 multiprocess, multisession, and multicore plans. From {furrr}}
-
-\item{backend}{The CSV reader backend to choose: "data.table" or "readr". 
-disk.frame does not have its own CSV reader. It uses either
-data.table::fread or readr::read_delimited. It is worth noting that
-data.table::fread does not detect dates and all dates are imported as
-strings, and you are encouraged to use {fasttime} to convert the strings to
-date. You can use the `inmapfn` to do that. However, if you want automatic
-date detection, then backend="readr" may suit your needs. However, readr
-is often slower than data.table, hence data.table is chosen as the default.}
-
-\item{chunk_reader}{Even if you choose a backend there can still be multiple
-strategies on how to approach the CSV reads. For example, data.table::fread
-tries to mmap the whole file which can cause the whole read process to
-fail. In that case we can change the chunk_reader to "readLines" which uses the
-readLines function to read chunk by chunk and still use data.table::fread
-to process the chunks. There are currently no strategies for readr backend,
-except the default one.}
-
-\item{...}{passed to data.table::fread, disk.frame::as.disk.frame,
-disk.frame::shard}
 }
 \description{
-Convert CSV file(s) to disk.frame format
+Converts one or more CSV files to a disk frame by converting each file (or chunks of a file) to 
+fst files. Those fst files are combined into a single disk frame.
 }
+\section{Multiple files}{
+
+Multiple files can be read by providing a character vector of file names as the infile parameter.
+If multiple files are provided, then the parameters nchunks, backend, chunk_reader,
+and header_row can be either a single value or a vector of values, applied to each file respectively.
+Note that at this time, backend_args will be applied to every file provided.
+
+By default, each file will correspond to a single chunk in the resulting disk.frame. If the parameter
+nchunks is set to greater than 1 for a given file, each chunk of that file will be a chunk in the 
+resulting disk.frame. Thus, if three file names are provided, and nchunks = c(1,2,3), the resulting
+disk.frame will contain 6 chunks.
+}
+
+\section{Backend}{
+
+Disk.frame does not have its own CSV reader. Instead, it uses one of several existing packages to read CSVs.
+ 
+It is worth noting that data.table::fread does not detect dates and all dates 
+are imported as strings, and you are encouraged to use {fasttime} to convert the strings to
+date. You can use the \code{\link{inmapfn}} to do that. However, if you want automatic
+date detection, then backend="readr" may suit your needs. However, `readr`
+is often slower than data.table, hence data.table is chosen as the default.
+`LaF` is another option, but is limited in its input parameters. In particular, you may need to 
+set header=TRUE when relying on the `LaF` backend.
+}
+
+\section{Chunking}{
+
+Even if you choose a backend there can still be multiple
+  strategies on how to approach the CSV reads. For example, \code{\link[data.table]{fread}}
+  tries to mmap the whole file which may cause the whole read process to
+  fail. Recent updates to \code{\link[data.table]{fread}} seek to address this issue.
+  
+  \code{\link{estimate_chunks_needed}} can estimate the number of chunks required for a given csv file or files. 
+  Keep in mind that by default, disk.frame will treat each csv file as a separate chunk for a single disk.frame
+  if multiple csv files are provided as the infile parameter. Each chunk will be read into memory as needed
+  when manipulating a disk frame. Therefore, you will want to keep enough memory overhead to permit the manipulation
+  of each chunk in memory. (You may be able to input a large csv file in one chunk, 
+  but that is useless if you do not have sufficient memory to do anything with it.)
+  
+  If chunks are needed, the easiest approach may be to use \code{\link{split_csv_file}} 
+  to split the csv file prior to importing it with \code{\link{csv2disk.frame.}}. 
+  
+  Alternatively, you can select one of three chunk_readers: readLines, readr, or LaF.
+  Each chunk_reader will read a portion of the csv file into memory and save that portion to an fst file, 
+  before moving to the next chunk of the file. 
+  
+  The `readLines` chunk_reader uses \code{\link[base]{readLines}} to read each file chunk into memory.   
+  The `readr` chunk_reader uses \code{\link[readr]{read_lines_chunked}}.
+  The `LaF` chunk reader uses \code{\link[Laf]{process_blocks}}.
+  
+  Some combinations of chunk_reader and backend are not compatible or are not efficient.
+  The following table specifies what is used for each combination:
+  
+\tabular{llll}{
+\emph{chunk_reader}                  \tab \tab \emph{backend}                                                                  \tab                                                                                                    \cr
+                \tab \strong{data.table}                                                               \tab \strong{readr}                                                          \tab \strong{LaF}                                                                 \cr
+   \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[Laf]{detect_dm_csv}} \cr
+   \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[Laf]{detect_dm_csv}} \cr
+   \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[Laf]{process_blocks}}; \code{\link[Laf]{detect_dm_csv}} \cr
+}
+}
+
 \examples{
 tmpfile = tempfile()
 write.csv(cars, tmpfile)

@@ -1,46 +1,92 @@
 #' Convert CSV file(s) to disk.frame format
-#' @importFrom glue glue
-#' @importFrom fs dir_delete
-#' @importFrom pryr do_call
+#' 
+#' Converts one or more CSV files to a disk frame by converting each file (or chunks of a file) to 
+#' fst files. Those fst files are combined into a single disk frame.
+#' 
+#' @section Multiple files:
+#' Multiple files can be read by providing a character vector of file names as the infile parameter.
+#' If multiple files are provided, then the parameters nchunks, backend, chunk_reader,
+#' and header_row can be either a single value or a vector of values, applied to each file respectively.
+#' Note that at this time, backend_args will be applied to every file provided.
+#' 
+#' By default, each file will correspond to a single chunk in the resulting disk.frame. If the parameter
+#' nchunks is set to greater than 1 for a given file, each chunk of that file will be a chunk in the 
+#' resulting disk.frame. Thus, if three file names are provided, and nchunks = c(1,2,3), the resulting
+#' disk.frame will contain 6 chunks. 
+#' 
+#' @section Backend:
+#' Disk.frame does not have its own CSV reader. Instead, it uses one of several existing packages to read CSVs.
+#'  
+#' It is worth noting that data.table::fread does not detect dates and all dates 
+#' are imported as strings, and you are encouraged to use {fasttime} to convert the strings to
+#' date. You can use the \code{\link{inmapfn}} to do that. However, if you want automatic
+#' date detection, then backend="readr" may suit your needs. However, `readr`
+#' is often slower than data.table, hence data.table is chosen as the default.
+#' `LaF` is another option, but is limited in its input parameters. In particular, you may need to 
+#' set header=TRUE when relying on the `LaF` backend.
+#' 
+#' @section Chunking:
+#' Even if you choose a backend there can still be multiple
+#'   strategies on how to approach the CSV reads. For example, \code{\link[data.table]{fread}}
+#'   tries to mmap the whole file which may cause the whole read process to
+#'   fail. Recent updates to \code{\link[data.table]{fread}} seek to address this issue.
+#'   
+#'   \code{\link{estimate_chunks_needed}} can estimate the number of chunks required for a given csv file or files. 
+#'   Keep in mind that by default, disk.frame will treat each csv file as a separate chunk for a single disk.frame
+#'   if multiple csv files are provided as the infile parameter. Each chunk will be read into memory as needed
+#'   when manipulating a disk frame. Therefore, you will want to keep enough memory overhead to permit the manipulation
+#'   of each chunk in memory. (You may be able to input a large csv file in one chunk, 
+#'   but that is useless if you do not have sufficient memory to do anything with it.)
+#'   
+#'   If chunks are needed, the easiest approach may be to use \code{\link{split_csv_file}} 
+#'   to split the csv file prior to importing it with \code{\link{csv2disk.frame.}}. 
+#'   
+#'   Alternatively, you can select one of three chunk_readers: readLines, readr, or LaF.
+#'   Each chunk_reader will read a portion of the csv file into memory and save that portion to an fst file, 
+#'   before moving to the next chunk of the file. 
+#'   
+#'   The `readLines` chunk_reader uses \code{\link[base]{readLines}} to read each file chunk into memory.   
+#'   The `readr` chunk_reader uses \code{\link[readr]{read_lines_chunked}}.
+#'   The `LaF` chunk reader uses \code{\link[Laf]{process_blocks}}.
+#'   
+#'   Some combinations of chunk_reader and backend are not compatible or are not efficient.
+#'   The following table specifies what is used for each combination:
+#'   
+#' \tabular{llll}{
+#' \emph{chunk_reader}                  \tab \tab \emph{backend}                                                                  \tab                                                                                                    \cr
+#'                 \tab \strong{data.table}                                                               \tab \strong{readr}                                                          \tab \strong{LaF}                                                                 \cr
+#'    \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[Laf]{detect_dm_csv}} \cr
+#'    \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[Laf]{detect_dm_csv}} \cr
+#'    \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[Laf]{process_blocks}}; \code{\link[Laf]{detect_dm_csv}} \cr
+#' }
+#' 
 #' @param infile The input CSV file or files
-#' @param outdir The directory to output the disk.frame to
+#' @param outdir The directory to output the disk.frame.
+#' @param header_row Whether the files have header. Defaults to NULL, in which case \code{\link{header_row_index}}
+#' will be used to guess the correct header index. Can be set to TRUE, FALSE, or a positive integer if the 
+#' header row is not the first line of the file. May be an integer vector with a length equal to the length of infile.
+#' @param backend The CSV reader backend to choose: "data.table", "readr", or "LaF," which will use
+#' \code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}, respectively.
+#' @param backend_args List of arguments to pass to the backend function 
+#' (\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}).
+#' @param nchunks Number of chunks to output. May be an integer vector with a length equal to the length of infile.
+#' If NULL (default), then the number of chunks will be estimated using \code{\link{estimate_chunks_needed}}.
+#' @param chunk_reader The method to read each file chunk into memory: "readLines," "readr," or "LaF,"
+#' which will use \code{\link[base]{readLines}}, \code{\link[readr]{read_lines_chunked}}, or 
+#' \code{\link[Laf]{process_blocks}}, respectively.
+#' @param max_percent_ram Maximum percentage of ram to use when estimating the number of chunks using \code{\link{estimate_chunks_needed}}.
 #' @param inmapfn A function to be applied to the chunk read in from CSV before
 #'   the chunk is being written out. Commonly used to perform simple
 #'   transformations. Defaults to the identity function (ie. no transformation)
-#' @param nchunks Number of chunks to output
-#' @param in_chunk_size When reading in the file, how many lines to read in at
-#'   once. This is different to nchunks which controls how many chunks are
-#'   output
-#' @param shardby The column(s) to shard the data by. For example suppose
-#'   `shardby = c("col1","col2")`  then every row where the values `col1` and
-#'   `col2` are the same will end up in the same chunk; this will allow merging
-#'   by `col1` and `col2` to be more efficient
 #' @param compress For fst backends it's a number between 0 and 100 where 100 is
 #'   the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
-#' @param header Whether the files have header. Defaults to TRUE
+#' @param shardby The column(s) to shard the data by. For example suppose
+#'   `shardby = c("col1","col2")`  then every row where the values `col1` and
+#'   `col2` are the same will end up in the same chunk; this will allow merging
+#'   by `col1` and `col2` to be more efficient.
 #' @param .progress A logical, for whether or not to print a progress bar for
 #'   multiprocess, multisession, and multicore plans. From {furrr}
-#' @param backend The CSV reader backend to choose: "data.table" or "readr". 
-#'   disk.frame does not have its own CSV reader. It uses either
-#'   data.table::fread or readr::read_delim. It is worth noting that
-#'   data.table::fread does not detect dates and all dates are imported as
-#'   strings, and you are encouraged to use {fasttime} to convert the strings to
-#'   date. You can use the `inmapfn` to do that. However, if you want automatic
-#'   date detection, then backend="readr" may suit your needs. However, readr
-#'   is often slower than data.table, hence data.table is chosen as the default.
-#' @param chunk_reader Even if you choose a backend there can still be multiple
-#'   strategies on how to approach the CSV reads. For example, data.table::fread
-#'   tries to mmap the whole file which can cause the whole read process to
-#'   fail. In that case we can change the chunk_reader to "readLines" which uses the
-#'   readLines function to read chunk by chunk and still use data.table::fread
-#'   to process the chunks. There are currently no strategies for readr backend,
-#'   except the default one.
-#' @param ... passed to data.table::fread, disk.frame::as.disk.frame,
-#'   disk.frame::shard
-#' @importFrom pryr do_call
-#@importFrom LaF detect_dm_csv process_blocks
-# @importFrom bigreadr split_file get_split_files
 #' @family ingesting data
 #' @export
 #' @examples
@@ -54,21 +100,27 @@
 #' delete(df)
 csv_to_disk.frame <- function(infile, 
                               outdir = tempfile(fileext = ".df"), 
+                              header_row = NULL,
+                              backend = c("data.table", "readr", "LaF"),
+                              backend_args = list(),
+                              nchunks = NULL, # integer or vector equal to length of infiles
+                              chunk_reader = c("readr", "readLines", "LaF"),
+                              max_percent_ram = 0.5,
                               inmapfn = base::I, 
-                              in_chunks = NULL, # integer or vector equal to length of infiles
-                              import_ram_percentage = 0.8,
-                              shardby = NULL,
                               compress = 50,
                               overwrite = TRUE,
-                              .progress = TRUE,
-                              backend = c("data.table", "readr", "LaF"), 
-                              chunk_reader = c("bigreadr", "data.table", "readr", "readLines", "LaF"),
-                              backend_args = list(),
-                              chunk_reader_args = list()) {
+                              shardby = NULL,
+                              .progress = TRUE) {
+  # backend_args need be used instead of ... to avoid situations where
+  # the ... include parameters with names that begin the same as arguments to csv_to_disk.frame
+  # for example, if ... has the parameter "header", that value will be assigned to header_row erroneously.
+  # Given the number of potential options for ... parameters, using a specified list is a safer choice.
   
   ##### Initial checks #####
   backend = match.arg(backend)
   chunk_reader = match.arg(chunk_reader)
+
+  if(!is.null(shardby)) warning("Sharding is currently not implemented for csv_to_disk.frame.")
   
   if(backend == "readr" | chunk_reader == "readr") {
     if(!requireNamespace("readr")) {
@@ -82,25 +134,11 @@ csv_to_disk.frame <- function(infile,
     }
   }
   
-  if(chunk_reader == "bigreadr") {
-    if(!requireNamespace("bigreadr")) {
-      stop("csv_to_disk.frame: You have chosen chunk_reader = 'bigreadr'. But `bigreadr` package is not installed. To install run: `install_packages(\"bigreadr\")`")
-    }
-  }
-  
-  # simplify choices where it probably makes no sense to go with other chunking options
-  if(backend == "readr" & chunk_reader %in% c("LaF", "readLines")) {
-    # readr has a dedicated chunking function, so should just use it
-    # maybe worth using a file-splitting chunk_reader first
-    message("When readr is selected as the backend, it will be used for chunk_reader in lieu of 'Laf' or 'readLines' as well.")
-    chunk_reader <- backend <- "readr"
-  }
-  
-  if(backend == "LaF" & chunk_reader != backend) {
-    # The LaF chunking function is unique to LaF, so the two should be used together
-    message("When LaF is selected as the the chunk_reader, it will be used for backend as well.")
-    chunk_reader <- backend <- "LaF"
-  }
+  # if(backend == "LaF" & chunk_reader != backend) {
+  #   # The LaF chunking function is unique to LaF, so the two should be used together
+  #   message("When LaF is selected as the the chunk_reader, it will be used for backend as well.")
+  #   chunk_reader <- backend <- "LaF"
+  # }
   
   if(chunk_reader == "LaF" & backend != "LaF") {
     # need to throw error because user may need to pass in different dots arguments for LaF backend.
@@ -108,10 +146,9 @@ csv_to_disk.frame <- function(infile,
     stop("The LaF chunk_reader is only supported when the LaF backend is selected.")
   }
   
-  stopifnot(is.null(in_chunks) | length(in_chunks) == 1 | length(in_chunks) == length(infile))
+  stopifnot(is.null(nchunks) | length(nchunks) == 1 | length(nchunks) == length(infile))
   stopifnot(file.exists(infile))
   overwrite_check(outdir, overwrite)
-  
   if(!dir.exists(outdir)) dir.create(outdir)
   
   ##### Detect column classes #####
@@ -129,90 +166,61 @@ csv_to_disk.frame <- function(infile,
     backend_args$colClasses <- do.call(determine_classes_csv_laf, c(list(infile), backend_args))
   }
   
-  # for chunk readers, data.table and bigreadr take arguments, including classes
-  # readr, readLines, and LaF rely on backend_args
-  
-  
-  
-  if(chunk_reader == "data.table" & !("colClasses" %in% names(chunk_reader))) {
-    chunk_reader_args$colClasses <- do.call(determine_classes_csv_data.table, c(list(infile), chunk_reader_args))
-  } 
-  
-  if(chunk_reader %in% c("readr", "readLines", "LaF") & length(chunk_reader_args) > 0) {
-    message("For chunk_reader 'readr,' 'readLines,' and 'LaF', the chunk_reader_args parameter is not needed.")
-  }
-  
-  
   ##### Chunk size #####
   # set chunk size based on estimated file size if not yet set
-  if(is.null(in_chunks)) {
-    in_chunks <- estimate_chunk_size(infiles = infile, max_percent_ram = import_ram_percentage)
-  } else if(length(in_chunks) == 1) {
-    in_chunks <- rep(in_chunks, times = length(infile))
+  if(is.null(nchunks)) {
+    nchunks <- estimate_chunks_needed(infile = infile, max_percent_ram = max_percent_ram)
+  } else if(length(nchunks) == 1) {
+    nchunks <- rep(nchunks, times = length(infile))
   }
   
-  
-  ##### Split files #####
-  # bigreadr: splits files
-  # data.table: split files
-  idx <- in_chunks > 1 & chunk_reader %in% c("bigreadr", "data.table")
-  if(any(idx)) {
-    infile[idx] <- mapply(split_csv_file, 
-                          infile = infile[idx], 
-                          in_chunks = in_chunks[idx],
-                          MoreArgs = c(chunk_reader_args, list(chunk_reader = chunk_reader)),
-                          SIMPLIFY = FALSE)
-    infile <- infile %>% unlist
-    in_chunks <- rep(1, times = length(infile))
+  ##### Header row index #####
+  if(is.null(header_row)) {
+    header_row <- mapply(header_row_index, csv_file = infile, method = backend, MoreArgs = backend_args)
   }
-  
   
   ##### CSV import #####
   # convert csvs to fst files contained in the outdir
   fst_files <- csv2fst(infile = infile,
-                       in_chunks = in_chunks,
+                       nchunks = nchunks,
                        backend = backend,
                        chunk_reader = chunk_reader,
+                       header_row = header_row,
                        outdir = outdir,
                        inmapfn = inmapfn,
                        compress = compress,
                        .progress = .progress,
                        backend_args = backend_args)
   fst_files <- unlist(fst_files)
-  
-  
   stopifnot(all(dirname(fst_files) == outdir))
   
   dff <- disk.frame(outdir)
   
   ##### Shard if necessary #####
-  # currently not working. 
-  # Possibly because disk.frame is not saving a .metadata file,
-  # and shard is expecting one? Throwing error  
-  # Error: `path` must be a directory 
-  # fs::dir_copy(file.path(outdir, ".metadata"), file.path(back_up_tmp_dir, 
-  # ".metadata")) at rechunk.r#45
-  
+  # Currently fails: 
+  # for shardby_function = "hash", Error: `path` must be a directory, in rechunk function
+  # for shardby_function = "sort",  Error in rechunk(df, shardby = shardby, nchunks = nchunks_rechunk, outdir = outdir,  nchunks must be larger than 1 
   # if(!is.null(shardby)) {
-  #   dff <- shard(dff, 
-  #                shardby = shardby, 
-  #                outdir = outdir, 
-  #                overwrite = TRUE, 
+  #   dff <- shard(dff,
+  #                shardby = shardby,
+  #                outdir = outdir,
+  #                overwrite = TRUE,
   #                nchunks = nchunks(dff))
   # }
+  if(!is.null(shardby)) warning("shardby currently not functional; will be ignored.")
   
   return(dff) 
 }
 
+
+
+
 #' Convert a csv file to an fst file
 #' 
 #' @param infile One or more csv files
-#' @param in_chunks Number of chunks to use when reading the csv file(s)
+#' @param nchunks Number of chunks to use when reading the csv file(s)
 #' @param backend CSV file reader to use. 
 #' @param chunk_reader Method to use to read chunks. 
-#' Note that data.table and bigreadr are only there for compatibility; these options do nothing here
-#' at a chunk level. Instead, they can be used by \code{\link{csv_to_disk.frame}} to split a large csv file
-#' into multiple files. 
 #' @param inmapfn A function to be applied to the chunk read in from CSV before 
 #' the chunk is being written out.
 #' @param outdir Directory to save the fst files.
@@ -220,10 +228,15 @@ csv_to_disk.frame <- function(infile,
 #' @param .progress If TRUE, display progress when importing csv files. 
 #' @param ... Additional parameters for backend data.table, readr, or LaF. 
 #' @seealso \code{\link{csv_to_disk.frame}}
+#'          \code{\link[readr]{read_delim_chunked}}
+#' 
+#' @importFrom fs file_move
+#' @keywords internal
 csv2fst <- function(infile, 
-                    in_chunks, 
+                    nchunks, 
                     backend = c("data.table", "readr", "LaF"), 
-                    chunk_reader = c("bigreadr", "data.table", "readr", "readLines", "LaF"), 
+                    chunk_reader = c("readr", "readLines", "LaF"), 
+                    header_row = 1,
                     inmapfn = base::I,
                     outdir = tempfile(fileext = ".df"),
                     compress = 50,
@@ -231,9 +244,10 @@ csv2fst <- function(infile,
                     backend_args = backend_args) {
   if(length(infile) > 1) return(mapply(csv2fst, 
                                        infile = infile, 
-                                       in_chunks = in_chunks, 
+                                       nchunks = nchunks, 
                                        chunk_reader = chunk_reader,
                                        backend = backend,
+                                       header_row = header_row,
                                        MoreArgs = c(list(inmapfn = inmapfn,
                                                          outdir = outdir,
                                                          compress = compress,
@@ -243,7 +257,12 @@ csv2fst <- function(infile,
   backend <- match.arg(backend)
   chunk_reader <- match.arg(chunk_reader)
   
-  stopifnot(length(in_chunks) == length(infile))
+  stopifnot(length(nchunks) == length(infile))
+  
+  if(backend == "readr" & !("delim" %in% names(backend_args))) {
+    # readr::read_delim_chunked does not provide a default delim parameter
+    backend_args$delim <- ","
+  }
   
   import_fn <- switch(backend,
                       data.table = csv2fst_data.table,
@@ -252,17 +271,11 @@ csv2fst <- function(infile,
   
   
   # chunk_reader == data.table or bigreadr --> handled prior
-  if(chunk_reader == "readLines") {
-    header_row_fn <- switch(backend,
-                            data.table = header_row_index_data.table,
-                            readr = header_row_index_readr,
-                            LaF = header_row_index_laf)
-    num_header_rows <- do.call(header_row_fn, c(list(infile), backend_args))
-    
+  if(chunk_reader == "readLines" & nchunks > 1) {
     # create function that will sequentially return blocks of the file, with headers
     chunk_reader_fn <- chunk_reader_fn(infile,
-                                       in_chunks = in_chunks,
-                                       num_header_rows = num_header_rows)
+                                       nchunks = nchunks,
+                                       num_header_rows = header_row)
     fst_file_vec <- NULL
     while(!is.null(xx <- chunk_reader_fn())) {
       # save xx to fst using data.table, readr, or LaF
@@ -274,20 +287,17 @@ csv2fst <- function(infile,
       fst_file_vec <- c(fst_file_vec, fst_file)
     }
     
-  } else if(chunk_reader == "LaF") {
-    stopifnot(backend == "LaF")
-    num_header_rows <- do.call(header_row_index_laf, c(list(infile), backend_args))
-    
+  } else if(chunk_reader == "LaF" & nchunks > 1) {
     fst_file_vec <- do.call(csv2fst_laf, c(list(csv_file = infile, 
-                                                num_header_rows = num_header_rows, 
-                                                in_chunks = in_chunks,
+                                                nchunks = nchunks,
                                                 inmapfn = inmapfn,
                                                 outdir = outdir,
                                                 compress = compress),
                                            backend_args))
-  } else if(chunk_reader == "readr") {
+  } else if(chunk_reader == "readr" & nchunks > 1) {
+    stopifnot(requireNamespace("readr"))
     n <- count_lines_in_file(infile)
-    in_chunk_size <- ceiling(n / in_chunks)
+    in_chunk_size <- ceiling(n / nchunks)
     
     if(backend == "readr") {
       # use read_delim_chunked
@@ -298,25 +308,14 @@ csv2fst <- function(infile,
                outdir = outdir)
       }
       
-      if(!("delim" %in% names(backend_args))) {
-        # readr::read_delim_chunked does not provide a default delim parameter
-        backend_args$delim <- ","
-      }
-    
       fst_file_vec <- do.call(readr::read_delim_chunked, c(list(file = infile,
                                                                 callback = readr::ListCallback$new(callback_fn),
                                                                 chunk_size = in_chunk_size,
                                                                 progress = .progress),
                                                            backend_args))
     } else {
-      header_row_fn <- switch(backend,
-                              data.table = header_row_index_data.table,
-                              readr = header_row_index_readr,
-                              LaF = header_row_index_laf)
-      num_header_rows <- do.call(header_row_fn, c(list(infile), backend_args))
-      
       callback_fn <- do.call(chunk_reader_fn_readr, c(list(reader_fn = import_fn,
-                                                           num_header_rows = num_header_rows,
+                                                           num_header_rows = header_row,
                                                            outdir = outdir,
                                                            inmapfn = inmapfn,
                                                            compress = compress),
@@ -352,7 +351,9 @@ csv2fst <- function(infile,
   return(out)
 }
 
-
+#' Convert csv file to fst file using data.table::fread.
+#' @importFrom data.table fread
+#' @keywords internal
 csv2fst_data.table <- function(csv_file, 
                                inmapfn = base::I, 
                                compress = 50, 
@@ -373,14 +374,19 @@ csv2fst_data.table <- function(csv_file,
   return(fst_file)
 }
 
+#' convert csv file to fst file using readr::read_delim
+#' @seealso \code{\link[readr]{read_delim}}, 
+#'          \code{\link[readr]{read_delim_chunked}}
+#' @keywords internal
 csv2fst_readr <- function(csv_file,
-                          in_chunks = 1,
+                          nchunks = 1,
                           inmapfn = base::I, 
                           compress = 50, 
                           outdir = tempfile(fileext = ".df"),
                           delim=",",
                           ...) {
-  if(in_chunks == 1) {
+  stopifnot(requireNamespace("readr"))
+  if(nchunks == 1) {
     dat <- readr::read_delim(file = csv_file, delim = delim, ...)
     fst_file <- df2fst(dat, 
                        inmapfn = inmapfn, 
@@ -390,7 +396,7 @@ csv2fst_readr <- function(csv_file,
   } 
   
   n <- count_lines_in_file(csv_file)
-  in_chunk_size <- ceiling(n / in_chunks)
+  in_chunk_size <- ceiling(n / nchunks)
   
   callback_fn <- function(x, pos) {
     df2fst(x, 
@@ -409,27 +415,33 @@ csv2fst_readr <- function(csv_file,
 }
 
 
-
+#' convert csv to fst file using LaF::detect_dm_csv
+#' re-save to file if a character vector is passed instead of a file name.
+#' @seealso \code{\link[LaF]{detect_dm_csv}}, 
+#'          \code{\link[LaF]{laf_open}}, 
+#'          \code{\link[LaF]{next_block}}
+#' @keywords internal
 csv2fst_laf <- function(csv_file, 
-                        num_header_rows, 
-                        in_chunks = 1,
+                        nchunks = 1,
                         inmapfn = base::I,
                         outdir = tempfile(fileext = ".df"),
                         compress = 50,
                         ...) {
-  n <- count_lines_in_file(csv_file)
-  in_chunk_size <- ceiling(n / in_chunks)
-  
+  stopifnot(requireNamespace("LaF"))
   # check for character vector and re-save if necessary
   if(length(csv_file) > 1 | any(grepl("\n", csv_file))) {
+    n <- length(csv_file)
     chunk_tmp_file <- tempfile(fileext = ".csv")
-    write.csv(x = csv_file, file = chunk_tmp_file, ...) # may need to drop some arguments if not compatible
+    writeLines(text = csv_file, con = chunk_tmp_file) 
     csv_file <- chunk_tmp_file
+  } else {
+    n <- count_lines_in_file(csv_file)
   }
   
   dm <- LaF::detect_dm_csv(filename = csv_file, ...)
   model <- LaF::laf_open(dm)
   fst_file_vec <- NULL
+  in_chunk_size <- ceiling(n / nchunks)
   while(nrow(chunk <- LaF::next_block(model, nrows = in_chunk_size)) > 0) {
     fst_file <- df2fst(chunk, 
                        inmapfn = inmapfn, 
@@ -442,7 +454,8 @@ csv2fst_laf <- function(csv_file,
 }
 
 
-
+#' creates callback function that can be used with readr::read_lines_chunked
+#' @keywords internal
 chunk_reader_fn_readr <- function(reader_fn,
                                   num_header_rows = 0,
                                   ...) {
@@ -460,18 +473,19 @@ chunk_reader_fn_readr <- function(reader_fn,
   }
 }
 
-
+#' creates function that will read a file in successive parts using readLines.
+#' @keywords internal
 chunk_reader_fn <- function(infile, 
-                            in_chunks = 1,
+                            nchunks = 1,
                             num_header_rows = 0) {
   force(infile)
-  force(in_chunks)
+  force(nchunks)
   force(num_header_rows)
   
   chunk_number <- 1
   con <- file(infile, "r")
   n <- count_lines_in_file(infile)
-  in_chunk_size <- ceiling(((n - num_header_rows) / in_chunks)) 
+  in_chunk_size <- ceiling(((n - num_header_rows) / nchunks)) 
   
   header <- NULL
   if(num_header_rows > 0) {
@@ -495,7 +509,10 @@ chunk_reader_fn <- function(infile,
 }
 
 
-
+#' Saves a dataframe to an fst file.
+#' @importFrom fst write_fst
+#' @importFrom fs path_ext_set
+#' @keywords internal
 df2fst <- function(df, 
                    inmapfn = base::I, 
                    compress = 50,
@@ -514,42 +531,30 @@ df2fst <- function(df,
 }
 
 
-count_lines_in_file <- function(file) {
-  num_lines <- tryCatch({ system2(command = "wc",
-                                  args = c("--lines",
-                                           file,
-                                           "|",
-                                           "awk -F  ' ' '{print $1}'"),
-                                  stdout = TRUE) %>% as.integer() },
-                        error = function(e) NA,
-                        warning = function(e) NA)
-  
-  if(is.na(num_lines)) {
-    if(requireNamespace("bigreadr")) {
-      num_lines <- bigreadr::nlines(file)
-    } else if(requireNamespace("LaF")) {
-      num_lines <- determine_nlines(file)
-    } else if(requireNamespace("R.utils")) {
-      num_lines <- R.utils::countLines(file)
-    } else {
-      num_lines <- length(readLines(file))
-    }
-  }
-  stopifnot(num_lines > 0)
-  return(num_lines)
-}
 
-
-estimate_chunk_size <- function(infiles, max_percent_ram = 0.8, ...) {
+#' Estimate number of chunks needed
+#' 
+#' Estimate number of chunks needed for one or more files. Does this by assuming the file size is 
+#' commensurate with amount of RAM required, and comparing to total RAM available.
+#' Can be offset by setting max_percent_ram. In general, set max_percent_ram to well under 1.0 if
+#' the files may be read in parallel or if you anticipate copies may be made. 
+#' @param infile One or more file locations, as character vector.
+#' @param max_percent_ram Maximum percent RAM that should be devoted to the file import.
+#' @param ... Currently unused
+#' @return Integer vector, length of infile, indicating the number of chunks that should be used.
+#' 
+#' @importFrom fs file_size
+#' @keywords internal
+estimate_chunks_needed <- function(infile, max_percent_ram = 0.5, ...) {
   if(max_percent_ram >= 1) warning(sprintf("Maximum percent ram to use to load CSV files is %.02f.\nThis value should probably be less than 1.", max_percent_ram))
-  file_sizes <- fs::file_size(infiles) # bytes
+  file_sizes <- fs::file_size(infile) # bytes
   sys_ram <- df_ram_size() # in GB
   
   idx <- (file_sizes/(1024^3)) > (sys_ram * max_percent_ram)
   
-  in_chunks <- rep(1, times = length(infiles))
+  nchunks <- rep(1, times = length(infile))
   if(any(idx)) {
-    files_to_split <- infiles[idx]
+    files_to_split <- infile[idx]
     message(sprintf("Will chunk %d files for import due to memory constraints:\n\t%s", 
                     length(files_to_split),
                     paste(basename(files_to_split), collapse = "\n\t")))
@@ -559,314 +564,15 @@ estimate_chunk_size <- function(infiles, max_percent_ram = 0.8, ...) {
     files_to_split_size <- file_sizes[idx]/(1024^3)
     # files_to_split_size <- c(30, 40, 50, 26, 100)
     split_chunks <- ceiling(files_to_split_size / (sys_ram * max_percent_ram))
-    in_chunks[idx] <- split_chunks
+    nchunks[idx] <- split_chunks
   }
-  return(in_chunks)
+  return(nchunks)
 }
 
-
-# SplitLargeCSVFiles <- function(infiles, max_percent_ram = 0.8) {
-#   if(max_percent_ram >= 1) warning(sprintf("Maximum percent ram to use to load CSV files is %.02f.\nThis value should probably be less than 1.", max_percent_ram))
-#   
-#   file_sizes <- fs::file_size(infiles) # bytes
-#   sys_ram <- df_ram_size() # in GB
-#   
-#   idx <- (file_sizes/(1024^3)) > (sys_ram * max_percent_ram)
-#   
-#   if(any(idx)) {
-#     files_to_split <- infiles[idx]
-#     message(sprintf("Splitting %d files for import due to memory constraints:\n\t%s", 
-#                     length(files_to_split),
-#                     paste(basename(files_to_split), collapse = "\n\t")))
-#     
-#     # determine minimum chunks for each file
-#     # evenly chunk csv so that a given chunk is less than the memory limitation
-#     files_to_split_size <- file_sizes[idx]/(1024^3)
-#     # files_to_split_size <- c(30, 40, 50, 26, 100)
-#     split_chunks <- ceiling(files_to_split_size / (sys_ram * max_percent_ram))
-#     
-#     # save temporary split files; replace in list of infiles
-#     split_files <- mapply(SplitCSVFile, 
-#                           csv_file = files_to_split, num_splits = split_chunks, 
-#                           MoreArgs = ...,
-#                           SIMPLIFY = FALSE)
-#     
-#     infiles[idx] <- split_files
-#     infiles <- unlist(infiles)
-#   }
-#    
-#   return(infiles)
-# }
-
-
-
-line_first_match <- function(file, pattern, in_chunk_size = 1000) {
-  ln <- tryCatch({ system2(command = "grep",
-                           args = c("--line-number", 
-                                    sprintf("'%s'", pattern), 
-                                    file,
-                                    "|",
-                                    "awk -F  ':' '{print $1}'"),
-                           stdout = TRUE) %>% as.integer() },
-                 error = function(e) NA,
-                 warning = function(e) NA)
-  
-  if(is.na(ln)) {
-    # read in chunks and use grep
-    in_chunks <- ceiling(count_lines_in_file(file) / in_chunk_size)
-    chunk_fn <- chunk_reader_fn(infile = file, 
-                                in_chunks = in_chunks,
-                                num_header_rows = 0)
-    multiplier <- 0
-    while(!is.null(xx <- chunk_fn())) {
-      i <- which(grepl(pattern = pattern, x = xx))
-      if(length(i) > 0) {
-        chunk_fn(force_close = TRUE)
-        break;
-      }
-      
-      multiplier <- multiplier + 1
-    }
-    
-    ln <- i + (in_chunk_size * multiplier)
-    
-  }
-  return(ln) 
-}
-
-
-header_row_index_data.table <- function(csv_file, ...) {
-  dots <- list(...)
-  dots$nrows <- 0
-  dots <- c(list(csv_file), dots)
-  
-  stopifnot(length(csv_file) == 1)
-  cols <- colnames(do.call(data.table::fread, dots))
-  
-  sep <- "[,\t |;:]"
-  if("sep" %in% names(dots)) sep <- dots$sep
-  
-  # header row could be 0 if no header found
-  header_row <- line_first_match(file = csv_file,
-                                 pattern = paste(cols, collapse = sep))
-  return(header_row)
-}
-
-header_row_index_readr <- function(csv_file, 
-                                   col_names = TRUE, 
-                                   skip = 0, 
-                                   skip_empty_rows = TRUE,
-                                   ...) {
-  # skip_empty_rows will skip blank lines at top of file
-  num_header_rows <- skip
-  
-  if(skip_empty_rows) {
-    # check for empty header rows
-    con = file(csv_file, "r")
-    on.exit(close(con))
-    
-    num_empty_rows <- 0
-    xx = readLines(con, n = 1)
-    while(length(xx) > 0) {
-      xx = readLines(con, n = 1)
-      xx <- gsub(pattern = "[[:blank:]]", replacement = "", x = xx)
-      if(length(xx) == 1) {
-        num_empty_rows <- num_empty_rows + 1
-      } else {
-        break;
-      }
-    }
-    num_header_rows <- max(num_header_rows, num_empty_rows)
-  }
-  if(isTRUE(col_names)) num_header_rows <- num_header_rows + 1
-  
-  return(num_header_rows)
-}
-
-header_row_index_laf <- function(csv_file, 
-                               header = FALSE, 
-                               skip = 0,
-                               blank.lines.skip = TRUE,
-                               ...) {
-  header_row_index_readr(csv_file = csv_file, 
-                         col_names = header, 
-                         skip = skip, 
-                         skip_empty_rows = blank.lines.skip)
-}
-
-
-split_csv_file <- function(infile,
-                           in_chunks,
-                           chunk_reader = c("bigreadr", "data.table"),
-                           ...) {
-  dots <- list(...)
-  chunk_reader <- match.arg(chunk_reader)
-  
-  if(.Platform$OS.type != "unix" & chunk_reader == "data.table") {
-    warning("csv_to_disk.frame: You have chosen chunk_reader data.table with a non-unix platform. This may fail if certain unix tools are unavailable.")
-  } 
-  
-  
-  split_fn <- switch(chunk_reader,
-                     data.table = split_csv_file_data.table,
-                     bigreadr = split_csv_file_bigreadr,
-                     stop("SplitCSVFile: chunk_reader not recognized."))
-  
-  # SplitCSVFileBigReader needs to know whether there is a header
-  dots_split <- dots
-  if(chunk_reader == "bigreadr") {
-    dots_split <- list(header = ifelse(is.null(dots$col_names), TRUE, dots$col_names))
-  }
-  dots_split$csv_file <- infile
-  dots_split$num_splits <- in_chunks
-  infile <- do.call(split_fn, dots_split)
-  return(infile)
-}
-
-split_csv_file_bigreadr <- function(csv_file, num_splits = 2, header = TRUE) {
-  if(num_splits < 2) return(csv_file)
-  stopifnot(requireNamespace("bigreadr"),
-            isTRUE(header) | isFALSE(header))
-  
-  n <- bigreadr::nlines(csv_file)
-  
-  outfile_prefix <- file.path(tempdir(), basename(fs::path_ext_remove(csv_file)))
-  split_file_info = bigreadr::split_file(csv_file, 
-                                         every_nlines = ceiling(n / num_splits), 
-                                         prefix_out = outfile_prefix,
-                                         repeat_header = header)
-  bigreadr::get_split_files(split_file_info)
-}
-
-split_csv_file_data.table <- function(csv_file, num_splits = 2, ...) {
-  if(num_splits < 2) return(csv_file)
-  
-  dots <- list(...)
-  
-  # use data.table::fread to first identify columns
-  # use the column names to identify 1 or more header rows for each csv file
-  # split the file and append the header row(s) to the top
-  
-  cols <- colnames(data.table::fread(csv_file, nrows = 0, ...))
-  num_lines <- system2(command = "wc",
-                       args = c("--lines",
-                                csv_file,
-                                "|",
-                                "awk -F  ' ' '{print $1}'"),
-                       stdout = TRUE) %>% as.integer()
-  stopifnot(num_lines > 0)
-  
-  sep <- "[,\t |;:]"
-  if("sep" %in% names(dots)) sep <- dots$sep
-  
-  # header row could be 0 if no header found
-  header_row <- system2(command = "grep",
-                        args = c("--line-number", 
-                                 sprintf("'%s'", paste(cols, collapse = sep)), 
-                                 csv_file,
-                                 "|",
-                                 "awk -F  ':' '{print $1}'"),
-                        stdout = TRUE) %>% as.integer()
-  
-  temp_dir <- tempdir(check = TRUE)
-  body_csv_file <- file.path(temp_dir, "body.csv")
-  header_csv_file <- file.path(temp_dir, "header.csv")
-  
-  
-  if(header_row > 0) {
-    # separate header row(s) from rest of csv
-    
-    system2(command = "head",
-            args = c("--silent",
-                     "--lines", header_row,
-                     csv_file,
-                     ">>",
-                     header_csv_file))
-    stopifnot(file.exists(header_csv_file))
-    
-    system2(command = "tail",
-            args = c("--silent",
-                     "--lines", num_lines - header_row,
-                     csv_file,
-                     ">>",
-                     body_csv_file))
-    stopifnot(file.exists(body_csv_file))
-  } 
-  
-  split_files <- file.path(temp_dir, sprintf("split%d.csv", seq_len(num_splits)))
-  mapply(function(split_file, i) {
-    system2(command = "split",
-            args = c("--number", sprintf("l/%d/%d", i, num_splits),
-                     body_csv_file,
-                     ">>",
-                     split_file))
-  },
-  split_file = split_files, i = seq_len(num_splits), SIMPLIFY = FALSE)
-  
-  # now paste back header, if any, and remove unneeded files
-  if(header_row > 0) {
-    lapply(split_files, function(split_file, header_csv_file) {
-      new_file <- file.path(dirname(split_file),
-                            paste(basename(split_file), "final", sep = "_"))
-      
-      system2(command = "cat",
-              args = c(header_csv_file, split_file,
-                       ">",
-                       new_file))
-    }, header_csv_file = header_csv_file) 
-    
-    # move newly generated header + body split files
-    fs::file_delete(split_files)
-    fs::file_move(path = file.path(dirname(split_files),
-                                   paste(basename(split_files), "final", sep = "_")),
-                  new_path = split_files)
-  }
-  
-  # rename split files to the csv file name, plus split01, split02, etc.
-  # Splits are numbered with minimum 2 digits, maximum equal to number of digits for the number of splits
-  # So if splits = 1200, then we will have [csv_name]_split0001.csv, [csv_name]_split0002.csv, ... [csv_name]_split1200.csv
-  num_digits <- max(2, nchar(as.character(num_splits)))
-  file_name <- rlang::parse_expr(sprintf('sprintf("split%%0%dd", seq_along(split_files))',  num_digits))
-  outfiles <- file.path(dirname(split_files), 
-                        paste(fs::path_ext_remove(basename(csv_file)),
-                              paste(eval(expr(!! file_name)), "csv", sep = "."),
-                              sep = "_"))
-  
-  fs::file_move(path = split_files,
-                new_path = outfiles)
-  
-  file.remove(header_csv_file, body_csv_file)
-  
-  stopifnot(file.exists(outfiles),
-            length(outfiles) == num_splits)
-  
-  return(outfiles)
-}
-
-# number files in order from filename_suffix01, prefix_suffix02, etc.
-# numbering increased with number of files. 
-# so if 1000 files, number prefix_suffix0001, prefix_suffix0002, ..., prefix_suffix1000
-renumber_file_names <- function(files, suffix = "", extension = NULL) {
-  num_files <- length(files)
-  
-  num_digits <- max(2, nchar(as.character(num_files)))
-  file_name <- rlang::parse_expr(sprintf('sprintf("%s%%0%dd", seq_along(files))', suffix, num_digits))
-  sep <- "."
-  if(is.null(extension)) sep <- ""
-  outfiles <- file.path(dirname(files), 
-                        paste(fs::path_ext_remove(basename(files)),
-                              paste(eval(expr(!! file_name)), extension, sep = sep),
-                              sep = "_"))
-  outfiles
-}
-
-# renumber_file_names(LETTERS)
-# renumber_file_names(LETTERS, suffix = "split")
-# renumber_file_names(LETTERS, suffix = "split", extension = "csv")
-
-# classes could vary between files.
-# determine the controlling class based on the data.table list: 
-# logical, integer, integer64, double, character
+#' Determine classes for one or more files using data.table::fread by reading in 
+#' first row. In case of conflict between files, use the more general class.
+#' (follows data.table approach)
+#' @keywords internal
 determine_classes_csv_data.table <- function(infiles, ...) {
   dots <- list(...)
   dots$input <- NULL
@@ -891,6 +597,9 @@ determine_classes_csv_data.table <- function(infiles, ...) {
     unlist 
 }
 
+#' Read first row of a file or files using readr::read_delim and use the result to 
+#' determine classes. In case of conflict between files, use the more general class.
+#' @keywords internal
 determine_classes_csv_readr <- function(infiles, delim=",", ...) {
   dots <- list(...)
   dots$n_max <- 1
@@ -925,6 +634,9 @@ determine_classes_csv_readr <- function(infiles, delim=",", ...) {
                 warn_missing = FALSE)
 }
 
+#' Read a file or files using LaF::detect_dm_csv and use the created model to 
+#' get the column classes. In case of conflict between files, use the more general class.
+#' @keywords internal
 determine_classes_csv_laf <- function(infiles, ...) {
   model.lst <- lapply(infiles, LaF::detect_dm_csv, ...)
   

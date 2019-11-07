@@ -2,7 +2,7 @@ context("test-csv2disk.frame")
 
 df = disk.frame:::gen_datatable_synthetic(1e3+11)
 
-CHUNK_READERS <- c("bigreadr", "data.table", "readr", "readLines", "LaF")
+CHUNK_READERS <- c("readr", "readLines", "LaF")
 BACKENDS <- c("data.table", "readr", "LaF")
 NCHUNKS <- 3
 
@@ -29,7 +29,7 @@ for(backend in BACKENDS) {
     args$outdir <- file.path(tempdir(), "tmp_pls_delete_csv2df.df")
     args$overwrite <- TRUE
     args$backend <- backend
-    args$chunk_reader <- backend
+    args$chunk_reader <- "readr"
     
     # LaF defaults to no header; fix here
     if(backend == "LaF") args$backend_args$header <- TRUE
@@ -38,6 +38,7 @@ for(backend in BACKENDS) {
     expect_equal(nrow(dff), nrow(df))
     expect_equal(ncol(dff), ncol(df))
     expect_equal(as.character(data.table::as.data.table(dff)$id1), df$id1)
+    expect_visible(head(dff))
     
     delete(dff)
   })
@@ -53,13 +54,12 @@ for(backend in BACKENDS) {
       args$overwrite <- TRUE
       args$backend <- backend
       args$chunk_reader <- chunk_reader
-      args$in_chunks <- NCHUNKS
+      args$nchunks <- NCHUNKS
       
       # LaF defaults to no header; fix here
       if(backend == "LaF") args$backend_args$header <- TRUE
       
-      if(chunk_reader == "LaF" & backend == "data.table") {
-        # for LaF with backend readr, readr will be used instead
+      if(chunk_reader == "LaF" & backend != "LaF") {
         expect_error(dff <- do.call(csv_to_disk.frame, args))
         
       } else {
@@ -72,6 +72,7 @@ for(backend in BACKENDS) {
         dff_id1 <- suppressWarnings(as.character(data.table::as.data.table(dff)$id1))
         expect_equal(dff_id1, df$id1)
         expect_equal(nchunks(dff), NCHUNKS)
+        expect_visible(head(dff))
         
         delete(dff)
       }      
@@ -93,7 +94,7 @@ for(backend in BACKENDS) {
     args$outdir <- file.path(tempdir(), "tmp_pls_delete_csv2df.df")
     args$overwrite <- TRUE
     args$backend <- backend
-    args$chunk_reader <- backend
+    args$chunk_reader <- "readr"
     
     # LaF defaults to no header; fix here
     if(backend == "LaF") args$backend_args$header <- TRUE
@@ -102,6 +103,7 @@ for(backend in BACKENDS) {
     expect_equal(nrow(dff), nrow(df_expected))
     expect_equal(ncol(dff), ncol(df_expected))
     expect_equal(as.character(data.table::as.data.table(dff)$id1), df_expected$id1)
+    expect_visible(head(dff))
     
     delete(dff)
   })
@@ -122,14 +124,13 @@ for(backend in BACKENDS) {
       args$overwrite <- TRUE
       args$backend <- backend
       args$chunk_reader <- chunk_reader
-      args$in_chunks <- c(1, NCHUNKS, NCHUNKS * 2)
+      args$nchunks <- c(1, NCHUNKS, NCHUNKS * 2)
       
       # LaF defaults to no header; fix here
       if(backend == "LaF") args$backend_args$header <- TRUE
       
       
-      if(chunk_reader == "LaF" & backend == "data.table") {
-        # for LaF with backend readr, readr will be used instead
+      if(chunk_reader == "LaF" & backend != "LaF") {
         expect_error(dff <- do.call(csv_to_disk.frame, args))
         
       } else {
@@ -141,7 +142,8 @@ for(backend in BACKENDS) {
         
         dff_id1 <- suppressWarnings(as.character(data.table::as.data.table(dff)$id1))
         expect_equal(dff_id1, df_expected$id1)
-        expect_equal(nchunks(dff), sum(args$in_chunks))
+        expect_equal(nchunks(dff), sum(args$nchunks))
+        expect_visible(head(dff))
         
         delete(dff)
       }      
@@ -165,7 +167,7 @@ for(backend in BACKENDS) {
       args$overwrite <- TRUE
       args$backend <- backend
       args$chunk_reader <- chunk_reader
-      args$in_chunks <- c(1, NCHUNKS, NCHUNKS * 2)
+      args$nchunks <- c(1, NCHUNKS, NCHUNKS * 2)
       
       if(backend == "data.table") {
         args$backend_args$sep <- "\t"
@@ -176,14 +178,9 @@ for(backend in BACKENDS) {
         args$backend_args$header <- TRUE
       }
       
-      if(chunk_reader == "data.table") {
-        args$chunk_reader_args$sep <- "\t"
-      } else {
-        args$chunk_reader_args$delim <- "\t"
-      }
+
       
-      if(chunk_reader == "LaF" & backend == "data.table") {
-        # for LaF with backend readr, readr will be used instead
+      if(chunk_reader == "LaF" & backend != "LaF") {
         expect_error(dff <- do.call(csv_to_disk.frame, args))
         
       } else {
@@ -194,7 +191,8 @@ for(backend in BACKENDS) {
         
         dff_id1 <- suppressWarnings(as.character(data.table::as.data.table(dff)$id1))
         expect_equal(dff_id1, df_expected$id1)
-        expect_equal(nchunks(dff), sum(args$in_chunks))
+        expect_equal(nchunks(dff), sum(args$nchunks))
+        expect_visible(head(dff))
         
         delete(dff)
       }      
@@ -203,54 +201,7 @@ for(backend in BACKENDS) {
   }
 }
 
-##### chunked single file, sharded #####
-# for(backend in BACKENDS) {
-#   for(chunk_reader in CHUNK_READERS) {
-#     test_that(glue::glue("Single file: {backend} works with chunk_reader {chunk_reader}"), {
-#       args <- list()
-#       args$infile <- file.path(tempdir(), "tmp_pls_delete_csv2df.csv")
-#       args$outdir <- file.path(tempdir(), "tmp_pls_delete_csv2df.df")
-#       args$overwrite <- TRUE
-#       args$backend <- backend
-#       args$chunk_reader <- chunk_reader
-#       args$in_chunks <- NCHUNKS
-#       # args$shardby <- "id3"
-#       
-#       # LaF defaults to no header; fix here
-#       if(backend == "LaF") args$backend_args$header <- TRUE
-#       
-#       if(chunk_reader == "LaF" & backend == "data.table") {
-#         # for LaF with backend readr, readr will be used instead
-#         expect_error(dff <- do.call(csv_to_disk.frame, args))
-#         
-#       } else {
-#         if(backend == "LaF" & chunk_reader == "LaF" |
-#            backend == "readr" & chunk_reader %in% c("bigreadr", "data.table", "readr") |
-#            backend == "data.table") {
-#           expect_silent(dff <- do.call(csv_to_disk.frame, args))
-#         } else {
-#           expect_message(dff <- do.call(csv_to_disk.frame, args))
-#         }
-#         
-#         expect_s3_class(dff, "disk.frame")
-#         expect_equal(nrow(dff), nrow(df))
-#         expect_equal(ncol(dff), ncol(df))
-#         
-#         if(backend == "data.table" | 
-#            backend == "readr") {
-#           expect_silent(dff_id1 <- as.character(data.table::as.data.table(dff)$id1))
-#         } else {
-#           # warning re binding character & factor vector
-#           expect_warning(dff_id1 <- as.character(data.table::as.data.table(dff)$id1)) 
-#         }
-#         expect_equal(dff_id1, df$id1)
-#         expect_equal(nchunks(dff), NCHUNKS)
-#         
-#         delete(dff)
-#       }      
-#     })
-#   }
-# }
+
 
 ##### Flights test #####
 for(backend in BACKENDS) {
@@ -262,13 +213,12 @@ for(backend in BACKENDS) {
       args$overwrite <- TRUE
       args$backend <- backend
       args$chunk_reader <- chunk_reader
-      args$in_chunks <- NCHUNKS
+      args$nchunks <- NCHUNKS
       
       # LaF defaults to no header; fix here
       if(backend == "LaF") args$backend_args$header <- TRUE
       
-      if(chunk_reader == "LaF" & backend == "data.table") {
-        # for LaF with backend readr, readr will be used instead
+      if(chunk_reader == "LaF" & backend != "LaF") {
         expect_error(dff <- do.call(csv_to_disk.frame, args))
         
       } else {
@@ -282,12 +232,43 @@ for(backend in BACKENDS) {
         dff_tailnum[dff_tailnum == ""] <- NA 
         expect_equal(dff_tailnum, nycflights13::flights$tailnum)
         expect_equal(nchunks(dff), NCHUNKS)
+        expect_visible(head(dff))
         
         delete(dff)
       }      
     })
   }
 }
+
+##### Multiple files, sharded #####
+# for(backend in BACKENDS) {
+#   test_that(glue::glue("{backend} works with multiple files, sharded"), {
+#     df_expected <- bind_rows(df, df, df)
+#     
+#     args <- list()
+#     args$infile <- c(file.path(tempdir(), "tmp_pls_delete_csv2df.csv"),
+#                      file.path(tempdir(), "tmp_pls_delete_csv2df2.csv"),
+#                      file.path(tempdir(), "tmp_pls_delete_csv2df3.csv"))
+#     
+#     args$outdir <- file.path(tempdir(), "tmp_pls_delete_csv2df.df")
+#     args$overwrite <- TRUE
+#     args$backend <- backend
+#     args$chunk_reader <- "readr"
+#     args$shardby <- "id3"
+#     
+#     # LaF defaults to no header; fix here
+#     if(backend == "LaF") args$backend_args$header <- TRUE
+#     
+#     expect_s3_class(dff <- do.call(csv_to_disk.frame, args), "disk.frame")
+#     expect_equal(nrow(dff), nrow(df_expected))
+#     expect_equal(ncol(dff), ncol(df_expected))
+#     expect_equal(as.character(data.table::as.data.table(dff)$id1), df_expected$id1)
+#     expect_visible(head(dff))
+#     
+#     delete(dff)
+#   })
+# }
+
 
 teardown({
   df_files <- file.path(tempdir(), c("tmp_pls_delete_csv2df.df",
