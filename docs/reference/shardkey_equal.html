@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • disk.frame</title>
+<title>Compare two disk.frame shardkeys — shardkey_equal • disk.frame</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Compare two disk.frame shardkeys — shardkey_equal" />
+<meta property="og:description" content="Compare two disk.frame shardkeys" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -137,65 +139,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      
+    <h1>Compare two disk.frame shardkeys</h1>
+    
+    <div class="hidden name"><code>shardkey_equal.Rd</code></div>
     </div>
 
-    <div id="diskframe-021" class="section level1">
-<h1 class="page-header">
-<a href="#diskframe-021" class="anchor"></a>disk.frame 0.2.1<small> Unreleased </small>
-</h1>
-<ul>
-<li>got rid of benchmarkme as a dependency</li>
-<li>added <code>hard_arrange</code>
-</li>
-<li>added more .progress options for joins</li>
-<li>Using data.table::getDTthreads() as default number of workers</li>
-<li>multisession instead of multiprocess as default backend for data.table</li>
-</ul>
-</div>
-    <div id="diskframe-020" class="section level1">
-<h1 class="page-header">
-<a href="#diskframe-020" class="anchor"></a>disk.frame 0.2.0<small> 2019-10-05 </small>
-</h1>
-<ul>
-<li>deprecated group_by, arrange, summarise</li>
-<li>add chunk_group_by, chunk_arrange, chunk_summarise</li>
-<li>fit GLMs with <code>dfglm</code>
-</li>
-<li>fixed so that dplyr function also work in mutate even with ~ in the name</li>
-<li>fixed disk.frame so that in works in functions too</li>
-</ul>
-</div>
-    <div id="diskframe-011" class="section level1">
-<h1 class="page-header">
-<a href="#diskframe-011" class="anchor"></a>disk.frame 0.1.1<small> 2019-09-15 </small>
-</h1>
-<ul>
-<li>Allowed <code>map</code> to accept multiple arguments. Thanks Knut Jägersberg for suggestion</li>
-<li>Fixed bug where if the CSV is larger than RAM then it fails by adding {LaF} backend</li>
-<li>Added {bigreadr} backend for reading large files by first splitting the file. This is the default behaviour</li>
-<li>Added {LaF} and {readr} chunk readers to <code>csv_to_disk.frame</code>
-</li>
-<li>fixed <code><a href="../reference/write_disk.frame.html">write_disk.frame(...., shardby)</a></code> and other <code>shardby</code> functions including <code>rechunk</code> and <code>shard</code>
-</li>
-<li>added <code><a href="../reference/df_ram_size.html">df_ram_size()</a></code> to accurate determine RAM size for RStudio in R3.6</li>
-<li>added <code>show_ceremony</code> and <code>show_boiler_plate</code> to show setup code</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Compare two disk.frame shardkeys</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>shardkey_equal</span>(<span class='no'>sk1</span>, <span class='no'>sk2</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>sk1</th>
+      <td><p>shardkey1</p></td>
+    </tr>
+    <tr>
+      <th>sk2</th>
+      <td><p>shardkey2</p></td>
+    </tr>
+    </table>
+
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#diskframe-021">0.2.1</a></li>
-        <li><a href="#diskframe-020">0.2.0</a></li>
-        <li><a href="#diskframe-011">0.1.1</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+    </ul>
 
+  </div>
 </div>
 
 

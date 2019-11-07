@@ -119,10 +119,12 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>In a nutshell, <code>{disk.frame}</code> makes use of two simple ideas</p>
 <p>1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 2) provide a convenient API to manipulate these chunks</p>
 <p><code>{disk.frame}</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em> that require distributing processing over many computers to be effective.</p>
-<div id="sponsors" class="section level2">
+<div id="sponsors--backers" class="section level2">
 <h2 class="hasAnchor">
-<a href="#sponsors" class="anchor"></a>Sponsors</h2>
+<a href="#sponsors--backers" class="anchor"></a>Sponsors &amp; Backers</h2>
+<p>I would like to thank our backer and sponsor:</p>
 <p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
+<p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -200,12 +202,6 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>The packages <a href="https://github.com/tidyverse/multidplyr">multidplyr</a> doesn’t seem to be disk-focused and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [<a href="https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/" class="uri">https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/</a>], it seems to use it’s own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package <a href="https://github.com/vertica/DistributedR"><code>distributedR</code></a> hasn’t been updated for a few years and also seems to require its own functions and verbs.</p>
 </div>
 </div>
-<div id="backers" class="section level2">
-<h2 class="hasAnchor">
-<a href="#backers" class="anchor"></a>Backers</h2>
-<p>I would like to thank our backer:</p>
-<p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
-</div>
 </div>
 <div id="example-usage" class="section level1">
 <h1 class="hasAnchor">
@@ -240,7 +236,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># where is the disk.frame stored</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2JaPvM\\file1878c9d20d2.df"</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2Ps66a\\file287c4e97742d.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get first few rows</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df)</span>
@@ -339,7 +335,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span>flights.df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(month <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"filtering a &lt; 0.1 took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.010s elapsed (0.010s cpu)</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; filtering a &lt; 0.1 took:  0.020s elapsed (0.010s cpu)</span></span>
 <span id="cb13-8"><a href="#cb13-8"></a><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(df_filtered)</span>
 <span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below</p>
@@ -355,7 +351,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb14-10"><a href="#cb14-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay), <span class="dt">n =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb14-11"><a href="#cb14-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_delay =</span> sum_delay<span class="op">/</span>n)</span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; group by took:  0.620s elapsed (0.160s cpu)</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; group by took:  0.390s elapsed (0.180s cpu)</span></span>
 <span id="cb14-14"><a href="#cb14-14"></a></span>
 <span id="cb14-15"><a href="#cb14-15"></a><span class="kw">collect</span>(res1)</span>
 <span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
@@ -372,16 +368,22 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <span id="cb15-6"><a href="#cb15-6"></a><span class="st">  </span><span class="kw"><a href="reference/hard_group_by.html">hard_group_by</a></span>(qtr) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span></span>
 <span id="cb15-7"><a href="#cb15-7"></a><span class="st">  </span><span class="kw"><a href="reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">avg_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dep_delay, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb15-8"><a href="#cb15-8"></a><span class="st">  </span>collect</span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt; Appending disk.frames:</span></span>
-<span id="cb15-10"><a href="#cb15-10"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; group by took:  1.160s elapsed (0.240s cpu)</span></span>
-<span id="cb15-12"><a href="#cb15-12"></a></span>
-<span id="cb15-13"><a href="#cb15-13"></a><span class="kw">collect</span>(res1)</span>
-<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
-<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt;   qtr   avg_delay</span></span>
-<span id="cb15-16"><a href="#cb15-16"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></span>
-<span id="cb15-17"><a href="#cb15-17"></a><span class="co">#&gt; 1 Q1         11.4</span></span>
-<span id="cb15-18"><a href="#cb15-18"></a><span class="co">#&gt; 2 Q2         15.9</span></span></code></pre></div>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; Hashing...</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt; Appending disk.frames:</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"group by took: "</span>, data.table<span class="op">::</span><span class="kw">timetaken</span>(pt), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co">#&gt; group by took:  1.700s elapsed (0.270s cpu)</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="kw">collect</span>(res1)</span>
+<span id="cb15-20"><a href="#cb15-20"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="co">#&gt;   qtr   avg_delay</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#&gt; 1 Q1         11.4</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a><span class="co">#&gt; 2 Q2         15.9</span></span></code></pre></div>
 </div>
 </div>
 <div id="example-datatable-syntax" class="section level2">
@@ -507,15 +509,15 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <h2 class="hasAnchor">
 <a href="#open-collective" class="anchor"></a>Open Collective</h2>
 <p>If you like <code>{disk.frame}</code> and want to speed up its development or perhaps you have a feature request? Please consider sponsoring <code>{disk.frame}</code> on Open Collective</p>
-<div id="backers-1" class="section level3">
+<div id="backers" class="section level3">
 <h3 class="hasAnchor">
-<a href="#backers-1" class="anchor"></a>Backers</h3>
+<a href="#backers" class="anchor"></a>Backers</h3>
 <p>Thank you to all our backers! [<a href="https://opencollective.com/diskframe#backer">Become a backer</a>]</p>
 <p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
 </div>
-<div id="sponsors-1" class="section level3">
+<div id="sponsors" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sponsors-1" class="anchor"></a>Sponsors</h3>
+<a href="#sponsors" class="anchor"></a>Sponsors</h3>
 <p>Support <code>{disk.frame}</code> development by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
 <p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
 </div>
@@ -551,6 +553,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Dai ZJ <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
