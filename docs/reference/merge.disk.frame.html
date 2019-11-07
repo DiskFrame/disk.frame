@@ -189,7 +189,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>b</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>51</span>:<span class='fl'>150</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>))
 <span class='no'>d</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>151</span>:<span class='fl'>250</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>))
-<span class='no'>bd.df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>b</span>, <span class='no'>d</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"b"</span>)
+<span class='no'>bd.df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>b</span>, <span class='no'>d</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>b</span>)

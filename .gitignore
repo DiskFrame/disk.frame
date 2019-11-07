@@ -48,3 +48,5 @@ src-x64
 *.zip
 *.ok
 cran-mirror
+
+misc/disk.frame-report_files/

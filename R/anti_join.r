@@ -2,6 +2,7 @@
 #' @param copy same as dplyr::anti_join
 #' @param merge_by_chunk_id the merge is performed by chunk id
 #' @param overwrite overwrite output directory
+#' @param .progress Show progress or not. Defaults to FALSE
 #' @param ... same as dplyr's joins
 #' @rdname join
 #' @importFrom rlang quo enquos
@@ -22,7 +23,7 @@
 #' delete(df.df)
 #' delete(df2.df)
 #' delete(anti_joined.df)
-anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
+anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE) {
 
   stopifnot("disk.frame" %in% class(x))
   
@@ -33,7 +34,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     map_dfr(x, ~{
       code = quo(anti_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
-    })
+    }, .progress = .progress)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
@@ -59,7 +60,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
           return(data.table())
         }
         anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
-      }, outdir = outdir)
+      }, outdir = outdir, .progress = .progress)
       return(res)
     } else {
       # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine

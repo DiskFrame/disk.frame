@@ -11,23 +11,23 @@
 \usage{
 \method{anti_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_anti_join"),
-  merge_by_chunk_id = FALSE, overwrite = TRUE)
+  merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE)
 
 \method{full_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_full_join"), overwrite = TRUE,
-  merge_by_chunk_id)
+  merge_by_chunk_id, .progress = FALSE)
 
 \method{inner_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_inner_join"),
-  merge_by_chunk_id = NULL, overwrite = TRUE)
+  merge_by_chunk_id = NULL, overwrite = TRUE, .progress = FALSE)
 
 \method{left_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_left_join"),
-  merge_by_chunk_id = FALSE, overwrite = TRUE)
+  merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE)
 
 \method{semi_join}{disk.frame}(x, y, by = NULL, copy = FALSE, ...,
   outdir = tempfile("tmp_disk_frame_semi_join"),
-  merge_by_chunk_id = FALSE, overwrite = TRUE)
+  merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE)
 }
 \arguments{
 \item{x}{a disk.frame}
@@ -45,6 +45,8 @@
 \item{merge_by_chunk_id}{the merge is performed by chunk id}
 
 \item{overwrite}{overwrite output directory}
+
+\item{.progress}{Show progress or not. Defaults to FALSE}
 }
 \value{
 disk.frame or data.frame/data.table

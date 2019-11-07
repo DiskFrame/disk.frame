@@ -41,10 +41,13 @@ In a nutshell, `{disk.frame}` makes use of two simple ideas
 
 `{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
 
-## Sponsors
+## Sponsors & Backers
+
+I would like to thank our backer and sponsor:
 
 <a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
 
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
 ## Installation
 
@@ -129,12 +132,6 @@ Finally, Spark can only apply functions that are implemented for Spark, whereas 
 ### f) How is `{disk.frame}` different from multidplyr, partools and distributedR?
 
 The packages [multidplyr](https://github.com/tidyverse/multidplyr) doesn't seem to be disk-focused and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/], it seems to use it's own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package [`distributedR`](https://github.com/vertica/DistributedR) hasn't been updated for a few years and also seems to require its own functions and verbs.
-
-## Backers
-
-I would like to thank our backer:
-
-<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
 
 # Example usage

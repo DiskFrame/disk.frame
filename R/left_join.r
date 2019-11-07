@@ -9,7 +9,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(join.df)
-left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = FALSE, overwrite = TRUE) {
+left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_left_join"), merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -20,7 +20,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     map_dfr(x, ~{
       code = quo(left_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
-    })
+    }, .progress = .progress)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
@@ -35,7 +35,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
       x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
+      return(left_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if(merge_by_chunk_id == TRUE) {
     #} else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       dotdotdot = list(...)

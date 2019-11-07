@@ -66,7 +66,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   
   overwrite_check(outdir, overwrite)
   
-  # we need multiple backend because data.table has poor support for the file is larger than RAM
+  # we need multiple backend because data.table has poor support for when the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
   # TODO detect these cases
   
@@ -87,7 +87,7 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
       rs = df_ram_size()
       
       if (any((sapply(infile, file.size)/1024^3)> rs)) {
-        message("csv_to_disk.frame: you are using backend = 'data.table' and chunk_reader = 'data.table'.")
+        message("csv_to_disk.frame: using backend = 'data.table' and chunk_reader = 'data.table'.")
         message(glue::glue("But one of your input files is larger than available RAM {rs}."))
         message("if the file(s) fail to read, please set chunk_reader = 'readLines' or chunk_reader = 'readr'.")
         message("E.g. csv_to_disk.frame(..., chunk_reader = 'readr')")
@@ -96,21 +96,21 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   }
   
   if(length(infile)>1) {
-    message("csv_to_disk.frame: you are trying to read multiple files.")
+    message("csv_to_disk.frame: Reading multiple input files.")
     #param_names = names(list(...))
     
     if(backend == "data.table") {
       #if (!"colClasses" %in% param_names) {
-      message("Please use colClasses to set column types to minimize the chance of a failed read")
+      message("Please use `colClasses = `  to set column types to minimize the chance of a failed read")
       #}
     } else if (backend == "readr") {
       #if (!"col_types" %in% param_names) {
-      message("Please use col_types to set column types to minimize the chance of a failed read")
+      message("Please use `col_types = ` to set column types to minimize the chance of a failed read")
       #}
     } else if (backend == "LaF") {
-      message("Please check the documentation of LaF for how to set column classes")
+      message("Please check the documentation of {LaF} for how to set column classes. For example type `?LaF`")
     } else {
-      stop("csv_to_disk.frame: backend not supported")
+      stop(glue::glue("csv_to_disk.frame: backend {backend} not supported"))
     }
   }
   
@@ -298,9 +298,13 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     
     pt <- proc.time()
     if(.progress) {
-      message("-- Converting CSVs to disk.frame --")
-      
-      message(glue::glue("Converting {length(infile)} CSVs to {nchunks} disk.frame each consisting of {nchunks} chunks (Stage 1 of 2):"))
+      message("=================================================")
+      message("")
+      message(" ----------------------------------------------------- ")
+      message("-- Converting CSVs to disk.frame -- Stage 1 of 2:")
+      message("")
+      message(glue::glue("Converting {length(infile)} CSVs to {nchunks} disk.frames each consisting of {nchunks} chunks"))
+      message("")
     }
     
     outdf_tmp = furrr::future_imap(infile, ~{
@@ -310,12 +314,17 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     }, .progress = .progress)
     
     if(.progress) {
-      message(paste("Stage 1 or 2 took:", data.table::timetaken(pt)))
+      message(paste("-- Converting CSVs to disk.frame -- Stage 1 or 2 took:", data.table::timetaken(pt)))
+      message(" ----------------------------------------------------- ")
       message(" ")
     }
     
-    message(glue::glue("Row-binding the {nchunks} disk.frames together to form one large disk.frame (Stage 2 of 2):"))
+    message(" ----------------------------------------------------- ")
+    message("-- Converting CSVs to disk.frame -- Stage 2 of 2:")
+    message("")
+    message(glue::glue("Row-binding the {nchunks} disk.frames together to form one large disk.frame:"))
     message(glue::glue("Creating the disk.frame at {outdir}"))
+    message("")
     pt2 <- proc.time()
     outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
     

@@ -34,7 +34,8 @@
     expr <- c(expr, dotdotdot)
     res <- do.call(`[`, expr)
     res
-  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame"))
+  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame")
+  )
   
   if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
     rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)

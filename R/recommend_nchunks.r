@@ -60,7 +60,7 @@ df_ram_size <- function() {
     if(.Platform$GUI == "RStudio") {
       majorv = as.integer(version$major)
       minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
-      if(majorv>=3 & minorv >= 6) {
+      if((majorv>=3 & minorv >= 6) | majorv >= 4) {
         ram_size <- system("wmic MemoryChip get Capacity", intern=TRUE) %>% 
           map(~strsplit(.x, " ")) %>% 
           unlist %>% 
@@ -91,7 +91,12 @@ df_ram_size <- function() {
     }
   } else {
     #ram_size = as.numeric(system('grep MemTotal /proc/meminfo', ignore.stdout = TRUE) / 1024)
-    a = system('grep MemTotal /proc/meminfo', intern = TRUE)
+    os = R.version$os
+    if (length(grep("^darwin", os))) {
+      a = substring(system("sysctl hw.memsize", intern = TRUE), 13)
+    } else {
+      a = system('grep MemTotal /proc/meminfo', intern = TRUE)
+    }
     l = strsplit(a, " ")[[1]]
     l = as.numeric(l[length(l)-1])
     ram_size = l/1024^2

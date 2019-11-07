@@ -1,7 +1,8 @@
 context("test-util")
 
-# TODO do some testing
-test_that("testing util", {
-  expect_true(TRUE)
+test_that("testing evalparseglue", {
+  x = 2
+  y = 3
+  expect_equal(evalparseglue("{x}+{y}"), 5)
 })
 

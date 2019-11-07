@@ -22,7 +22,7 @@
 #' 
 #' # if you do not wish to use multiple workers you can set it to sequential
 #' setup_disk.frame(future_backend=future::sequential)
-setup_disk.frame <- function(workers = parallel::detectCores(logical = FALSE), future_backend = future::multiprocess, ..., gui = FALSE) {
+setup_disk.frame <- function(workers = data.table::getDTthreads(), future_backend = future::multisession, ..., gui = FALSE) {
   if(!gui) {
     future::plan(future_backend, workers = workers, gc = TRUE, ...)
     message(sprintf("The number of workers available for disk.frame is %d", future::nbrOfWorkers()))

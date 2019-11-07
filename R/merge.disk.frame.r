@@ -11,7 +11,7 @@
 #' @examples
 #' b = as.disk.frame(data.frame(a = 51:150, b = 1:100))
 #' d = as.disk.frame(data.frame(a = 151:250, b = 1:100))
-#' bd.df = merge(b, d, by = "b")
+#' bd.df = merge(b, d, by = "b", merge_by_chunk_id = TRUE)
 #' 
 #' # clean up cars.df
 #' delete(b)
@@ -29,7 +29,7 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
       res
       }, outdir=outdir, ...)
     res  
-  } else if (merge_by_chunk_id | (identical(shardkey(x), shardkey(y)))) {
+  } else if (merge_by_chunk_id | shardkey_equal(shardkey(x), shardkey(y))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
     path1 = attr(x,"path")
