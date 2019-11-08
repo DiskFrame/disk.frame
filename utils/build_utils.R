@@ -45,7 +45,7 @@ df_setup_vignette <- function(excl = "") {
   NULL
 }
 
-df_check <- function() {
+df_ready <- function() {
   df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"))
   #devtools::clean_vignettes()
   
@@ -56,9 +56,17 @@ df_check <- function() {
     fs::dir_copy("tests", "tests_manual")
     fs::dir_delete("tests")
   }
-  
+}
+
+df_check <- function() {
+  df_ready()
   # run check
   devtools::check(args = c('--as-cran'))
+}
+
+df_release <- function() {
+  df_ready()
+  devtools::release()
 }
 
 if(F) {
