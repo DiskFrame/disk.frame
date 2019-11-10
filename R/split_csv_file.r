@@ -6,17 +6,15 @@
 #' @param num_splits Number of splits for each file. If more than one infile, can specify either
 #' a single num_splits value to apply to every file, or a vector of integers with a length 
 #' equal to the number of infiles.
-#' @param method If data.table, uses \code{\link[data.table]{fread}} to guess at the header location.
-#' If bigreadr, must specify either header TRUE or FALSE. 
-#' \code{\link[bigreadr]{split_file}} used to split the file.
-#' If header is not specified, it will be assumed to be TRUE.
-#' If none, header must be specified.
-#' Note that data.table relies on unix tools that may not be available on a Windows platform.
 #' @param header Either TRUE, FALSE, or an integer specifying the header index.
 #' If TRUE, the first line of the file will be copied to each file split.
 #' If an integer is provided, all lines above or equal to that integer 
 #' will be copied to each file split.
-#'  
+#' @param split_method If unix, can use \code{\link[data.table]{fread}} to guess at the header location.
+#' If bigreadr, must specify either header TRUE or FALSE. 
+#' \code{\link[bigreadr]{split_file}} used to split the file.
+#' If header is not specified, it will be assumed to be TRUE.
+#' Note that unix relies on unix tools that may not be available on a Windows platform.
 #' If the header is not known, try using \code{\link{header_row_index}} to determine the correct header. 
 #' @param outdir Where to save the split files.
 #' @param suffix Suffix to use when naming the split files.
@@ -24,6 +22,7 @@
 #' 
 #' @importFrom fs path_ext
 #' @importFrom fs file_move
+#' @importFrom future.apply future_mapply
 #' @export
 split_csv_file <- function(infile,
                            num_splits = 2,
@@ -31,7 +30,7 @@ split_csv_file <- function(infile,
                            split_method = c("bigreadr", "unix"),
                            outdir = tempdir(),
                            suffix = "split") {
-  if(length(infile) > 1) return(mapply(split_csv_file,
+  if(length(infile) > 1) return(future.apply::future_mapply(split_csv_file,
                                        infile = infile,
                                        num_splits = num_splits,
                                        split_method = split_method,
@@ -102,6 +101,7 @@ split_csv_file_bigreadr <- function(csv_file, outdir = tempdir(), num_splits = 2
 #' Can split a file with any sized header. 
 #' @importFrom fs file_delete
 #' @importFrom fs file_move
+#' @importFrom future.apply future_mapply
 #' @keywords internal
 split_csv_file_unix <- function(csv_file, outdir = tempdir(), num_splits = 2, header_row_index = 1) {
   if(num_splits < 2) return(csv_file)
@@ -136,7 +136,7 @@ split_csv_file_unix <- function(csv_file, outdir = tempdir(), num_splits = 2, he
   } 
   
   split_files <- file.path(outdir, sprintf("split%d.csv", seq_len(num_splits)))
-  mapply(function(split_file, i) {
+  future.apply::future_mapply(function(split_file, i) {
     system2(command = "split",
             args = c("--number", sprintf("l/%d/%d", i, num_splits),
                      body_csv_file,
@@ -172,31 +172,33 @@ split_csv_file_unix <- function(csv_file, outdir = tempdir(), num_splits = 2, he
 #' 
 #' Determine the line number for the header row in a file.
 #' Uses a simplistic method of matching the column names to find the header row.
-#' @param csv_file A single csv file to examine.
+#' @param csv_files A single csv file to examine.
 #' @param method Method to use to determine the column names. 
 #' data.table uses \code{\link[data.table]{fread}}. 
 #' readr uses \code{\link[readr]{read_delim}}.
+#' LaF uses \code{\link[LaF]{detect_dm_csv}}
 #' @param ... Additional arguments to pass to the method.
 #' @return Line number for the header if found; 0 otherwise.
+#' @importFrom future.apply future_mapply
 #' @export
-header_row_index <- function(csv_file, method = c("data.table", "readr", "LaF"), ...) {
-  stopifnot(length(csv_file) == 1)
+header_row_index <- function(csv_files, method = c("data.table", "readr", "LaF"), ...) {
   dots <- list(...)
   
   method <- match.arg(method)
   
   col_types <- switch(method,
-                      data.table = determine_classes_csv_data.table(csv_file, ...),
-                      readr = determine_classes_csv_readr(csv_file, ...),
-                      LaF = determine_classes_csv_laf(csv_file, ...))
+                      data.table = determine_classes_csv_data.table(csv_files, ...),
+                      readr = determine_classes_csv_readr(csv_files, ...),
+                      LaF = determine_classes_csv_laf(csv_files, ...))
   cols <- colnames(col_types)
     
   sep <- "[,\t |;:]"
   if("sep" %in% names(dots)) sep <- dots$sep
   if("delim" %in% names(dots)) sep <- dots$delim
   
-  header_row <- line_first_match(file = csv_file,
-                                 pattern = paste(cols, collapse = sep))
+  header_row <- future_mapply(line_first_match, 
+                              file = csv_files,
+                              MoreArgs = list(pattern = paste(cols, collapse = sep)))
   return(header_row)
 }
 
@@ -288,6 +290,7 @@ count_lines_in_file <- function(file) {
 #' renumber_file_names(LETTERS, suffix = "split")
 #' renumber_file_names(LETTERS, suffix = "split", extension = "csv")
 #' @importFrom rlang parse_expr
+#' @importFrom rlang expr
 #' @importFrom fs path_ext_remove
 #' @keywords internal
 renumber_file_names <- function(files, suffix = "", extension = NULL) {
@@ -299,7 +302,7 @@ renumber_file_names <- function(files, suffix = "", extension = NULL) {
   if(is.null(extension)) sep <- ""
   outfiles <- file.path(dirname(files), 
                         paste(fs::path_ext_remove(basename(files)),
-                              paste(eval(expr(!! file_name)), extension, sep = sep),
+                              paste(eval(rlang::expr(!! file_name)), extension, sep = sep),
                               sep = "_"))
   outfiles
 }

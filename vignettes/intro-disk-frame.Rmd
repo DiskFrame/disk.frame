@@ -115,7 +115,7 @@ flights.df <- csv_to_disk.frame(
 flights.df
 ```
 
-If the CSV is too large to read in, then we can also use the `in_chunk_size` option to control how many rows to read in at once. For example to read in the data 100,000 rows at a time.
+If the CSV is too large to read in, then we can also use the `nchunks` option to control how many rows to read in at once. For example to split the data into 3 chunks, each comprising about 100,000 rows.
 
 ```{r}
 library(nycflights13)
@@ -131,12 +131,32 @@ df_path = file.path(tempdir(), "tmp_flights.df")
 flights.df <- csv_to_disk.frame(
   csv_path, 
   outdir = df_path, 
-  in_chunk_size = 100000)
+  nchunks = 3)
   
 flights.df
 ```
 
-`disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to `disk.frame`s.
+If you are unsure of the number of chunks, `disk.frame` has a function, `estimate_chunks_needed` to help determine if the file should be split. Or just omit nchunks from `csv_to_disk.frame`, and `disk.frame` will attempt to guess the number of chunks required. 
+
+If you have an extremely large CSV file, another approach is to first use `split_csv_file` to split
+it into multiple smaller files, which can then be directly passed to `csv_to_disk.frame.` For example:
+```{r}
+library(nycflights13)
+library(disk.frame)
+
+# write a csv
+csv_path = file.path(tempdir(), "tmp_flights.csv")
+data.table::fwrite(flights, csv_path)
+df_path = file.path(tempdir(), "tmp_flights.df")
+
+flights.df <- split_csv_file(csv_path, num_splits = 3) %>%
+  csv_to_disk.frame(outdir = df_path)
+  
+flights.df
+```
+
+If you have multiple CSV files that you want to import to create a single disk.frame, just provide
+the file paths as a character vector to `csv_to_disk.frame`. `disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to `disk.frame`s.
 
 ### Simple `dplyr` verbs and lazy evaluation
 ```{r dfselect, dependson='asdiskframe', cache=TRUE}

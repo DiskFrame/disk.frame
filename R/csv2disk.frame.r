@@ -14,12 +14,16 @@
 #' resulting disk.frame. Thus, if three file names are provided, and nchunks = c(1,2,3), the resulting
 #' disk.frame will contain 6 chunks. 
 #' 
+#' Multiple files are processed using \code{\link[future.apply]{future_mapply}}. Thus, they will be 
+#' imported in parallel if \code{\link[future]{plan}} is set to a parallel plan. Consider switching to
+#' a sequential plan if this causes out-of-memory errors, or increasing the number of chunks per file.
+#' 
 #' @section Backend:
 #' Disk.frame does not have its own CSV reader. Instead, it uses one of several existing packages to read CSVs.
 #'  
 #' It is worth noting that data.table::fread does not detect dates and all dates 
 #' are imported as strings, and you are encouraged to use {fasttime} to convert the strings to
-#' date. You can use the \code{\link{inmapfn}} to do that. However, if you want automatic
+#' date. You can use the `inmapfn` to do that. However, if you want automatic
 #' date detection, then backend="readr" may suit your needs. However, `readr`
 #' is often slower than data.table, hence data.table is chosen as the default.
 #' `LaF` is another option, but is limited in its input parameters. In particular, you may need to 
@@ -39,7 +43,7 @@
 #'   but that is useless if you do not have sufficient memory to do anything with it.)
 #'   
 #'   If chunks are needed, the easiest approach may be to use \code{\link{split_csv_file}} 
-#'   to split the csv file prior to importing it with \code{\link{csv2disk.frame.}}. 
+#'   to split the csv file prior to importing it with `csv_to_disk.frame`. 
 #'   
 #'   Alternatively, you can select one of three chunk_readers: readLines, readr, or LaF.
 #'   Each chunk_reader will read a portion of the csv file into memory and save that portion to an fst file, 
@@ -47,7 +51,7 @@
 #'   
 #'   The `readLines` chunk_reader uses \code{\link[base]{readLines}} to read each file chunk into memory.   
 #'   The `readr` chunk_reader uses \code{\link[readr]{read_lines_chunked}}.
-#'   The `LaF` chunk reader uses \code{\link[Laf]{process_blocks}}.
+#'   The `LaF` chunk reader uses \code{\link[LaF]{process_blocks}}.
 #'   
 #'   Some combinations of chunk_reader and backend are not compatible or are not efficient.
 #'   The following table specifies what is used for each combination:
@@ -55,9 +59,9 @@
 #' \tabular{llll}{
 #' \emph{chunk_reader}                  \tab \tab \emph{backend}                                                                  \tab                                                                                                    \cr
 #'                 \tab \strong{data.table}                                                               \tab \strong{readr}                                                          \tab \strong{LaF}                                                                 \cr
-#'    \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[Laf]{detect_dm_csv}} \cr
-#'    \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[Laf]{detect_dm_csv}} \cr
-#'    \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[Laf]{process_blocks}}; \code{\link[Laf]{detect_dm_csv}} \cr
+#'    \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[LaF]{detect_dm_csv}} \cr
+#'    \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[LaF]{detect_dm_csv}} \cr
+#'    \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[LaF]{process_blocks}}; \code{\link[LaF]{detect_dm_csv}} \cr
 #' }
 #' 
 #' @param infile The input CSV file or files
@@ -66,14 +70,14 @@
 #' will be used to guess the correct header index. Can be set to TRUE, FALSE, or a positive integer if the 
 #' header row is not the first line of the file. May be an integer vector with a length equal to the length of infile.
 #' @param backend The CSV reader backend to choose: "data.table", "readr", or "LaF," which will use
-#' \code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}, respectively.
+#' \code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[LaF]{detect_dm_csv}}, respectively.
 #' @param backend_args List of arguments to pass to the backend function 
-#' (\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}).
+#' (\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[LaF]{detect_dm_csv}}).
 #' @param nchunks Number of chunks to output. May be an integer vector with a length equal to the length of infile.
 #' If NULL (default), then the number of chunks will be estimated using \code{\link{estimate_chunks_needed}}.
 #' @param chunk_reader The method to read each file chunk into memory: "readLines," "readr," or "LaF,"
 #' which will use \code{\link[base]{readLines}}, \code{\link[readr]{read_lines_chunked}}, or 
-#' \code{\link[Laf]{process_blocks}}, respectively.
+#' \code{\link[LaF]{process_blocks}}, respectively.
 #' @param max_percent_ram Maximum percentage of ram to use when estimating the number of chunks using \code{\link{estimate_chunks_needed}}.
 #' @param inmapfn A function to be applied to the chunk read in from CSV before
 #'   the chunk is being written out. Commonly used to perform simple
@@ -176,7 +180,9 @@ csv_to_disk.frame <- function(infile,
   
   ##### Header row index #####
   if(is.null(header_row)) {
-    header_row <- mapply(header_row_index, csv_file = infile, method = backend, MoreArgs = backend_args)
+    header_row <- do.call(header_row_index, c(list(csv_file = infile, 
+                                                 method = backend),
+                                              backend_args))
   }
   
   ##### CSV import #####
@@ -224,13 +230,14 @@ csv_to_disk.frame <- function(infile,
 #' @param inmapfn A function to be applied to the chunk read in from CSV before 
 #' the chunk is being written out.
 #' @param outdir Directory to save the fst files.
-#' @param compress Compression level for fst files. See \code{\link{fst::write_fst}}
+#' @param compress Compression level for fst files. See \code{\link[fst]{write_fst}}
 #' @param .progress If TRUE, display progress when importing csv files. 
-#' @param ... Additional parameters for backend data.table, readr, or LaF. 
+#' @param backend_args Additional parameters for backend data.table, readr, or LaF. 
 #' @seealso \code{\link{csv_to_disk.frame}}
 #'          \code{\link[readr]{read_delim_chunked}}
 #' 
 #' @importFrom fs file_move
+#' @importFrom future.apply future_mapply
 #' @keywords internal
 csv2fst <- function(infile, 
                     nchunks, 
@@ -242,7 +249,7 @@ csv2fst <- function(infile,
                     compress = 50,
                     .progress = TRUE,
                     backend_args = backend_args) {
-  if(length(infile) > 1) return(mapply(csv2fst, 
+  if(length(infile) > 1) return(future.apply::future_mapply(csv2fst, 
                                        infile = infile, 
                                        nchunks = nchunks, 
                                        chunk_reader = chunk_reader,
@@ -544,7 +551,7 @@ df2fst <- function(df,
 #' @return Integer vector, length of infile, indicating the number of chunks that should be used.
 #' 
 #' @importFrom fs file_size
-#' @keywords internal
+#' @export
 estimate_chunks_needed <- function(infile, max_percent_ram = 0.5, ...) {
   if(max_percent_ram >= 1) warning(sprintf("Maximum percent ram to use to load CSV files is %.02f.\nThis value should probably be less than 1.", max_percent_ram))
   file_sizes <- fs::file_size(infile) # bytes
@@ -572,6 +579,7 @@ estimate_chunks_needed <- function(infile, max_percent_ram = 0.5, ...) {
 #' Determine classes for one or more files using data.table::fread by reading in 
 #' first row. In case of conflict between files, use the more general class.
 #' (follows data.table approach)
+#' @importFrom dplyr first
 #' @keywords internal
 determine_classes_csv_data.table <- function(infiles, ...) {
   dots <- list(...)
@@ -585,10 +593,10 @@ determine_classes_csv_data.table <- function(infiles, ...) {
   }, dots = dots)
   
   stopifnot(all(ncol(head.lst[[1]]) == sapply(head.lst, ncol)))
-  res <- dplyr::bind_rows(lapply(head.lst, function(df) { dplyr::bind_rows(lapply(df, class)) } ))
+  res <- dplyr::bind_rows(lapply(head.lst, function(df) { dplyr::bind_rows(lapply(df, . %>% class %>% first)) } ))
   
   # select the maximum level if more than one type found for a column
-  lvls <- c("logical", "Date", "integer", "numeric", "character")
+  lvls <- c("logical", "Date", "POSIXct", "integer", "numeric", "factor", "character")
   stopifnot(unique(sapply(res, unique) %>% unlist) %in% lvls)
   res %>%
     dplyr::mutate_all(~ factor(., levels = lvls, ordered = TRUE)) %>%
@@ -599,6 +607,7 @@ determine_classes_csv_data.table <- function(infiles, ...) {
 
 #' Read first row of a file or files using readr::read_delim and use the result to 
 #' determine classes. In case of conflict between files, use the more general class.
+# @importFrom plyr revalue
 #' @keywords internal
 determine_classes_csv_readr <- function(infiles, delim=",", ...) {
   dots <- list(...)
@@ -611,7 +620,7 @@ determine_classes_csv_readr <- function(infiles, delim=",", ...) {
   }, dots = dots)
   
   stopifnot(all(ncol(head.lst[[1]]) == sapply(head.lst, ncol)))
-  res <- bind_rows(lapply(head.lst, function(df) { bind_rows(lapply(df, . %>% class %>% first)) } ))
+  res <- dplyr::bind_rows(lapply(head.lst, function(df) { dplyr::bind_rows(lapply(df, . %>% class %>% first)) } ))
   
   # select the maximum level if more than one type found for a column
   lvls <- c("logical", "Date", "POSIXct", "integer", "numeric", "character")
@@ -638,6 +647,7 @@ determine_classes_csv_readr <- function(infiles, delim=",", ...) {
 #' get the column classes. In case of conflict between files, use the more general class.
 #' @keywords internal
 determine_classes_csv_laf <- function(infiles, ...) {
+  stopifnot(requireNamespace("LaF"))
   model.lst <- lapply(infiles, LaF::detect_dm_csv, ...)
   
   res <- sapply(model.lst, function(model) {

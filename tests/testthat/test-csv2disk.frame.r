@@ -5,6 +5,8 @@ df = disk.frame:::gen_datatable_synthetic(1e3+11)
 CHUNK_READERS <- c("readr", "readLines", "LaF")
 BACKENDS <- c("data.table", "readr", "LaF")
 NCHUNKS <- 3
+# library(future)
+# plan(multiprocess)
 
 setup({
   data.table::fwrite(df, file.path(tempdir(), "tmp_pls_delete_csv2df.csv"))

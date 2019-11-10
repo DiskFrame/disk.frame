@@ -21,17 +21,17 @@ will be used to guess the correct header index. Can be set to TRUE, FALSE, or a 
 header row is not the first line of the file. May be an integer vector with a length equal to the length of infile.}
 
 \item{backend}{The CSV reader backend to choose: "data.table", "readr", or "LaF," which will use
-\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}, respectively.}
+\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[LaF]{detect_dm_csv}}, respectively.}
 
 \item{backend_args}{List of arguments to pass to the backend function 
-(\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[Laf]{detect_dm_csv}}).}
+(\code{\link[data.table]{fread}}, \code{\link[readr]{read_delim}}, or \code{\link[LaF]{detect_dm_csv}}).}
 
 \item{nchunks}{Number of chunks to output. May be an integer vector with a length equal to the length of infile.
 If NULL (default), then the number of chunks will be estimated using \code{\link{estimate_chunks_needed}}.}
 
 \item{chunk_reader}{The method to read each file chunk into memory: "readLines," "readr," or "LaF,"
 which will use \code{\link[base]{readLines}}, \code{\link[readr]{read_lines_chunked}}, or 
-\code{\link[Laf]{process_blocks}}, respectively.}
+\code{\link[LaF]{process_blocks}}, respectively.}
 
 \item{max_percent_ram}{Maximum percentage of ram to use when estimating the number of chunks using \code{\link{estimate_chunks_needed}}.}
 
@@ -66,7 +66,11 @@ Note that at this time, backend_args will be applied to every file provided.
 By default, each file will correspond to a single chunk in the resulting disk.frame. If the parameter
 nchunks is set to greater than 1 for a given file, each chunk of that file will be a chunk in the 
 resulting disk.frame. Thus, if three file names are provided, and nchunks = c(1,2,3), the resulting
-disk.frame will contain 6 chunks.
+disk.frame will contain 6 chunks. 
+
+Multiple files are processed using \code{\link[future.apply]{future_mapply}}. Thus, they will be 
+imported in parallel if \code{\link[future]{plan}} is set to a parallel plan. Consider switching to
+a sequential plan if this causes out-of-memory errors, or increasing the number of chunks per file.
 }
 
 \section{Backend}{
@@ -75,7 +79,7 @@ Disk.frame does not have its own CSV reader. Instead, it uses one of several exi
  
 It is worth noting that data.table::fread does not detect dates and all dates 
 are imported as strings, and you are encouraged to use {fasttime} to convert the strings to
-date. You can use the \code{\link{inmapfn}} to do that. However, if you want automatic
+date. You can use the `inmapfn` to do that. However, if you want automatic
 date detection, then backend="readr" may suit your needs. However, `readr`
 is often slower than data.table, hence data.table is chosen as the default.
 `LaF` is another option, but is limited in its input parameters. In particular, you may need to 
@@ -97,7 +101,7 @@ Even if you choose a backend there can still be multiple
   but that is useless if you do not have sufficient memory to do anything with it.)
   
   If chunks are needed, the easiest approach may be to use \code{\link{split_csv_file}} 
-  to split the csv file prior to importing it with \code{\link{csv2disk.frame.}}. 
+  to split the csv file prior to importing it with `csv_to_disk.frame`. 
   
   Alternatively, you can select one of three chunk_readers: readLines, readr, or LaF.
   Each chunk_reader will read a portion of the csv file into memory and save that portion to an fst file, 
@@ -105,7 +109,7 @@ Even if you choose a backend there can still be multiple
   
   The `readLines` chunk_reader uses \code{\link[base]{readLines}} to read each file chunk into memory.   
   The `readr` chunk_reader uses \code{\link[readr]{read_lines_chunked}}.
-  The `LaF` chunk reader uses \code{\link[Laf]{process_blocks}}.
+  The `LaF` chunk reader uses \code{\link[LaF]{process_blocks}}.
   
   Some combinations of chunk_reader and backend are not compatible or are not efficient.
   The following table specifies what is used for each combination:
@@ -113,9 +117,9 @@ Even if you choose a backend there can still be multiple
 \tabular{llll}{
 \emph{chunk_reader}                  \tab \tab \emph{backend}                                                                  \tab                                                                                                    \cr
                 \tab \strong{data.table}                                                               \tab \strong{readr}                                                          \tab \strong{LaF}                                                                 \cr
-   \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[Laf]{detect_dm_csv}} \cr
-   \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[Laf]{detect_dm_csv}} \cr
-   \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[Laf]{process_blocks}}; \code{\link[Laf]{detect_dm_csv}} \cr
+   \strong{readr}        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[data.table]{fread}} \tab \code{\link[readr]{read_delim_chunked}}                        \tab \code{\link[readr]{read_lines_chunked}}; \code{\link[LaF]{detect_dm_csv}} \cr
+   \strong{readLines}    \tab \code{\link[base]{readLines}}; \code{\link[data.table]{fread}}           \tab \code{\link[base]{readLines}}; \code{\link[readr]{read_delim}} \tab \code{\link[base]{readLines}}; \code{\link[LaF]{detect_dm_csv}} \cr
+   \strong{LaF}          \tab Throws error.                                                            \tab Throws error.                                                  \tab \code{\link[LaF]{process_blocks}}; \code{\link[LaF]{detect_dm_csv}} \cr
 }
 }
 

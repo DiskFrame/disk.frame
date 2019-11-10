@@ -4,14 +4,16 @@
 \alias{header_row_index}
 \title{Get header row}
 \usage{
-header_row_index(csv_file, method = c("data.table", "readr", "LaF"), ...)
+header_row_index(csv_files, method = c("data.table", "readr", "LaF"),
+  ...)
 }
 \arguments{
-\item{csv_file}{A single csv file to examine.}
+\item{csv_files}{A single csv file to examine.}
 
 \item{method}{Method to use to determine the column names. 
 data.table uses \code{\link[data.table]{fread}}. 
-readr uses \code{\link[readr]{read_delim}}.}
+readr uses \code{\link[readr]{read_delim}}.
+LaF uses \code{\link[LaF]{detect_dm_csv}}}
 
 \item{...}{Additional arguments to pass to the method.}
 }

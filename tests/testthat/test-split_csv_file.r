@@ -1,5 +1,8 @@
 context("test-split_csv_file.frame")
 df = disk.frame:::gen_datatable_synthetic(1e3+11)
+# library(future)
+# plan(multiprocess)
+
 setup({
   data.table::fwrite(df, file.path(tempdir(), "tmp_pls_delete_csv2df.csv"))
   data.table::fwrite(df, file.path(tempdir(), "tmp_pls_delete_csv2df2.csv"))
@@ -49,32 +52,32 @@ test_that("line_first_match works", {
 
 test_that("header_row_index works", {
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.csv"),
-                                             method = "data.table"),
+                                             method = "data.table") %>% as.integer,
                1)
   
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.tab"),
                                              method = "data.table",
-                                             sep = "\t"),
+                                             sep = "\t") %>% as.integer,
                1)
   
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.csv"),
-                                             method = "readr"),
+                                             method = "readr") %>% as.integer,
                1)
   
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.tab"),
                                              method = "readr",
-                                             delim = "\t"),
+                                             delim = "\t") %>% as.integer,
                1)
   
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.tab"),
                                              method = "LaF",
-                                             header = TRUE),
+                                             header = TRUE) %>% as.integer,
                1)
   
   expect_equal(disk.frame:::header_row_index(file.path(tempdir(), "tmp_pls_delete_csv2df.tab"),
                                              method = "LaF",
                                              header = TRUE,
-                                             sep = "\t"),
+                                             sep = "\t") %>% as.integer,
                1)
   
 }) 

@@ -22,4 +22,3 @@ commensurate with amount of RAM required, and comparing to total RAM available.
 Can be offset by setting max_percent_ram. In general, set max_percent_ram to well under 1.0 if
 the files may be read in parallel or if you anticipate copies may be made.
 }
-\keyword{internal}

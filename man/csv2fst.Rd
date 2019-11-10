@@ -23,11 +23,11 @@ the chunk is being written out.}
 
 \item{outdir}{Directory to save the fst files.}
 
-\item{compress}{Compression level for fst files. See \code{\link{fst::write_fst}}}
+\item{compress}{Compression level for fst files. See \code{\link[fst]{write_fst}}}
 
 \item{.progress}{If TRUE, display progress when importing csv files.}
 
-\item{...}{Additional parameters for backend data.table, readr, or LaF.}
+\item{backend_args}{Additional parameters for backend data.table, readr, or LaF.}
 }
 \description{
 Convert a csv file to an fst file

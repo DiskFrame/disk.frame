@@ -18,20 +18,18 @@ equal to the number of infiles.}
 \item{header}{Either TRUE, FALSE, or an integer specifying the header index.
 If TRUE, the first line of the file will be copied to each file split.
 If an integer is provided, all lines above or equal to that integer 
-will be copied to each file split.
- 
+will be copied to each file split.}
+
+\item{split_method}{If unix, can use \code{\link[data.table]{fread}} to guess at the header location.
+If bigreadr, must specify either header TRUE or FALSE. 
+\code{\link[bigreadr]{split_file}} used to split the file.
+If header is not specified, it will be assumed to be TRUE.
+Note that unix relies on unix tools that may not be available on a Windows platform.
 If the header is not known, try using \code{\link{header_row_index}} to determine the correct header.}
 
 \item{outdir}{Where to save the split files.}
 
 \item{suffix}{Suffix to use when naming the split files.}
-
-\item{method}{If data.table, uses \code{\link[data.table]{fread}} to guess at the header location.
-If bigreadr, must specify either header TRUE or FALSE. 
-\code{\link[bigreadr]{split_file}} used to split the file.
-If header is not specified, it will be assumed to be TRUE.
-If none, header must be specified.
-Note that data.table relies on unix tools that may not be available on a Windows platform.}
 }
 \value{
 Vector of file paths for the split files.
