@@ -10,11 +10,17 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
 \method{hard_group_by}{data.frame}(df, ..., add = FALSE, .drop = FALSE)
 
-\method{hard_group_by}{disk.frame}(df, ...,
+\method{hard_group_by}{disk.frame}(
+  df,
+  ...,
   outdir = tempfile("tmp_disk_frame_hard_group_by"),
-  nchunks = disk.frame::nchunks(df), overwrite = TRUE,
-  shardby_function = "hash", sort_splits = NULL, desc_vars = NULL,
-  sort_split_sample_size = 100)
+  nchunks = disk.frame::nchunks(df),
+  overwrite = TRUE,
+  shardby_function = "hash",
+  sort_splits = NULL,
+  desc_vars = NULL,
+  sort_split_sample_size = 100
+)
 }
 \arguments{
 \item{df}{a disk.frame}

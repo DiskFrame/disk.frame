@@ -4,8 +4,13 @@
 \alias{compute.disk.frame}
 \title{Compute without writing}
 \usage{
-\method{compute}{disk.frame}(x, name, outdir = tempfile("tmp_df_",
-  fileext = ".df"), overwrite = TRUE, ...)
+\method{compute}{disk.frame}(
+  x,
+  name,
+  outdir = tempfile("tmp_df_", fileext = ".df"),
+  overwrite = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{a disk.frame}

@@ -4,9 +4,15 @@
 \alias{as.disk.frame}
 \title{Make a data.frame into a disk.frame}
 \usage{
-as.disk.frame(df, outdir = tempfile(fileext = ".df"),
-  nchunks = recommend_nchunks(df), overwrite = FALSE, shardby = NULL,
-  compress = 50, ...)
+as.disk.frame(
+  df,
+  outdir = tempfile(fileext = ".df"),
+  nchunks = recommend_nchunks(df),
+  overwrite = FALSE,
+  shardby = NULL,
+  compress = 50,
+  ...
+)
 }
 \arguments{
 \item{df}{a disk.frame}

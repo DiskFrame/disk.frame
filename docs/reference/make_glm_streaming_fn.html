@@ -168,26 +168,23 @@
     <p>return a function, fn, that can be used as the data argument in biglm::bigglm or speedglm::shglm</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Machine Learning (ML): <code><a href='dfglm.html'>dfglm</a></code></p></div>
+    <div class='dont-index'><p>Other Machine Learning (ML): 
+<code><a href='dfglm.html'>dfglm</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 <span class='no'>streamacq</span> <span class='kw'>=</span> <span class='fu'>make_glm_streaming_fn</span>(<span class='no'>cars.df</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>m</span> <span class='kw'>=</span> <span class='kw pkg'>biglm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/biglm/man/bigglm.html'>bigglm</a></span>(<span class='no'>dist</span> ~ <span class='no'>speed</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>streamacq</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; Large data regression model: biglm::bigglm(dist ~ speed, data = streamacq)
-#&gt; Sample size =  50 
-#&gt;                 Coef     (95%     CI)     SE      p
-#&gt; (Intercept) -17.5791 -31.0960 -4.0622 6.7584 0.0093
-#&gt; speed         3.9324   3.1014  4.7634 0.4155 0.0000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt;        [,1]
-#&gt; 1 -1.849460
-#&gt; 2 -1.849460
-#&gt; 3  9.947766
-#&gt; 4  9.947766
-#&gt; 5 13.880175
-#&gt; 6 17.812584
-#&gt; 7 21.744993
-#&gt; 8 21.744993
-#&gt; 9 21.744993</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'>collect</span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt;         [,1]
+
+<span class='no'>majorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='no'>version</span>$<span class='no'>major</span>)
+<span class='no'>minorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='no'>version</span>$<span class='no'>minor</span>, <span class='st'>"."</span>, <span class='kw'>fixed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)<span class='kw'>[[</span><span class='fl'>1</span>]][<span class='fl'>1</span>])
+<span class='kw'>if</span>(((<span class='no'>majorv</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>&amp;</span> (<span class='no'>minorv</span> <span class='kw'>&gt;=</span> <span class='fl'>6</span>)) <span class='kw'>|</span> (<span class='no'>majorv</span> <span class='kw'>&gt;</span> <span class='fl'>3</span>)) {
+  <span class='no'>m</span> <span class='kw'>=</span> <span class='kw pkg'>biglm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/biglm/man/bigglm.html'>bigglm</a></span>(<span class='no'>dist</span> ~ <span class='no'>speed</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>streamacq</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>m</span>)
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'>collect</span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))
+} <span class='kw'>else</span> {
+  <span class='no'>m</span> <span class='kw'>=</span> <span class='kw pkg'>speedglm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>shglm</a></span>(<span class='no'>dist</span> ~ <span class='no'>speed</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>streamacq</span>)
+}</div><div class='output co'>#&gt;         [,1]
 #&gt; 1  -1.849460
 #&gt; 2  -1.849460
 #&gt; 3   9.947766

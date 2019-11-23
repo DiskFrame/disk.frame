@@ -21,28 +21,43 @@
 \usage{
 map(.x, .f, ...)
 
-\method{map}{disk.frame}(.x, .f, ..., outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = TRUE,
-  overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f,
-  envir = parent.frame()), .progress = TRUE)
+\method{map}{disk.frame}(
+  .x,
+  .f,
+  ...,
+  outdir = NULL,
+  keep = NULL,
+  chunks = nchunks(.x),
+  compress = 50,
+  lazy = TRUE,
+  overwrite = FALSE,
+  vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()),
+  .progress = TRUE
+)
 
 map_dfr(.x, .f, ..., .id = NULL)
 
 \method{map_dfr}{default}(.x, .f, ..., .id = NULL)
 
-\method{map_dfr}{disk.frame}(.x, .f, ..., .id = NULL, use.names = fill,
-  fill = FALSE, idcol = NULL)
+\method{map_dfr}{disk.frame}(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL)
 
 imap(.x, .f, ...)
 
 \method{imap}{default}(.x, .f, ...)
 
-\method{imap}{disk.frame}(.x, .f, outdir = NULL, keep = NULL,
-  chunks = nchunks(.x), compress = 50, lazy = TRUE,
-  overwrite = FALSE, ...)
+\method{imap}{disk.frame}(
+  .x,
+  .f,
+  outdir = NULL,
+  keep = NULL,
+  chunks = nchunks(.x),
+  compress = 50,
+  lazy = TRUE,
+  overwrite = FALSE,
+  ...
+)
 
-\method{imap_dfr}{disk.frame}(.x, .f, ..., .id = NULL,
-  use.names = fill, fill = FALSE, idcol = NULL)
+\method{imap_dfr}{disk.frame}(.x, .f, ..., .id = NULL, use.names = fill, fill = FALSE, idcol = NULL)
 
 imap_dfr(.x, .f, ..., .id = NULL)
 

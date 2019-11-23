@@ -4,9 +4,13 @@
 \alias{recommend_nchunks}
 \title{Recommend number of chunks based on input size}
 \usage{
-recommend_nchunks(df, type = "csv",
-  minchunks = parallel::detectCores(logical = FALSE), conservatism = 2,
-  ram_size = df_ram_size())
+recommend_nchunks(
+  df,
+  type = "csv",
+  minchunks = parallel::detectCores(logical = FALSE),
+  conservatism = 2,
+  ram_size = df_ram_size()
+)
 }
 \arguments{
 \item{df}{a disk.frame or the file size in bytes of a CSV file holding the

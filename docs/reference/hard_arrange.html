@@ -158,9 +158,13 @@ row that share the same `by` value will end up in the same chunk.</p>
 <span class='fu'>hard_arrange</span>(<span class='no'>df</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>hard_arrange</span>(<span class='no'>df</span>, <span class='no'>...</span>,
+<span class='fu'>hard_arrange</span>(
+  <span class='no'>df</span>,
+  <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_hard_arrange"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/disk.frame/man/nchunks.html'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/disk.frame/man/nchunks.html'>nchunks</a></span>(<span class='no'>df</span>),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

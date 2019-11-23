@@ -10,9 +10,13 @@ hard_arrange(df, ..., add = FALSE, .drop = FALSE)
 
 \method{hard_arrange}{data.frame}(df, ...)
 
-\method{hard_arrange}{disk.frame}(df, ...,
+\method{hard_arrange}{disk.frame}(
+  df,
+  ...,
   outdir = tempfile("tmp_disk_frame_hard_arrange"),
-  nchunks = disk.frame::nchunks(df), overwrite = TRUE)
+  nchunks = disk.frame::nchunks(df),
+  overwrite = TRUE
+)
 }
 \arguments{
 \item{df}{a disk.frame}

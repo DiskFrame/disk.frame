@@ -150,7 +150,7 @@ those return by those functions. This is a convenience wrapper" />
 those return by those functions. This is a convenience wrapper</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfglm</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>glm_backend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"biglm"</span>, <span class='st'>"speedglm"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfglm</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>glm_backend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"biglm"</span>, <span class='st'>"speedglm"</span>, <span class='st'>"biglmm"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,78 +206,23 @@ implement `predict` which makes prediction and implementation impossible.</p></t
 No. 2</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Machine Learning (ML): <code><a href='make_glm_streaming_fn.html'>make_glm_streaming_fn</a></code></p></div>
+    <div class='dont-index'><p>Other Machine Learning (ML): 
+<code><a href='make_glm_streaming_fn.html'>make_glm_streaming_fn</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 <span class='no'>m</span> <span class='kw'>=</span> <span class='fu'>dfglm</span>(<span class='no'>dist</span> ~ <span class='no'>speed</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>cars.df</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: biglm</span></div><div class='input'>
 <span class='co'># can use normal R functions</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; Large data regression model: biglm::bigglm(formula, data = streaming_fn, ...)
-#&gt; Sample size =  50 
-#&gt;                 Coef     (95%     CI)     SE      p
-#&gt; (Intercept) -17.5791 -31.0960 -4.0622 6.7584 0.0093
-#&gt; speed         3.9324   3.1014  4.7634 0.4155 0.0000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt;        [,1]
-#&gt; 1 -1.849460
-#&gt; 2 -1.849460
-#&gt; 3  9.947766
-#&gt; 4  9.947766
-#&gt; 5 13.880175
-#&gt; 6 17.812584
-#&gt; 7 21.744993
-#&gt; 8 21.744993
-#&gt; 9 21.744993</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'>collect</span>(<span class='no'>cars.df</span>))</div><div class='output co'>#&gt;         [,1]
-#&gt; 1  -1.849460
-#&gt; 2  -1.849460
-#&gt; 3   9.947766
-#&gt; 4   9.947766
-#&gt; 5  13.880175
-#&gt; 6  17.812584
-#&gt; 7  21.744993
-#&gt; 8  21.744993
-#&gt; 9  21.744993
-#&gt; 10 25.677401
-#&gt; 11 25.677401
-#&gt; 12 29.609810
-#&gt; 13 29.609810
-#&gt; 14 29.609810
-#&gt; 15 29.609810
-#&gt; 16 33.542219
-#&gt; 17 33.542219
-#&gt; 18 33.542219
-#&gt; 19 33.542219
-#&gt; 20 37.474628
-#&gt; 21 37.474628
-#&gt; 22 37.474628
-#&gt; 23 37.474628
-#&gt; 24 41.407036
-#&gt; 25 41.407036
-#&gt; 26 41.407036
-#&gt; 27 45.339445
-#&gt; 28 45.339445
-#&gt; 29 49.271854
-#&gt; 30 49.271854
-#&gt; 31 49.271854
-#&gt; 32 53.204263
-#&gt; 33 53.204263
-#&gt; 34 53.204263
-#&gt; 35 53.204263
-#&gt; 36 57.136672
-#&gt; 37 57.136672
-#&gt; 38 57.136672
-#&gt; 39 61.069080
-#&gt; 40 61.069080
-#&gt; 41 61.069080
-#&gt; 42 61.069080
-#&gt; 43 61.069080
-#&gt; 44 68.933898
-#&gt; 45 72.866307
-#&gt; 46 76.798715
-#&gt; 47 76.798715
-#&gt; 48 76.798715
-#&gt; 49 76.798715
-#&gt; 50 80.731124</div><div class='input'>
-<span class='co'># can use broom to tidy up the returned info</span>
-<span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/broom/man/reexports.html'>tidy</a></span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 4</span><span>
+<span class='co'># Only works in version &gt; R 3.6</span>
+<span class='no'>majorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='no'>version</span>$<span class='no'>major</span>)
+<span class='no'>minorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='no'>version</span>$<span class='no'>minor</span>, <span class='st'>"."</span>, <span class='kw'>fixed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)<span class='kw'>[[</span><span class='fl'>1</span>]][<span class='fl'>1</span>])
+<span class='kw'>if</span>(((<span class='no'>majorv</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>&amp;</span> (<span class='no'>minorv</span> <span class='kw'>&gt;=</span> <span class='fl'>6</span>)) <span class='kw'>|</span> (<span class='no'>majorv</span> <span class='kw'>&gt;</span> <span class='fl'>3</span>)) {
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>m</span>)
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'>collect</span>(<span class='no'>cars.df</span>))
+  <span class='co'># can use broom to tidy up the returned info</span>
+  <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/broom/man/reexports.html'>tidy</a></span>(<span class='no'>m</span>)
+}</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 4</span><span>
 #&gt;   term        estimate std.error  p.value
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> (Intercept)   -</span><span style='color: #BB0000;'>17.6</span><span>      6.76  9.29</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 3</span><span>

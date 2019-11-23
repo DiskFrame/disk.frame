@@ -73,6 +73,7 @@ Algorithm AS274  Applied Statistics (1992) Vol.41,
 No. 2
 }
 \seealso{
-Other Machine Learning (ML): \code{\link{make_glm_streaming_fn}}
+Other Machine Learning (ML): 
+\code{\link{make_glm_streaming_fn}()}
 }
 \concept{Machine Learning (ML)}

@@ -5,11 +5,19 @@
 \alias{output_disk.frame}
 \title{Write disk.frame to disk}
 \usage{
-write_disk.frame(df, outdir = tempfile(fileext = ".df"),
+write_disk.frame(
+  df,
+  outdir = tempfile(fileext = ".df"),
   nchunks = ifelse("disk.frame" \%in\% class(df), nchunks.disk.frame(df),
-  recommend_nchunks(df)), overwrite = FALSE, shardby = NULL,
-  compress = 50, shardby_function = "hash", sort_splits = NULL,
-  desc_vars = NULL, ...)
+    recommend_nchunks(df)),
+  overwrite = FALSE,
+  shardby = NULL,
+  compress = 50,
+  shardby_function = "hash",
+  sort_splits = NULL,
+  desc_vars = NULL,
+  ...
+)
 
 output_disk.frame(...)
 }

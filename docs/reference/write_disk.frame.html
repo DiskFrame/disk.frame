@@ -150,11 +150,19 @@ then using the as.disk.frame function is recommended for most cases" />
 then using the as.disk.frame function is recommended for most cases</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_disk.frame</span>(<span class='no'>df</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+    <pre class="usage"><span class='fu'>write_disk.frame</span>(
+  <span class='no'>df</span>,
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
   <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='st'>"disk.frame"</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>df</span>), <span class='fu'><a href='nchunks.html'>nchunks.disk.frame</a></span>(<span class='no'>df</span>),
-  <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>)), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>, <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>)),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>shardby</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
+  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)
 
 <span class='fu'>output_disk.frame</span>(<span class='no'>...</span>)</pre>
 

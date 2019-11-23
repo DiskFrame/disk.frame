@@ -5,9 +5,17 @@
 \alias{distribute}
 \title{Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame}
 \usage{
-shard(df, shardby, outdir = tempfile(fileext = ".df"), ...,
-  nchunks = recommend_nchunks(df), overwrite = FALSE,
-  shardby_function = "hash", sort_splits = NULL, desc_vars = NULL)
+shard(
+  df,
+  shardby,
+  outdir = tempfile(fileext = ".df"),
+  ...,
+  nchunks = recommend_nchunks(df),
+  overwrite = FALSE,
+  shardby_function = "hash",
+  sort_splits = NULL,
+  desc_vars = NULL
+)
 
 distribute(...)
 }

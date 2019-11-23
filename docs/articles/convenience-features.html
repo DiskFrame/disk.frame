@@ -117,29 +117,29 @@
 <h3 class="hasAnchor">
 <a href="#gui-for-setting-options" class="anchor"></a>GUI for setting options</h3>
 <p>I wanted to make <code>{disk.frame}</code> as easy to use as possible. I often forget what options are available to me. So I’ve made a GUI</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dt">gui =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dt">gui =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>which opens up a Shiny app where the user can choose the options.</p>
 </div>
 <div id="rstudio-column-name-completion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rstudio-column-name-completion" class="anchor"></a>RStudio column name completion</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>mtcars.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(mtcars)</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a>mtcars.df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="op">&lt;</span>press tab<span class="op">&gt;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
+<a class="sourceLine" id="cb2-2" title="2">mtcars.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(mtcars)</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4">mtcars.df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="op">&lt;</span>press tab<span class="op">&gt;</span>)</a></code></pre></div>
 <p>you can press tab in RStudio and it will show all column available</p>
 </div>
 <div id="insert-ceremonyboilerplace-into-code-in-rstudio" class="section level3">
 <h3 class="hasAnchor">
 <a href="#insert-ceremonyboilerplace-into-code-in-rstudio" class="anchor"></a>Insert ceremony/boilerplace into code in RStudio</h3>
 <p>The below will insert the recommended ceremony code into your editor</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>disk.frame<span class="op">::</span><span class="kw">insert_ceremony</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">disk.frame<span class="op">::</span><span class="kw">insert_ceremony</span>() </a></code></pre></div>
 <p>should insert</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># this willl set disk.frame with multiple workers</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># this willl set disk.frame with multiple workers</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="advertisements" class="section level2">
