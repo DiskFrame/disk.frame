@@ -33,7 +33,7 @@ Imports:
     bigreadr (>= 0.2.0),
     bit64
 Depends:
-    R (>= 3.4.4),
+    R (>= 3.4),
     dplyr (>= 0.8.3),
     purrr (>= 0.3.2)
 Suggests: 

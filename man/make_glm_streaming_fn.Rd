@@ -20,10 +20,17 @@ Define a function that can be used to feed data into speedglm and biglm
 \examples{
 cars.df = as.disk.frame(cars)
 streamacq = make_glm_streaming_fn(cars.df, verbose = FALSE)
-m = biglm::bigglm(dist ~ speed, data = streamacq)
-summary(m)
-predict(m, get_chunk(cars.df, 1))
-predict(m, collect(cars.df, 1))
+
+majorv = as.integer(version$major)
+minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+if(((majorv == 3) & (minorv >= 6)) | (majorv > 3)) {
+  m = biglm::bigglm(dist ~ speed, data = streamacq)
+  summary(m)
+  predict(m, get_chunk(cars.df, 1))
+  predict(m, collect(cars.df, 1))
+} else {
+  m = speedglm::shglm(dist ~ speed, data = streamacq)
+}
 }
 \seealso{
 Other Machine Learning (ML): \code{\link{dfglm}}

@@ -10,7 +10,7 @@ test_that("glm", {
   majorv = as.integer(version$major)
   minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
   
-  if((majorv == 3) & (minorv < 6) ) {
+  if((majorv == 3) & (minorv < 6)) {
     expect_warning({m <- dfglm(dist~speed, cars.df, glm_backend = "biglm")})
   } else {
     m <- dfglm(dist~speed, cars.df, glm_backend = "biglm")
