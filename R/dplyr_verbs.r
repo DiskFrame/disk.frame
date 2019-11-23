@@ -70,11 +70,12 @@ create_dplyr_mapper <- function(dplyr_fn, warning_msg = NULL, as.data.frame = TR
       
       # ZJ: we need both approaches. TRUST ME
       # TODO better NSE at some point
-      tryCatch({
+      #tryCatch({
         rlang::eval_tidy(code)
-      }, error = function(e) {
-        eval(parse(text=rlang::as_label(code)), envir = this_env)
-      })
+      #}, error = function(e) {
+        # if the previous failed
+      #  eval(parse(text=rlang::as_label(code)), envir = this_env)
+      #})
     }, lazy = TRUE)
   }
   return_func
@@ -414,6 +415,7 @@ play <- function(.data, cmds=NULL) {
           assign(ng[i], g, pos = an_env)
         }
       }
+      
       .data <- do.call(cmd$func, c(list(.data),cmd$dotdotdot), envir = an_env)
     }
   }

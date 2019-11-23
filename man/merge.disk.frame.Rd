@@ -4,8 +4,15 @@
 \alias{merge.disk.frame}
 \title{Merge function for disk.frames}
 \usage{
-\method{merge}{disk.frame}(x, y, by, outdir = tempfile(fileext = ".df"),
-  ..., merge_by_chunk_id = FALSE, overwrite = FALSE)
+\method{merge}{disk.frame}(
+  x,
+  y,
+  by,
+  outdir = tempfile(fileext = ".df"),
+  ...,
+  merge_by_chunk_id = FALSE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{x}{a disk.frame}
@@ -28,7 +35,7 @@ Merge function for disk.frames
 \examples{
 b = as.disk.frame(data.frame(a = 51:150, b = 1:100))
 d = as.disk.frame(data.frame(a = 151:250, b = 1:100))
-bd.df = merge(b, d, by = "b")
+bd.df = merge(b, d, by = "b", merge_by_chunk_id = TRUE)
 
 # clean up cars.df
 delete(b)

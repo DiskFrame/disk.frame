@@ -21,6 +21,7 @@ gen_datatable_synthetic <- function(N=2e8, K=100) {
     id6 = sample(N/K, N, TRUE),                        # small groups (int)
     v1 =  sample(5, N, TRUE),                          # int in range [1,5]
     v2 =  sample(5, N, TRUE),                          # int in range [1,5]
-    v3 =  sample(round(runif(100,max=100),4), N, TRUE) # numeric e.g. 23.5749
+    v3 =  sample(round(runif(100,max=100),4), N, TRUE), # numeric e.g. 23.5749
+    date1 = sample(seq(as.Date('1970-01-01'), as.Date('2019-01-01'), by = "day"), N, TRUE)  # date
   )
 }

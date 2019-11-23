@@ -19,18 +19,30 @@
 #' m = dfglm(dist ~ speed, data = cars.df)
 #'
 #' # can use normal R functions
-#' summary(m)
-#' predict(m, get_chunk(cars.df, 1))
-#' predict(m, collect(cars.df))
-#'
-#' # can use broom to tidy up the returned info
-#' broom::tidy(m)
+#' # Only works in version > R 3.6
+#' majorv = as.integer(version$major)
+#' minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+#' if(((majorv == 3) & (minorv >= 6)) | (majorv > 3)) {
+#'   summary(m)
+#'   predict(m, get_chunk(cars.df, 1))
+#'   predict(m, collect(cars.df))
+#'   # can use broom to tidy up the returned info
+#'   broom::tidy(m)
+#' }
 #'
 #' # clean up
 #' delete(cars.df)
-dfglm <- function(formula, data, ..., glm_backend = c("biglm", "speedglm")) {
-  #
+dfglm <- function(formula, data, ..., glm_backend = c("biglm", "speedglm", "biglmm")) {
   glm_backend = match.arg(glm_backend)
+  
+  # compute the major version
+  majorv = as.integer(version$major)
+  minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+  
+  if((majorv == 3) & (minorv < 6) & (glm_backend == "biglm")) {
+    warning("{bigglm} is not supported for R version below 3.6; auto switched to {speedglm}")
+    glm_backend = "speedglm"
+  }
   
   stopifnot(is_disk.frame(data))
   streaming_fn <- make_glm_streaming_fn(data)
@@ -45,7 +57,12 @@ dfglm <- function(formula, data, ..., glm_backend = c("biglm", "speedglm")) {
       stop("biglm package not installed. To install run `install.packages('biglm')`")
     }
     biglm::bigglm(formula, data = streaming_fn, ...)
+  } else if (glm_backend == "biglmm"){
+    if(!requireNamespace("biglmm")) {
+      stop("biglmm package not installed. To install run `install.packages('biglmm')`")
+    }
+    biglmm::bigglm(formula, data = streaming_fn, ...)
   } else {
-    stop("glm_backend must be one of 'speedglm' or 'biglm'")
+    stop("glm_backend must be one of 'speedglm' or 'biglm' or 'biglmm'")
   }
 }

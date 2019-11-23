@@ -4,13 +4,21 @@
 \alias{csv_to_disk.frame}
 \title{Convert CSV file(s) to disk.frame format}
 \usage{
-csv_to_disk.frame(infile, outdir = tempfile(fileext = ".df"),
+csv_to_disk.frame(
+  infile,
+  outdir = tempfile(fileext = ".df"),
   inmapfn = base::I,
   nchunks = recommend_nchunks(sum(file.size(infile))),
-  in_chunk_size = NULL, shardby = NULL, compress = 50,
-  overwrite = TRUE, header = TRUE, .progress = TRUE,
+  in_chunk_size = NULL,
+  shardby = NULL,
+  compress = 50,
+  overwrite = TRUE,
+  header = TRUE,
+  .progress = TRUE,
   backend = c("data.table", "readr", "LaF"),
-  chunk_reader = c("bigreadr", "data.table", "readr", "readLines"), ...)
+  chunk_reader = c("bigreadr", "data.table", "readr", "readLines"),
+  ...
+)
 }
 \arguments{
 \item{infile}{The input CSV file or files}
@@ -76,6 +84,7 @@ fs::file_delete(tmpfile)
 delete(df)
 }
 \seealso{
-Other ingesting data: \code{\link{zip_to_disk.frame}}
+Other ingesting data: 
+\code{\link{zip_to_disk.frame}()}
 }
 \concept{ingesting data}

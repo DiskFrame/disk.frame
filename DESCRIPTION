@@ -1,10 +1,12 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.2.0
-Date: 2019-10-06
-Authors@R: person("Dai", "ZJ", email = "zhuojia.dai@gmail.com",
-  role = c("aut", "cre"))
+Version: 0.2.1
+Date: 2019-11-07
+Authors@R: c(
+  person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
+  person("Jacky", "Poon", role = c("ctb"))
+  )
 Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
 Description: A disk-based data manipulation tool for working with 
   large-than-RAM datasets. Aims to lower the barrier-to-entry for 
@@ -28,15 +30,14 @@ Imports:
     future (>= 1.14.0),
     data.table (>= 1.12.2),
     crayon (>= 1.3.4),
-    benchmarkme (>= 1.0.2),
-    bigreadr (>= 0.1.9),
+    bigreadr (>= 0.2.0),
     bit64
 Depends:
-    R (>= 3.5.0),
+    R (>= 3.4),
     dplyr (>= 0.8.3),
     purrr (>= 0.3.2)
 Suggests: 
-    testthat,
+    testthat (>= 2.1.0),
     knitr,
     rmarkdown,
     nycflights13,
@@ -46,13 +47,14 @@ Suggests:
     readr,
     rstudioapi,
     biglm,
+    biglmm,
     speedglm,
     broom,
     learnr,
     ggplot2
 LinkingTo: 
     Rcpp
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 VignetteBuilder: knitr
 Encoding: UTF-8
 URL: https://diskframe.com

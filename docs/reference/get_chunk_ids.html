@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -92,7 +92,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -175,12 +178,12 @@
 <span class='co'># return the integer-string chunk IDs</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt; [1] "1" "2" "3" "4" "5" "6"</div><div class='input'>
 <span class='co'># return the file name chunk IDs</span>
-<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/1.fst"
-#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/2.fst"
-#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/3.fst"
-#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/4.fst"
-#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/5.fst"
-#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCyM61Q\\file84430141594.df/6.fst"</div><div class='input'>
+<span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/1.fst"
+#&gt; [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/2.fst"
+#&gt; [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/3.fst"
+#&gt; [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/4.fst"
+#&gt; [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/5.fst"
+#&gt; [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpKQPvmB\\file12ac2e47611e.df/6.fst"</div><div class='input'>
 <span class='co'># return the file name chunk IDs with file extension</span>
 <span class='fu'>get_chunk_ids</span>(<span class='no'>cars.df</span>, <span class='kw'>strip_extension</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "1.fst" "2.fst" "3.fst" "4.fst" "5.fst" "6.fst"</div><div class='input'>
 <span class='co'># clean up cars.df</span>

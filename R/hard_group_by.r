@@ -80,6 +80,10 @@ progressbar <- function(df) {
 #' @param overwrite overwrite the out put directory
 #' @param add same as dplyr::group_by
 #' @param .drop same as dplyr::group_by
+#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
+#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
+#' @param desc_vars for the "sort" shardby function, the variables to sort descending.
+#' @param sort_split_sample_size for the "sort" shardby function, if sort_splits is null, the number of rows to sample per chunk for random splits.
 #' @export
 #' @examples
 #' iris.df = as.disk.frame(iris, nchunks = 2)
@@ -106,12 +110,50 @@ hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
 
 #' @rdname hard_group_by
 #' @importFrom purrr map
-#' @importFrom purrr map
 #' @export
-hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_hard_group_by"), nchunks = disk.frame::nchunks(df), overwrite = TRUE) {
+hard_group_by.disk.frame <- function(
+    df, 
+    ..., 
+    outdir=tempfile("tmp_disk_frame_hard_group_by"), 
+    nchunks = disk.frame::nchunks(df), 
+    overwrite = TRUE, 
+    shardby_function="hash", 
+    sort_splits=NULL, 
+    desc_vars=NULL, 
+    sort_split_sample_size=100
+  ) {
+  
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))
+  stopifnot(shardby_function %in% c("hash", "sort"))
+  
+  if (shardby_function == "sort" && is.null(sort_splits)){
+    # Sample enough per chunk to generate reasonable splits
+    sample_size_per_chunk = ceiling(nchunks / disk.frame::nchunks(df)) * sort_split_sample_size
+    
+    # Sample and sort
+    sort_splits_sample <- map(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
+      select(...) %>%
+      collect()
+    
+    # NSE
+    tryCatch({
+      sort_splits_sample <- sort_splits_sample %>%
+        arrange(!!!syms(...))
+    }, error = function(e) {
+      sort_splits_sample <- sort_splits_sample %>%
+        arrange(...)
+    })
+    
+    # If 100 chunks, this return get 99 splits based on percentiles.
+    ntiles <- round((1:(nchunks-1)) * (nrow(sort_splits_sample) / (nchunks)))
+    
+    # Get splits. May lead to less than nchunks if duplicates are selected.
+    sort_splits <- sort_splits_sample %>% 
+      dplyr::slice(ntiles) %>%
+      distinct()
+  }
   
   # test if the unlist it will error
   
@@ -126,7 +168,7 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     # shard and create temporary diskframes
     tmp_df  = map(df, function(df1) {
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
     
     
@@ -155,11 +197,13 @@ hard_group_by.disk.frame <- function(df, ..., outdir=tempfile("tmp_disk_frame_ha
     by = rlang::enquos(...) %>% 
       substr(2, nchar(.))
     
+
+    
     # shard and create temporary diskframes
     tmp_df  = map(df, function(df1) {
       ##browser
       tmpdir = tempfile()
-      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE)
+      shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
     
     # now rbindlist

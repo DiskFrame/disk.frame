@@ -8,7 +8,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(join.df)
-inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE) {
+inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE, .progress = FALSE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -28,7 +28,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
     res = map_dfr(x, ~{
       code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
-    })
+    }, .progress = .progress)
     return(res)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
@@ -56,7 +56,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
         #inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
         lij = purrr::lift(dplyr::inner_join)
         lij(c(list(x = .x, y = .y, by = by, copy = copy), dotdotdot))
-      }, outdir = outdir)
+      }, outdir = outdir, .progress = .progress)
       return(res)
     } else {
       # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine

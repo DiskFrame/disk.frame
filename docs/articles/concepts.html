@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Concepts for disk.frame • disk.frame</title>
+<title>Key disk.frame concepts • disk.frame</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Concepts for disk.frame">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Key disk.frame concepts">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -54,7 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -96,7 +99,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Concepts for disk.frame</h1>
+      <h1>Key disk.frame concepts</h1>
                         <h4 class="author">ZJ</h4>
             
       
@@ -118,21 +121,21 @@
 <a href="#workers-and-parallelism" class="anchor"></a>Workers and parallelism</h2>
 <p>Parallelism in <code>disk.frame</code> is achieved using the <a href="https://cran.r-project.org/package=future"><code>future</code> package</a>. When performing many tasks, <code>disk.frame</code> uses multiple workers, where each <em>worker</em> is an R session, to perform the tasks in parallel.</p>
 <p>It is recommended that you should running these to set-up immediately after you <code><a href="https://rdrr.io/r/base/library.html">library(disk.frame)</a></code>. For example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</a></code></pre></div>
 <p>For example, suppose we wish to compute the number of rows for each chunk, we can clearly perform this simultaneously in parallel. The code to do that is</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># use only one column is fastest</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>df[,.N, keep =<span class="st"> "first_col"</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># use only one column is fastest</span></a>
+<a class="sourceLine" id="cb2-2" title="2">df[,.N, keep =<span class="st"> "first_col"</span>]</a></code></pre></div>
 <p>or equivalent using the <code>srckeep</code> function</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># use only one column is fastest</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(df, <span class="st">"first_col"</span>)[,.N, keep =<span class="st"> "first_col"</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># use only one column is fastest</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(df, <span class="st">"first_col"</span>)[,.N, keep =<span class="st"> "first_col"</span>]</a></code></pre></div>
 <p>Say there are <code>n</code> chunks in <code>df</code>, and there are <code>m</code> workers. Then the first <code>m</code> chunks will run <code>chunk[,.N]</code> simultaneously.</p>
 <p>To see how many workers are at work, use</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># see how many workers are available for work</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>future<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/future/man/nbrOfWorkers.html">nbrOfWorkers</a></span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># see how many workers are available for work</span></a>
+<a class="sourceLine" id="cb4-2" title="2">future<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/future/man/nbrOfWorkers.html">nbrOfWorkers</a></span>()</a></code></pre></div>
 </div>
   </div>
 

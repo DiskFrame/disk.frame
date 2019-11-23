@@ -4,8 +4,7 @@
 \alias{sample_frac.disk.frame}
 \title{Sample n rows from a disk.frame}
 \usage{
-\method{sample_frac}{disk.frame}(tbl, size = 1, replace = FALSE,
-  weight = NULL, .env = NULL, ...)
+\method{sample_frac}{disk.frame}(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...)
 }
 \arguments{
 \item{tbl}{tbl of data.}

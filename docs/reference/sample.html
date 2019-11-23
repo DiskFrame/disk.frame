@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -92,7 +92,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -146,18 +149,44 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>sample_frac</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>sample_frac</span>(<span class='no'>tbl</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>a disk.frame</p></td>
+      <th>tbl</th>
+      <td><p>tbl of data.</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>For <code>sample_n()</code>, the number of rows to select.
+For <code>sample_frac()</code>, the fraction of rows to select.
+If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p></td>
+    </tr>
+    <tr>
+      <th>replace</th>
+      <td><p>Sample with or without replacement?</p></td>
+    </tr>
+    <tr>
+      <th>weight</th>
+      <td><p>Sampling weights. This must evaluate to a vector of
+non-negative numbers the same length as the input. Weights are
+automatically standardised to sum to 1.</p>
+<p>This argument is automatically <a href='https://rlang.r-lib.org/reference/quotation.html'>quoted</a> and later
+<a href='https://rlang.r-lib.org/reference/eval_tidy.html'>evaluated</a> in the context of the data
+frame. It supports <a href='https://rlang.r-lib.org/reference/quasiquotation.html'>unquoting</a>. See
+<code>vignette("programming")</code> for an introduction to these concepts.</p></td>
+    </tr>
+    <tr>
+      <th>.env</th>
+      <td><p>This variable is deprecated and no longer has any
+effect. To evaluate <code>weight</code> in a particular context, you can
+now unquote a <a href='https://rlang.r-lib.org/reference/quosure.html'>quosure</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>passed to dplyr::samle_frac</p></td>
+      <td><p>ignored</p></td>
     </tr>
     </table>
 
@@ -165,29 +194,29 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
-<span class='fu'>collect</span>(<span class='fu'>sample_frac</span>(<span class='no'>cars.df</span>, <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: sample_frac: for disk.frames weight = is not supported</span></div><div class='output co'>#&gt;    speed dist
-#&gt; 1      4   10
-#&gt; 2      9   10
-#&gt; 3     10   18
-#&gt; 4      7    4
-#&gt; 5     12   24
-#&gt; 6     13   34
-#&gt; 7     12   20
+<span class='fu'>collect</span>(<span class='fu'>sample_frac</span>(<span class='no'>cars.df</span>, <span class='fl'>0.5</span>))</div><div class='output co'>#&gt;    speed dist
+#&gt; 1     10   34
+#&gt; 2      8   16
+#&gt; 3      4   10
+#&gt; 4     10   26
+#&gt; 5     12   14
+#&gt; 6     13   26
+#&gt; 7     11   28
 #&gt; 8     13   34
-#&gt; 9     14   26
-#&gt; 10    15   20
-#&gt; 11    15   26
-#&gt; 12    14   60
-#&gt; 13    17   32
-#&gt; 14    17   40
-#&gt; 15    16   40
-#&gt; 16    18   56
-#&gt; 17    20   64
-#&gt; 18    22   66
-#&gt; 19    20   52
-#&gt; 20    20   56
-#&gt; 21    24   70
-#&gt; 22    24   92</div><div class='input'>
+#&gt; 9     13   46
+#&gt; 10    15   26
+#&gt; 11    16   32
+#&gt; 12    15   54
+#&gt; 13    18   42
+#&gt; 14    17   32
+#&gt; 15    18   84
+#&gt; 16    17   40
+#&gt; 17    22   66
+#&gt; 18    19   68
+#&gt; 19    20   48
+#&gt; 20    20   52
+#&gt; 21    24  120
+#&gt; 22    25   85</div><div class='input'>
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
   </div>

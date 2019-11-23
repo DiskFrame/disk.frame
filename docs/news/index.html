@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -90,7 +90,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -143,18 +146,26 @@
 <a href="#diskframe-021" class="anchor"></a>disk.frame 0.2.1<small> Unreleased </small>
 </h1>
 <ul>
-<li>removed group_by, arrange, summarise</li>
-<li>add chunk_group_by, chunk_arrange, chunk_summarise</li>
+<li>got rid of benchmarkme as a dependency</li>
+<li>added <code>hard_arrange</code> thanks to Jacky Poon</li>
+<li>added more .progress options for joins</li>
+<li>Using data.table::getDTthreads() as default number of workers</li>
+<li>multisession instead of multiprocess as default backend for data.table</li>
+<li>added support for R3.4</li>
+<li>fixed df_get_ram for R &lt; 3.6</li>
 </ul>
 </div>
-    <div id="diskframe-012" class="section level1">
+    <div id="diskframe-020" class="section level1">
 <h1 class="page-header">
-<a href="#diskframe-012" class="anchor"></a>disk.frame 0.1.2<small> Unreleased </small>
+<a href="#diskframe-020" class="anchor"></a>disk.frame 0.2.0<small> 2019-10-05 </small>
 </h1>
 <ul>
+<li>deprecated group_by, arrange, summarise</li>
+<li>add chunk_group_by, chunk_arrange, chunk_summarise</li>
 <li>fit GLMs with <code>dfglm</code>
 </li>
-<li>fixed so that dplyr function also work in mutate</li>
+<li>fixed so that dplyr function also work in mutate even with ~ in the name</li>
+<li>fixed disk.frame so that in works in functions too</li>
 </ul>
 </div>
     <div id="diskframe-011" class="section level1">
@@ -180,7 +191,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#diskframe-021">0.2.1</a></li>
-        <li><a href="#diskframe-012">0.1.2</a></li>
+        <li><a href="#diskframe-020">0.2.0</a></li>
         <li><a href="#diskframe-011">0.1.1</a></li>
       </ul>
     </div>

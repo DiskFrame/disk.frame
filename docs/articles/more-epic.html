@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -54,7 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -115,52 +118,52 @@
 <h2 class="hasAnchor">
 <a href="#how-to-make-disk-frame-more-epic" class="anchor"></a>How to make {disk.frame} more ‘epic’?</h2>
 <p>If you follow <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/">this post by Bruno</a>, you will end up with a 30GB CSV file. But this 30GB file was made by row-appending 303 files (size ranging from 70MB to 143MB) together. I will you a few ways to handle such data. As usual, let’s start by setting up {disk.frame}</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># this willl set disk.frame with multiple workers</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># this willl set disk.frame with multiple workers</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">future.globals.maxSize =</span> <span class="ot">Inf</span>)</a></code></pre></div>
 <div id="load-the-individuals-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-the-individuals-files" class="anchor"></a>Load the individuals files</h3>
 <p>The best way to use {disk.frame} is to load the individual files, as <code>csv_to_disk.frame</code> allows a vector of files to be used as input:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>path_to_files  =<span class="st"> "c:/data/AirOnTimeCSV"</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>head</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; [1] "c:/data/AirOnTimeCSV/airOT198710.csv" "c:/data/AirOnTimeCSV/airOT198711.csv"</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; [3] "c:/data/AirOnTimeCSV/airOT198712.csv" "c:/data/AirOnTimeCSV/airOT198801.csv"</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; [5] "c:/data/AirOnTimeCSV/airOT198802.csv" "c:/data/AirOnTimeCSV/airOT198803.csv"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">path_to_files  =<span class="st"> "c:/data/AirOnTimeCSV"</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>head</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; [1] "c:/data/AirOnTimeCSV/airOT198710.csv" "c:/data/AirOnTimeCSV/airOT198711.csv"</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; [3] "c:/data/AirOnTimeCSV/airOT198712.csv" "c:/data/AirOnTimeCSV/airOT198801.csv"</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt; [5] "c:/data/AirOnTimeCSV/airOT198802.csv" "c:/data/AirOnTimeCSV/airOT198803.csv"</span></a></code></pre></div>
 <p>However, there is always a danger with importing from CSVs, especially when importing from multiple CSVs. The chief danger is this: CSV do not encode the type of the columns. Hence the column types need to be inferred. However, when inferring the column type, we only use the first few thousand rows. This is fine most of the time. However, there are times when the column type inferred using the first few thousand rows isn’t compatible with data that comes after. That’s why you will see an error</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Error<span class="op">:</span><span class="st"> </span>Column <span class="st">`</span><span class="dt">WHEELS_OFF</span><span class="st">`</span> can<span class="st">'t be converted from integer to character</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">Error<span class="op">:</span><span class="st"> </span>Column <span class="st">`</span><span class="dt">WHEELS_OFF</span><span class="st">`</span> can<span class="st">'t be converted from integer to character</span></a></code></pre></div>
 <p>when running the below code</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>list_files =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(list_files, co))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">list_files =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(list_files, co))</a></code></pre></div>
 <p>I need to come up with a framework to help with these types of task, but for now, you should use the <code>colClasses</code> argument whenever possible to set the column types. For example,</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>list_files =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(a &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</span>
-<span id="cb5-4"><a href="#cb5-4"></a>   list_files,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>   <span class="dt">colClasses =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">character =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WHEELS_OFF"</span>, <span class="st">"WHEELS_ON"</span>))</span>
-<span id="cb5-6"><a href="#cb5-6"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">list_files =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(path_to_files, <span class="dt">patter=</span><span class="st">"air"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(a &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
+<a class="sourceLine" id="cb5-4" title="4">   list_files,</a>
+<a class="sourceLine" id="cb5-5" title="5">   <span class="dt">colClasses =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">character =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WHEELS_OFF"</span>, <span class="st">"WHEELS_ON"</span>))</a>
+<a class="sourceLine" id="cb5-6" title="6">))</a></code></pre></div>
 <p>which yielded</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Converting 303 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; </span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Stage 1 or 2 took: 00:01:47 elapsed (0.170s cpu)</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c77035a94.df</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; Appending disk.frames:</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; </span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; Stage 2 of 2 took: 00:01:01 elapsed (0.340s cpu)</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:02:48 elapsed (0.510s cpu)</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;    0.51    0.32  168.72</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; Converting 303 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; Stage 1 or 2 took: 00:01:47 elapsed (0.170s cpu)</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c77035a94.df</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; Appending disk.frames:</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; Stage 2 of 2 took: 00:01:01 elapsed (0.340s cpu)</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:02:48 elapsed (0.510s cpu)</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt;    0.51    0.32  168.72</span></a></code></pre></div>
 <p>As you can see the the 303 files are converted to a <code>disk.frame</code> in about ~3mins, this much faster than Spark.</p>
 </div>
 <div id="load-one-large-file-splitting" class="section level3">
@@ -170,67 +173,67 @@
 <p>Starting from {disk.frame} v0.1.1, we have something to help with this. When you call <code>csv_to_disk.frame</code> with the <code>in_chunk_size</code> argument, then the big file will be split into smaller files using {bigreadr} before reading. This happen automatically.</p>
 <p>Splitting up a large file might take a few minutes, but once the file is split, we can use multiple cores to process the split-up files in parallel! The performance gain there might offset the overhead of splitting a file.</p>
 <p>As mentioned, the key is setting argument <code>in_chunk_size</code> to a value, which will activate the file splitting</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>path_to_data =<span class="st"> "c:/data/"</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co"># read 10 millions at once</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>in_chunk_size =<span class="st"> </span><span class="fl">1e7</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</span>
-<span id="cb7-7"><a href="#cb7-7"></a>   <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(path_to_data, <span class="st">"combined.csv"</span>), </span>
-<span id="cb7-8"><a href="#cb7-8"></a>   <span class="dt">in_chunk_size =</span> in_chunk_size,</span>
-<span id="cb7-9"><a href="#cb7-9"></a>   <span class="dt">colClasses =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">character =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WHEELS_OFF"</span>,<span class="st">"WHEELS_ON"</span>))</span>
-<span id="cb7-10"><a href="#cb7-10"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">path_to_data =<span class="st"> "c:/data/"</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co"># read 10 millions at once</span></a>
+<a class="sourceLine" id="cb7-4" title="4">in_chunk_size =<span class="st"> </span><span class="fl">1e7</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
+<a class="sourceLine" id="cb7-7" title="7">   <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(path_to_data, <span class="st">"combined.csv"</span>), </a>
+<a class="sourceLine" id="cb7-8" title="8">   <span class="dt">in_chunk_size =</span> in_chunk_size,</a>
+<a class="sourceLine" id="cb7-9" title="9">   <span class="dt">colClasses =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">character =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"WHEELS_OFF"</span>,<span class="st">"WHEELS_ON"</span>))</a>
+<a class="sourceLine" id="cb7-10" title="10">))</a></code></pre></div>
 <p>which yielded</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; Stage 1 of 2: splitting the file c:/data//combined.csv into smallers files:</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c22af50f3</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; Stage 1 of 2 took: 00:02:06 elapsed (00:01:15 cpu)</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; Stage 2 of 2: Converting the smaller files into disk.frame</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; Converting 15 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; Stage 1 or 2 took: 54.0s elapsed (0.120s cpu)</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; </span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c680f2305.df</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt; Appending disk.frames:</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; </span></span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt; Stage 2 of 2 took: 36.0s elapsed (0.200s cpu)</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:01:29 elapsed (0.320s cpu)</span></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt; Stage 2 of 2 took: 00:01:29 elapsed (0.320s cpu)</span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt; Stage 2 &amp; 2 took: 00:03:36 elapsed (00:01:15 cpu)</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  -----------------------------------------------------</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt;   75.79   47.89  216.42</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; Stage 1 of 2: splitting the file c:/data//combined.csv into smallers files:</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c22af50f3</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; Stage 1 of 2 took: 00:02:06 elapsed (00:01:15 cpu)</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; Stage 2 of 2: Converting the smaller files into disk.frame</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; Converting 15 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="co">#&gt; Stage 1 or 2 took: 54.0s elapsed (0.120s cpu)</span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></a>
+<a class="sourceLine" id="cb8-17" title="17"><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c680f2305.df</span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="co">#&gt; Appending disk.frames:</span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt; Stage 2 of 2 took: 36.0s elapsed (0.200s cpu)</span></a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:01:29 elapsed (0.320s cpu)</span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt; Stage 2 of 2 took: 00:01:29 elapsed (0.320s cpu)</span></a>
+<a class="sourceLine" id="cb8-24" title="24"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="co">#&gt; Stage 2 &amp; 2 took: 00:03:36 elapsed (00:01:15 cpu)</span></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="co">#&gt;  -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-27" title="27"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-28" title="28"><span class="co">#&gt;   75.79   47.89  216.42</span></a></code></pre></div>
 <p>As you can see, this takes longer than loading the individual files approach. I am working on a guess the <code>in_chunk_size</code> feature so that <code>in_chunk_size="guess"</code> will work in the future, so the user doesn’t have to input a manual <code>in_chunk_size</code>.</p>
 </div>
 <div id="load-one-large-file-no-splitting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-one-large-file-no-splitting" class="anchor"></a>Load one large-file (no splitting)</h3>
 <p>Split up the file will effectively double the amount of disk space needed. We have the original file and we need additional space equal to the size of the original file to store the split files. This is not always feasible and that’s why you can specify the <code>LaF</code> backend which was shown in Bruno’s post but repeated here for completeness. The problem with a <code>LaF</code> backend and reading one big file is that it can NOT be parallelized and hence it is much slower than the other approaches.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>path_to_data =<span class="st"> "c:/data/"</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co"># read 10 millions at once</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>in_chunk_size =<span class="st"> </span><span class="fl">1e7</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</span>
-<span id="cb9-7"><a href="#cb9-7"></a>  <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(path_to_data, <span class="st">"combined.csv"</span>),</span>
-<span id="cb9-8"><a href="#cb9-8"></a>  <span class="dt">in_chunk_size =</span> in_chunk_size,</span>
-<span id="cb9-9"><a href="#cb9-9"></a>  <span class="dt">backend =</span> <span class="st">"LaF"</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">path_to_data =<span class="st"> "c:/data/"</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co"># read 10 millions at once</span></a>
+<a class="sourceLine" id="cb9-4" title="4">in_chunk_size =<span class="st"> </span><span class="fl">1e7</span></a>
+<a class="sourceLine" id="cb9-5" title="5"></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(flights.df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(</a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(path_to_data, <span class="st">"combined.csv"</span>),</a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="dt">in_chunk_size =</span> in_chunk_size,</a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="dt">backend =</span> <span class="st">"LaF"</span>))</a></code></pre></div>
 <p>there were multiple warnings</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">#&gt; Loading required namespace: LaF</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#&gt; Warning in FUN(X[[i]], ...): Unsupported type 'logical'; using default type</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; 'string'</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#&gt; Loading required namespace: LaF</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt; Warning in FUN(X[[i]], ...): Unsupported type 'logical'; using default type</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; 'string'</span></a></code></pre></div>
 <p>and the timings were</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt;  591.32   26.94  599.08</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt;  591.32   26.94  599.08</span></a></code></pre></div>
 <p>As can be seen <code>LaF</code> works and can detect the column types automatically. However it is slower than the default backend which is <code>data.table</code>.</p>
 </div>
 <div id="summary" class="section level3">
@@ -244,28 +247,28 @@
 <h2 class="hasAnchor">
 <a href="#can-disk-frame-be-even-more-epic" class="anchor"></a>Can {disk.frame} be even more “epic”?</h2>
 <p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</span>
-<span id="cb12-11"><a href="#cb12-11"></a>(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt; Time difference of 2.800005 secs</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span></a>
+<a class="sourceLine" id="cb12-4" title="4">mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</a>
+<a class="sourceLine" id="cb12-11" title="11">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt; Time difference of 2.800005 secs</span></a></code></pre></div>
 <p>Compare the above the to timing without <code>srckeep</code></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</span>
-<span id="cb13-2"><a href="#cb13-2"></a>mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</span>
-<span id="cb13-8"><a href="#cb13-8"></a>(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; Time difference of 15.62312 secs</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
+<a class="sourceLine" id="cb13-2" title="2">mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</a>
+<a class="sourceLine" id="cb13-8" title="8">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; Time difference of 15.62312 secs</span></a></code></pre></div>
 <p>On my computer, with <code>srckeep</code> the timing is only ~3 seconds and without it is 16 seconds!</p>
 <p><img src="more-epic_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>

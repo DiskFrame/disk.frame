@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -90,7 +90,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -161,12 +164,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="add_meta.html">add_meta()</a></code> </p>
-        </td>
-        <td><p>Add metadata to the disk.frame</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="as.data.frame.disk.frame.html">as.data.frame(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Convert disk.frame to data.frame by collecting all chunks</p></td>
@@ -223,7 +220,7 @@
         <td>
           <p><code><a href="dfglm.html">dfglm()</a></code> </p>
         </td>
-        <td><p>Fit generalized linear model (glm) with disk.frame</p></td>
+        <td><p>Fit generalized linear models (glm) with disk.frame</p></td>
       </tr><tr>
         
         <td>
@@ -284,6 +281,12 @@
           <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">chunk_group_by()</a></code> </p>
         </td>
         <td><p>Group by within each disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="hard_arrange.html">hard_arrange()</a></code> </p>
+        </td>
+        <td><p>Perform a hard arrange</p></td>
       </tr><tr>
         
         <td>
@@ -410,6 +413,12 @@
           <p><code><a href="shardkey.html">shardkey()</a></code> </p>
         </td>
         <td><p>Returns the shardkey (not implemented yet)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shardkey_equal.html">shardkey_equal()</a></code> </p>
+        </td>
+        <td><p>Compare two disk.frame shardkeys</p></td>
       </tr><tr>
         
         <td>

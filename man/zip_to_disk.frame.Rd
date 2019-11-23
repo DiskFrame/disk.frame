@@ -5,8 +5,13 @@
 \title{`zip_to_disk.frame` is used to read and convert every CSV file within the zip
 file to disk.frame format}
 \usage{
-zip_to_disk.frame(zipfile, outdir, ..., validation.check = FALSE,
-  overwrite = TRUE)
+zip_to_disk.frame(
+  zipfile,
+  outdir,
+  ...,
+  validation.check = FALSE,
+  overwrite = TRUE
+)
 }
 \arguments{
 \item{zipfile}{The zipfile}
@@ -45,6 +50,7 @@ unlink(zipfile)
 delete(zip.df[[1]])
 }
 \seealso{
-Other ingesting data: \code{\link{csv_to_disk.frame}}
+Other ingesting data: 
+\code{\link{csv_to_disk.frame}()}
 }
 \concept{ingesting data}

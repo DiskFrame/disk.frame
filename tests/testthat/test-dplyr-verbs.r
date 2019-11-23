@@ -158,6 +158,17 @@ test_that("testing mutate within function works", {
   expect_true("aha" %in% names(test_f(c(1, 2), mtcars)))
 })
 
+test_that("filter failure: prevent github #191 regression",  {
+  flights_df = as.disk.frame(nycflights13::flights)
+  
+  # expect error due to syntax error
+  expect_error(flights_df %>% 
+    filter(tailnum %in% paste0(unique(nycflights13::flights$tailnum)[1:60]), "") %>% 
+    collect)
+  
+  delete(flights_df)
+})
+
 
 teardown({
   fs::dir_delete(file.path(tempdir(), "tmp_b_dv.df"))

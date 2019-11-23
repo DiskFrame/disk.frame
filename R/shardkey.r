@@ -12,3 +12,15 @@ shardkey <- function(df) {
   list(shardkey = meta$shardkey, shardchunks = meta$shardchunks)
 }
 
+#' Compare two disk.frame shardkeys
+#' 
+#' @param sk1 shardkey1
+#' @param sk2 shardkey2
+#' @export
+shardkey_equal <- function(sk1, sk2) {
+  if (sk1$shardkey == "") {
+    # if the shardkey is not set then it's the same as having no shardkey
+    return(FALSE)
+  }
+  (sk1$shardkey == sk2$skardkey) && (sk1$shardchunks == sk2$shardchunks)
+}

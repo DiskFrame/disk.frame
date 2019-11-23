@@ -72,7 +72,7 @@ file to disk.frame format" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -95,7 +95,10 @@ file to disk.frame format" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -150,8 +153,13 @@ file to disk.frame format</h1>
 file to disk.frame format</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='no'>outdir</span>, <span class='no'>...</span>, <span class='kw'>validation.check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>zip_to_disk.frame</span>(
+  <span class='no'>zipfile</span>,
+  <span class='no'>outdir</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>validation.check</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,7 +191,8 @@ file to disk.frame format</p>
     <p>a list of disk.frame</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other ingesting data: <code><a href='csv_to_disk.frame.html'>csv_to_disk.frame</a></code></p></div>
+    <div class='dont-index'><p>Other ingesting data: 
+<code><a href='csv_to_disk.frame.html'>csv_to_disk.frame</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># create a zip file containing a csv</span>
@@ -196,7 +205,7 @@ file to disk.frame format</p>
 <span class='no'>zip.df</span> <span class='kw'>=</span> <span class='fu'>zip_to_disk.frame</span>(<span class='no'>zipfile</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>))
 
 <span class='co'># there is only one csv file so it return a list of one disk.frame</span>
-<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCyM61Q\file84417adc63.df/Users/RTX2080/AppData/Local/Temp/RtmpCyM61Q/file844637d5ff9.csv"</span>
+<span class='no'>zip.df</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpKQPvmB\file12ac5e0c1a91.df/Users/RTX2080/AppData/Local/Temp/RtmpKQPvmB/file12ac2bce564b.csv"</span>
 #&gt; <span class='message'>nchunks: 6</span>
 #&gt; <span class='message'>nrow (at source): 50</span>
 #&gt; <span class='message'>ncol (at source): 3</span>

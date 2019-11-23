@@ -7,8 +7,7 @@
 \usage{
 get_chunk(...)
 
-\method{get_chunk}{disk.frame}(df, n, keep = NULL, full.names = FALSE,
-  ...)
+\method{get_chunk}{disk.frame}(df, n, keep = NULL, full.names = FALSE, ...)
 }
 \arguments{
 \item{...}{passed to fst::read_fst or whichever read function is used in the backend}

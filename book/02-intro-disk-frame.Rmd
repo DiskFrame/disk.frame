@@ -9,7 +9,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-library(disk.frame)
+suppressPackageStartupMessages(library(disk.frame))
 library(fst)
 library(magrittr)
 library(nycflights13)

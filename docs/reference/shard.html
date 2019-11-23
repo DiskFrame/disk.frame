@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -93,7 +93,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Concepts for disk.frame</a>
+      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+    </li>
+    <li>
+      <a href="../articles/convenience-features.html">Convenience features</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -147,8 +150,17 @@
 <p>`distribute` is an alias for `shard`</p>
     </div>
 
-    <pre class="usage"><span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>), <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>shard</span>(
+  <span class='no'>df</span>,
+  <span class='no'>shardby</span>,
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+  <span class='no'>...</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
+  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
 
@@ -179,14 +191,25 @@
       <th>overwrite</th>
       <td><p>If TRUE then the chunks are overwritten</p></td>
     </tr>
+    <tr>
+      <th>shardby_function</th>
+      <td><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></td>
+    </tr>
+    <tr>
+      <th>sort_splits</th>
+      <td><p>If shardby_function is "sort", the split values for sharding</p></td>
+    </tr>
+    <tr>
+      <th>desc_vars</th>
+      <td><p>for the "sort" shardby function, the variables to sort descending.</p></td>
+    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># shard the cars data.frame by speed so that rows with the same speed are in the same chunk</span>
-<span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'>shard</span>(<span class='no'>iris</span>, <span class='st'>"Species"</span>)
-
+<span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'>shard</span>(<span class='no'>iris</span>, <span class='st'>"Species"</span>)</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)</div></pre>
   </div>

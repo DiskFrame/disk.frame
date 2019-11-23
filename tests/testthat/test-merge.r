@@ -11,7 +11,7 @@ test_that("testing merge of disk.frame", {
   b.df = disk.frame(file.path(tempdir(), "tmp_merge.df"))
   d.df = disk.frame(file.path(tempdir(), "tmp_merge2.df"))
   
-  bd.df = merge(b.df, d.df, by = "b", outdir = file.path(tempdir(), "tmp_bd_merge.df"), overwrite = TRUE)
+  bd.df = merge(b.df, d.df, by = "b", outdir = file.path(tempdir(), "tmp_bd_merge.df"), overwrite = TRUE, merge_by_chunk_id = TRUE)
   
   expect_s3_class(bd.df, "disk.frame")
   expect_equal(nrow(bd.df), 100)
@@ -30,6 +30,23 @@ test_that("testing merge of data.frame", {
 
   expect_s3_class(tmp, "data.frame")
   expect_equal(nrow(tmp), 100)
+})
+
+test_that("testing error when merge_by_chunk = FALSE", {
+  b.df = disk.frame(file.path(tempdir(), "tmp_merge.df"))
+  d.df = disk.frame(file.path(tempdir(), "tmp_merge2.df"))
+  
+  testthat::expect_error()
+  expect_error(
+    merge(
+      b.df, 
+      d.df, 
+      by = "b", 
+      outdir = file.path(tempdir(), "tmp_bd_merge.df"), 
+      overwrite = TRUE, 
+      merge_by_chunkd_id  = FALSE
+    )
+  )
 })
 
 

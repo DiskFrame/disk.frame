@@ -1,7 +1,7 @@
 context("test-recommend_nchunk")
 
-test_that("testing recommend_nchunk", {
+test_that("testing df_ram_size; guards #213", {
   # TODO tests
-  expect_equal(2L, 2L)
+  expect_true(df_ram_size() >= 1)
 })
 

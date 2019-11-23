@@ -17,7 +17,7 @@ test_that("csv2disk.frame works with no shard", {
   dff2 = dff1[,sum(V1), id1]
   expect_false(nrow(dff1) == nrow(dff2))
   expect_equal(nrow(dff), 1e3+11)
-  expect_equal(ncol(dff), 9)
+  expect_equal(ncol(dff), 10)
 })
 
 test_that("csv2disk.frame works with shard", {
@@ -29,7 +29,7 @@ test_that("csv2disk.frame works with shard", {
   dff2 = dff1[,sum(V1), id1]
   expect_true(nrow(dff1) == nrow(dff2))
   expect_equal(nrow(dff), 1e3+11)
-  expect_equal(ncol(dff), 9)
+  expect_equal(ncol(dff), 10)
   
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_csv2df3.csv"), 
@@ -40,7 +40,7 @@ test_that("csv2disk.frame works with shard", {
   dff2 = dff1[,sum(V1), .(id1,id2)]
   expect_true(nrow(dff1) == nrow(dff2))
   expect_equal(nrow(dff), 1e3+11)
-  expect_equal(ncol(dff), 9)
+  expect_equal(ncol(dff), 10)
 })
 
 test_that("csv2disk.frame tests readr", {

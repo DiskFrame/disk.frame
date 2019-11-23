@@ -44,9 +44,13 @@ which are datasets that are too large for RAM but not quite large enough
 to qualify as *big data* that require distributing processing over many
 computers to be effective.
 
-## Sponsors
+## Sponsors & Backers
+
+I would like to thank our backer and sponsor:
 
 <a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
+
+<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
 ## Installation
 
@@ -201,12 +205,6 @@ on existing verbs provided by data.table and dplyr. The package
 updated for a few years and also seems to require its own functions and
 verbs.
 
-## Backers
-
-I would like to thank our backer:
-
-<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
-
 # Example usage
 
 ## Set-up `{disk.frame}`
@@ -251,7 +249,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2JaPvM\\file1878c9d20d2.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2Ps66a\\file287c4e97742d.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -378,7 +376,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.010s elapsed (0.010s cpu)
+#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -398,7 +396,7 @@ res1 <- flights.df %>%
   summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
   mutate(avg_delay = sum_delay/n)
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.620s elapsed (0.160s cpu)
+#> group by took:  0.390s elapsed (0.180s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 4
@@ -421,9 +419,15 @@ res1 <- flights.df %>%
   hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
   chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
   collect
+#> Hashing...
+#> Hashing...
+#> Hashing...
+#> Hashing...
+#> Hashing...
+#> Hashing...
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.160s elapsed (0.240s cpu)
+#> group by took:  1.700s elapsed (0.270s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

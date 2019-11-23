@@ -49,4 +49,5 @@ src-x64
 *.ok
 cran-mirror
 docs/
+misc/disk.frame-report_files/
 
