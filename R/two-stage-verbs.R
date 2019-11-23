@@ -14,7 +14,7 @@
 #' chunkfn <- function(chunk) {
 #' }
 # learning from https://docs.dask.org/en/latest/dataframe-groupby.html
-group_by_aggregation <- function(chunkfn, agg, finalize) {
+group_by_aggregation <- function(chunk, agg, finalize) {
   res = list(chunkfn, agg, finalize)
   class(res) <- "disk.frame.agg"
   res
@@ -23,7 +23,35 @@ group_by_aggregation <- function(chunkfn, agg, finalize) {
 library(disk.frame)
 a = disk.frame::as.disk.frame(mtcars)
 
-meanreduce = function(df, by, vars) {
+
+chunkmean = function(x) {
+  sum(x)
+}
+
+aggmean = function(x) {
+  sum(x)
+}
+
+finalizemean = function(x) {
+  mutate(x$numerator, x$denominator)
+}
+
+group_by.disk.frame <- function(df, by, ...) {
+  df %>% 
+    chunk_group_by({{by}}) %>% 
+    chunk_summarise(tmp1 = chunkmean(var)) %>% 
+    collect() %>% 
+    group_by({{by}}) %>% 
+    summarise(aggmean(var))
+    
+}
+
+a %>% 
+  chunk_group_by(gear) %>%
+  chunk_summarise(mean(mpg)) %>% 
+  collect
+
+groupreduce = function(df, by, vars) {
   vars1 = purrr::map(vars, ~{
     glue("`_sum{.x}` = sum(.x)")
   }) %>% 
