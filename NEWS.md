@@ -1,9 +1,11 @@
 # disk.frame 0.2.1
 * got rid of benchmarkme as a dependency
-* added `hard_arrange`
+* added `hard_arrange` thanks to Jacky Poon
 * added more .progress options for joins
 * Using data.table::getDTthreads() as default number of workers
 * multisession instead of multiprocess as default backend for data.table
+* added support for R3.4
+* fixed df_get_ram for R < 3.6
 
 # disk.frame 0.2.0
 * deprecated group_by, arrange, summarise

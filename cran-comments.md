@@ -1,3 +1,10 @@
+## Re-submission 2 for v0.2.1
+* fixed broken functions
+* added support for R3.4 and tested
+
+## Re-submission 1 for v0.2.1
+* disabled tests that are not meant for CRAN yet; all the tests in the examples still pass checks
+
 ## Submission for v0.2.1
 * add some features and bug fixes
 

@@ -4,7 +4,7 @@
 \alias{dfglm}
 \title{Fit generalized linear models (glm) with disk.frame}
 \usage{
-dfglm(formula, data, ..., glm_backend = c("biglm", "speedglm"))
+dfglm(formula, data, ..., glm_backend = c("biglm", "speedglm", "biglmm"))
 }
 \arguments{
 \item{formula}{A model formula}
@@ -54,12 +54,16 @@ cars.df = as.disk.frame(cars)
 m = dfglm(dist ~ speed, data = cars.df)
 
 # can use normal R functions
-summary(m)
-predict(m, get_chunk(cars.df, 1))
-predict(m, collect(cars.df))
-
-# can use broom to tidy up the returned info
-broom::tidy(m)
+# Only works in version > R 3.6
+majorv = as.integer(version$major)
+minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+if(((majorv == 3) & (minorv >= 6)) | (majorv > 3)) {
+  summary(m)
+  predict(m, get_chunk(cars.df, 1))
+  predict(m, collect(cars.df))
+  # can use broom to tidy up the returned info
+  broom::tidy(m)
+}
 
 # clean up
 delete(cars.df)
