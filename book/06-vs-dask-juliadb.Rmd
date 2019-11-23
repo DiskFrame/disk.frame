@@ -84,14 +84,14 @@ We find the largest possible single file to give each of the tool a test run.
 #### disk.frame
 First up is disk.frame
 
-```{r setup}
-library(disk.frame)
+```{r setup, cache=TRUE}
+suppressPackageStartupMessages(library(disk.frame))
 system.time(setup_disk.frame()) # ~4s
 ```
 
 We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size
 
-```{r convert, dependson='setup'}
+```{r convert, cache=TRUE, dependson='setup'}
 time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/perf/Performance_2004Q3.txt", header = FALSE))[3]
 
 time_to_convert_disk.frame
@@ -99,7 +99,7 @@ time_to_convert_disk.frame
 
 Now that we have converted it, we want to a count by the first column. To achieve this we use a  "two-stage" aggregation strategy. Note that use `keep="V1"` to bring only the column `V1` into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly
 
-```{r agg, dependson='convert'}
+```{r agg, cache=TRUE, dependson='convert'}
 time_to_agg_disk.frame = system.time(summ <- df1[,.N, V1, keep = "V1"][, .(N = sum(N)), V1])
 
 time_to_agg_disk.frame

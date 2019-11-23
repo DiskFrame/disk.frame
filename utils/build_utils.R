@@ -45,7 +45,7 @@ df_setup_vignette <- function(excl = "") {
   NULL
 }
 
-df_ready <- function() {
+df_ready_for_cran <- function() {
   df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"))
   #devtools::clean_vignettes()
   
@@ -73,14 +73,21 @@ df_test <- function() {
   }
 }
 
+df_build_vignettes_for_cran <- function() {
+  rmd_files = list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+  df_ready_for_cran()
+  devtools::build_vignettes()
+}
+
 df_check <- function() {
-  df_ready()
+  df_ready_for_cran()
   # run check
   devtools::check(args = c('--as-cran'))
 }
 
 df_release <- function() {
-  df_ready()
+  df_ready_for_cran()
   devtools::release()
 }
 
