@@ -58,6 +58,21 @@ df_ready <- function() {
   }
 }
 
+df_test <- function() {
+  # rename tests
+  if(fs::dir_exists("tests_manual")) {
+    fs::dir_copy("tests_manual", "tests")
+    fs::dir_delete("tests_manual")
+  }
+  
+  devtools::test()
+  
+  if(fs::dir_exists("tests")) {
+    fs::dir_copy("tests", "tests_manual")
+    fs::dir_delete("tests")
+  }
+}
+
 df_check <- function() {
   df_ready()
   # run check

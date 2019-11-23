@@ -33,7 +33,7 @@ Imports:
     bigreadr (>= 0.2.0),
     bit64
 Depends:
-    R (>= 3.5.0),
+    R (>= 3.4.4),
     dplyr (>= 0.8.3),
     purrr (>= 0.3.2)
 Suggests: 
@@ -47,13 +47,14 @@ Suggests:
     readr,
     rstudioapi,
     biglm,
+    biglmm,
     speedglm,
     broom,
     learnr,
     ggplot2
 LinkingTo: 
     Rcpp
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 VignetteBuilder: knitr
 Encoding: UTF-8
 URL: https://diskframe.com
