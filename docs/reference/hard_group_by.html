@@ -158,11 +158,17 @@ row that share the same `by` value will end up in the same chunk.</p>
 <span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>,
+<span class='fu'>hard_group_by</span>(
+  <span class='no'>df</span>,
+  <span class='no'>...</span>,
   <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_hard_group_by"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/disk.frame/man/nchunks.html'>nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>, <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sort_split_sample_size</span> <span class='kw'>=</span> <span class='fl'>100</span>)</pre>
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/disk.frame/man/nchunks.html'>nchunks</a></span>(<span class='no'>df</span>),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
+  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sort_split_sample_size</span> <span class='kw'>=</span> <span class='fl'>100</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

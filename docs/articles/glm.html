@@ -109,15 +109,15 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame))</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span>()) {</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>() </span>
-<span id="cb1-5"><a href="#cb1-5"></a>} <span class="cf">else</span> {</span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="co"># only use 1 work to pass CRAN check</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dv">1</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>}</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; The number of workers available for disk.frame is 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame))</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span>()) {</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>() </a>
+<a class="sourceLine" id="cb1-5" title="5">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="co"># only use 1 work to pass CRAN check</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-8" title="8">}</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">#&gt; The number of workers available for disk.frame is 1</span></a></code></pre></div>
 <div id="glms" class="section level1">
 <h1 class="hasAnchor">
 <a href="#glms" class="anchor"></a>GLMs</h1>
@@ -130,101 +130,116 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>One can fit a GLM using the <code>glm</code> function. For example,</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>m =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(dist <span class="op">~</span><span class="st"> </span>speed, <span class="dt">data =</span> cars)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">m =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(dist <span class="op">~</span><span class="st"> </span>speed, <span class="dt">data =</span> cars)</a></code></pre></div>
 <p>would fit a linear model on the data <code>cars</code> with <code>dist</code> as the target and <code>speed</code> as the explanatory variable. You can inspect the results of the model fit using</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(m)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; </span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; glm(formula = dist ~ speed, data = cars)</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; </span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; Deviance Residuals: </span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; -29.069   -9.525   -2.272    9.215   43.201  </span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt; </span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt; (Intercept) -17.5791     6.7584  -2.601   0.0123 *  </span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt; speed         3.9324     0.4155   9.464 1.49e-12 ***</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; ---</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt; </span></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; (Dispersion parameter for gaussian family taken to be 236.5317)</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; </span></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#&gt;     Null deviance: 32539  on 49  degrees of freedom</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="co">#&gt; Residual deviance: 11354  on 48  degrees of freedom</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a><span class="co">#&gt; AIC: 419.16</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a><span class="co">#&gt; </span></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="co">#&gt; Number of Fisher Scoring iterations: 2</span></span></code></pre></div>
-<p>or if you have {<code>broom</code>} installed</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(m)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; # A tibble: 2 x 5</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; 2 speed           3.93     0.416      9.46 1.49e-12</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(m)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt; glm(formula = dist ~ speed, data = cars)</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; Deviance Residuals: </span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt; -29.069   -9.525   -2.272    9.215   43.201  </span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; (Intercept) -17.5791     6.7584  -2.601   0.0123 *  </span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; speed         3.9324     0.4155   9.464 1.49e-12 ***</span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="co">#&gt; (Dispersion parameter for gaussian family taken to be 236.5317)</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="co">#&gt;     Null deviance: 32539  on 49  degrees of freedom</span></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="co">#&gt; Residual deviance: 11354  on 48  degrees of freedom</span></a>
+<a class="sourceLine" id="cb3-21" title="21"><span class="co">#&gt; AIC: 419.16</span></a>
+<a class="sourceLine" id="cb3-22" title="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="co">#&gt; Number of Fisher Scoring iterations: 2</span></a></code></pre></div>
+<p>or if you have <code>{broom}</code> installed</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(m)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; 2 speed           3.93     0.416      9.46 1.49e-12</span></a></code></pre></div>
 <p>With {<code>disk.frame</code>}, you can run GLM <code>dfglm</code> function, where the <code>df</code> stands for <code>disk.frame</code> of course!</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>cars.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(cars)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>m =<span class="st"> </span><span class="kw"><a href="../reference/dfglm.html">dfglm</a></span>(dist <span class="op">~</span>speed, cars.df)</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; Loading required namespace: biglm</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(m)</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt; Large data regression model: biglm::bigglm(formula, data = streaming_fn, ...)</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; Sample size =  50 </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;                 Coef     (95%     CI)     SE      p</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; (Intercept) -17.5791 -31.0960 -4.0622 6.7584 0.0093</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt; speed         3.9324   3.1014  4.7634 0.4155 0.0000</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a>broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(m)</span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt;   term        estimate std.error  p.value</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; 1 (Intercept)   -17.6      6.76  9.29e- 3</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt; 2 speed           3.93     0.416 2.96e-21</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">cars.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(cars)</a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3">m =<span class="st"> </span><span class="kw"><a href="../reference/dfglm.html">dfglm</a></span>(dist <span class="op">~</span><span class="st"> </span>speed, cars.df)</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; Loading required namespace: biglm</span></a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(m)</a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; Large data regression model: biglm::bigglm(formula, data = streaming_fn, ...)</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; Sample size =  50 </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt;                 Coef     (95%     CI)     SE      p</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; (Intercept) -17.5791 -31.0960 -4.0622 6.7584 0.0093</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; speed         3.9324   3.1014  4.7634 0.4155 0.0000</span></a>
+<a class="sourceLine" id="cb5-12" title="12"></a>
+<a class="sourceLine" id="cb5-13" title="13"></a>
+<a class="sourceLine" id="cb5-14" title="14">majorv =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(version<span class="op">$</span>major)</a>
+<a class="sourceLine" id="cb5-15" title="15">minorv =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(version<span class="op">$</span>minor, <span class="st">"."</span>, <span class="dt">fixed=</span><span class="ot">TRUE</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-16" title="16"></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="cf">if</span>((majorv <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) <span class="op">&amp;</span><span class="st"> </span>(minorv <span class="op">&gt;=</span><span class="st"> </span><span class="dv">6</span>)) {</a>
+<a class="sourceLine" id="cb5-18" title="18">  broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(m)</a>
+<a class="sourceLine" id="cb5-19" title="19">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb5-20" title="20">  <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span></a>
+<a class="sourceLine" id="cb5-21" title="21">}</a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt;   term        estimate std.error  p.value</span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; 1 (Intercept)   -17.6      6.76  9.29e- 3</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt; 2 speed           3.93     0.416 2.96e-21</span></a></code></pre></div>
 <p>The syntax didn’t change at all! You are able to enjoy the benefits of <code>disk.frame</code> when dealing with larger-than-RAM data.</p>
 </div>
 <div id="logistic-regression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#logistic-regression" class="anchor"></a>Logistic regression</h2>
-<p>Logistic regression is one of the most commonly deployed machine learning (ML) models. It is often used to build binary classification model</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>iris.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(iris)</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># fit a logistic regression model to predict Speciess == "setosa" using all variables</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>all_terms_except_species =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(iris.df), <span class="st">"Species"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5"></a>formula_rhs =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(all_terms_except_species, <span class="dt">collapse =</span> <span class="st">"+"</span>)</span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a>formula =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Species == 'versicolor' ~ "</span>, formula_rhs))</span>
-<span id="cb6-8"><a href="#cb6-8"></a></span>
-<span id="cb6-9"><a href="#cb6-9"></a>iris_model =<span class="st"> </span><span class="kw"><a href="../reference/dfglm.html">dfglm</a></span>(formula , <span class="dt">data =</span> iris.df, <span class="dt">family=</span><span class="kw"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>())</span>
-<span id="cb6-10"><a href="#cb6-10"></a></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co"># iris_model = dfglm(Species == "setosa" ~ , data = iris.df, family=binomial())</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(iris_model)</span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; Large data regression model: biglm::bigglm(formula, data = streaming_fn, ...)</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; Sample size =  150 </span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;                 Coef    (95%     CI)     SE      p</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; (Intercept)   7.3785  2.3799 12.3771 2.4993 0.0032</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; Sepal.Length -0.2454 -1.5445  1.0538 0.6496 0.7056</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; Sepal.Width  -2.7966 -4.3637 -1.2295 0.7835 0.0004</span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; Petal.Length  1.3136 -0.0539  2.6812 0.6838 0.0547</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; Petal.Width  -2.7783 -5.1246 -0.4321 1.1731 0.0179</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a></span>
-<span id="cb6-23"><a href="#cb6-23"></a>broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(iris_model)</span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="co">#&gt; # A tibble: 5 x 4</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="co">#&gt;   term         estimate std.error  p.value</span></span>
-<span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; 1 (Intercept)     7.38      2.50  0.00315 </span></span>
-<span id="cb6-28"><a href="#cb6-28"></a><span class="co">#&gt; 2 Sepal.Length   -0.245     0.650 0.706   </span></span>
-<span id="cb6-29"><a href="#cb6-29"></a><span class="co">#&gt; 3 Sepal.Width    -2.80      0.784 0.000358</span></span>
-<span id="cb6-30"><a href="#cb6-30"></a><span class="co">#&gt; 4 Petal.Length    1.31      0.684 0.0547  </span></span>
-<span id="cb6-31"><a href="#cb6-31"></a><span class="co">#&gt; 5 Petal.Width    -2.78      1.17  0.0179</span></span></code></pre></div>
+<p>Logistic regression is one of the most commonly deployed machine learning (ML) models. It is often used to build binary classification models</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">iris.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(iris)</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co"># fit a logistic regression model to predict Speciess == "setosa" using all variables</span></a>
+<a class="sourceLine" id="cb6-4" title="4">all_terms_except_species =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(iris.df), <span class="st">"Species"</span>)</a>
+<a class="sourceLine" id="cb6-5" title="5">formula_rhs =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(all_terms_except_species, <span class="dt">collapse =</span> <span class="st">"+"</span>)</a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7">formula =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Species == 'versicolor' ~ "</span>, formula_rhs))</a>
+<a class="sourceLine" id="cb6-8" title="8"></a>
+<a class="sourceLine" id="cb6-9" title="9">iris_model =<span class="st"> </span><span class="kw"><a href="../reference/dfglm.html">dfglm</a></span>(formula , <span class="dt">data =</span> iris.df, <span class="dt">family=</span><span class="kw"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>())</a>
+<a class="sourceLine" id="cb6-10" title="10"></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co"># iris_model = dfglm(Species == "setosa" ~ , data = iris.df, family=binomial())</span></a>
+<a class="sourceLine" id="cb6-12" title="12"></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(iris_model)</a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; Large data regression model: biglm::bigglm(formula, data = streaming_fn, ...)</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; Sample size =  150 </span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt;                 Coef    (95%     CI)     SE      p</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt; (Intercept)   7.3785  2.3799 12.3771 2.4993 0.0032</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt; Sepal.Length -0.2454 -1.5445  1.0538 0.6496 0.7056</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; Sepal.Width  -2.7966 -4.3637 -1.2295 0.7835 0.0004</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; Petal.Length  1.3136 -0.0539  2.6812 0.6838 0.0547</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; Petal.Width  -2.7783 -5.1246 -0.4321 1.1731 0.0179</span></a>
+<a class="sourceLine" id="cb6-22" title="22"></a>
+<a class="sourceLine" id="cb6-23" title="23">majorv =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(version<span class="op">$</span>major)</a>
+<a class="sourceLine" id="cb6-24" title="24">minorv =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(version<span class="op">$</span>minor, <span class="st">"."</span>, <span class="dt">fixed=</span><span class="ot">TRUE</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb6-25" title="25"></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="cf">if</span>((majorv <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) <span class="op">&amp;</span><span class="st"> </span>(minorv <span class="op">&gt;=</span><span class="st"> </span><span class="dv">6</span>)) {</a>
+<a class="sourceLine" id="cb6-27" title="27">  broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(iris_model)</a>
+<a class="sourceLine" id="cb6-28" title="28">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb6-29" title="29">  <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span></a>
+<a class="sourceLine" id="cb6-30" title="30">}</a>
+<a class="sourceLine" id="cb6-31" title="31"><span class="co">#&gt; # A tibble: 5 x 4</span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="co">#&gt;   term         estimate std.error  p.value</span></a>
+<a class="sourceLine" id="cb6-33" title="33"><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-34" title="34"><span class="co">#&gt; 1 (Intercept)     7.38      2.50  0.00315 </span></a>
+<a class="sourceLine" id="cb6-35" title="35"><span class="co">#&gt; 2 Sepal.Length   -0.245     0.650 0.706   </span></a>
+<a class="sourceLine" id="cb6-36" title="36"><span class="co">#&gt; 3 Sepal.Width    -2.80      0.784 0.000358</span></a>
+<a class="sourceLine" id="cb6-37" title="37"><span class="co">#&gt; 4 Petal.Length    1.31      0.684 0.0547  </span></a>
+<a class="sourceLine" id="cb6-38" title="38"><span class="co">#&gt; 5 Petal.Width    -2.78      1.17  0.0179</span></a></code></pre></div>
 <p>The arguments to the <code>dfglm</code> function are the same as the arguments to <code><a href="https://rdrr.io/pkg/biglm/man/bigglm.html">biglm::bigglm</a></code> which are based on the <code>glm</code> function. Please check their documentations for other argument options.</p>
 </div>
 <div id="notes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#notes" class="anchor"></a>Notes</h2>
-<p>Unfortunately, neither <code>biglm</code> nor <code>speedglm</code> are managed on open-source platforms, so it’s more difficult to contribute to them by making bug fixes and submitting bug reports. So bugs are likely to persists. There is an active effort on <code>disk.frame</code> to look for alternatives. Example of avenues to explore include tighter integration with {<code>keras</code>}, h2o, or Julia’s OnlineStats.jl for model fit purposes.</p>
-<p>Another package for larger-than-RAM glm fitting, {<code>bigFastlm</code>}, has been taken off CRAN, it is managed on Github.</p>
+<p><code>{disk.frame}</code> uses <code>{biglm}</code> and <code>{speedglm}</code> as the backend for GLMs. Unfortunately, neither package is managed on open-source platforms, so it’s more difficult to contribute to them by making bug fixes and submitting bug reports. So bugs are likely to persists. There is an active effort on <code>disk.frame</code> to look for alternatives. Example of avenues to explore include tighter integration with <code>{keras}</code>, h2o, or Julia’s OnlineStats.jl for model fit purposes.</p>
+<p>Another package for larger-than-RAM glm fitting, <code>{bigFastlm}</code>, has been taken off CRAN, it is managed on Github.</p>
 <p>Currently, parallel processing of GLM fit are not possible with {<code>disk.frame</code>}.</p>
 </div>
 </div>

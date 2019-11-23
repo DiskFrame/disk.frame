@@ -4,11 +4,18 @@
 \alias{foverlaps.disk.frame}
 \title{Apply data.table's foverlaps to the disk.frame}
 \usage{
-foverlaps.disk.frame(df1, df2, by.x = if
-  (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else
-  shardkey(df2)$shardkey, by.y = shardkey(df2)$shardkey, ...,
+foverlaps.disk.frame(
+  df1,
+  df2,
+  by.x = if (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else
+    shardkey(df2)$shardkey,
+  by.y = shardkey(df2)$shardkey,
+  ...,
   outdir = tempfile("df_foverlaps_tmp", fileext = ".df"),
-  merge_by_chunk_id = FALSE, compress = 50, overwrite = TRUE)
+  merge_by_chunk_id = FALSE,
+  compress = 50,
+  overwrite = TRUE
+)
 }
 \arguments{
 \item{df1}{A disk.frame}

@@ -33,6 +33,7 @@ if(((majorv == 3) & (minorv >= 6)) | (majorv > 3)) {
 }
 }
 \seealso{
-Other Machine Learning (ML): \code{\link{dfglm}}
+Other Machine Learning (ML): 
+\code{\link{dfglm}()}
 }
 \concept{Machine Learning (ML)}

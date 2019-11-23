@@ -4,8 +4,12 @@
 \alias{setup_disk.frame}
 \title{Set up disk.frame environment}
 \usage{
-setup_disk.frame(workers = data.table::getDTthreads(),
-  future_backend = future::multisession, ..., gui = FALSE)
+setup_disk.frame(
+  workers = data.table::getDTthreads(),
+  future_backend = future::multisession,
+  ...,
+  gui = FALSE
+)
 }
 \arguments{
 \item{workers}{the number of workers (background R processes in the}

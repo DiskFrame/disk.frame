@@ -150,9 +150,17 @@
 <p>`distribute` is an alias for `shard`</p>
     </div>
 
-    <pre class="usage"><span class='fu'>shard</span>(<span class='no'>df</span>, <span class='no'>shardby</span>, <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>), <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>, <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>shard</span>(
+  <span class='no'>df</span>,
+  <span class='no'>shardby</span>,
+  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
+  <span class='no'>...</span>,
+  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>),
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
+  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
 

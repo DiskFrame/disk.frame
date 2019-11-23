@@ -4,9 +4,16 @@
 \alias{rechunk}
 \title{Increase or decrease the number of chunks in the disk.frame}
 \usage{
-rechunk(df, nchunks, outdir = attr(df, "path"), shardby = NULL,
-  overwrite = TRUE, shardby_function = "hash", sort_splits = NULL,
-  desc_vars = NULL)
+rechunk(
+  df,
+  nchunks,
+  outdir = attr(df, "path"),
+  shardby = NULL,
+  overwrite = TRUE,
+  shardby_function = "hash",
+  sort_splits = NULL,
+  desc_vars = NULL
+)
 }
 \arguments{
 \item{df}{the disk.frame to rechunk}
