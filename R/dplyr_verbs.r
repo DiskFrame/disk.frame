@@ -408,10 +408,16 @@ group_by.disk.frame <- create_dplyr_mapper(dplyr::group_by, warning_msg="`group_
   #stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
 #}
 
+#' @rdname group_by
 #' @export
+chunk_group_by <- create_dplyr_mapper(dplyr::group_by)
 
 #' @rdname group_by
-chunk_group_by <- create_dplyr_mapper(dplyr::group_by)
+#' @export
+chunk_ungroup = create_dplyr_mapper(dplyr::ungroup)
+
+# do not introduce it as it was never introduced
+#ungroup.disk.frame( < - create_dplyr_mapper(dplyr::ungroup, , warning_msg="`ungroup.disk.frame` is now deprecated. Please use `chunk_ungroup` instead. This is in preparation for a more powerful `group_by` framework")
 
 #' @export
 #' @rdname dplyr_verbs
