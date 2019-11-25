@@ -1,0 +1,46 @@
+---
+title: "Easy Larger-than-RAM data manipulation with disk.frame - useR! 2020 tutorial proposal"
+author: "ZJ"
+date: "11/25/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Title
+
+Easy Larger-than-RAM data manipulation with disk.frame
+
+## Audience
+
+The audience will benefit the most from this tutorial if they are familiar with popular R data manipulation framework such as dplyr and data.table. This is because we aim to cover disk.frame which is larger-than-RAM data manipulation framework that is largely based on dplyr and data.table
+
+## Instructor background
+
+I have more than 10 years of experience using R and enterprise data manipulation tools like SAS and SQL. I have experience teaching Data Science courses in R in a group setting. I propose to teach the disk.frame package which I authored. The website I created for diskframe is https://diskframe.com and https://www.linkedin.com/in/daizj/ is my LinkedIn. Here is an R course I wrote https://github.com/xiaodaigh/intro_r_data_science
+
+## Domain
+
+Big Data manipulation for data that doesn't fit into RAM can be easy and fast. 
+
+
+## Points of appeal (75 words)
+Almost R users would have run into the "cannot allocate vector of size xxxB." error at some point. For all most all applications, R loads the data into RAM but RAM is a precious resource and can run out. {disk.frame} solves this issue by providing a framework to manipulate data on disk and minimize RAM usage hence enabling analysis much larger amounts of data than is normally possible.  This will appeal to all R users with the need to manipulate larger and larger amounts of data and are currently using a database or SAS to achieve this.
+
+
+## Learning objectives: 100 – 200 words
+In this tutorial, the user will learn how to use disk.frame effectively to manipulation datasets in the 100GBs size on a single computer. 
+
+This includes being able to
+* load large dataset into disk.frame format
+* manipulate the large disk.frame files
+* summarize the large disk.frame files
+* performing sortin and merging and other disk.frame related activities
+* understand the pros and cons of disk.frame and know when to use disk.frame
+* understand the ins-and-outs of on disk data manipulation frameworks like disk.frame
+* be able to apply disk.frame to all data taks
+
+## Computing requirement
+The requirement for disk.frame is R 3.4 and the ability to install packages via `install.packages`. A laptop is advised but not necessary.
