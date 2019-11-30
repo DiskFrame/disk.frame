@@ -32,7 +32,9 @@ select.disk.frame <- function(.data, ...) {
   }, lazy = TRUE)
 }
 
-
+#' @export
+#' Keep for backwards-compatibility to be removed in 0.3
+create_dplyr_mapper = create_chunk_mapper
 
 #' @export
 #' @rdname dplyr_verbs
