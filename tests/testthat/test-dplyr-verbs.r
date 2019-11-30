@@ -162,9 +162,9 @@ test_that("filter failure: prevent github #191 regression",  {
   flights_df = as.disk.frame(nycflights13::flights)
   
   # expect error due to syntax error
-  expect_error(flights_df %>% 
+  expect_warning(expect_error(flights_df %>% 
     filter(tailnum %in% paste0(unique(nycflights13::flights$tailnum)[1:60]), "") %>% 
-    collect)
+    collect))
   
   delete(flights_df)
 })
