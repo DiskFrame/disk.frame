@@ -3,11 +3,14 @@
 \name{group_by.disk.frame}
 \alias{group_by.disk.frame}
 \alias{chunk_group_by}
+\alias{chunk_ungroup}
 \title{Group by within each disk.frame}
 \usage{
 \method{group_by}{disk.frame}(.data, ...)
 
 chunk_group_by(.data, ...)
+
+chunk_ungroup(.data, ...)
 }
 \arguments{
 \item{.data}{a disk.frame}
