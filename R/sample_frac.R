@@ -20,7 +20,7 @@ sample_frac.disk.frame <- function(tbl, size=1, replace=FALSE, weight=NULL, .env
     stop(warning_msg)
   }
   
-  fn = disk.frame::create_dplyr_mapper(dplyr::sample_frac)
+  fn = disk.frame::create_chunk_mapper(dplyr::sample_frac)
   
   fn(tbl, size = size, replace = replace, ...)
 }
