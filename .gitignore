@@ -44,9 +44,7 @@ Meta
 rsconnect
 src-i386
 src-x64
-
 *.parquet
-
 *.zip
-
 *.ok
+.httr-oauth
