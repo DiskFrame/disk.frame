@@ -1,3 +1,6 @@
+# disk.frame 0.2.2
+* bug fixes for data.table trigger by integration with tidyfast
+
 # disk.frame 0.2.1
 * got rid of benchmarkme as a dependency
 * added `hard_arrange` thanks to Jacky Poon
