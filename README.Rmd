@@ -22,12 +22,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
-[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-[![Travis build status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
@@ -40,14 +34,6 @@ In a nutshell, `{disk.frame}` makes use of two simple ideas
 2) provide a convenient API to manipulate these chunks
 
 `{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
-
-## Sponsors & Backers
-
-I would like to thank our backer and sponsor:
-
-<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
-
-<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
 ## Installation
 
@@ -71,7 +57,6 @@ On some platforms, such as SageMaker, you may need to explicitly specify a repo 
 install.packages("disk.frame", repo="https://cran.rstudio.com")
 ```
 
-
 ## Vignettes and articles
 
 Please see these vignettes and articles about `{disk.frame}`
@@ -87,13 +72,6 @@ Please see these vignettes and articles about `{disk.frame}`
   - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
   - [Benchmark 1: disk.frame vs Dask vs
     JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
-
-### Interested in learning `{disk.frame}` in a structured course?
-
-Please register your interest at:
-
-https://leanpub.com/c/taminglarger-than-ramwithdiskframe
-
 
 ## Common questions
 
@@ -129,10 +107,6 @@ In R, one can access Spark via `sparklyr`, but that requires a Spark cluster to 
 
 Finally, Spark can only apply functions that are implemented for Spark, whereas `{disk.frame}` can use any function in R including user-defined functions.
 
-### f) How is `{disk.frame}` different from multidplyr, partools and distributedR?
-
-The packages [multidplyr](https://github.com/tidyverse/multidplyr) doesn't seem to be disk-focused and hence does not allow arbitrarily large dataset to be manipulated; the focus on parallel processing is similar to disk.frame though. For partools [https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/], it seems to use it's own verbs for aggregating data instead of relying on existing verbs provided by data.table and dplyr. The package [`distributedR`](https://github.com/vertica/DistributedR) hasn't been updated for a few years and also seems to require its own functions and verbs.
-
 
 # Example usage
 
@@ -151,7 +125,7 @@ The `setup_disk.frame()` sets up background workers equal to the number of CPU c
 Alternatively, one may specify the number of workers using `setup_disk.frame(workers = n)`.
 
 ## Quick-start
-```{r setup}
+```{r setup, cache=TRUE}
 suppressPackageStartupMessages(library(disk.frame))
 library(nycflights13)
 
@@ -196,10 +170,32 @@ ncol(flights.df)
 ## Example: dplyr verbs
 
 ### Group by
-Group-by in disk.frame are performed within each chunk, hence a two-stage group by is required to obtain the correct group by results. The two-stage approach is preferred for performance reasons too.
+Starting from {disk.frame} v0.2.2, there is support `group_by` for limited set of functions. For example:
 
-To perform group-by one needs to do it in two-stage approach as the group-by's are performed within each chunk. This will be addressed in a future package called `disk.frame.db`, but for now two-stage aggregation is the best to do group-bys in `{disk.frame}`.
-```{r flights_df, dependson='setup'}
+```r
+result_from_disk.frame = iris %>% 
+  as.disk.frame %>% 
+  group_by(Species) %>% 
+  summarize(
+    mean(Petal.Length), 
+    sumx = sum(Petal.Length/Sepal.Width), 
+    sd(Sepal.Width/ Petal.Length), 
+    var(Sepal.Width/ Sepal.Width), 
+    l = length(Sepal.Width/ Sepal.Width + 2),
+    max(Sepal.Width), 
+    min(Sepal.Width), 
+    median(Sepal.Width)
+    ) %>% 
+  collect
+```
+
+The results should be exactly the same as if applying the same group-by operations on a data.frame. If not then please [report a bug](https://github.com/xiaodaigh/disk.frame/issues). The current list of functions in a `group_by-summarize` are `min, max, mean, sum, median, length, sd, var`. If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues).
+
+
+### Two-Stage Group by
+Given the list of group-by functions is limited, so {disk.frame} supports a two-stage style grouping, enable maximum flexibility. The key is understand that `chunk_group_by` performs `group-by` within each chunk.
+
+```{r flights_df, dependson='setup', cache=TRUE}
 flights.df = as.disk.frame(nycflights13::flights)
 
 flights.df %>%
@@ -221,7 +217,7 @@ flights.df %>%
   summarise(sum_dist = sum(sum_dist))
 ```
 
-Here an example of using `filter`
+You can mix group-by with other dplyr verbs as below, here is an example of using `filter`. 
 
 ```{r, dependson='flights_df'}
 # filter
@@ -233,26 +229,8 @@ cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
 nrow(df_filtered)
 ```
 
-You can mix group-by with other dplyr verbs as below
-
-```{r, dependson='flights_df'}
-pt = proc.time()
-res1 <- flights.df %>% 
-  srckeep(c("month", "dep_delay")) %>% 
-  filter(month <= 6) %>% 
-  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  chunk_group_by(qtr) %>% 
-  chunk_summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
-  collect %>%
-  group_by(qtr) %>% 
-  summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
-  mutate(avg_delay = sum_delay/n)
-cat("group by took: ", data.table::timetaken(pt), "\n")
-
-collect(res1)
-```
-
-However, a one-stage `group_by` is possible with a `hard_group_by` to first rechunk the disk.frame. This **not** recommended for performance reasons, as it can quite slow.
+### Hard group by
+Another way to perform a one-stage `group_by` is to perform a `hard_group_by` on a `disk.frame. This will rechunk the `disk.frame` by the by columns. This is **not** recommended for performance reasons, as it can quite slow to rechunk the chunks on disk.
 ```{r}
 pt = proc.time()
 res1 <- flights.df %>% 
@@ -323,6 +301,11 @@ The work priorities at this stage are
 | [Emma goes to useR! 2019](https://emmavestesson.netlify.com/2019/07/user2019/) | Emma Vestesson | 20190716 | The first mention of `{disk.frame}` in a blog post |
 
 
+### Interested in learning `{disk.frame}` in a structured course?
+
+Please register your interest at:
+
+https://leanpub.com/c/taminglarger-than-ramwithdiskframe
 
 ## Open Collective 
 
@@ -344,3 +327,10 @@ Support `{disk.frame}` development by becoming a sponsor. Your logo will show up
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
 I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
+
+## Download Counts & Build Status
+
+[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Travis build status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)

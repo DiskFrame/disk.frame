@@ -7,7 +7,7 @@ setup({
 
 
 test_that("new group_by framework", {
-  if(interactive()) {
+  # if(interactive()) {
     iris.df = iris %>% 
       as.disk.frame
     
@@ -26,7 +26,7 @@ test_that("new group_by framework", {
     }
     
     delete(iris.df)
-  }
+  # }
   expect_true(TRUE)
 })
 
