@@ -32,8 +32,8 @@ select.disk.frame <- function(.data, ...) {
   }, lazy = TRUE)
 }
 
+#' Kept for backwards-compatibility to be removed in 0.3
 #' @export
-#' Keep for backwards-compatibility to be removed in 0.3
 create_dplyr_mapper = create_chunk_mapper
 
 #' @export
@@ -133,6 +133,7 @@ chunk_summarise <- create_chunk_mapper(dplyr::summarise)
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
 summarize.disk.frame <- function(...) {
+  # comment summarize.grouped_disk.frame
   stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
 }
 
@@ -141,7 +142,7 @@ summarize.disk.frame <- function(...) {
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarise.disk.frame <- create_chunk_mapper(dplyr::summarise, warning_msg="`summarise.disk.frame` is now deprecated. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
+summarise.disk.frame <- summarize.disk.frame
 
 
 #' @export
