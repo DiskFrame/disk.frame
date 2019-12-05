@@ -57,7 +57,6 @@ sd_agg <- function(...) {
 
 #' A function to parse the summarize function
 #' @importFrom dplyr filter select pull
-#' @import magrittr
 #' @imporFrom purr map_dfr
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {

@@ -133,7 +133,6 @@ and `arrange` performs the actions within each chunk
 }
 \examples{
 library(dplyr)
-library(magrittr)
 cars.df = as.disk.frame(cars)
 mult = 2
 

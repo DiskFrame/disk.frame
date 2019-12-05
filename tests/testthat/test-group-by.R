@@ -1,26 +1,45 @@
 context("test-group_by")
 
 setup({
-  
   df = disk.frame:::gen_datatable_synthetic(1e3+11)
   data.table::fwrite(df, file.path(tempdir(), "tmp_pls_delete_gb.csv"))
 })
+
+
+test_that("new group_by framework", {
+  if(interactive()) {
+    iris.df = iris %>% 
+      as.disk.frame
+    
+    grpby = expect_warning(iris.df %>% 
+                             group_by(Species) %>% 
+                             summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
+                             collect)
+    
+    grpby2 = iris %>% 
+      group_by(Species) %>% 
+      summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
+      arrange()
+    
+    for (n in names(grpby)) {
+      expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
+    }
+    
+    delete(iris.df)
+  }
+  expect_true(TRUE)
+})
+
 
 test_that("group_by", {
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
+  
   dff_res = dff %>% 
     collect %>% 
     group_by(id1) %>% 
     summarise(mv1 = mean(v1))
-  
-  expect_warning({
-    dff %>% 
-    group_by(id1, id2) %>%
-    summarise(mv1 = mean(v1)) %>% 
-    collect
-  })
   
   dff1 <- dff %>% 
     chunk_group_by(id1, id2) %>%
@@ -35,6 +54,7 @@ test_that("test hard_group_by on disk.frame", {
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
+  
   dff_res = dff %>% 
     collect %>% 
     group_by(id1, id2) %>% 

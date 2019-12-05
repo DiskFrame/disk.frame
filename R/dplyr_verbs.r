@@ -10,7 +10,6 @@
 #' @family dplyr verbs
 #' @examples
 #' library(dplyr)
-#' library(magrittr)
 #' cars.df = as.disk.frame(cars)
 #' mult = 2
 #' 
