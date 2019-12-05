@@ -10,7 +10,6 @@
 #' @family dplyr verbs
 #' @examples
 #' library(dplyr)
-#' library(magrittr)
 #' cars.df = as.disk.frame(cars)
 #' mult = 2
 #' 
@@ -32,8 +31,8 @@ select.disk.frame <- function(.data, ...) {
   }, lazy = TRUE)
 }
 
+#' Kept for backwards-compatibility to be removed in 0.3
 #' @export
-#' Keep for backwards-compatibility to be removed in 0.3
 create_dplyr_mapper = create_chunk_mapper
 
 #' @export
@@ -132,19 +131,17 @@ chunk_summarise <- create_chunk_mapper(dplyr::summarise)
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarize.disk.frame <- create_chunk_mapper(dplyr::summarize, warning_msg="`summarize.disk.frame` is now deprecated. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
-  #function(...) {
-  #stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
-#}
+summarize.disk.frame <- function(...) {
+  # comment summarize.grouped_disk.frame
+  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
+}
+
 
 
 #' @export
 #' @importFrom dplyr summarize
 #' @rdname dplyr_verbs
-summarise.disk.frame <- create_chunk_mapper(dplyr::summarise, warning_msg="`summarise.disk.frame` is now deprecated. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
-#function(...) {
-#   stop("`summarise.disk.frame` has been removed. Please use `chunk_summarise` instead. This is in preparation for a more powerful `group_by` framework")
-# }
+summarise.disk.frame <- summarize.disk.frame
 
 
 #' @export
@@ -292,40 +289,11 @@ groups.disk.frame <- function(x){
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @export
-
 #' @rdname group_by
-# TODO check shardkey
-# group_by.disk.frame <- function(.data, ...) {
-#   dplyr_fn = dplyr::group_by
-#   
-#   quo_dotdotdot = rlang::enquos(...)
-#   
-#   # this is designed to capture any global stuff
-#   vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
-#   data_for_eval_tidy = force(vars_and_pkgs$globals)
-#   
-#   res = map(.data, ~{
-#     this_env = environment()
-#     
-#     if(length(data_for_eval_tidy) > 0) {
-#       for(i in 1:length(data_for_eval_tidy)) {
-#         assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos = this_env)
-#       }
-#     }
-#     
-#     lapply(quo_dotdotdot, function(x) {
-#       attr(x, ".Environment") = this_env
-#     })
-#     
-#     code = rlang::quo(dplyr_fn(.x, !!!quo_dotdotdot))
-#     eval(parse(text=rlang::as_label(code)), envir = this_env)
-#   }, lazy = TRUE)
-# }
-#group_by.disk.frame <- create_chunk_mapper(dplyr::group_by, warning_msg = "The group_by operation is applied WITHIN each chunk, hence the results may not be as expected. To address this issue, you can rechunk(df, shardby = your_group_keys) which can be computationally expensive. Otherwise, you may use a second stage summary to obtain the desired result.")
-group_by.disk.frame <- create_chunk_mapper(dplyr::group_by, warning_msg="`group_by.disk.frame` is now deprecated. Please use `chunk_group_by` instead. This is in preparation for a more powerful `group_by` framework")
-#function(...) {
-  #stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
-#}
+group_by.disk.frame <- function(...) {
+  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
+}
+
 
 #' @rdname group_by
 #' @export
