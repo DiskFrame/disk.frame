@@ -61,6 +61,12 @@ If a function you like is missing, please make a feature request [here](https://
 ### Two-Stage Group by
 Given the list of group-by functions is limited, so {disk.frame} supports a two-stage style grouping, enable maximum flexibility. The key is understand that `chunk_group_by` performs `group-by` within each chunk.
 
+```{r setup, cache=TRUE}
+knitr::opts_chunk$set(include = FALSE)
+suppressPackageStartupMessages(library(disk.frame))
+setup_disk.frame()
+```
+
 ```{r flights_df, dependson='setup', cache=TRUE}
 flights.df = as.disk.frame(nycflights13::flights)
 

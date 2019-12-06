@@ -6,6 +6,7 @@ articles:
   convenience-features: convenience-features.html
   data-table-syntax: data-table-syntax.html
   glm: glm.html
+  group-by: group-by.html
   ingesting-data: ingesting-data.html
   intro-disk-frame: intro-disk-frame.html
   intro: intro.html
