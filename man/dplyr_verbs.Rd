@@ -74,9 +74,9 @@ chunk_summarize(.data, ...)
 
 chunk_summarise(.data, ...)
 
-\method{summarize}{disk.frame}(.data, ...)
+\method{summarize}{disk.frame}(...)
 
-\method{summarise}{disk.frame}(.data, ...)
+\method{summarise}{disk.frame}(...)
 
 \method{do}{disk.frame}(.data, ...)
 
@@ -133,7 +133,6 @@ and `arrange` performs the actions within each chunk
 }
 \examples{
 library(dplyr)
-library(magrittr)
 cars.df = as.disk.frame(cars)
 mult = 2
 

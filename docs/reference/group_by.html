@@ -39,6 +39,10 @@
 <meta property="og:description" content="The disk.frame group by operation perform group WITHIN each chunk. This is
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
+reorganizes the chunks by the shard key.
+The disk.frame group by operation perform group WITHIN each chunk. This is
+often used for performance reasons. If the user wishes to perform group-by,
+they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key." />
 <meta name="twitter:card" content="summary" />
 
@@ -152,12 +156,19 @@ reorganizes the chunks by the shard key." />
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key.</p>
+<p>The disk.frame group by operation perform group WITHIN each chunk. This is
+often used for performance reasons. If the user wishes to perform group-by,
+they may choose to use the `hard_group_by` function which is expensive as it
+reorganizes the chunks by the shard key.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fu'>group_by_drop_default</span>(<span class='no'>.data</span>))
 
-<span class='fu'>chunk_group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>chunk_group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fu'>group_by_drop_default</span>(<span class='no'>.data</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,7 +185,8 @@ reorganizes the chunks by the shard key.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>hard_group_by</p></div>
+    <div class='dont-index'><p>hard_group_by</p>
+<p>hard_group_by</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

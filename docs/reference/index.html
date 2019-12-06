@@ -182,7 +182,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> </p>
+          <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> <code><a href="collect.html">collect(<i>&lt;summarized_disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Bring the disk.frame into R</p></td>
       </tr><tr>
@@ -200,9 +200,15 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="create_chunk_mapper.html">create_chunk_mapper()</a></code> </p>
+        </td>
+        <td><p>Create function that applies to each chunk if disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="create_dplyr_mapper.html">create_dplyr_mapper()</a></code> </p>
         </td>
-        <td><p>Create dplyr function for disk.frame</p></td>
+        <td><p>Kept for backwards-compatibility to be removed in 0.3</p></td>
       </tr><tr>
         
         <td>
@@ -278,7 +284,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">chunk_group_by()</a></code> </p>
+          <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">chunk_group_by()</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Group by within each disk.frame</p></td>
       </tr><tr>
@@ -437,6 +443,12 @@
           <p><code><a href="sub-.disk.frame.html">`[`(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>[ interface for disk.frame using fst backend</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summarise.grouped_disk.frame.html">summarise(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>A function to parse the summarize function</p></td>
       </tr><tr>
         
         <td>
