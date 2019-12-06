@@ -212,7 +212,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpUvAARb\\file1cec8ed19c4.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpwBzatZ\\file51946dd3703e.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -285,7 +285,7 @@ ncol(flights.df)
 
 ### Group by
 
-Starting from {disk.frame} v0.2.2, there is support `group_by` for
+Starting from {disk.frame} v0.2.2, there is for support `group_by` for a
 limited set of functions. For example:
 
 ``` r
@@ -307,10 +307,31 @@ result_from_disk.frame = iris %>%
 
 The results should be exactly the same as if applying the same group-by
 operations on a data.frame. If not then please [report a
-bug](https://github.com/xiaodaigh/disk.frame/issues). The current list
-of functions in a `group_by-summarize` are `min, max, mean, sum, median,
-length, sd, var`. If a function you like is missing, please make a
-feature request [here](https://github.com/xiaodaigh/disk.frame/issues).
+bug](https://github.com/xiaodaigh/disk.frame/issues).
+
+#### List of supported group-by functions
+
+If a function you like is missing, please make a feature request
+[here](https://github.com/xiaodaigh/disk.frame/issues). It is a
+limitation that function that depend on the order a column can only
+obtained using estimated methods.
+
+| Function     | Exact/Estimate | Notes                                      |
+| ------------ | -------------- | ------------------------------------------ |
+| `min`        | Exact          |                                            |
+| `max`        | Exact          |                                            |
+| `mean`       | Exact          |                                            |
+| `sum`        | Exact          |                                            |
+| `length`     | Exact          |                                            |
+| `n`          | Exact          |                                            |
+| `n_distinct` | Exact          |                                            |
+| `sd`         | Exact          |                                            |
+| `var`        | Exact          | `var(x)` only `cor, cov` support *planned* |
+| `any`        | Exact          |                                            |
+| `all`        | Exact          |                                            |
+| `median`     | Estimate       |                                            |
+| `quantile`   | Estimate       | One quantile only                          |
+| `IQR`        | Estimate       |                                            |
 
 ### Two-Stage Group by
 
@@ -365,7 +386,7 @@ df_filtered <-
   flights.df %>% 
   filter(month == 1)
 cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.020s cpu)
+#> filtering a < 0.1 took:  0.000s elapsed (0.000s cpu)
 nrow(df_filtered)
 #> [1] 336776
 ```
@@ -394,7 +415,7 @@ res1 <- flights.df %>%
 #> Hashing...
 #> Appending disk.frames:
 cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.020s elapsed (0.260s cpu)
+#> group by took:  0.760s elapsed (0.340s cpu)
 
 collect(res1)
 #> # A tibble: 2 x 2

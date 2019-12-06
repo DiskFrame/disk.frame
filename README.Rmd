@@ -170,7 +170,7 @@ ncol(flights.df)
 ## Example: dplyr verbs
 
 ### Group by
-Starting from {disk.frame} v0.2.2, there is support `group_by` for limited set of functions. For example:
+Starting from {disk.frame} v0.2.2, there is for support `group_by` for a limited set of functions. For example:
 
 ```r
 result_from_disk.frame = iris %>% 
@@ -189,7 +189,28 @@ result_from_disk.frame = iris %>%
   collect
 ```
 
-The results should be exactly the same as if applying the same group-by operations on a data.frame. If not then please [report a bug](https://github.com/xiaodaigh/disk.frame/issues). The current list of functions in a `group_by-summarize` are `min, max, mean, sum, median, length, sd, var`. If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues).
+The results should be exactly the same as if applying the same group-by operations on a data.frame. If not then please [report a bug](https://github.com/xiaodaigh/disk.frame/issues).
+
+#### List of supported group-by functions
+
+If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues). It is a limitation that function that depend on the order a column can only obtained using estimated methods.
+
+| Function | Exact/Estimate | Notes |
+| -- | -- | -- |
+| `min` | Exact |  |
+| `max` | Exact |  |
+| `mean` | Exact |  |
+| `sum` | Exact |  |
+| `length` | Exact |  |
+| `n` | Exact |  |
+| `n_distinct` | Exact |  |
+| `sd` | Exact |  |
+| `var` | Exact | `var(x)` only `cor, cov` support *planned*  |
+| `any` | Exact |  |
+| `all` | Exact |  |
+| `median` | Estimate |  |
+| `quantile` | Estimate | One quantile only |
+| `IQR` | Estimate |  |
 
 
 ### Two-Stage Group by

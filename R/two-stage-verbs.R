@@ -1,58 +1,164 @@
-# keeping a list of defined group_by operations ---------------------------
-disk.frame_chunk_fns <- list(
-  sd = c("sum_sqr", "sum", "length"),
-  var = c("sum_sqr", "sum", "length"),
-  mean = c("sum", "length"),
-  sum = "sum",
-  max = "max",
-  min = "min",
-  median = "median",
-  length = "length"
-)
-
-disk.frame_agg_fns <- list(
-  mean = "mean_agg",
-  sum = "sum",
-  max = "max",
-  min = "min",
-  median = "median",
-  sd = "sd_agg",
-  var = "var_agg",
-  length = "sum"
-)
-
-
-mean_agg <- function(sumx, lengthx) {
-  sum(sumx)/sum(lengthx)
+#' @export
+var.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
+  c(
+    sumx = sum(x, na.rm = na.rm), 
+    sumsqrx = sum(x^2, na.rm = na.rm), 
+    nx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
+  )
 }
 
-sum_sqr <- function(x) {
-  sum(x^2)
-}
+#' @export
+var.collected_agg.disk.frame <- function(listx)  {
+  df = Reduce(bind_rows, listx)
+  
+  sumlengthx = sum(df$nx)
 
-var_agg <- function(sum_sqr_x, sumx, lengthx) {
-  # print(sum(lengthx))
-  sumlengthx = sum(lengthx)
-  
-  first_part = sum(sum_sqr_x) / sumlengthx
-  second_part = sum(sumx) / sumlengthx
-  
+  first_part = sum(df$sumsqrx) / sumlengthx
+  second_part = sum(df$sumx) / sumlengthx
+
   # unbiased adjustment
   (first_part - second_part^2) * sumlengthx / (sumlengthx-1)
 }
 
-sd_agg <- function(...) {
-  sqrt(var_agg(...))
+#' @export
+sd.chunk_agg.disk.frame <- var.chunk_agg.disk.frame
+
+#' @export
+sd.collected_agg.disk.frame <- function(listx)  {
+  sqrt(var.collected_agg.disk.frame(listx))
+}
+ 
+
+#' mean chunk_agg
+#' @export
+mean.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+  sumx = sum(x, na.rm = na.rm)
+  lengthx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
+  c(sumx = sumx, lengthx = lengthx)
 }
 
+#' mean collected_agg
+#' @export
+mean.collected_agg.disk.frame <- function(listx) {
+  sum(sapply(listx, function(x) x["sumx"]))/sum(sapply(listx, function(x) x["lengthx"]))
+}
 
+#' @export
+sum.chunk_agg.disk.frame <- function(x, ...) {
+  sum(x, ...)
+}
 
-# #' Register a new group_by function
-# #' @export
-# register_group_by_fn <- function(list_chunk_fns, list_agg_fns) {
-#   disk.frame_chunk_fns <<- c(disk.frame_chunk_fns, list_chunk_fns)
-#   disk.frame_agg_fns <<- c(disk.frame_chunk_fns, list_agg_fns)
-# }
+#' @export
+sum.collected_agg.disk.frame <- function(listx, ...) {
+  sum(unlist(listx), ...)
+}
+
+#' @export
+min.chunk_agg.disk.frame <- function(x, ...) {
+  min(x, ...)
+}
+
+#' @export
+min.collected_agg.disk.frame <- function(listx, ...) {
+  min(unlist(listx), ...)
+}
+
+#' @export
+max.chunk_agg.disk.frame <- function(x, ...) {
+  max(x, ...)
+}
+
+#' @export
+max.collected_agg.disk.frame <- function(listx, ...) {
+  max(unlist(listx), ...)
+}
+
+#' @export
+median.chunk_agg.disk.frame <- function(x, ...) {
+  median(x, ...)
+}
+
+#' @export
+median.collected_agg.disk.frame <- function(listx, ...) {
+  median(unlist(listx), ...)
+}
+
+#' @export
+n.chunk_agg.disk.frame <- function(...) {
+  n()
+}
+
+#' @export
+n.collected_agg.disk.frame <- function(listx, ...) {
+  sum(unlist(listx))
+}
+
+#' @export
+length.chunk_agg.disk.frame <- function(x, ...) {
+  length(x, ...)
+}
+
+#' @export
+length.collected_agg.disk.frame <- function(listx, ...) {
+  length(unlist(listx), ...)
+}
+
+#' @export
+any.chunk_agg.disk.frame <- function(x, ...) {
+  any(x, ...)
+}
+
+#' @export
+any.collected_agg.disk.frame <- function(listx, ...) {
+  any(unlist(listx), ...)
+}
+
+#' @export
+all.chunk_agg.disk.frame <- function(x, ...) {
+  all(x, ...)
+}
+
+#' @export
+all.collected_agg.disk.frame <- function(listx, ...) {
+  all(unlist(listx), ...)
+}
+
+#' @export
+n_distinct.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+  if(na.rm) {
+    setdiff(unique(x), NA)
+  } else {
+    unique(x)
+  }
+}
+
+#' @export
+n_distinct.collected_agg.disk.frame <- function(listx, ...) {
+  n_distinct(unlist(listx))
+}
+
+#' @export
+quantile.chunk_agg.disk.frame <- function(x, ...) {
+  quantile(x, ...)
+}
+
+#' @export
+quantile.collected_agg.disk.frame <- function(listx, ...) {
+  quantile(unlist(listx), ...)
+}
+
+#' @export
+IQR.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+  quantile(x, c(0.25, 0.75), na.rm = na.rm)
+  #100
+}
+
+#' @export
+IQR.collected_agg.disk.frame <- function(listx, ...) {
+  q25 = unlist(listx)[c(TRUE, FALSE)]
+  q75 = unlist(listx)[c(FALSE, TRUE)]
+  quantile(q75, 0.75) - quantile(q25, 0.25)
+}
 
 
 #' A function to parse the summarize function
@@ -63,6 +169,11 @@ summarise.grouped_disk.frame <- function(.data, ...) {
   code = substitute(list(...))[-1]
   expr_id = 0
   temp_varn = 0
+  #browser()
+  
+  list_of_chunk_agg_fns <- as.character(methods(class = "chunk_agg.disk.frame"))
+  list_of_collected_agg_fns <- as.character(methods(class = "collected_agg.disk.frame"))
+  
   # generate the chunk_summarize_code
   summarize_code = purrr::map_dfr(code, ~{
     expr_id <<- expr_id  + 1
@@ -70,30 +181,19 @@ summarise.grouped_disk.frame <- function(.data, ...) {
     gpd = getParseData(parse(text = deparse(.x)), includeText = TRUE); 
     grp_funcs = gpd %>% filter(token == "SYMBOL_FUNCTION_CALL") %>% select(text) %>% pull
     
-    # only allow one such functions
-    stopifnot(length(grp_funcs) == 1)
+    # search in the space to find functions name `fn`.chunk_agg.disk.frame
+    # only allow one such functions for now TODO improve it
+    #stopifnot(sum(paste0(unique(grp_funcs), ".chunk_agg.disk.frame") %in% list_of_chunk_agg_fns) == 1)
+    #stopifnot(sum(paste0(unique(grp_funcs), ".collected_agg.disk.frame") %in% list_of_collected_agg_fns) == 1)
+    stopifnot(sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".chunk_agg.disk.frame")))) == 1)
+    stopifnot(sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".collected_agg.disk.frame")))) == 1)
     
-    # only allow supported functions
-    stopifnot(grp_funcs %in% names(disk.frame_chunk_fns))
     
-    # only allow supported functions
-    stopifnot(grp_funcs %in% names(disk.frame_agg_fns))
     
-    # look up the corresponding chunk function
-    chunk_fns = disk.frame_chunk_fns[[grp_funcs]]
+    temp_varn <<- temp_varn + 1
+    tmpcode = deparse(evalparseglue("substitute({deparse(.x)}, list({grp_funcs} = quote({grp_funcs}.chunk_agg.disk.frame)))")) %>% paste0(collapse = " ")
     
-    if(length(chunk_fns) == 1) {
-      chunk_fns = list(chunk_fns)
-    } 
-      
-    code1 = .x
-    
-    chunk_code = purrr::map_dfr(chunk_fns, ~{
-      chunk_fn = .x
-      temp_varn <<- temp_varn + 1
-      tmpcode = deparse(evalparseglue("substitute({deparse(code1)}, list({grp_funcs} = {chunk_fn}))")) %>% paste0(collapse = " ")
-      data.frame(assign_to = as.character(glue::glue("tmp{temp_varn}")), expr = tmpcode, stringsAsFactors = FALSE)
-    }); chunk_code
+    chunk_code = data.frame(assign_to = as.character(glue::glue("tmp{temp_varn}")), expr = tmpcode, stringsAsFactors = FALSE)
     
     chunk_code$orig_code = deparse(.x)
     chunk_code$expr_id = expr_id
@@ -101,16 +201,13 @@ summarise.grouped_disk.frame <- function(.data, ...) {
     chunk_code$name = ifelse(is.null(names(code[expr_id])), "", names(code[expr_id]))
     
     # create the aggregation code
-    agg_fns = disk.frame_agg_fns[[grp_funcs]]
-    chunk_code$agg_expr = glue::glue("{agg_fns}({paste0(chunk_code$assign_to, collapse=', ')})")
+    chunk_code$agg_expr = glue::glue("{grp_funcs}.collected_agg.disk.frame({paste0(chunk_code$assign_to, collapse=', ')})")
     
     #print(sapply(chunk_code, typeof))
     chunk_code
   })
   
-  #summarize_code
-  
-  chunk_summ_code = paste0(summarize_code$assign_to, "=", summarize_code$expr) %>% paste0(collapse = ", ")
+  chunk_summ_code = paste0(summarize_code$assign_to, "=list(", summarize_code$expr, ")") %>% paste0(collapse = ", ")
   
   agg_code_df = summarize_code %>% 
     select(expr_id, name, agg_expr, orig_code) %>% 
@@ -125,7 +222,7 @@ summarise.grouped_disk.frame <- function(.data, ...) {
   list(group_by_cols = group_by_cols, chunk_summ_code = chunk_summ_code, agg_summ_code = agg_summ_code)
   
   # generate full code
-  code_to_run = glue::glue("chunk_group_by({group_by_cols}) %>% chunk_summarize({chunk_summ_code}) %>% collect() %>% group_by({group_by_cols}) %>% summarize({agg_summ_code})")
+  code_to_run = glue::glue("chunk_group_by({group_by_cols}) %>% chunk_summarize({chunk_summ_code}) %>% collect %>% group_by({group_by_cols}) %>% summarize({agg_summ_code})")
   
   class(.data) <- c("summarized_disk.frame", "disk.frame")
   attr(.data, "summarize_code") = code_to_run
