@@ -2,17 +2,10 @@
 % Please edit documentation in R/two-stage-verbs.R
 \name{summarise.grouped_disk.frame}
 \alias{summarise.grouped_disk.frame}
-\title{#' @export
-quantile.chunk_agg.disk.frame <- function(x, ...) {
-  quantile(x, ...)
-}}
+\title{A function to parse the summarize function}
 \usage{
 \method{summarise}{grouped_disk.frame}(.data, ...)
 }
 \description{
-#' @export
-quantile.collected_agg.disk.frame <- function(listx, ...) {
-  quantile(unlist(listx), ...)
-}
 A function to parse the summarize function
 }
