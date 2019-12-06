@@ -26,14 +26,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-How can I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? Use `{disk.frame}`!
+How do I manipulate tabular data that doesn't fit into Random Access Memory (RAM)? 
+
+Use `{disk.frame}`!
 
 In a nutshell, `{disk.frame}` makes use of two simple ideas
 
 1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 
 2) provide a convenient API to manipulate these chunks
 
-`{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data* that require distributing processing over many computers to be effective.
+`{disk.frame}` performs a similar role to distributed systems such as Apache Spark, Python's Dask, and Julia's JuliaDB.jl for *medium data* which are datasets that are too large for RAM but not quite large enough to qualify as *big data*. 
 
 ## Installation
 
@@ -139,35 +141,20 @@ options(future.globals.maxSize = Inf)
 flights.df <- as.disk.frame(nycflights13::flights)
 ```
 
-To find out where the disk.frame is stored on disk:
-```{r, dependson='setup'}
-# where is the disk.frame stored
-attr(flights.df, "path")
-```
-
-A number of data.frame functions are implemented for disk.frame
-
-```{r, dependson='setup'}
-# get first few rows
-head(flights.df)
-```
-
-```{r, dependson='setup'}
-# get last few rows
-tail(flights.df)
-```
-
-```{r, dependson='setup'}
-# number of rows
-nrow(flights.df)
-```
-
-```{r, dependson='setup'}
-# number of columns
-ncol(flights.df)
-```
-
 ## Example: dplyr verbs
+
+### dplyr verbs
+
+{disk.frame} aims to support as many dplyr verbs as possible. For example
+
+```{r, dependson='setup'}
+flights.df %>% 
+  filter(year == 2013) %>% 
+  mutate(origin_dest = paste0(origin, dest)) %>% 
+  head(2)
+```
+
+
 
 ### Group by
 Starting from {disk.frame} v0.2.2, there is for support `group_by` for a limited set of functions. For example:
@@ -213,59 +200,6 @@ If a function you like is missing, please make a feature request [here](https://
 | `IQR` | Estimate |  |
 
 
-### Two-Stage Group by
-Given the list of group-by functions is limited, so {disk.frame} supports a two-stage style grouping, enable maximum flexibility. The key is understand that `chunk_group_by` performs `group-by` within each chunk.
-
-```{r flights_df, dependson='setup', cache=TRUE}
-flights.df = as.disk.frame(nycflights13::flights)
-
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
-  collect
-```
-
-This is two-stage group-by in action
-```{r, dependson='flights_df'}
-# need a 2nd stage to finalise summing
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
-  collect %>% 
-  group_by(year) %>% 
-  summarise(sum_dist = sum(sum_dist))
-```
-
-You can mix group-by with other dplyr verbs as below, here is an example of using `filter`. 
-
-```{r, dependson='flights_df'}
-# filter
-pt = proc.time()
-df_filtered <-
-  flights.df %>% 
-  filter(month == 1)
-cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-nrow(df_filtered)
-```
-
-### Hard group by
-Another way to perform a one-stage `group_by` is to perform a `hard_group_by` on a `disk.frame. This will rechunk the `disk.frame` by the by columns. This is **not** recommended for performance reasons, as it can quite slow to rechunk the chunks on disk.
-```{r}
-pt = proc.time()
-res1 <- flights.df %>% 
-  srckeep(c("month", "dep_delay")) %>% 
-  filter(month <= 6) %>% 
-  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
-  collect
-cat("group by took: ", data.table::timetaken(pt), "\n")
-
-collect(res1)
-```
-
 ## Example: data.table syntax
 ```{r}
 library(data.table)
@@ -287,6 +221,36 @@ The result `grp_by_stage1` is a `data.table` so we can finish off the two-stage 
 grp_by_stage2 = grp_by_stage1[,.(sum_dist = sum(sum_dist)), qtr]
 
 grp_by_stage2
+```
+
+## Basic info
+
+To find out where the disk.frame is stored on disk:
+```{r, dependson='setup'}
+# where is the disk.frame stored
+attr(flights.df, "path")
+```
+
+A number of data.frame functions are implemented for disk.frame
+
+```{r, dependson='setup'}
+# get first few rows
+head(flights.df, 1)
+```
+
+```{r, dependson='setup'}
+# get last few rows
+tail(flights.df, 1)
+```
+
+```{r, dependson='setup'}
+# number of rows
+nrow(flights.df)
+```
+
+```{r, dependson='setup'}
+# number of columns
+ncol(flights.df)
 ```
 
 ## Hex logo

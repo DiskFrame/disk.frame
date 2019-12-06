@@ -19,8 +19,10 @@ like disk.frame. It keeps me going.</summary>
 
 # Introduction
 
-How can I manipulate structured tabular data that doesn’t fit into
-Random Access Memory (RAM)? Use `{disk.frame}`\!
+How do I manipulate tabular data that doesn’t fit into Random Access
+Memory (RAM)?
+
+Use `{disk.frame}`\!
 
 In a nutshell, `{disk.frame}` makes use of two simple ideas
 
@@ -31,8 +33,7 @@ In a nutshell, `{disk.frame}` makes use of two simple ideas
 `{disk.frame}` performs a similar role to distributed systems such as
 Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for *medium data*
 which are datasets that are too large for RAM but not quite large enough
-to qualify as *big data* that require distributing processing over many
-computers to be effective.
+to qualify as *big data*.
 
 ## Installation
 
@@ -207,81 +208,28 @@ options(future.globals.maxSize = Inf)
 flights.df <- as.disk.frame(nycflights13::flights)
 ```
 
-To find out where the disk.frame is stored on disk:
-
-``` r
-# where is the disk.frame stored
-attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpwBzatZ\\file51946dd3703e.df"
-```
-
-A number of data.frame functions are implemented for disk.frame
-
-``` r
-# get first few rows
-head(flights.df)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#> 1: 2013     1   1      517            515         2      830            819
-#> 2: 2013     1   1      533            529         4      850            830
-#> 3: 2013     1   1      542            540         2      923            850
-#> 4: 2013     1   1      544            545        -1     1004           1022
-#> 5: 2013     1   1      554            600        -6      812            837
-#> 6: 2013     1   1      554            558        -4      740            728
-#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
-#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
-#> 2:        20      UA   1714  N24211    LGA  IAH      227     1416    5     29
-#> 3:        33      AA   1141  N619AA    JFK  MIA      160     1089    5     40
-#> 4:       -18      B6    725  N804JB    JFK  BQN      183     1576    5     45
-#> 5:       -25      DL    461  N668DN    LGA  ATL      116      762    6      0
-#> 6:        12      UA   1696  N39463    EWR  ORD      150      719    5     58
-#>              time_hour
-#> 1: 2013-01-01 05:00:00
-#> 2: 2013-01-01 05:00:00
-#> 3: 2013-01-01 05:00:00
-#> 4: 2013-01-01 05:00:00
-#> 5: 2013-01-01 06:00:00
-#> 6: 2013-01-01 05:00:00
-```
-
-``` r
-# get last few rows
-tail(flights.df)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#> 1: 2013     9  30       NA           1842        NA       NA           2019
-#> 2: 2013     9  30       NA           1455        NA       NA           1634
-#> 3: 2013     9  30       NA           2200        NA       NA           2312
-#> 4: 2013     9  30       NA           1210        NA       NA           1330
-#> 5: 2013     9  30       NA           1159        NA       NA           1344
-#> 6: 2013     9  30       NA            840        NA       NA           1020
-#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
-#> 1:        NA      EV   5274  N740EV    LGA  BNA       NA      764   18     42
-#> 2:        NA      9E   3393    <NA>    JFK  DCA       NA      213   14     55
-#> 3:        NA      9E   3525    <NA>    LGA  SYR       NA      198   22      0
-#> 4:        NA      MQ   3461  N535MQ    LGA  BNA       NA      764   12     10
-#> 5:        NA      MQ   3572  N511MQ    LGA  CLE       NA      419   11     59
-#> 6:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40
-#>              time_hour
-#> 1: 2013-09-30 18:00:00
-#> 2: 2013-09-30 14:00:00
-#> 3: 2013-09-30 22:00:00
-#> 4: 2013-09-30 12:00:00
-#> 5: 2013-09-30 11:00:00
-#> 6: 2013-09-30 08:00:00
-```
-
-``` r
-# number of rows
-nrow(flights.df)
-#> [1] 336776
-```
-
-``` r
-# number of columns
-ncol(flights.df)
-#> [1] 19
-```
-
 ## Example: dplyr verbs
+
+### dplyr verbs
+
+{disk.frame} aims to support as many dplyr verbs as possible. For
+example
+
+``` r
+flights.df %>% 
+  filter(year == 2013) %>% 
+  mutate(origin_dest = paste0(origin, dest)) %>% 
+  head(2)
+#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1 2013     1   1      517            515         2      830            819
+#> 2 2013     1   1      533            529         4      850            830
+#>   arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#> 2        20      UA   1714  N24211    LGA  IAH      227     1416    5     29
+#>             time_hour origin_dest
+#> 1 2013-01-01 05:00:00      EWRIAH
+#> 2 2013-01-01 05:00:00      LGAIAH
+```
 
 ### Group by
 
@@ -333,98 +281,6 @@ obtained using estimated methods.
 | `quantile`   | Estimate       | One quantile only                          |
 | `IQR`        | Estimate       |                                            |
 
-### Two-Stage Group by
-
-Given the list of group-by functions is limited, so {disk.frame}
-supports a two-stage style grouping, enable maximum flexibility. The key
-is understand that `chunk_group_by` performs `group-by` within each
-chunk.
-
-``` r
-flights.df = as.disk.frame(nycflights13::flights)
-
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
-  collect
-#> # A tibble: 6 x 2
-#>    year sum_dist
-#>   <int>    <dbl>
-#> 1  2013 57446059
-#> 2  2013 59302212
-#> 3  2013 56585094
-#> 4  2013 58476357
-#> 5  2013 59407019
-#> 6  2013 59000866
-```
-
-This is two-stage group-by in action
-
-``` r
-# need a 2nd stage to finalise summing
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
-  collect %>% 
-  group_by(year) %>% 
-  summarise(sum_dist = sum(sum_dist))
-#> # A tibble: 1 x 2
-#>    year  sum_dist
-#>   <int>     <dbl>
-#> 1  2013 350217607
-```
-
-You can mix group-by with other dplyr verbs as below, here is an example
-of using `filter`.
-
-``` r
-# filter
-pt = proc.time()
-df_filtered <-
-  flights.df %>% 
-  filter(month == 1)
-cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.000s elapsed (0.000s cpu)
-nrow(df_filtered)
-#> [1] 336776
-```
-
-### Hard group by
-
-Another way to perform a one-stage `group_by` is to perform a
-`hard_group_by` on a `disk.frame. This will rechunk the`disk.frame\` by
-the by columns. This is **not** recommended for performance reasons, as
-it can quite slow to rechunk the chunks on disk.
-
-``` r
-pt = proc.time()
-res1 <- flights.df %>% 
-  srckeep(c("month", "dep_delay")) %>% 
-  filter(month <= 6) %>% 
-  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
-  collect
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Appending disk.frames:
-cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.760s elapsed (0.340s cpu)
-
-collect(res1)
-#> # A tibble: 2 x 2
-#>   qtr   avg_delay
-#>   <chr>     <dbl>
-#> 1 Q1         11.4
-#> 2 Q2         15.9
-```
-
 ## Example: data.table syntax
 
 ``` r
@@ -466,6 +322,52 @@ grp_by_stage2
 #>    qtr sum_dist
 #> 1:  Q1 81343950
 #> 2:  Q2 89257810
+```
+
+## Basic info
+
+To find out where the disk.frame is stored on disk:
+
+``` r
+# where is the disk.frame stored
+attr(flights.df, "path")
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpID2CgC\\file1ac07c36620c.df"
+```
+
+A number of data.frame functions are implemented for disk.frame
+
+``` r
+# get first few rows
+head(flights.df, 1)
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     1   1      517            515         2      830            819
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#>              time_hour
+#> 1: 2013-01-01 05:00:00
+```
+
+``` r
+# get last few rows
+tail(flights.df, 1)
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     9  30       NA            840        NA       NA           1020
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40
+#>              time_hour
+#> 1: 2013-09-30 08:00:00
+```
+
+``` r
+# number of rows
+nrow(flights.df)
+#> [1] 336776
+```
+
+``` r
+# number of columns
+ncol(flights.df)
+#> [1] 19
 ```
 
 ## Hex logo
