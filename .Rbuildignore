@@ -62,3 +62,4 @@ utils$
 ^pkgdown$
 ^report_files$
 ^appveyor\.yml$
+^\.httr-oauth$

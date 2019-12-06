@@ -20,7 +20,7 @@
 #'
 #' # recommend nchunks based on file size ONLY CSV is implemented at the moment
 #' recommend_nchunks(1024^3)
-recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCores(logical = FALSE), conservatism = 2, ram_size = df_ram_size()) {
+recommend_nchunks <- function(df, type = "csv", minchunks = data.table::getDTthreads(), conservatism = 8, ram_size = df_ram_size()) {
   
   dfsize = 0
   if ("data.frame" %in% class(df)) {
@@ -35,13 +35,13 @@ recommend_nchunks <- function(df, type = "csv", minchunks = parallel::detectCore
     dfsize = df/1024/1024/1024
   }
 
-  ram_size = df_ram_size()
+  # ram_size = df_ram_size()
     
   # the number physical cores not counting hyper threaded ones as 2; they are counted as 1
-  nc = parallel::detectCores(logical = FALSE)
+  nc = data.table::getDTthreads() #parallel::detectCores(logical = FALSE)
   
   
-  max(round(dfsize/ram_size*nc)*nc*conservatism, minchunks)
+  max(round(dfsize/ram_size*conservatism)*nc, minchunks)
 }
 
 
