@@ -15,7 +15,6 @@
 \alias{lazy}
 \alias{lazy.disk.frame}
 \alias{delayed}
-\alias{delayed.disk.frame}
 \alias{chunk_lapply}
 \title{Apply the same function to all chunks}
 \usage{
@@ -68,8 +67,6 @@ lazy(.x, .f, ...)
 \method{lazy}{disk.frame}(.x, .f, ...)
 
 delayed(.x, .f, ...)
-
-\method{delayed}{disk.frame}(.x, .f, ...)
 
 chunk_lapply(...)
 }

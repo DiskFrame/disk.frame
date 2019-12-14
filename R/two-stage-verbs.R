@@ -163,7 +163,7 @@ IQR.collected_agg.disk.frame <- function(listx, ...) {
 
 #' A function to parse the summarize function
 #' @importFrom dplyr filter select pull
-#' @imporFrom purr map_dfr
+#' @importFrom purrr map_dfr
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
   code = substitute(list(...))[-1]
