@@ -22,6 +22,7 @@ df_build_site <- function() {
   pkgdown::build_site()
 }
 
+# setup vignette but does not build
 df_setup_vignette <- function(excl = "") {
   # remove cache
   purrr::walk(list.dirs("vignettes/",recursive = FALSE), ~{
