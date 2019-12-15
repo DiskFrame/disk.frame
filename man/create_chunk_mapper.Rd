@@ -7,11 +7,11 @@
 create_chunk_mapper(chunk_fn, warning_msg = NULL, as.data.frame = TRUE)
 }
 \arguments{
+\item{chunk_fn}{The dplyr function to create a mapper for}
+
 \item{warning_msg}{The warning message to display when invoking the mapper}
 
 \item{as.data.frame}{force the input chunk of a data.frame; needed for dtplyr}
-
-\item{fn}{The dplyr function to create a mapper for}
 }
 \description{
 A function to make it easier to create functions like \code{filter}
