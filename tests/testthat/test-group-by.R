@@ -11,10 +11,10 @@ test_that("new group_by framework", {
     iris.df = iris %>% 
       as.disk.frame
     
-    grpby = expect_warning(iris.df %>% 
-                             group_by(Species) %>% 
-                             summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
-                             collect)
+    grpby = iris.df %>% 
+        group_by(Species) %>% 
+        summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
+        collect
     
     grpby2 = iris %>% 
       group_by(Species) %>% 
@@ -25,6 +25,65 @@ test_that("new group_by framework", {
       expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
     }
     
+    delete(iris.df)
+  }
+  expect_true(TRUE)
+})
+
+test_that("new group_by framework - no group-by just summarise", {
+  if(interactive()) {
+    iris.df = iris %>% 
+      as.disk.frame
+    
+    grpby = iris.df %>% 
+      summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
+      collect
+    
+    grpby2 = iris %>% 
+      summarize(mean(Petal.Length), sumx = sum(Petal.Length/Sepal.Width), sd(Sepal.Width/ Petal.Length), var(Sepal.Width/ Sepal.Width)) %>% 
+      arrange()
+    
+    for (n in names(grpby)) {
+      expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
+    }
+    
+    delete(iris.df)
+  }
+  expect_true(TRUE)
+})
+
+test_that("new group_by framework - nested-group-by", {
+  if(interactive()) {
+    iris.df = iris %>% 
+      as.disk.frame
+    
+    expect_warning(expect_error(grpby <- iris.df %>% 
+      summarize(mean(Petal.Length + max(Petal.Length))) %>% 
+      collect))
+    
+    expect_warning(expect_error(grpby <- iris.df %>% 
+      summarize(mean(Petal.Length) + max(Petal.Length)) %>% 
+      collect))
+    
+    expect_warning(expect_error(grpby <- iris.df %>% 
+      summarize(mean(Petal.Length) + 1) %>% 
+      collect))
+    
+    expect_warning(expect_error(grpby <- iris.df %>% 
+      summarize(list(mean(Petal.Length))) %>% 
+      collect))
+    
+    fn_tmp = function(x) x + 1
+    expect_warning(grpby <- iris.df %>% 
+        summarize(mean(fn_tmp(Petal.Length))) %>% 
+        collect)
+    
+    grpby2 <- iris %>% 
+      summarize(mean(fn_tmp(Petal.Length)))
+    
+    for (n in names(grpby)) {
+      expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
+    }
     delete(iris.df)
   }
   expect_true(TRUE)

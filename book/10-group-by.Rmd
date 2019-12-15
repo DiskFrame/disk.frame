@@ -133,7 +133,8 @@ Typically, `chunk_group_by` is performed WITHIN each chunk. This is not an issue
 
 By forcing the user to choose `chunk_group_by` (within each chunk) and `hard_group_by` (across all chunks), this ensures that the user is conscious of the choice they are making. In `sparklyr` the equivalent of a `hard_group_by` is performed, which we should avoid, where possible, as it is time-consuming and expensive. Hence, `disk.frame` has chosen to explain the theory and allow the user to make a conscious choice when performing `group_by`.
 
-```{r, dependson='asdiskframe'}
+```r
+suppressMessages(library(disk.frame))
 flights.df %>%
   hard_group_by(carrier) %>% # notice that hard_group_by needs to be set
   chunk_summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
@@ -147,7 +148,7 @@ Prior to `{disk.frame}` v0.2.2, there is no general support for one-stage group-
 
 For most group-by tasks, the user can achieve the desired result WITHOUT using `hard = TRUE` by performing the group by in two stages. For example, suppose you aim to count the number of rows group by `carrier`, you can set `hard = F` to find the count within each chunk and then use a second group-by to summaries each chunk's results into the desired result. For example,
 
-```{r, dependson='asdiskframe'}
+```r
 flights.df %>%
   chunk_group_by(carrier) %>% # `chunk_group_by` aggregates within each chunk
   chunk_summarize(count = n()) %>%  # mean follows normal R rules
@@ -161,12 +162,12 @@ Because this two-stage approach avoids the expensive `hard group_by` operation, 
 
 *Note*: this two-stage approach is similar to a map-reduce operation.
 
-```{r setup, cache=TRUE}
+```r
 suppressPackageStartupMessages(library(disk.frame))
 setup_disk.frame()
 ```
 
-```{r flights_df, dependson='setup', cache=TRUE}
+```r
 flights.df = as.disk.frame(nycflights13::flights)
 
 flights.df %>%
@@ -177,7 +178,7 @@ flights.df %>%
 ```
 
 This is two-stage group-by in action
-```{r, dependson='flights_df'}
+```r
 # need a 2nd stage to finalise summing
 flights.df %>%
   srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
@@ -190,7 +191,7 @@ flights.df %>%
 
 You can mix group-by with other dplyr verbs as below, here is an example of using `filter`. 
 
-```{r, dependson='flights_df'}
+```r
 # filter
 pt = proc.time()
 df_filtered <-
@@ -203,7 +204,7 @@ nrow(df_filtered)
 ## Hard group-by
 
 Another way to perform a one-stage `group_by` is to perform a `hard_group_by` on a `disk.frame`. This will rechunk the `disk.frame` by the by-columns. This is **not** recommended for performance reasons, as it can be quite slow to rechunk the file chunks on disk.
-```{r}
+```r
 pt = proc.time()
 res1 <- flights.df %>% 
   srckeep(c("month", "dep_delay")) %>% 
