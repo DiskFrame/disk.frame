@@ -164,7 +164,6 @@ map_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill =
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
-#' @rdname map
 imap <- function(.x, .f, ...) {
   UseMethod("imap")
 }
@@ -269,7 +268,6 @@ delayed <- function(.x, .f, ...) {
 }
 
 #' @export
-#' @rdname map
 delayed.disk.frame <- function(.x, .f, ...) {
   map.disk.frame(.x, .f, ..., lazy = TRUE)
 }

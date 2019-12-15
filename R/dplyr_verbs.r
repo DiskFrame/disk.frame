@@ -129,22 +129,6 @@ chunk_summarise <- create_chunk_mapper(dplyr::summarise)
 
 
 #' @export
-#' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
-summarize.disk.frame <- function(...) {
-  # comment summarize.grouped_disk.frame
-  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
-}
-
-
-
-#' @export
-#' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
-summarise.disk.frame <- summarize.disk.frame
-
-
-#' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr do
 do.disk.frame <- create_chunk_mapper(dplyr::do)
@@ -289,12 +273,6 @@ groups.disk.frame <- function(x){
 #' @param .data a disk.frame
 #' @param ... same as the dplyr::group_by
 #' @export
-#' @rdname group_by
-group_by.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
-}
-
-
 #' @rdname group_by
 #' @export
 chunk_group_by <- create_chunk_mapper(dplyr::group_by)
