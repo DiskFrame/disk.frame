@@ -51,8 +51,8 @@ Suggests:
     speedglm,
     broom,
     learnr,
-    ggplot2, 
-    tidyfast (>= 0.1.8)
+    ggplot2,
+    maditr (>= 0.6.3)
 LinkingTo: 
     Rcpp
 RoxygenNote: 7.0.2
