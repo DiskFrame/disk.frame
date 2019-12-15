@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -90,10 +90,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -185,6 +188,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="chunk_group_by.html">chunk_summarize()</a></code> <code><a href="chunk_group_by.html">chunk_summarise()</a></code> <code><a href="chunk_group_by.html">chunk_group_by()</a></code> <code><a href="chunk_group_by.html">chunk_ungroup()</a></code> </p>
+        </td>
+        <td><p>Group by within each disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> <code><a href="collect.html">collect(<i>&lt;summarized_disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Bring the disk.frame into R</p></td>
@@ -245,7 +254,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise()</a></code> <code><a href="dplyr_verbs.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">do(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">group_by_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">group_by_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">group_by_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_if()</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">do(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_if()</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>The dplyr verbs implemented for disk.frame</p></td>
       </tr><tr>
@@ -287,9 +296,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">chunk_group_by()</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="group_by.html">summarise(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Group by within each disk.frame</p></td>
+        <td><p>A function to parse the summarize function</p></td>
       </tr><tr>
         
         <td>
@@ -341,18 +350,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="mean.chunk_agg.disk.frame.html">mean(<i>&lt;chunk_agg.disk.frame&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>mean chunk_agg</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mean.collected_agg.disk.frame.html">mean(<i>&lt;collected_agg.disk.frame&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>mean collected_agg</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="merge.disk.frame.html">merge(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Merge function for disk.frames</p></td>
@@ -374,6 +371,12 @@
           <p><code><a href="ncol_nrow.html">nrow()</a></code> <code><a href="ncol_nrow.html">ncol()</a></code> </p>
         </td>
         <td><p>Number of rows or columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="one-stage-group-by-verbs.html">var_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">var_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sd_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sd_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">mean_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">mean_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sum_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sum_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">min_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">min_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">max_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">max_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">median_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">median_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">length_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">length_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">any_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">any_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">all_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">all_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_distinct_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_distinct_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">quantile_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">quantile_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">IQR_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">IQR_df.collected_agg.disk.frame()</a></code> </p>
+        </td>
+        <td><p>One Stage function</p></td>
       </tr><tr>
         
         <td>
@@ -458,12 +461,6 @@
           <p><code><a href="sub-.disk.frame.html">`[`(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>[ interface for disk.frame using fst backend</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise.grouped_disk.frame.html">summarise(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>A function to parse the summarize function</p></td>
       </tr><tr>
         
         <td>

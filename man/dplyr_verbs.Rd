@@ -15,14 +15,10 @@
 \alias{count.disk.frame}
 \alias{add_count.disk.frame}
 \alias{add_tally.disk.frame}
-\alias{chunk_summarize}
-\alias{chunk_summarise}
-\alias{summarize.disk.frame}
-\alias{summarise.disk.frame}
 \alias{do.disk.frame}
-\alias{group_by_all.disk.frame}
-\alias{group_by_at.disk.frame}
-\alias{group_by_if.disk.frame}
+\alias{chunk_group_by_all.disk.frame}
+\alias{chunk_group_by_at.disk.frame}
+\alias{chunk_group_by_if.disk.frame}
 \alias{mutate_all.disk.frame}
 \alias{mutate_at.disk.frame}
 \alias{mutate_if.disk.frame}
@@ -70,21 +66,13 @@ add_count.disk.frame(.data, ...)
 
 add_tally.disk.frame(.data, ...)
 
-chunk_summarize(.data, ...)
-
-chunk_summarise(.data, ...)
-
-\method{summarize}{disk.frame}(...)
-
-\method{summarise}{disk.frame}(...)
-
 \method{do}{disk.frame}(.data, ...)
 
-group_by_all.disk.frame(.data, ...)
+chunk_group_by_all.disk.frame(.data, ...)
 
-group_by_at.disk.frame(.data, ...)
+chunk_group_by_at.disk.frame(.data, ...)
 
-group_by_if.disk.frame(.data, ...)
+chunk_group_by_if.disk.frame(.data, ...)
 
 mutate_all.disk.frame(.data, ...)
 
@@ -107,8 +95,6 @@ select_if.disk.frame(.data, ...)
 chunk_summarise_all(.data, ...)
 
 chunk_summarise_at(.data, ...)
-
-chunk_summarize(.data, ...)
 
 chunk_summarize_all(.data, ...)
 

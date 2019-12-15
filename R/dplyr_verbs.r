@@ -33,7 +33,9 @@ select.disk.frame <- function(.data, ...) {
 
 #' Kept for backwards-compatibility to be removed in 0.3
 #' @export
-create_dplyr_mapper = create_chunk_mapper
+create_dplyr_mapper = function() {
+  stop("create_dplyr_mapper has been deprecated. Please use create_chunk_mapper instead")
+}
 
 #' @export
 #' @rdname dplyr_verbs
@@ -118,30 +120,14 @@ add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
 
 #' @export
 #' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
+#' @rdname chunk_group_by
 chunk_summarize <- create_chunk_mapper(dplyr::summarize)
 
 
 #' @export
 #' @importFrom dplyr summarise
-#' @rdname dplyr_verbs
+#' @rdname chunk_group_by
 chunk_summarise <- create_chunk_mapper(dplyr::summarise)
-
-
-#' @export
-#' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
-summarize.disk.frame <- function(...) {
-  # comment summarize.grouped_disk.frame
-  stop("`summarize.disk.frame` has been removed. Please use `chunk_summarize` instead. This is in preparation for a more powerful `group_by` framework")
-}
-
-
-
-#' @export
-#' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
-summarise.disk.frame <- summarize.disk.frame
 
 
 #' @export
@@ -153,19 +139,19 @@ do.disk.frame <- create_chunk_mapper(dplyr::do)
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_all
-group_by_all.disk.frame <- create_chunk_mapper(dplyr::group_by_all)
+chunk_group_by_all.disk.frame <- create_chunk_mapper(dplyr::group_by_all)
 
 
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_at
-group_by_at.disk.frame <- create_chunk_mapper(dplyr::group_by_at)
+chunk_group_by_at.disk.frame <- create_chunk_mapper(dplyr::group_by_at)
 
 
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_if
-group_by_if.disk.frame <- create_chunk_mapper(dplyr::group_by_if)
+chunk_group_by_if.disk.frame <- create_chunk_mapper(dplyr::group_by_if)
 
 
 #' @export
@@ -236,12 +222,6 @@ chunk_summarise_at <- create_chunk_mapper(dplyr::summarise_at)
 
 #' @export
 #' @rdname dplyr_verbs
-#' @importFrom dplyr summarize
-chunk_summarize <- create_chunk_mapper(dplyr::summarize)
-
-
-#' @export
-#' @rdname dplyr_verbs
 #' @importFrom dplyr summarize_all
 chunk_summarize_all <- create_chunk_mapper(dplyr::summarize_all)
 
@@ -285,20 +265,15 @@ groups.disk.frame <- function(x){
 #' often used for performance reasons. If the user wishes to perform group-by,
 #' they may choose to use the `hard_group_by` function which is expensive as it
 #' reorganizes the chunks by the shard key.
-#' @seealso hard_group_by
+#' @seealso hard_group_by group_by
 #' @param .data a disk.frame
-#' @param ... same as the dplyr::group_by
+#' @param ... passed to dplyr::group_by
 #' @export
-#' @rdname group_by
-group_by.disk.frame <- function(...) {
-  stop("`arrange.disk.frame` has been removed. Please use `chunk_arrange` instead. This is preparation for a more powerful `group_by` framework")
-}
-
-
-#' @rdname group_by
+#' @rdname chunk_group_by
 #' @export
 chunk_group_by <- create_chunk_mapper(dplyr::group_by)
 
+#' @rdname chunk_group_by
 #' @export
 chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 

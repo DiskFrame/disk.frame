@@ -28,7 +28,7 @@
 #' #' clean up
 #' delete(mtcars.df)
 #' 
-#' @param fn The dplyr function to create a mapper for
+#' @param chunk_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
 #' @param as.data.frame force the input chunk of a data.frame; needed for dtplyr
 #' @importFrom rlang enquos quo

@@ -11,11 +11,13 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  include = TRUE,
+  eval =FALSE
 )
 ```
 
-## Intro
+# Intro - Benchmark 1
 
 This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.
 
@@ -53,7 +55,7 @@ library(ggplot2)
 ggplot(df) +
   geom_bar(aes(x = tool, weight = timing), stat = "count") + 
   ylab("seconds") +
-  ggtitle("Count(*) gorup-by timings")
+  ggtitle("Count(*) group-by timings")
 ```
 
 ## Data 
@@ -110,19 +112,17 @@ We can inspect the result as well.
 summ
 ```
 
-Another way to perform the analysis is to use `dplyr` syntax to perform a two-stage "group-by" which is:
+Another way to perform the analysis is to use `dplyr` syntax to perform group-by in _one-stage_ which is:
 
-```r
-df1 %>% 
+```{r, dependson='convert'}
+system.time(df1 %>% 
   srckeep("V1") %>% 
-  chunk_group_by(V1) %>% 
-  chunk_summarise(N = n()) %>% 
-  collect %>% 
   group_by(V1) %>% 
-  summarise(N = sum(N)) %>% 
+  summarise(N = n()) %>% 
+  collect)
 ```
 
-However, the `dplyr` syntax tends to be slightly slower than using data.table syntax.
+However, the `dplyr` syntax tends to be slightly slower than using data.table syntax. This may be improved as much of the overhead is due to inefficient use of NSE.
 
 
 #### Dask

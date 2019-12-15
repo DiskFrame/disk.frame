@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group by within each disk.frame — group_by.disk.frame • disk.frame</title>
+<title>A function to parse the summarize function — summarise.grouped_disk.frame • disk.frame</title>
 
 
 <!-- jquery -->
@@ -35,12 +35,8 @@
 
 
 
-<meta property="og:title" content="Group by within each disk.frame — group_by.disk.frame" />
+<meta property="og:title" content="A function to parse the summarize function — summarise.grouped_disk.frame" />
 <meta property="og:description" content="The disk.frame group by operation perform group WITHIN each chunk. This is
-often used for performance reasons. If the user wishes to perform group-by,
-they may choose to use the `hard_group_by` function which is expensive as it
-reorganizes the chunks by the shard key.
-The disk.frame group by operation perform group WITHIN each chunk. This is
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key." />
@@ -76,7 +72,7 @@ reorganizes the chunks by the shard key." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -99,10 +95,13 @@ reorganizes the chunks by the shard key." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -149,7 +148,7 @@ reorganizes the chunks by the shard key." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Group by within each disk.frame</h1>
+    <h1>A function to parse the summarize function</h1>
     
     <div class="hidden name"><code>group_by.Rd</code></div>
     </div>
@@ -159,19 +158,22 @@ reorganizes the chunks by the shard key." />
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key.</p>
-<p>The disk.frame group by operation perform group WITHIN each chunk. This is
-often used for performance reasons. If the user wishes to perform group-by,
-they may choose to use the `hard_group_by` function which is expensive as it
-reorganizes the chunks by the shard key.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fu'>group_by_drop_default</span>(<span class='no'>.data</span>))
+    <pre class="usage"><span class='co'># S3 method for grouped_disk.frame</span>
+<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>chunk_group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for grouped_disk.frame</span>
+<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fu'>group_by_drop_default</span>(<span class='no'>.data</span>))</pre>
+<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by_drop_default.html'>group_by_drop_default</a></span>(<span class='no'>.data</span>))
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,12 +186,19 @@ reorganizes the chunks by the shard key.</p>
       <th>...</th>
       <td><p>same as the dplyr::group_by</p></td>
     </tr>
+    <tr>
+      <th>add</th>
+      <td><p>from dplyr</p></td>
+    </tr>
+    <tr>
+      <th>.drop</th>
+      <td><p>from dplyr</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>hard_group_by</p>
-<p>hard_group_by</p></div>
+    <div class='dont-index'><p>hard_group_by</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

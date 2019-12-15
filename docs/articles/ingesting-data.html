@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -54,10 +54,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -113,7 +116,11 @@
 
     
     
-<p>Let’s set-up <code>disk.frame</code></p>
+<div id="ingesting-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ingesting-data" class="anchor"></a>Ingesting Data</h1>
+<p>One of the most important tasks to perform before using the <code>{disk.frame}</code> package is to make some <code>disk.frame</code>s! There are a few functions to help you do that. Before we do that, we set up the <code>{disk.frame}</code> as usual</p>
+<p><strong>Setting up</strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb1-2" title="2"></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="co"># set-up disk.frame to use multiple workers</span></a>
@@ -125,12 +132,11 @@
 <a class="sourceLine" id="cb1-9" title="9">} <span class="cf">else</span> {</a>
 <a class="sourceLine" id="cb1-10" title="10">  <span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb1-11" title="11">}</a></code></pre></div>
-<p>One of the most important tasks to perform before using the <code>disk.frame</code> package is to make some <code>disk.frame</code>s! There are a few functions to help you do that.</p>
 <div id="convert-a-data-frame-to-disk-frame" class="section level2">
 <h2 class="hasAnchor">
 <a href="#convert-a-data-frame-to-disk-frame" class="anchor"></a>Convert a <code>data.frame</code> to <code>disk.frame</code>
 </h2>
-<p>Firstly there is <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
+<p>Firstly, there is <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">flights.df =<span class="st"> </span><span class="kw"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span>(nycflights13<span class="op">::</span>flights)</a></code></pre></div>
 <p>will convert the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">nycflights13::flights</a></code> <code>data.frame</code> to a <code>disk.frame</code> somewhere in <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code>. To find out the location of the <code>disk.frame</code> use:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</a></code></pre></div>
@@ -231,6 +237,7 @@
 <a href="#exploiting-the-structure-of-a-disk-frame" class="anchor"></a>Exploiting the structure of a disk.frame</h2>
 <p>Of course, a <code>disk.frame</code> is just a folder with many <code>fst</code> files named as <code>1.fst</code>, <code>2.fst</code> etc. So one can simply create these <code>fst</code> files and ensure they have the same variable names and put them in a folder.</p>
 </div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -239,6 +246,8 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+<li>
+<a href="#ingesting-data">Ingesting Data</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#convert-a-data-frame-to-disk-frame">Convert a <code>data.frame</code> to <code>disk.frame</code></a></li>
       <li><a href="#creating-disk-frame-from-csvs">Creating <code>disk.frame</code> from CSVs</a></li>
       <li><a href="#multiple-csv-files">Multiple CSV files</a></li>
@@ -248,6 +257,8 @@
       <li><a href="#reading-csvs-from-zip-files">Reading CSVs from zip files</a></li>
       <li><a href="#using-add_chunk">Using <code>add_chunk</code></a></li>
       <li><a href="#exploiting-the-structure-of-a-disk-frame">Exploiting the structure of a disk.frame</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

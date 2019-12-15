@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   concepts: concepts.html
   convenience-features: convenience-features.html
+  custom-group-by: custom-group-by.html
   data-table-syntax: data-table-syntax.html
   glm: glm.html
   group-by: group-by.html

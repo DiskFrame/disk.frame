@@ -4,7 +4,7 @@
 \alias{create_dplyr_mapper}
 \title{Kept for backwards-compatibility to be removed in 0.3}
 \usage{
-create_dplyr_mapper(chunk_fn, warning_msg = NULL, as.data.frame = TRUE)
+create_dplyr_mapper()
 }
 \description{
 Kept for backwards-compatibility to be removed in 0.3

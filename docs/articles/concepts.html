@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Key disk.frame concepts • disk.frame</title>
+<title>Key `{disk.frame}` concepts • disk.frame</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Key disk.frame concepts">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Key `{disk.frame}` concepts">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -54,10 +54,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
@@ -102,7 +105,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Key disk.frame concepts</h1>
+      <h1>Key <code>{disk.frame}</code> concepts</h1>
                         <h4 class="author">ZJ</h4>
             
       
@@ -113,17 +116,20 @@
 
     
     
+<div id="key-disk-frame-concepts" class="section level1">
+<h1 class="hasAnchor">
+<a href="#key-disk-frame-concepts" class="anchor"></a>Key <code>{disk.frame}</code> concepts</h1>
 <p>There are a number of concepts and terminologies that are useful to understand in order to use <code>disk.frame</code> effectively.</p>
 <div id="what-is-a-disk-frame-and-what-are-chunks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-is-a-disk-frame-and-what-are-chunks" class="anchor"></a>What is a <code>disk.frame</code> and what are chunks?</h2>
-<p>A <code>disk.frame</code> is nothing more a folder and in that folder there should be <a href="https://www.fstpackage.org/"><code>fst</code></a> files named “1.fst”, “2.fst”, “3.fst” etc. Each of the “.fst” file is called a <em>chunk</em>.</p>
+<p>A <code>disk.frame</code> is a folder containing <a href="https://www.fstpackage.org/"><code>fst</code></a> files named “1.fst”, “2.fst”, “3.fst” etc. Each of the “.fst” file is called a <em>chunk</em>.</p>
 </div>
 <div id="workers-and-parallelism" class="section level2">
 <h2 class="hasAnchor">
 <a href="#workers-and-parallelism" class="anchor"></a>Workers and parallelism</h2>
 <p>Parallelism in <code>disk.frame</code> is achieved using the <a href="https://cran.r-project.org/package=future"><code>future</code> package</a>. When performing many tasks, <code>disk.frame</code> uses multiple workers, where each <em>worker</em> is an R session, to perform the tasks in parallel.</p>
-<p>It is recommended that you should running these to set-up immediately after you <code><a href="https://rdrr.io/r/base/library.html">library(disk.frame)</a></code>. For example:</p>
+<p>It is recommended that you should run the following immediately after <code><a href="https://rdrr.io/r/base/library.html">library(disk.frame)</a></code> to set-up multiple workers. For example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()</a>
 <a class="sourceLine" id="cb1-3" title="3"></a>
@@ -140,6 +146,14 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># see how many workers are available for work</span></a>
 <a class="sourceLine" id="cb4-2" title="2">future<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/future/man/nbrOfWorkers.html">nbrOfWorkers</a></span>()</a></code></pre></div>
 </div>
+<div id="how-disk-frame-works" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-disk-frame-works" class="anchor"></a>How <code>{disk.frame}</code> works</h2>
+<p>When <code>df %&gt;% some_fn %&gt;% collect</code> is callled. The <code>some_fn</code> is applied to each chunk of <code>df</code>. The collect will row-bind the results from <code>some_fn(chunk)</code>together if the returned value of <code>some_fn</code> is a data.frame, or it will return a <code>list</code> containing the results of <code>some_fn</code>.</p>
+<p>The session that receives these results is called the <strong>main session</strong>. In general, we should try to minimise the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.</p>
+<p>Also, please note that there is no communication between the workers, except for workers passing data back to the main session.</p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -148,8 +162,13 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+<li>
+<a href="#key-disk-frame-concepts">Key <code>{disk.frame}</code> concepts</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#what-is-a-disk-frame-and-what-are-chunks">What is a <code>disk.frame</code> and what are chunks?</a></li>
       <li><a href="#workers-and-parallelism">Workers and parallelism</a></li>
+      <li><a href="#how-disk-frame-works">How <code>{disk.frame}</code> works</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>
