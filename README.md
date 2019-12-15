@@ -63,23 +63,28 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 Please see these vignettes and articles about `{disk.frame}`
 
   - [Quick start:
-    `{disk.frame}`](http://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    `{disk.frame}`](https://daizj.net/disk.frame/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into
-    `{disk.frame}`](http://diskframe.com/articles/ingesting-data.html)
+    `{disk.frame}`](https://diskframe.com/articles/ingesting-data.html)
     which lists some commons way of creating disk.frames
   - [`{disk.frame}` can be more
-    epic\!](http://diskframe.com/articles/more-epic.html) shows some
+    epic\!](https://diskframe.com/articles/more-epic.html) shows some
     ways of loading large CSVs and the importance of `srckeep`
+  - [Group-by](https://diskframe.com/articles/group-by.html) the various
+    types of group-bys
+  - [Custom one-stage group-by
+    functions](https://diskframe.com/articles/custom-group-by.html) how
+    to define custom one-stage group-by functions
   - [Fitting GLMs (including logistic
-    regression)](http://diskframe.com/articles/glm.html) introduces the
+    regression)](https://diskframe.com/articles/glm.html) introduces the
     `dfglm` function for fitting generalized linear models
   - [Using data.table syntax with
-    disk.frame](http://diskframe.com/articles/data-table-syntax.html)
-  - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
+    disk.frame](https://diskframe.com/articles/data-table-syntax.html)
+  - [disk.frame concepts](https://diskframe.com/articles/concepts.html)
   - [Benchmark 1: disk.frame vs Dask vs
-    JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
+    JuliaDB](https://diskframe.com/articles/vs-dask-juliadb.html)
 
 ## Common questions
 
@@ -331,7 +336,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpID2CgC\\file1ac07c36620c.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4ASg6u\\file3d647385678c.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame

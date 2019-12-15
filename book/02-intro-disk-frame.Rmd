@@ -30,8 +30,10 @@ if(interactive()) {
 
 
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+	eval = FALSE,
+	collapse = TRUE,
+	comment = "#>",
+	include = TRUE
 )
 ```
 

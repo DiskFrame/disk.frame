@@ -8,28 +8,30 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r eval=FALSE, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval=FALSE,
+  include=TRUE
 )
 ```
 
 # Group-by in `{disk.frame}`
 
-The group-by framework of [`{disk.frame}`](https://diskframe.com) has been overhauled in v0.2.2. It is now able to perform some group-by-summarize operations in one stage. In this chapter we will cover 
+The group-by framework of [`{disk.frame}`](https://diskframe.com) has been overhauled in v0.3.0. It is now able to perform some group-by-summarize operations in one stage. In this chapter we will cover 
 
 1. How to use one-stage group-by
-2. Manual Two-stage group and hard group-by
+2. Manual two-stage group and hard group-by
 3. The architecture of `{disk.frame}` and its implications for group-by
 4. How to define custom one-stage group-by functions and its limitatons
 
 
 ## One-stage Group-by
 
-A one-stage group-by is the same as group-by for data.frames. This would be remarkable, if not for the limitaions imposed by the disk-based nature of `{disk.frame}`.  Before v0.2.2 of `{disk.frame}`, one-stage group-by was not possible, and the users had to rely to two-stage group-by even for simple operations like `mean`. 
+A one-stage group-by is the same as group-by for data.frames. This would be remarkable, if not for the limitaions imposed by the disk-based nature of `{disk.frame}`.  Before v0.3.0 of `{disk.frame}`, one-stage group-by was not possible, and the users had to rely to two-stage group-by even for simple operations like `mean`. 
 
-However, now that one-stage group-by is possible, there are still limiations and not all functions are supported out-of-the-box. Hence, at the end of the chapter we have described [how to define custom one-stage group-by functions](## Custom one-stage group-by).
+However, now that one-stage group-by is possible, there are still limiations and not all functions are supported out-of-the-box. Hence, in the next chapter we have described how to define custom one-stage group-by functions.
 
 An example of one-stage group-by:
 
@@ -144,7 +146,7 @@ flights.df %>%
 
 ## Two-Stage Group-by
 
-Prior to `{disk.frame}` v0.2.2, there is no general support for one-stage group-by. Hence a two-stage style group-by is needed. The key is understand is the `chunk_group_by` which performs `group-by` within each chunk.
+Prior to `{disk.frame}` v0.3.0, there is no general support for one-stage group-by. Hence a two-stage style group-by is needed. The key is understand is the `chunk_group_by` which performs `group-by` within each chunk.
 
 For most group-by tasks, the user can achieve the desired result WITHOUT using `hard = TRUE` by performing the group by in two stages. For example, suppose you aim to count the number of rows group by `carrier`, you can set `hard = F` to find the count within each chunk and then use a second group-by to summaries each chunk's results into the desired result. For example,
 
@@ -219,180 +221,7 @@ collect(res1)
 ```
 
 
-## Custom one-stage group-by
 
-### At a glance
-
-`{disk.frame}` allows the user to enable create custom one-stage group-by functions. To make a function `fn` one stage. One needs to define two functions
-
-1. `fn.chunk_agg.disk.frame` which applies the itself to each chunk
-2. `fn.collected_agg.disk.frame` which accpets a `list` of returns from `fn.chunk_agg.disk.frame` and finalize the computation.
-
-For example, to make `mean` a one-stage group-by function, `{disk.frame}` has defined `fn.chunk_agg.disk.frame` and `fn.collected_agg.disk.frame`, which we will illustrate with examples below.
-
-But first, we shall explain some theory behind `{disk.frame}` to help you better understand "why does `{disk.frame}` do it like that?".
-
-### How does `{disk.frame}` work
-
-One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like `median` only produce estimates instead of producing the exact figure? To answer these question, we need to have an understanding of how `{disk.frame}` works.
-
-A `disk.frame` is organized as chunks stored on disk. Each chunk is a file stored in [fst format](https://www.fstpackage.org/). The [`{future}` package](https://cran.r-project.org/web/packages/future/index.html) is used to apply the same function to each chunk, each of these operations are carried out in a separate R session. These R sessions cannot communicate with each other during the execution of the operations.
-
-Once the operation has been performed the results will be bought back to the session from which the operation was called. This is the only point of interprocess communication. The process of making group-by in one stage does require some additional work.
-
-To summarize, the two phases of a `df %>% some_fn %>% collect` operation is 
-
-1. The `some_fn` is applied to each chunk, and the result is assumed to be a data.frame
-2. `collect` then row-binds (`rbind`/`bind_rows`/`rbindlist`) the results together to form a data.frame in the main session
-
-### How group-by works
-
-Except for passing the result back to the main session, communication between worker sessions are not allowed. This limits how group-by operations can be performed, hence why group-by can be done in two stages for many functions. However, R's meta-programming abilities allows us to rewrite code to that automatically perform the two-stage group-bys. For example, consider:
-
-```r
-df %>% 
-  group_by(grp1) %>% 
-  summarize(sum(x)) %>% 
-  collect
-```
-
-we can use meta-programming to transform that to 
-  
-```r
-df %>% 
-  chunk_group_by(grp1) %>% 
-  chunk_summarize(__tmp1__= sum(x)) %>% 
-  collect() %>% 
-  group_by(grp1) %>% 
-  summarize(x = sum(__tmp1__))
-```
-
-Basically, we are "compiling" one-stage group-by code to two-stage group-by code, and then executing it.
-
-For `mean`, it's trickier, as one needs to keep track on the numerator and the denominator separately in computing `mean(x) = sum(x)/length(x)`. 
-
-Therefore, `{disk.frame}` compiles 
-
-```r
-df %>% 
-  group_by(grp1) %>% 
-  summarize(meanx = mean(x)) %>% 
-  collect
-```
-
-to
-
-```r
-df %>% 
-  chunk_group_by(grp1) %>% 
-  chunk_summarize(__tmp1__ = list(mean.chunk_agg.disk.frame(x))) %>% 
-  collect %>% 
-  group_by(grp1) %>% 
-  chunk_summarize(meanx = mean.chunk_agg.disk.frame(__tmp1__))
-```
-
-where `mean.chunk_agg.disk.frame` defines what needs to be done to each chunk, as you can see, the return value is a vector where the elements are named `sumx` and `lengthx`. Here is an example implementation of `mean.chunk_agg.disk.frame`
-
-```r
-mean.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
-  sumx = sum(x, na.rm = na.rm)
-  lengthx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
-  c(sumx = sumx, lengthx = lengthx)
-}
-
-```
-
-because the return value is not a scalar, we need to write it in a `list` (line 3). 
-
-The `mean.collected_agg.disk.frame` receives a list of outputs from `mean.chunk_agg.disk.frame`. Recall that `mean.chunk_agg.disk.frame` returns a vector for each chunk, so the input to `mean.collected_agg.disk.frame` is a *list of vectors*
-
-```r
-mean.collected_agg.disk.frame <- function(listx) {
-  sum(sapply(listx, function(x) x["sumx"]))/sum(sapply(listx, function(x) x["lengthx"]))
-}
-```
-
-### How to define your own one-stage group-by function 
-
-Now that we have seen two examples, namely `sum` and `mean`, we are ready summarize how group-by functions are implemented. 
-
-Given the below
-
-```r
-df %>% 
-  group_by(grp1) %>% 
-  summarize(namex = fn(x)) %>% 
-  collect
-```
-
-`{disk.frame}` compiles it to
-
-```r
-df %>% 
-  chunk_group_by(grp1) %>% 
-  chunk_summarize(__tmp1__ = list(fn.chunk_agg.disk.frame(x))) %>% 
-  collect %>% 
-  group_by(grp1) %>% 
-  chunk_summarize(namex = fn.chunk_agg.disk.frame(__tmp1__))
-```
-
-Based on the above information, to make `fn` a one-stage group-by function, the user has to
-
-1. Define `fn.chunk_agg.disk.frame` which is a function to be applied at each chunk
-2. Define `fn.collected_agg.disk.frame` which is a function to be applied to *a `list` containing the returns from `fn.chunk_agg.disk.frame` applied on each chunk*
-
-**Example of implementing `sum`**:
-
-1. Define `sum.chunk_agg.disk.frame`
-
-```r
-sum.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
-  sum(x, na.rm=na.rm)
-}
-```
-
-2. Define `sum.collected_agg.disk.frame`, which needs to accept a list of `sum(x, na.rm)`, but `sum(x, na.rm)` is just a numeric, so
-
-```r
-sum.collected_agg.disk.frame <- function(list_sum) {
-  sum(unlist(list_sum))
-}
-```
-
-**Example of implementing `n_distinct`**:
-
-The `n_distinct` function counts the number of distint values from a vector `x`
-
-1. Define `n_distinct.chunk_agg.disk.frame`, to return a list of unique values. Because the same value can appear in multiple chunks, so to ensure that we don't double count, we simply return all the unique values from each chunk which is then deduplicated in the next phase
-
-```r
-n_distinct.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
-  if(na.rm) {
-    setdiff(unique(x), NA)
-  } else {
-    unique(x)
-  }
-}
-```
-
-2. Define `n_distinct.collected_agg.disk.frame`, which deduplicates the unique values
-
-```r
-n_distinct.collected_agg.disk.frame <- function(list_of_chunkwise_uniques) {
-  dplyr::n_distinct(unlist(list_of_chunkwise_uniques))
-}
-```
-
-### Limitations
-
-We have seen that `{disk.frame}` performs operations in two phases 
-
-1. apply the same function to each chunk
-2. row-bind the results
-
-and there are no communication between the sessions that applies the functions at chunk level.
-
-Hence, it is generally difficult to compute rank based summarizations like `median` exactly. Hence most rank based calculations are estimates only. This is also true of distributed data system like Spark whose median function is also estimates only.
 
 
 ## Advertisements
