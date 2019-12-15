@@ -11,7 +11,6 @@
 #' @importFrom future.apply future_lapply
 #' @importFrom purrr map_chr map_dfr map map_lgl
 #' @importFrom purrr map
-#' @importFrom assertthat assert_that
 #' @export
 #' @examples
 #' cars.df = as.disk.frame(cars)
@@ -23,11 +22,15 @@
 #' delete(cars.df)
 #' delete(cars2.df)
 rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by_chunk_id = TRUE, parallel = TRUE, compress=50, overwrite = TRUE, .progress = TRUE) {
-  assertthat::assert_that(typeof(df_list) == "list")
+  stopifnot(typeof(df_list) == "list")
   
   overwrite_check(outdir, overwrite)
   
-  purrr::map(df_list, ~assertthat::assert_that("disk.frame" %in% class(.x), msg = "error running rbindlist.disk.frame: Not every element of df_list is a disk.frame"))
+  purrr::map(df_list, ~{
+    if(!"disk.frame" %in% class(.x)) {
+      stop("error running rbindlist.disk.frame: Not every element of df_list is a disk.frame")
+    }
+  })
   
   if(by_chunk_id) {
     list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))

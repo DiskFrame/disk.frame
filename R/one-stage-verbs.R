@@ -1,5 +1,11 @@
+#' One Stage function
+#' @param x the input
+#' @param listx a list
+#' @param na.rm Remove NAs. TRUE of FALSE 
+#' @param ... additional options
+#' @rdname one-stage-group-by-verbs
 #' @export
-var.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
+var_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
   c(
     sumx = sum(x, na.rm = na.rm), 
     sumsqrx = sum(x^2, na.rm = na.rm), 
@@ -8,8 +14,10 @@ var.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
 }
 
 #' @export
-var.collected_agg.disk.frame <- function(listx)  {
-  df = Reduce(bind_rows, listx)
+#' @rdname one-stage-group-by-verbs
+#' @importFrom dplyr bind_rows
+var_df.collected_agg.disk.frame <- function(listx)  {
+  df = Reduce(dplyr::bind_rows, listx)
   
   sumlengthx = sum(df$nx)
 
@@ -21,17 +29,20 @@ var.collected_agg.disk.frame <- function(listx)  {
 }
 
 #' @export
-sd.chunk_agg.disk.frame <- var.chunk_agg.disk.frame
+#' @rdname one-stage-group-by-verbs
+sd_df.chunk_agg.disk.frame <- var_df.chunk_agg.disk.frame
 
 #' @export
-sd.collected_agg.disk.frame <- function(listx)  {
-  sqrt(var.collected_agg.disk.frame(listx))
+#' @rdname one-stage-group-by-verbs
+sd_df.collected_agg.disk.frame <- function(listx)  {
+  sqrt(var_df.collected_agg.disk.frame(listx))
 }
  
 
 #' mean chunk_agg
 #' @export
-mean.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+#' @rdname one-stage-group-by-verbs
+mean_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
   sumx = sum(x, na.rm = na.rm)
   lengthx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
   c(sumx = sumx, lengthx = lengthx)
@@ -39,92 +50,112 @@ mean.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
 
 #' mean collected_agg
 #' @export
-mean.collected_agg.disk.frame <- function(listx) {
+#' @rdname one-stage-group-by-verbs
+mean_df.collected_agg.disk.frame <- function(listx) {
   sum(sapply(listx, function(x) x["sumx"]))/sum(sapply(listx, function(x) x["lengthx"]))
 }
 
 #' @export
-sum.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+sum_df.chunk_agg.disk.frame <- function(x, ...) {
   sum(x, ...)
 }
 
 #' @export
-sum.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+sum_df.collected_agg.disk.frame <- function(listx, ...) {
   sum(unlist(listx), ...)
 }
 
 #' @export
-min.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+min_df.chunk_agg.disk.frame <- function(x, ...) {
   min(x, ...)
 }
 
 #' @export
-min.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+min_df.collected_agg.disk.frame <- function(listx, ...) {
   min(unlist(listx), ...)
 }
 
 #' @export
-max.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+max_df.chunk_agg.disk.frame <- function(x, ...) {
   max(x, ...)
 }
 
 #' @export
-max.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+max_df.collected_agg.disk.frame <- function(listx, ...) {
   max(unlist(listx), ...)
 }
 
 #' @export
-median.chunk_agg.disk.frame <- function(x, ...) {
-  median(x, ...)
+#' @rdname one-stage-group-by-verbs
+#' @importFrom stats median
+median_df.chunk_agg.disk.frame <- function(x, ...) {
+  stats::median(x, ...)
 }
 
 #' @export
-median.collected_agg.disk.frame <- function(listx, ...) {
-  median(unlist(listx), ...)
+#' @rdname one-stage-group-by-verbs
+median_df.collected_agg.disk.frame <- function(listx, ...) {
+  stats::median(unlist(listx), ...)
 }
 
 #' @export
-n.chunk_agg.disk.frame <- function(...) {
-  n()
+#' @rdname one-stage-group-by-verbs
+#' @importFrom dplyr n
+n_df.chunk_agg.disk.frame <- function(...) {
+  dplyr::n()
 }
 
 #' @export
-n.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+n_df.collected_agg.disk.frame <- function(listx, ...) {
   sum(unlist(listx))
 }
 
 #' @export
-length.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+length_df.chunk_agg.disk.frame <- function(x, ...) {
   length(x, ...)
 }
 
 #' @export
-length.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+length_df.collected_agg.disk.frame <- function(listx, ...) {
   length(unlist(listx), ...)
 }
 
 #' @export
-any.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+any_df.chunk_agg.disk.frame <- function(x, ...) {
   any(x, ...)
 }
 
 #' @export
-any.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+any_df.collected_agg.disk.frame <- function(listx, ...) {
   any(unlist(listx), ...)
 }
 
 #' @export
-all.chunk_agg.disk.frame <- function(x, ...) {
+#' @rdname one-stage-group-by-verbs
+all_df.chunk_agg.disk.frame <- function(x, ...) {
   all(x, ...)
 }
 
 #' @export
-all.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+all_df.collected_agg.disk.frame <- function(listx, ...) {
   all(unlist(listx), ...)
 }
 
 #' @export
-n_distinct.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+#' @rdname one-stage-group-by-verbs
+n_distinct_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
   if(na.rm) {
     setdiff(unique(x), NA)
   } else {
@@ -133,28 +164,38 @@ n_distinct.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
 }
 
 #' @export
-n_distinct.collected_agg.disk.frame <- function(listx, ...) {
+#' @importFrom dplyr n_distinct
+#' @rdname one-stage-group-by-verbs
+n_distinct_df.collected_agg.disk.frame <- function(listx, ...) {
   n_distinct(unlist(listx))
 }
 
 #' @export
-quantile.chunk_agg.disk.frame <- function(x, ...) {
-  quantile(x, ...)
+#' @rdname one-stage-group-by-verbs
+#' @importFrom stats quantile
+quantile_df.chunk_agg.disk.frame <- function(x, ...) {
+  stats::quantile(x, ...)
 }
 
 #' @export
-quantile.collected_agg.disk.frame <- function(listx, ...) {
-  quantile(unlist(listx), ...)
+#' @rdname one-stage-group-by-verbs
+#' @importFrom stats quantile
+quantile_df.collected_agg.disk.frame <- function(listx, ...) {
+  stats::quantile(unlist(listx), ...)
 }
 
 #' @export
-IQR.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
-  quantile(x, c(0.25, 0.75), na.rm = na.rm)
+#' @rdname one-stage-group-by-verbs
+#' @importFrom stats quantile
+IQR_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
+  stats::quantile(x, c(0.25, 0.75), na.rm = na.rm)
   #100
 }
 
 #' @export
-IQR.collected_agg.disk.frame <- function(listx, ...) {
+#' @rdname one-stage-group-by-verbs
+#' @importFrom stats quantile
+IQR_df.collected_agg.disk.frame <- function(listx, ...) {
   q25 = unlist(listx)[c(TRUE, FALSE)]
   q75 = unlist(listx)[c(FALSE, TRUE)]
   quantile(q75, 0.75) - quantile(q25, 0.25)
@@ -164,6 +205,7 @@ IQR.collected_agg.disk.frame <- function(listx, ...) {
 #' A function to parse the summarize function
 #' @importFrom dplyr filter select pull
 #' @importFrom purrr map_dfr
+#' @rdname group_by
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
   ca_code = generate_summ_code(...)
@@ -185,6 +227,7 @@ summarise.grouped_disk.frame <- function(.data, ...) {
 }
 
 #' @export
+#' @rdname group_by
 summarize.grouped_disk.frame = summarise.grouped_disk.frame
 
 #' Group by within each disk.frame
@@ -195,11 +238,14 @@ summarize.grouped_disk.frame = summarise.grouped_disk.frame
 #' reorganizes the chunks by the shard key.
 #' @seealso hard_group_by
 #' @param .data a disk.frame
+#' @param add from dplyr
+#' @param .drop from dplyr
 #' @param ... same as the dplyr::group_by
+#' @importFrom dplyr group_by_drop_default
 #' @export
 #' @rdname group_by
 # learning from https://docs.dask.org/en/latest/dataframe-groupby.html
-group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   class(.data) <- c("grouped_disk.frame", "disk.frame")
   attr(.data, "group_by_cols") = substitute(list(...))[-1]
   .data
@@ -207,10 +253,10 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = group_by_drop_d
 
 #' @export
 #' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
+#' @rdname group_by
 summarize.disk.frame <- function(.data, ...) {
   # comment summarize.grouped_disk.frame
-  warning("`summarize.disk.frame`'s behaviour has changed. Please use `chunk_summarize` if you wish to `dplyr::summarize` to each chunk")
+  #warning("`summarize.disk.frame`'s behaviour has changed. Please use `chunk_summarize` if you wish to `dplyr::summarize` to each chunk")
   
   ca_code = generate_summ_code(...)
   
@@ -227,20 +273,25 @@ summarize.disk.frame <- function(.data, ...) {
 
 #' Helper function to generate summarisation code
 #' @importFrom data.table setDT setkey
+#' @importFrom utils methods
+#' @noRd
 generate_summ_code <- function(...) {
+  
   code = substitute(list(...))[-1]
   expr_id = 0
   temp_varn = 0
   
-  list_of_chunk_agg_fns <- as.character(methods(class = "chunk_agg.disk.frame"))
-  list_of_collected_agg_fns <- as.character(methods(class = "collected_agg.disk.frame"))
+  list_of_chunk_agg_fns <- as.character(utils::methods(class = "chunk_agg.disk.frame"))
+  list_of_collected_agg_fns <- as.character(utils::methods(class = "collected_agg.disk.frame"))
   
   # generate the chunk_summarize_code
   summarize_code = purrr::map_dfr(code, ~{
+    
     expr_id <<- expr_id  + 1
     # parse the function into table form for easy interrogration
     gpd = getParseData(parse(text = deparse(.x)), includeText = TRUE); 
     grp_funcs = gpd %>% filter(token == "SYMBOL_FUNCTION_CALL") %>% select(text) %>% pull
+    grp_funcs = grp_funcs %>% paste0("_df")
     
     # search in the space to find functions name `fn`.chunk_agg.disk.frame
     # only allow one such functions for now TODO improve it
@@ -263,12 +314,14 @@ generate_summ_code <- function(...) {
     # which isn't supported
     data.table::setDT(gpd)
     data.table::setkey(gpd, parent)
-    if (gpd[id == gpd[id == gpd[(text == grp_funcs) & (token == "SYMBOL_FUNCTION_CALL"), parent], parent], parent] != 0) {
+    if (gpd[id == gpd[id == gpd[(paste0(text,"_df") == grp_funcs) & (token == "SYMBOL_FUNCTION_CALL"), parent], parent], parent] != 0) {
       stop(sprintf("Combining summarization with other operations \n\n```\n%s\n```\n\nThese are currently not supported by {disk.frame} at the moment \n    * combinations (like sum(x) + 1)\n* combinations (like list(sum(x)))\n\nIf you want this implemented, please leave a comment or upvote at: https://github.com/xiaodaigh/disk.frame/issues/228 \n\n", deparse(.x)))
     }
     
     temp_varn <<- temp_varn + 1
-    tmpcode = deparse(evalparseglue("substitute({deparse(.x)}, list({grp_funcs} = quote({grp_funcs}.chunk_agg.disk.frame)))")) %>% paste0(collapse = " ")
+    grp_funcs_wo_df = sapply(grp_funcs, function(grp_func) substr(grp_func, 1, nchar(grp_func)-3))
+    
+    tmpcode = deparse(evalparseglue("substitute({deparse(.x)}, list({grp_funcs_wo_df} = quote({grp_funcs}.chunk_agg.disk.frame)))")) %>% paste0(collapse = " ")
     
     chunk_code = data.frame(assign_to = as.character(glue::glue("tmp{temp_varn}")), expr = tmpcode, stringsAsFactors = FALSE)
     
@@ -299,7 +352,7 @@ generate_summ_code <- function(...) {
 
 #' @export
 #' @importFrom dplyr summarize
-#' @rdname dplyr_verbs
+#' @rdname group_by
 summarise.disk.frame <- summarize.disk.frame
 
 

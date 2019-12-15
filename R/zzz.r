@@ -25,6 +25,9 @@ options(future.globals.maxSize = Inf)
 }
 
 globalVariables(c(
+                  "name", # used in gen_summ_code
+                  "agg_expr", # used in gen_summ_code
+                  "orig_code", # used in gen_summ_code
                   "syms", # needed by dplyr to treat something as a symbol
                   ".",
                   ".BY",
