@@ -11,7 +11,7 @@
 #' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
 #' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
 #' @param desc_vars for the "sort" shardby function, the variables to sort descending. 
-#' @param ... passed to map.disk.frame
+#' @param ... passed to cmap.disk.frame
 #' @export
 #' @import fst fs
 #' @importFrom glue glue
@@ -19,7 +19,7 @@
 #' cars.df = as.disk.frame(cars)
 #'
 #' # write out a lazy disk.frame to disk
-#' cars2.df = write_disk.frame(map(cars.df, ~.x[1,]), overwrite = TRUE)
+#' cars2.df = write_disk.frame(cmap(cars.df, ~.x[1,]), overwrite = TRUE)
 #' collect(cars2.df)
 #'
 #' # clean up cars.df
@@ -45,10 +45,10 @@ write_disk.frame <- function(
 
   if(is_disk.frame(df)) {
     if(is.null(shardby)) {
-      map.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
+      cmap.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
     } else {
       # TODO really inefficient
-      #df2 = map.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
+      #df2 = cmap.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
       shard(df,
             outdir = outdir,
             nchunks = nchunks,

@@ -25,7 +25,7 @@
 #' delete(cars.df)
 select.disk.frame <- function(.data, ...) {
   quo_dotdotdot = rlang::enquos(...)
-  map(.data, ~{
+  cmap(.data, ~{
     code = rlang::quo(dplyr::select(.x, !!!quo_dotdotdot))
     rlang::eval_tidy(code)
   }, lazy = TRUE)

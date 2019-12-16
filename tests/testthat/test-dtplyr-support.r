@@ -16,7 +16,7 @@ test_that("testing dtplyr", {
   # 
   # 
   # aa = iris_df %>% 
-  #   map(~{
+  #   cmap(~{
   #     dtplyr::lazy_dt(.x) %>% 
   #       filter(Sepal.Length > 7) %>% 
   #       collect()
@@ -29,7 +29,7 @@ test_that("testing dtplyr", {
   # }
   # 
   # lazy_dt.disk.frame <- function(df, ...) {
-  #   map(df, )
+  #   cmap(df, )
   # }
   # 
   # lazy_dt.default <- function(...) {

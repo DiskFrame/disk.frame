@@ -40,7 +40,7 @@ output_disk.frame(...)
 
 \item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
 
-\item{...}{passed to map.disk.frame}
+\item{...}{passed to cmap.disk.frame}
 }
 \description{
 Write a data.frame/disk.frame to a disk.frame location. If df is a data.frame
@@ -50,7 +50,7 @@ then using the as.disk.frame function is recommended for most cases
 cars.df = as.disk.frame(cars)
 
 # write out a lazy disk.frame to disk
-cars2.df = write_disk.frame(map(cars.df, ~.x[1,]), overwrite = TRUE)
+cars2.df = write_disk.frame(cmap(cars.df, ~.x[1,]), overwrite = TRUE)
 collect(cars2.df)
 
 # clean up cars.df

@@ -9,7 +9,7 @@ test_that("as.disk.frame works", {
   df = disk.frame:::gen_datatable_synthetic(ROWS)
   dfdf <- as.disk.frame(df, tmp_write_disk.frame, overwrite = TRUE, nchunks = 5)
 
-  a = dfdf %>% map(~{
+  a = dfdf %>% cmap(~{
     .x[1,]
   }) %>% write_disk.frame(outdir = tmp_write_disk.frame2, overwrite = T)
 

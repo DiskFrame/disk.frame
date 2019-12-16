@@ -115,9 +115,28 @@ df_ram_size <- function() {
     
     return(ram_size)
   }, error = function(e) {
-    warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-    warning("Please report this error github.com/xiaodaigh/disk.frame/issues")
-    warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
-    return(16)
+    if(requireNamespace("benchmarkme")) {
+      ram_size = benchmarkme::get_ram()/1024^3
+      
+      if(is.na(ram_size)) {
+        warning("RAM size can't be determined. Assume you have 16GB of RAM.")
+        warning("Please report this error github.com/xiaodaigh/disk.frame/issues")
+        warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
+        return(16)
+      } else {
+        ram_size = max(ram_size, 1, na.rm = TRUE)
+        return(ram_size)
+      }
+    } else{
+      if(is.na(ram_size)) {
+        warning("RAM size can't be determined. Assume you have 16GB of RAM.")
+        warning("Please report this error github.com/xiaodaigh/disk.frame/issues")
+        warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
+        return(16)
+      } else {
+        ram_size = max(ram_size, 1, na.rm = TRUE)
+        return(ram_size)
+      }
+    }
   })
 }

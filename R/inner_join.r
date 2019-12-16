@@ -25,7 +25,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
   
   if("data.frame" %in% class(y)) {
     quo_dotdotdot = enquos(...)
-    res = map_dfr(x, ~{
+    res = cmap_dfr(x, ~{
       code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
     }, .progress = .progress)
@@ -47,7 +47,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       dotdotdot <- list(...)
       
-      res = map2.disk.frame(x, y, ~{
+      res = cmap2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {

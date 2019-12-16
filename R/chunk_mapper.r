@@ -46,7 +46,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TR
     vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
     data_for_eval_tidy = force(vars_and_pkgs$globals)
     
-    res = map(.data, ~{
+    res = cmap(.data, ~{
       
       this_env = environment()
       

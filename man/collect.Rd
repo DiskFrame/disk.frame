@@ -50,7 +50,7 @@ delete(cars.df)
 cars.df = as.disk.frame(cars)
 
 # returns the result as a list
-collect_list(map(cars.df, ~1))
+collect_list(cmap(cars.df, ~1))
 
 # clean up
 delete(cars.df)

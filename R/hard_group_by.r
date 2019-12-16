@@ -133,7 +133,7 @@ hard_group_by.disk.frame <- function(
     sample_size_per_chunk = ceiling(nchunks / disk.frame::nchunks(df)) * sort_split_sample_size
     
     # Sample and sort
-    sort_splits_sample <- map(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
+    sort_splits_sample <- cmap(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
       select(...) %>%
       collect()
     
@@ -166,7 +166,7 @@ hard_group_by.disk.frame <- function(
     by <- unlist(list(...))
     
     # shard and create temporary diskframes
-    tmp_df  = map(df, function(df1) {
+    tmp_df  = cmap(df, function(df1) {
       tmpdir = tempfile()
       shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
@@ -200,8 +200,7 @@ hard_group_by.disk.frame <- function(
 
     
     # shard and create temporary diskframes
-    tmp_df  = map(df, function(df1) {
-      ##browser
+    tmp_df  = cmap(df, function(df1) {
       tmpdir = tempfile()
       shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)

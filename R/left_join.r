@@ -17,7 +17,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   if("data.frame" %in% class(y)) {
     # note that x is named .data in the lazy evaluation
     quo_dotdotdot = enquos(...)
-    map_dfr(x, ~{
+    cmap_dfr(x, ~{
       code = quo(left_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
     }, .progress = .progress)
@@ -39,7 +39,7 @@ left_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     } else if(merge_by_chunk_id == TRUE) {
     #} else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       dotdotdot = list(...)
-      res = map2.disk.frame(x, y, ~{
+      res = cmap2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(.x)
         } else if (is.null(.x)) {
