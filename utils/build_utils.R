@@ -81,6 +81,7 @@ df_build_vignettes_for_cran <- function() {
 }
 
 df_check <- function() {
+  df_ready_for_cran()
   if(fs::dir_exists("tests")) {
     fs::dir_copy("tests", "tests_manual")
     fs::dir_delete("tests")
