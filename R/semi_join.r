@@ -18,7 +18,7 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   
   if("data.frame" %in% class(y)) {
     quo_dotdotdot = enquos(...)
-    map_dfr(x, ~{
+    cmap_dfr(x, ~{
       code = quo(semi_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
       rlang::eval_tidy(code)
     }, .progress = .progress)
@@ -38,7 +38,7 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map2.disk.frame(x, y, ~{
+      res = cmap2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {

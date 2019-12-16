@@ -1,6 +1,6 @@
 # Alternative to hashstr2i that can produce semi-sorted chunks
 # Apply as e.g.:
-# split_values <- map(dff, sample_n, size=1) %>% 
+# split_values <- cmap(dff, sample_n, size=1) %>% 
 #   select(c("id1", "id2")) %>%
 #   collect() %>%
 #   arrange(id1, id2)

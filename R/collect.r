@@ -52,7 +52,7 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' cars.df = as.disk.frame(cars)
 #' 
 #' # returns the result as a list
-#' collect_list(map(cars.df, ~1))
+#' collect_list(cmap(cars.df, ~1))
 #' 
 #' # clean up
 #' delete(cars.df)

@@ -15,7 +15,7 @@ test_that("compute works on simple data", {
 
 test_that("compute works on lazy stream", {
   df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
-  df = map(df, lazy = T, ~{
+  df = cmap(df, lazy = T, ~{
     .x[1:10, ]
   })
   dff = compute(df)
@@ -25,7 +25,7 @@ test_that("compute works on lazy stream", {
 
 test_that("compute works on lazy stream followed by dplyr", {
   df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
-  df = map(df, lazy = T, ~{
+  df = cmap(df, lazy = T, ~{
     .x[1:10, ]
   }) %>% select(id1, id4)
   
@@ -39,7 +39,7 @@ test_that("compute works on lazy stream followed by dplyr", {
 test_that("compute works on dplyr::select followed by lazy", {
   df = disk.frame(file.path(tempdir(),"tmp_compute_delete"))
   df = df %>% select(id1, id4) %>%
-    map(lazy = T, ~{
+    cmap(lazy = T, ~{
       .x[1:10, ]
     })
   

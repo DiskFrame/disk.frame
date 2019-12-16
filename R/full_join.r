@@ -36,7 +36,7 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
       y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
       return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      res = map2(x, y, ~{
+      res = cmap2(x, y, ~{
         if(is.null(.y)) {
           return(.x)
         } else if (is.null(.x)) {

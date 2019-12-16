@@ -1,4 +1,4 @@
-context("test-map2")
+context("test-cmap2")
 
 setup({
   b = data.frame(a = 51:150, b = 1:100)
@@ -7,12 +7,12 @@ setup({
   as.disk.frame(d, file.path(tempdir(), "tmp_map2d.df"), nchunks = 5, overwrite = T)
 })
 
-test_that("testing map2 .y is disk.frame", {
+test_that("testing cmap2 .y is disk.frame", {
   b = disk.frame(file.path(tempdir(), "tmp_map2.df"))
   d = disk.frame(file.path(tempdir(), "tmp_map2d.df"))
   
   # return 1 row from each chunk
-  df = map2(b,d,~rbindlist(list(.x[1,],.y[1,])), outdir = file.path(tempdir(), "tmp_map2_out.df"))
+  df = cmap2(b, d, ~rbindlist(list(.x[1,],.y[1,])), outdir = file.path(tempdir(), "tmp_map2_out.df"))
   
   expect_s3_class(df, "disk.frame")
   
@@ -28,7 +28,7 @@ test_that("testing map2 .y is not disk.frame", {
   d = 1:nchunks(b)
   
   # return 1 row from each chunk
-  expect_warning(df <- map2(b, d, ~.x[1,.(y = .y)], outdir = "tmp_map2_out2.df"))
+  expect_warning(df <- cmap2(b, d, ~.x[1,.(y = .y)], outdir = "tmp_map2_out2.df"))
   
   expect_type(df, "list")
   

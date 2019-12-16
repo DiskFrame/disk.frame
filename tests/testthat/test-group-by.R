@@ -57,26 +57,26 @@ test_that("new group_by framework - nested-group-by", {
     iris.df = iris %>% 
       as.disk.frame
     
-    expect_warning(expect_error(grpby <- iris.df %>% 
+    expect_error(grpby <- iris.df %>% 
       summarize(mean(Petal.Length + max(Petal.Length))) %>% 
-      collect))
+      collect)
     
-    expect_warning(expect_error(grpby <- iris.df %>% 
+    expect_error(grpby <- iris.df %>% 
       summarize(mean(Petal.Length) + max(Petal.Length)) %>% 
-      collect))
+      collect)
     
-    expect_warning(expect_error(grpby <- iris.df %>% 
+    expect_error(grpby <- iris.df %>% 
       summarize(mean(Petal.Length) + 1) %>% 
-      collect))
+      collect)
     
-    expect_warning(expect_error(grpby <- iris.df %>% 
+    expect_error(grpby <- iris.df %>% 
       summarize(list(mean(Petal.Length))) %>% 
-      collect))
+      collect)
     
     fn_tmp = function(x) x + 1
-    expect_warning(grpby <- iris.df %>% 
+    grpby <- iris.df %>% 
         summarize(mean(fn_tmp(Petal.Length))) %>% 
-        collect)
+        collect
     
     grpby2 <- iris %>% 
       summarize(mean(fn_tmp(Petal.Length)))
