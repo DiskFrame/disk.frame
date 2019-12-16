@@ -45,9 +45,9 @@ imap_dfr.default <- function(.x, .f, ..., .id = NULL) {
 #' # .x is the chunk and .y is the ID as an integer
 #' 
 #' # lazy = TRUE support is not available at the moment
-#' imap(cars.df, ~.x[, id := .y], lazy = FALSE)
+#' cimap(cars.df, ~.x[, id := .y], lazy = FALSE)
 #' 
-#' imap_dfr(cars.df, ~.x[, id := .y])
+#' cimap_dfr(cars.df, ~.x[, id := .y])
 #' 
 #' # clean up cars.df
 #' delete(cars.df)

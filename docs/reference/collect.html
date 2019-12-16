@@ -260,7 +260,7 @@ hence parallel = FALSE is a better choice</p></td>
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># returns the result as a list</span>
-<span class='fu'>collect_list</span>(<span class='fu'><a href='map.html'>map</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>collect_list</span>(<span class='fu'><a href='cmap.html'>cmap</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]

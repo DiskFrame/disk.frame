@@ -1,8 +1,8 @@
-# disk.frame 0.2.2
+# disk.frame 0.3.0
 * experimental group-by framework!
 * bug fixes for data.table trigger by integration with tidyfast
 * removed assertthat from imports
-* add benchmarkme to suggest
+* add benchmarkme to Suggests
 
 
 # disk.frame 0.2.1
