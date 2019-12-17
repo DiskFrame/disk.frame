@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
 <details>
-  <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going.</summary>
+  <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going. </summary>
 <iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 </details>
 

@@ -2,15 +2,15 @@ pandoc: 2.7.2
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  concepts: concepts.html
-  convenience-features: convenience-features.html
-  custom-group-by: custom-group-by.html
-  data-table-syntax: data-table-syntax.html
-  glm: glm.html
-  group-by: group-by.html
-  ingesting-data: ingesting-data.html
-  intro-disk-frame: intro-disk-frame.html
-  intro: intro.html
-  more-epic: more-epic.html
-  vs-dask-juliadb: vs-dask-juliadb.html
+  01-intro: 01-intro.html
+  02-intro-disk-frame: 02-intro-disk-frame.html
+  03-concepts: 03-concepts.html
+  04-ingesting-data: 04-ingesting-data.html
+  05-data-table-syntax: 05-data-table-syntax.html
+  06-vs-dask-juliadb: 06-vs-dask-juliadb.html
+  07-glm: 07-glm.html
+  08-more-epic: 08-more-epic.html
+  09-convenience-features: 09-convenience-features.html
+  10-group-by: 10-group-by.html
+  11-custom-group-by: 11-custom-group-by.html
 
