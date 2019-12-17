@@ -120,7 +120,7 @@ df_ram_size <- function() {
       
       if(is.na(ram_size)) {
         warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-        warning("Please report this error github.com/xiaodaigh/disk.frame/issues")
+        warning("Please report this error at github.com/xiaodaigh/disk.frame/issues")
         warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
         return(16)
       } else {
@@ -130,7 +130,8 @@ df_ram_size <- function() {
     } else{
       if(is.na(ram_size)) {
         warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-        warning("Please report this error github.com/xiaodaigh/disk.frame/issues")
+        warning("Please try to install install.packages('benchmarkme') and try again.")
+        warning("If error persists, please report this error at github.com/xiaodaigh/disk.frame/issues")
         warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
         return(16)
       } else {

@@ -88,6 +88,7 @@ df_ready_for_cran <- function() {
 
 df_check <- function() {
   df_ready_for_cran()
+  fs::dir_delete("README_cache")
   devtools::check(args = c('--as-cran'))
 }
 
