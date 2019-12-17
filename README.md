@@ -236,10 +236,10 @@ flights.df %>%
 #> 2 2013-01-01 05:00:00      LGAIAH
 ```
 
-### Group by
+### Group-by
 
-Starting from {disk.frame} v0.2.2, there is for support `group_by` for a
-limited set of functions. For example:
+Starting from `{disk.frame}` v0.3.0, there is for support `group_by` for
+a limited set of functions. For example:
 
 ``` r
 result_from_disk.frame = iris %>% 
@@ -259,14 +259,14 @@ result_from_disk.frame = iris %>%
 ```
 
 The results should be exactly the same as if applying the same group-by
-operations on a data.frame. If not then please [report a
+operations on a data.frame. If not, please [report a
 bug](https://github.com/xiaodaigh/disk.frame/issues).
 
 #### List of supported group-by functions
 
 If a function you like is missing, please make a feature request
 [here](https://github.com/xiaodaigh/disk.frame/issues). It is a
-limitation that function that depend on the order a column can only
+limitation that function that depend on the order a column can only be
 obtained using estimated methods.
 
 | Function     | Exact/Estimate | Notes                                      |
@@ -336,7 +336,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpgv1Q1Y\\filebf052f045d8.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpMTeRLq\\file3b941e046e86.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame

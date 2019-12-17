@@ -51,3 +51,4 @@ cran-mirror
 misc/disk.frame-report_files/
 .httr-oauth
 README_cache
+vignettes/
