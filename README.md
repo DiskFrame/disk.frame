@@ -6,7 +6,7 @@
 <details>
 
 <summary>Please take a moment to star the disk.frame Github repo if you
-like disk.frame. It keeps me going.</summary>
+like disk.frame. It keeps me going. </summary>
 <iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 </details>
@@ -336,7 +336,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp4ASg6u\\file3d647385678c.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpgv1Q1Y\\filebf052f045d8.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame

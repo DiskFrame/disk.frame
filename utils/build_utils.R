@@ -19,43 +19,35 @@
 df_build_site <- function() {
   df_setup_vignette()
   devtools::document()
+  #devtools::build_readme()
   pkgdown::build_site()
 }
 
 # setup vignette but does not build
-df_setup_vignette <- function(excl = "") {
+df_setup_vignette <- function(excl = "", strip_number = FALSE) {
   # remove cache
   purrr::walk(list.dirs("vignettes/",recursive = FALSE), ~{
     fs::dir_delete(.x)
   })
+  
+  # remove vignette
+  purrr::walk(list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE), fs::file_delete)
 
   # copy the RMD from book
   lf = list.files("book", pattern="*.Rmd")
+  # strips the names
   lf = lf[!is.na(as.integer(sapply(lf, function(x) substr(x, 1, 2))))]
   
   
   lf = lf[sapply(lf, function(x) !(x %in% excl))]
   
-  
   purrr::walk(lf, function(file) {
     fs::file_copy(
       file.path("book", file), 
-      file.path("vignettes", substr(file, 4, nchar(file))), overwrite = TRUE)
+      ifelse(strip_number,file.path("vignettes", substr(file, 4, nchar(file))),file.path("vignettes", file))
+      , overwrite = TRUE)
   })
   NULL
-}
-
-df_ready_for_cran <- function() {
-  devtools::clean_vignettes()
-  df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"))
-  
-  devtools::document()
-  
-  # rename tests
-  if(fs::dir_exists("tests")) {
-    fs::dir_copy("tests", "tests_manual")
-    fs::dir_delete("tests")
-  }
 }
 
 df_test <- function() {
@@ -80,14 +72,22 @@ df_build_vignettes_for_cran <- function() {
   devtools::build_vignettes()
 }
 
-df_check <- function() {
-  df_ready_for_cran()
+df_ready_for_cran <- function() {
+  devtools::clean_vignettes()
+  df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"), strip_number = TRUE)
+  
+  devtools::document()
+  #devtools::build_readme()
+  
+  # rename tests
   if(fs::dir_exists("tests")) {
     fs::dir_copy("tests", "tests_manual")
     fs::dir_delete("tests")
   }
-  
-  devtools::document()
+}
+
+df_check <- function() {
+  df_ready_for_cran()
   devtools::check(args = c('--as-cran'))
 }
 
