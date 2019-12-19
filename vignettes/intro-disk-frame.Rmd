@@ -9,7 +9,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-library(disk.frame)
+suppressPackageStartupMessages(library(disk.frame))
 library(fst)
 library(magrittr)
 library(nycflights13)
@@ -30,8 +30,10 @@ if(interactive()) {
 
 
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+	eval = FALSE,
+	collapse = TRUE,
+	comment = "#>",
+	include = TRUE
 )
 ```
 
@@ -152,7 +154,7 @@ The class of `flights.df1` is also a `disk.frame` after the   `dplyr::select` tr
 
 For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect` can be used to bring the results from disk into R, e.g.
 ```{r, dependson='dfselect'}
-collect(flights.df1) %>% head
+collect(flights.df1) %>% head(2)
 ```
 
 Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whole `disk.frame` (because why would you need `disk.frame` otherwise). More likely, one would call `collect` on a `filter`ed dataset or one summarized with `group_by`.
@@ -160,11 +162,11 @@ Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whol
 Some examples of other dplyr verbs applied:
 
 ```{r, dependson='asdiskframe'}
-filter(flights.df, dep_delay > 1000) %>% collect %>% head
+filter(flights.df, dep_delay > 1000) %>% collect %>% head(2)
 ```
 
 ```{r, dependson='asdiskframe'}
-mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head
+mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 ```
 
 ### Examples of NOT fully supported `dplyr` verbs
@@ -173,7 +175,7 @@ The `chunk_arrange` function arranges (sorts) each chunk but not the whole datas
 
 ```{r, dependson='asdiskframe'}
 # this only sorts within each chunk
-chunk_arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head
+chunk_arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head(2)
 ```
 
 
@@ -204,7 +206,9 @@ rename
 filter
 chunk_arrange # within each chunk
 chunk_group_by # within each chunk
-chunk_summarise/chunk_summarize # within each chunk
+chunk_summarize # within each chunk
+group_by # limited functions
+summarize # limited functions
 mutate
 transmute
 left_join
@@ -213,92 +217,24 @@ full_join # careful. Performance!
 semi_join
 anit_join
 ```
+
 ## Sharding and distribution of chunks
 
 Like other distributed data manipulation frameworks `disk.frame` utilizes the *sharding* concept to distribute the data into chunks. For example "to shard by `cust_id`" means that all rows with the same `cust_id` will be stored in the same chunk. This enables `chunk_group_by` by `cust_id` to produce the same results as non-chunked data.
 
 The `by` variables that were used to shard the dataset are called the `shardkey`s. The *sharding* is performed by computing a deterministic hash on the shard keys (the `by` variables) for each row. The hash function produces an integer between `1` and `n`, where `n` is the number of chunks. 
 
-## Grouping
+## Group-by
 
-The `disk.frame` implements the `chunk_group_by` operation with a significant caveat. In the `disk.frame` framework, group-by happens WITHIN each chunk and not ACROSS chunks. To achieve group by across chunk we need to put **all rows with the same group keys into the same file chunk**; this can be achieved with `hard_group_by`. However, the `hard_group_by` operation can be **VERY TIME CONSUMING** computationally and should be **avoided** if possible.
-
-The `hard_group_by` operation is best illustrated with an example, suppose a `disk.frame` has three chunks
-```
-# chunk1 = 1.fst
-#  id n
-#1  a 1
-#2  a 2
-#3  b 3
-#4  d 4
-
-# chunk2 = 2.fst
-#  id n
-#1  a 4
-#2  a 5
-#3  b 6
-#4  d 7
-
-# chunk3 = 3.fst
-#  id n
-#1  a 4
-#2  b 5
-#3  c 6
-```
-and notice that the `id` column contains 3 distinct values `"a"`,`"b"`, and `"c"`. To perform `hard_group_by(df, by = id)` MAY give you the following `disk.frame` where all the `id`s with the same values end up in the same chunks. 
-
-```
-# chunk1 = 1.fst
-#  id n
-#1  b 3
-#2  b 6
-
-# chunk2 = 2.fst
-#  id n
-#1  c 6
-#2  d 4
-#3  d 7
-
-# chunk3 = 3.fst
-#  id n
-#1  a 1
-#2  a 2
-#3  a 4
-#4  a 5
-#5  a 4
-```
-
-Also, notice that there is no guaranteed order for the distribution of the `id`s to the chunks. The order is random, but each chunk is likely to have a similar number of rows, provided that `id` does not follow a skewed distribution i.e. where a few distinct values make up the majority of the rows.
-
-Typically, `chunk_group_by` is performed WITHIN each chunk. This is not an issue if the chunks have already been sharded on the `by` variables beforehand; however, if this is not the case then one may need a second stage aggregation to obtain the correct result, see *Two-stage group by*.
-
-By forcing the user to choose `chunk_group_by` (within each chunk) and `hard_group_by` (across all chunks), this ensures that the user is conscious of the choice they are making. In `sparklyr` the equivalent of a `hard_group_by` is performed, which we should avoid, where possible, as it is time-consuming and expensive. Hence, `disk.frame` has chosen to explain the theory and allow the user to make a conscious choice when performing `group_by`.
+`{disk.frame}` implements the `group_by` operation some caveats. In the `{disk.frame}` framework, only a set functions are supported in `summarize`. However, the user can create more custom `group-by` functions can be defined.
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
-  hard_group_by(carrier) %>% # notice that hard_group_by needs to be set
-  chunk_summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
+  group_by(carrier) %>% # notice that hard_group_by needs to be set
+  summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect %>% 
   arrange(carrier)
 ```
-
-### Two-stage group by
-For most group-by tasks, the user can achieve the desired result WITHOUT using `hard = TRUE` by performing the group by in two stages. For example, suppose you aim to count the number of rows group by `carrier`, you can set `hard = F` to find the count within each chunk and then use a second group-by to summaries each chunk's results into the desired result. For example,
-
-```{r, dependson='asdiskframe'}
-flights.df %>%
-  chunk_group_by(carrier) %>% # `chunk_group_by` aggregates within each chunk
-  chunk_summarize(count = n()) %>%  # mean follows normal R rules
-  collect %>%  # collect each individul chunks results and row-bind into a data.table
-  group_by(carrier) %>% 
-  summarize(count = sum(count)) %>% 
-  arrange(carrier)
-```
-
-Because this two-stage approach avoids the expensive `hard group_by` operation, it is often significantly faster. However, it can be tedious to write; and this is a con of the `disk.frame` chunking mechanism.
-
-*Note*: this two-stage approach is similar to a map-reduce operation.
-
 
 ## Restrict input columns for faster processing
 
@@ -307,8 +243,8 @@ One can restrict which input columns to load into memory for each chunk; this ca
 ```{r, dependson='asdiskframe'}
 flights.df %>%
   srckeep(c("carrier","dep_delay")) %>%
-  hard_group_by(carrier) %>% 
-  chunk_summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
+  group_by(carrier) %>% 
+  summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect
 ```
 
@@ -352,20 +288,34 @@ flights.df %>%
 
 ## Window functions and arbitrary functions
 
-`disk.frame` supports all `data.frame` operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like `rank` are supported out of the box.
+`{disk.frame}` supports all `data.frame` operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like `min_rank` and `rank` are supported out of the box. 
+
+For the following example, we will use the `hard_group_by` which performs a group-by and also reorganises the chunks so that all records with the same `year`, `month`, and `day` end up in the same chunk. This is typically not advised, as `hard_group_by` can be slow for large datasets.
 
 ```{r, dependson='asdiskframe'}
 # Find the most and least delayed flight each day
 bestworst <- flights.df %>%
    srckeep(c("year","month","day", "dep_delay")) %>%
-   chunk_group_by(year, month, day) %>%
-   select(dep_delay) %>%
+   hard_group_by(c("year", "month", "day")) %>%
    filter(dep_delay == min(dep_delay, na.rm = T) || dep_delay == max(dep_delay, na.rm = T)) %>%
    collect
    
-
 bestworst %>% head
 ```
+
+another example
+
+```{r, dependson='asdiskframe'}
+ranked <- flights.df %>%
+  srckeep(c("year","month","day", "dep_delay")) %>%
+  hard_group_by(c("year", "month", "day")) %>%
+  filter(min_rank(desc(dep_delay)) <= 2 & dep_delay > 0) %>%
+  collect
+
+ranked %>% head
+```
+
+one more example
 
 ```{r, dependson='asdiskframe'}
 # Rank each flight within a daily
@@ -381,6 +331,7 @@ ranked %>% head
 
 
 ## Arbitrary by-chunk processing
+
 One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `map.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk
 
 ```{r, dependson='asdiskframe'}
@@ -401,7 +352,7 @@ flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = file.path(tempdir(
 flights.df2 %>% head
 ```
 
-Notice `disk.frame` supports the `purrr` syntax for defining a function using `~`.
+Notice `{disk.frame}` supports the `purrr` syntax for defining a function using `~`.
 
 ## Sampling
 

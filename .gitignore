@@ -53,3 +53,7 @@ misc/disk.frame-report_files/
 README_cache
 vignettes/
 README.html
+
+book/_book/
+
+book/_bookdown_files/
