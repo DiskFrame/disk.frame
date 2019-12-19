@@ -15,11 +15,6 @@ knitr::opts_chunk$set(
 ```
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-<details>
-  <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going. </summary>
-<iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
-</details>
-
 <!-- badges: start -->
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
 <!-- badges: end -->
@@ -304,7 +299,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/disk
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-### Sponsors
+### Sponsor and back `{disk.frame}`
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
 
@@ -314,6 +309,16 @@ Support `{disk.frame}` development by becoming a sponsor. Your logo will show up
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
 I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
+
+## Non-financial ways to contribute
+
+Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute
+
+* Write a blogpost about your `{disk.frame}`. I would love to learn more about how `{disk.frame}` has helped you
+* Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to help promote it
+* Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by [raising an issue here](https://github.com/xiaodaigh/disk.frame/issues)
+* Star the [`{disk.frame}` Github repo](https://github.com/xiaodaigh/disk.frame)
+* Star any repo that `{disk.frame}` depends on e.g. [`{fst}`](https://github.com/fstpackage/fst) and [`{future}`](https://github.com/HenrikBengtsson/future)
 
 ## Download Counts & Build Status
 
