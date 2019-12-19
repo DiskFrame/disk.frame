@@ -15,11 +15,6 @@ knitr::opts_chunk$set(
 ```
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-<details>
-  <summary>Please take a moment to star the disk.frame Github repo if you like disk.frame. It keeps me going. </summary>
-<iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
-</details>
-
 <!-- badges: start -->
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
 <!-- badges: end -->
@@ -64,7 +59,7 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 Please see these vignettes and articles about `{disk.frame}`
 
   - [Quick start:
-    `{disk.frame}`](https://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    `{disk.frame}`](https://diskframe.com/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into `{disk.frame}`](https://diskframe.com/articles/ingesting-data.html) which lists some commons way of creating disk.frames
@@ -158,8 +153,8 @@ flights.df %>%
 
 
 
-### Group by
-Starting from {disk.frame} v0.2.2, there is for support `group_by` for a limited set of functions. For example:
+### Group-by
+Starting from `{disk.frame}` v0.3.0, there is for support `group_by` for a limited set of functions. For example:
 
 ```r
 result_from_disk.frame = iris %>% 
@@ -178,11 +173,11 @@ result_from_disk.frame = iris %>%
   collect
 ```
 
-The results should be exactly the same as if applying the same group-by operations on a data.frame. If not then please [report a bug](https://github.com/xiaodaigh/disk.frame/issues).
+The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please [report a bug](https://github.com/xiaodaigh/disk.frame/issues).
 
 #### List of supported group-by functions
 
-If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues). It is a limitation that function that depend on the order a column can only obtained using estimated methods.
+If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues). It is a limitation that function that depend on the order a column can only be obtained using estimated methods.
 
 | Function | Exact/Estimate | Notes |
 | -- | -- | -- |
@@ -304,7 +299,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/disk
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-### Sponsors
+### Sponsor and back `{disk.frame}`
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
 
@@ -314,6 +309,16 @@ Support `{disk.frame}` development by becoming a sponsor. Your logo will show up
 
 **Do you need help with machine learning and data science in R, Python, or Julia?**
 I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)
+
+## Non-financial ways to contribute
+
+Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute
+
+* Write a blogpost about your `{disk.frame}`. I would love to learn more about how `{disk.frame}` has helped you
+* Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to help promote it
+* Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by [raising an issue here](https://github.com/xiaodaigh/disk.frame/issues)
+* Star the [`{disk.frame}` Github repo](https://github.com/xiaodaigh/disk.frame)
+* Star any repo that `{disk.frame}` depends on e.g. [`{fst}`](https://github.com/fstpackage/fst) and [`{future}`](https://github.com/HenrikBengtsson/future)
 
 ## Download Counts & Build Status
 

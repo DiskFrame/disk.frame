@@ -190,7 +190,11 @@
 <a class="sourceLine" id="cb5-19" title="19">} <span class="cf">else</span> {</a>
 <a class="sourceLine" id="cb5-20" title="20">  <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span></a>
 <a class="sourceLine" id="cb5-21" title="21">}</a>
-<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt;   term        estimate std.error  p.value</span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; 1 (Intercept)   -17.6      6.76  9.29e- 3</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt; 2 speed           3.93     0.416 2.96e-21</span></a></code></pre></div>
 <p>The syntax didn’t change at all! You are able to enjoy the benefits of <code>disk.frame</code> when dealing with larger-than-RAM data.</p>
 </div>
 <div id="logistic-regression" class="section level2">
@@ -227,7 +231,14 @@
 <a class="sourceLine" id="cb6-28" title="28">} <span class="cf">else</span> {</a>
 <a class="sourceLine" id="cb6-29" title="29">  <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span></a>
 <a class="sourceLine" id="cb6-30" title="30">}</a>
-<a class="sourceLine" id="cb6-31" title="31"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-31" title="31"><span class="co">#&gt; # A tibble: 5 x 4</span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="co">#&gt;   term         estimate std.error  p.value</span></a>
+<a class="sourceLine" id="cb6-33" title="33"><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-34" title="34"><span class="co">#&gt; 1 (Intercept)     7.38      2.50  0.00315 </span></a>
+<a class="sourceLine" id="cb6-35" title="35"><span class="co">#&gt; 2 Sepal.Length   -0.245     0.650 0.706   </span></a>
+<a class="sourceLine" id="cb6-36" title="36"><span class="co">#&gt; 3 Sepal.Width    -2.80      0.784 0.000358</span></a>
+<a class="sourceLine" id="cb6-37" title="37"><span class="co">#&gt; 4 Petal.Length    1.31      0.684 0.0547  </span></a>
+<a class="sourceLine" id="cb6-38" title="38"><span class="co">#&gt; 5 Petal.Width    -2.78      1.17  0.0179</span></a></code></pre></div>
 <p>The arguments to the <code>dfglm</code> function are the same as the arguments to <code><a href="https://rdrr.io/pkg/biglm/man/bigglm.html">biglm::bigglm</a></code> which are based on the <code>glm</code> function. Please check their documentations for other argument options.</p>
 </div>
 <div id="notes" class="section level2">

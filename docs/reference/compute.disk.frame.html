@@ -191,11 +191,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
-<span class='no'>cars.df2</span> <span class='kw'>=</span> <span class='no'>cars.df</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='cmap.html'>cmap</a></span>(~<span class='no'>.x</span>)</div><div class='output co'>#&gt; <span class='error'>Error in cmap(., ~.x): could not find function "cmap"</span></div><div class='input'><span class='co'># the computation is performed and the data is now stored elsewhere</span>
-<span class='no'>cars.df3</span> <span class='kw'>=</span> <span class='fu'>compute</span>(<span class='no'>cars.df2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in compute(cars.df2): object 'cars.df2' not found</span></div><div class='input'>
+<span class='no'>cars.df2</span> <span class='kw'>=</span> <span class='no'>cars.df</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='cmap.html'>cmap</a></span>(~<span class='no'>.x</span>)
+<span class='co'># the computation is performed and the data is now stored elsewhere</span>
+<span class='no'>cars.df3</span> <span class='kw'>=</span> <span class='fu'>compute</span>(<span class='no'>cars.df2</span>)
+
 <span class='co'># clean up</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in "disk.frame" %in% class(df): object 'cars.df3' not found</span></div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df3</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

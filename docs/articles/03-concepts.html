@@ -149,8 +149,8 @@
 <div id="how-disk-frame-works" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-disk-frame-works" class="anchor"></a>How <code>{disk.frame}</code> works</h2>
-<p>When <code>df %&gt;% some_fn %&gt;% collect</code> is callled. The <code>some_fn</code> is applied to each chunk of <code>df</code>. The collect will row-bind the results from <code>some_fn(chunk)</code>together if the returned value of <code>some_fn</code> is a data.frame, or it will return a <code>list</code> containing the results of <code>some_fn</code>.</p>
-<p>The session that receives these results is called the <strong>main session</strong>. In general, we should try to minimise the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.</p>
+<p>When <code>df %&gt;% some_fn %&gt;% collect</code> is called. The <code>some_fn</code> is applied to each chunk of <code>df</code>. The collect will row-bind the results from <code>some_fn(chunk)</code>together if the returned value of <code>some_fn</code> is a data.frame, or it will return a <code>list</code> containing the results of <code>some_fn</code>.</p>
+<p>The session that receives these results is called the <strong>main session</strong>. In general, we should try to minimize the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.</p>
 <p>Also, please note that there is no communication between the workers, except for workers passing data back to the main session.</p>
 </div>
 </div>

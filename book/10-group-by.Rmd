@@ -23,15 +23,18 @@ The group-by framework of [`{disk.frame}`](https://diskframe.com) has been overh
 
 1. How to use one-stage group-by
 2. Manual two-stage group and hard group-by
-3. The architecture of `{disk.frame}` and its implications for group-by
-4. How to define custom one-stage group-by functions and its limitatons
+
+In the custom [one-stage group-by chapter](https://diskframe.com/articles/custom-group-by.html), we will cover
+
+* The architecture of `{disk.frame}` and its implications for group-by
+* How to define custom one-stage group-by functions and its limitations
 
 
 ## One-stage Group-by
 
-A one-stage group-by is the same as group-by for data.frames. This would be remarkable, if not for the limitaions imposed by the disk-based nature of `{disk.frame}`.  Before v0.3.0 of `{disk.frame}`, one-stage group-by was not possible, and the users had to rely to two-stage group-by even for simple operations like `mean`. 
+A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitations imposed by the disk-based nature of `{disk.frame}`.  Before v0.3.0 of `{disk.frame}`, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like `mean`. 
 
-However, now that one-stage group-by is possible, there are still limiations and not all functions are supported out-of-the-box. Hence, in the next chapter we have described how to define custom one-stage group-by functions.
+However, now that one-stage group-by is possible, there are still limitations and not all functions are supported out-of-the-box. Hence, in the next chapter we will describe how to define custom one-stage group-by functions.
 
 An example of one-stage group-by:
 
@@ -52,7 +55,7 @@ result_from_disk.frame = iris %>%
   collect
 ```
 
-It is important to note that not all functions that can run in `data.frame` `summarize` would work automatically. This is because of how `{disk.frame}` works. Please see the secion on [defining your own one-stage-group-by](### Defining your own one-stage group-by) if you wish to learn how to define your own one-stage group-by functions.
+It is important to note that not all functions that can run in `dplyr::summarize` would work automatically. This is because of how `{disk.frame}` works. Please see the next chapter on defining custom one-stage group-by functions to learn more.
 
 ### List of supported group-by functions
 
@@ -219,38 +222,3 @@ cat("group-by took: ", data.table::timetaken(pt), "\n")
 
 collect(res1)
 ```
-
-
-
-
-
-## Advertisements
-
-### Interested in learning `{disk.frame}` in a structured course?
-
-Please register your interest at:
-
-https://leanpub.com/c/taminglarger-than-ramwithdiskframe
-
-### Open Collective 
-
-If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider sponsoring {disk.frame} on Open Collective. Your logo will show up here with a link to your website.
-
-#### Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/diskframe#backer)]
-
-<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
-
-[![Backers on Open Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-
-#### Sponsors
-
- [[Become a sponsor](https://opencollective.com/diskframe#sponsor)]
-
- [![Sponsors on Open Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors) 
-
-### Contact me for consulting
-
-**Do you need help with machine learning and data science in R, Python, or Julia?**
-I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Email me](mailto:dzj@analytixware.com)

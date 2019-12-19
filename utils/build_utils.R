@@ -23,6 +23,18 @@ df_build_site <- function() {
   pkgdown::build_site()
 }
 
+df_build_readme <- function() {
+  if(fs::dir_exists("README_cache")) {
+    fs::dir_delete("README_cache")
+  }
+  
+  if(fs::file_exists("README.md")) {
+    fs::file_delete("README.md")
+  }
+  
+  rmarkdown::render("README.rmd", output_file = "README.md")
+}
+
 # setup vignette but does not build
 df_setup_vignette <- function(excl = "", strip_number = FALSE) {
   # remove cache
@@ -83,6 +95,11 @@ df_ready_for_cran <- function() {
   if(fs::dir_exists("tests")) {
     fs::dir_copy("tests", "tests_manual")
     fs::dir_delete("tests")
+  }
+  
+  # remove README_cache
+  if(fs::dir_exists("README_cache")) {
+    fs::dir_delete("README_cache")
   }
 }
 

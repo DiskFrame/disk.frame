@@ -114,7 +114,7 @@
 <a href="#diskframe-" class="anchor"></a>disk.frame <img src="inst/figures/disk.frame.png" align="right">
 </h1></div>
 <details><summary>Please take a moment to star the disk.frame Github repo if you
-like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&amp;repo=disk.frame&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&amp;repo=disk.frame&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 </details><!-- badges: start --><!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") --><!-- badges: end -->
 </div>
@@ -143,7 +143,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>Please see these vignettes and articles about <code>{disk.frame}</code></p>
 <ul>
 <li>
-<a href="https://daizj.net/disk.frame/articles/intro-disk-frame.html">Quick start: <code>{disk.frame}</code></a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</li>
+<a href="https://diskframe.com/articles/intro-disk-frame.html">Quick start: <code>{disk.frame}</code></a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</li>
 <li>
 <a href="https://diskframe.com/articles/ingesting-data.html">Ingesting data into <code>{disk.frame}</code></a> which lists some commons way of creating disk.frames</li>
 <li>
@@ -250,8 +250,8 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 </div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
-<a href="#group-by" class="anchor"></a>Group by</h3>
-<p>Starting from {disk.frame} v0.2.2, there is for support <code>group_by</code> for a limited set of functions. For example:</p>
+<a href="#group-by" class="anchor"></a>Group-by</h3>
+<p>Starting from <code>{disk.frame}</code> v0.3.0, there is for support <code>group_by</code> for a limited set of functions. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">result_from_disk.frame =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span>as.disk.frame <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -266,11 +266,11 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <a class="sourceLine" id="cb7-12" title="12">    <span class="kw"><a href="https://rdrr.io/r/stats/median.html">median</a></span>(Sepal.Width)</a>
 <a class="sourceLine" id="cb7-13" title="13">    ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-14" title="14"><span class="st">  </span>collect</a></code></pre></div>
-<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not then please <a href="https://github.com/xiaodaigh/disk.frame/issues">report a bug</a>.</p>
+<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please <a href="https://github.com/xiaodaigh/disk.frame/issues">report a bug</a>.</p>
 <div id="list-of-supported-group-by-functions" class="section level4">
 <h4 class="hasAnchor">
 <a href="#list-of-supported-group-by-functions" class="anchor"></a>List of supported group-by functions</h4>
-<p>If a function you like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues">here</a>. It is a limitation that function that depend on the order a column can only obtained using estimated methods.</p>
+<p>If a function you like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues">here</a>. It is a limitation that function that depend on the order a column can only be obtained using estimated methods.</p>
 <table class="table">
 <thead><tr class="header">
 <th>Function</th>
@@ -398,7 +398,7 @@ like disk.frame. It keeps me going.</summary><iframe src="https://ghbtns.com/git
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># where is the disk.frame stored</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpUj0nGv\\file40647af34986.df"</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpABqAEb\\file43942e9efc7.df"</span></a></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># get first few rows</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df, <span class="dv">1</span>)</a>

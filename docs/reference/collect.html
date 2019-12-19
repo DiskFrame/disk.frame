@@ -260,7 +260,24 @@ hence parallel = FALSE is a better choice</p></td>
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 
 <span class='co'># returns the result as a list</span>
-<span class='fu'>collect_list</span>(<span class='fu'><a href='cmap.html'>cmap</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; <span class='error'>Error in cmap(cars.df, ~1): could not find function "cmap"</span></div><div class='input'>
+<span class='fu'>collect_list</span>(<span class='fu'><a href='cmap.html'>cmap</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 1
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] 1
+#&gt; </div><div class='input'>
 <span class='co'># clean up</span>
 <span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
