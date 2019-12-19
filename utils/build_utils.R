@@ -17,6 +17,7 @@
 # }
 
 df_build_site <- function() {
+  df_build_readme()
   df_setup_vignette()
   devtools::document()
   #devtools::build_readme()
@@ -85,6 +86,8 @@ df_build_vignettes_for_cran <- function() {
 }
 
 df_ready_for_cran <- function() {
+  df_build_readme()
+  
   devtools::clean_vignettes()
   df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"), strip_number = TRUE)
   

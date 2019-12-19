@@ -143,10 +143,10 @@ individual chunks.
 
 `{disk.frame}` makes it easy to manipulate the underlying chunks by
 implementing `dplyr` functions/verbs and other convenient functions
-(e.g. the `map.disk.frame(a.disk.frame, fn, lazy = F)` function which
-applies the function `fn` to each chunk of `a.disk.frame` in parallel).
-So that `{disk.frame}` can be manipulated in a similar fashion to
-in-memory `data.frame`s.
+(e.g. the `cmap(a.disk.frame, fn, lazy = F)` function which applies the
+function `fn` to each chunk of `a.disk.frame` in parallel). So that
+`{disk.frame}` can be manipulated in a similar fashion to in-memory
+`data.frame`s.
 
 ### e) How is `{disk.frame}` different from Spark, Dask, and JuliaDB.jl?
 
@@ -326,7 +326,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpeoxh5E\\file4c5c517b5f0c.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpw1XZxE\\file324828a078e7.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
