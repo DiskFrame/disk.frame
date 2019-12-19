@@ -226,7 +226,7 @@ The `by` variables that were used to shard the dataset are called the `shardkey`
 
 ## Group-by
 
-`{disk.frame}` implements the `group_by` operation some caveats. In the `{disk.frame}` framework, only a set functions are supported in `summarize`. However, the user can create more custom `group-by` functions can be defined. For more information see [group-by](10-group-by.Rmd)
+`{disk.frame}` implements the `group_by` operation some caveats. In the `{disk.frame}` framework, only a set functions are supported in `summarize`. However, the user can create more custom `group-by` functions can be defined.
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
@@ -290,7 +290,7 @@ flights.df %>%
 
 `{disk.frame}` supports all `data.frame` operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like `min_rank` and `rank` are supported out of the box. 
 
-For the following example, we will use the `hard_group_by` which performs a group-by and also reorganises the chunks so that all records with the same `year`, `month`, and `day` end up in the same chunk. This is typically not adviced, as `hard_group_by` can be slow for large datasets.
+For the following example, we will use the `hard_group_by` which performs a group-by and also reorganises the chunks so that all records with the same `year`, `month`, and `day` end up in the same chunk. This is typically not advised, as `hard_group_by` can be slow for large datasets.
 
 ```{r, dependson='asdiskframe'}
 # Find the most and least delayed flight each day

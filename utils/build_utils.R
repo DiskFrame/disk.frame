@@ -84,11 +84,15 @@ df_ready_for_cran <- function() {
     fs::dir_copy("tests", "tests_manual")
     fs::dir_delete("tests")
   }
+  
+  # remove README_cache
+  if(fs::dir_exists("README_cache")) {
+    fs::dir_delete("README_cache")
+  }
 }
 
 df_check <- function() {
   df_ready_for_cran()
-  fs::dir_delete("README_cache")
   devtools::check(args = c('--as-cran'))
 }
 

@@ -60,9 +60,9 @@ future::nbrOfWorkers()
 
 ## How `{disk.frame}` works
 
-When `df %>% some_fn %>% collect` is callled. The `some_fn` is applied to each chunk of `df`. The collect will row-bind the results from `some_fn(chunk)`together if the returned value of `some_fn` is a data.frame, or it will return a `list` containing the results of `some_fn`.
+When `df %>% some_fn %>% collect` is called. The `some_fn` is applied to each chunk of `df`. The collect will row-bind the results from `some_fn(chunk)`together if the returned value of `some_fn` is a data.frame, or it will return a `list` containing the results of `some_fn`.
 
-The session that receives these results is called the **main session**. In general, we should try to minimise the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.
+The session that receives these results is called the **main session**. In general, we should try to minimize the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.
 
 Also, please note that there is no communication between the workers, except for workers passing data back to the main session.
 

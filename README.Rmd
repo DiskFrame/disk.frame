@@ -64,7 +64,7 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 Please see these vignettes and articles about `{disk.frame}`
 
   - [Quick start:
-    `{disk.frame}`](https://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    `{disk.frame}`](https://diskframe.com/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into `{disk.frame}`](https://diskframe.com/articles/ingesting-data.html) which lists some commons way of creating disk.frames

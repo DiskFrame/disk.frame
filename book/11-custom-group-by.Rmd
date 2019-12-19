@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 `{disk.frame}` allows the user to enable create custom one-stage group-by functions. To make a function `fn` one stage. One needs to define two functions
 
 1. `fn_df.chunk_agg.disk.frame` which applies itself to each chunk
-2. `fn_df.collected_agg.disk.frame` which accpets a `list` of returns from `fn_df.chunk_agg.disk.frame` and finalize the computation
+2. `fn_df.collected_agg.disk.frame` which accepts a `list` of returns from `fn_df.chunk_agg.disk.frame` and finalize the computation
 
 For example, to make `mean` a one-stage group-by function, `{disk.frame}` has defined `mean_df.chunk_agg.disk.frame` and `mean_df.collected_agg.disk.frame`, which we will illustrate with examples below.
 
@@ -34,9 +34,9 @@ But first, we shall explain some theory behind `{disk.frame}` to help you better
 
 One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like `median` only produce estimates instead of producing the exact figure? To answer these question, we need to have an understanding of how `{disk.frame}` works.
 
-A `disk.frame` is organized as chunks stored on disk. Each chunk is a file stored in [fst format](https://www.fstpackage.org/). The [`{future}` package](https://cran.r-project.org/web/packages/future/index.html) is used to apply the same function to each chunk, each of these operations are carried out in a separate R session. These R sessions cannot communicate with each other during the execution of the operations.
+A `disk.frame` is organized as chunks stored on disk. Each chunk is a file stored in [fst format](https://www.fstpackage.org/). The [`{future}` package](https://CRAN.R-project.org/package=future) is used to apply the same function to each chunk, each of these operations are carried out in a separate R session. These R sessions cannot communicate with each other during the execution of the operations.
 
-Once the operations have been performed on all chunks, the results will be bought back to the session from which the operations were called. This is the only point of interprocess communication. 
+Once the operations have been performed on all chunks, the results will be bought back to the session from which the operations were called. This is the only point of inter-process communication. 
 
 To summarize, the two phases of a `df %>% some_fn %>% collect` operation is 
 
@@ -192,4 +192,4 @@ and there are no communication between the sessions that applies the functions a
 
 Hence, it is generally difficult to compute rank based summarizations like `median` exactly. Hence most rank based calculations are estimates only. This is also true of distributed data system like Spark whose median function is also estimates only.
 
-Another limitation for now is that summarization that is more complext then `f(x)` is not supported. E.g. `sum(x) + 1`, `sum(x + mean(x))`, `sum(x) + mean(x)`, and `fn(sum(x))` are not yet supported as arguments in the `summarize` function.
+Another limitation for now is that summarization that is more complex then `f(x)` is not supported. E.g. `sum(x) + 1`, `sum(x + mean(x))`, `sum(x) + mean(x)`, and `fn(sum(x))` are not yet supported as arguments in the `summarize` function.

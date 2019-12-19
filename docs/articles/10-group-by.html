@@ -124,14 +124,17 @@
 <ol style="list-style-type: decimal">
 <li>How to use one-stage group-by</li>
 <li>Manual two-stage group and hard group-by</li>
-<li>The architecture of <code>{disk.frame}</code> and its implications for group-by</li>
-<li>How to define custom one-stage group-by functions and its limitatons</li>
 </ol>
+<p>In the custom <a href="https://diskframe.com/articles/custom-group-by.html">one-stage group-by chapter</a>, we will cover</p>
+<ul>
+<li>The architecture of <code>{disk.frame}</code> and its implications for group-by</li>
+<li>How to define custom one-stage group-by functions and its limitations</li>
+</ul>
 <div id="one-stage-group-by" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-stage-group-by" class="anchor"></a>One-stage Group-by</h2>
-<p>A one-stage group-by is the same as group-by for data.frames. This would be remarkable, if not for the limitaions imposed by the disk-based nature of <code>{disk.frame}</code>. Before v0.3.0 of <code>{disk.frame}</code>, one-stage group-by was not possible, and the users had to rely to two-stage group-by even for simple operations like <code>mean</code>.</p>
-<p>However, now that one-stage group-by is possible, there are still limiations and not all functions are supported out-of-the-box. Hence, in the next chapter we have described how to define custom one-stage group-by functions.</p>
+<p>A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitations imposed by the disk-based nature of <code>{disk.frame}</code>. Before v0.3.0 of <code>{disk.frame}</code>, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like <code>mean</code>.</p>
+<p>However, now that one-stage group-by is possible, there are still limitations and not all functions are supported out-of-the-box. Hence, in the next chapter we will describe how to define custom one-stage group-by functions.</p>
 <p>An example of one-stage group-by:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">result_from_disk.frame =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="st">  </span>as.disk.frame <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -147,7 +150,7 @@
 <a class="sourceLine" id="cb1-12" title="12">    <span class="kw"><a href="https://rdrr.io/r/stats/median.html">median</a></span>(Sepal.Width)</a>
 <a class="sourceLine" id="cb1-13" title="13">    ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-14" title="14"><span class="st">  </span>collect</a></code></pre></div>
-<p>It is important to note that not all functions that can run in <code>data.frame</code> <code>summarize</code> would work automatically. This is because of how <code>{disk.frame}</code> works. Please see the secion on <a href="###%20Defining%20your%20own%20one-stage%20group-by">defining your own one-stage-group-by</a> if you wish to learn how to define your own one-stage group-by functions.</p>
+<p>It is important to note that not all functions that can run in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> would work automatically. This is because of how <code>{disk.frame}</code> works. Please see the next chapter on defining custom one-stage group-by functions to learn more.</p>
 <div id="list-of-supported-group-by-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#list-of-supported-group-by-functions" class="anchor"></a>List of supported group-by functions</h3>
@@ -350,39 +353,6 @@
 <a class="sourceLine" id="cb10-10" title="10"></a>
 <a class="sourceLine" id="cb10-11" title="11"><span class="kw">collect</span>(res1)</a></code></pre></div>
 </div>
-<div id="advertisements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#advertisements" class="anchor"></a>Advertisements</h2>
-<div id="interested-in-learning-disk-frame-in-a-structured-course" class="section level3">
-<h3 class="hasAnchor">
-<a href="#interested-in-learning-disk-frame-in-a-structured-course" class="anchor"></a>Interested in learning <code>{disk.frame}</code> in a structured course?</h3>
-<p>Please register your interest at:</p>
-<p><a href="https://leanpub.com/c/taminglarger-than-ramwithdiskframe" class="uri">https://leanpub.com/c/taminglarger-than-ramwithdiskframe</a></p>
-</div>
-<div id="open-collective" class="section level3">
-<h3 class="hasAnchor">
-<a href="#open-collective" class="anchor"></a>Open Collective</h3>
-<p>If you like disk.frame and want to speed up its development or perhaps you have a feature request? Please consider sponsoring {disk.frame} on Open Collective. Your logo will show up here with a link to your website.</p>
-<div id="backers" class="section level4">
-<h4 class="hasAnchor">
-<a href="#backers" class="anchor"></a>Backers</h4>
-<p>Thank you to all our backers! 🙏 [<a href="https://opencollective.com/diskframe#backer">Become a backer</a>]</p>
-<p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
-<p><a href="#backers"><img src="https://opencollective.com/diskframe/backers/badge.svg" alt="Backers on Open Collective"></a></p>
-</div>
-<div id="sponsors" class="section level4">
-<h4 class="hasAnchor">
-<a href="#sponsors" class="anchor"></a>Sponsors</h4>
-<p>[<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
-<p><a href="#sponsors"><img src="https://opencollective.com/diskframe/sponsors/badge.svg" alt="Sponsors on Open Collective"></a></p>
-</div>
-</div>
-<div id="contact-me-for-consulting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h3>
-<p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
-</div>
-</div>
 </div>
   </div>
 
@@ -398,7 +368,6 @@
       <li><a href="#group-by-notes">Group-by notes</a></li>
       <li><a href="#two-stage-group-by">Two-Stage Group-by</a></li>
       <li><a href="#hard-group-by">Hard group-by</a></li>
-      <li><a href="#advertisements">Advertisements</a></li>
       </ul>
 </li>
       </ul>

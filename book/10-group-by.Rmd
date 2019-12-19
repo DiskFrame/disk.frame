@@ -27,14 +27,14 @@ The group-by framework of [`{disk.frame}`](https://diskframe.com) has been overh
 In the custom [one-stage group-by chapter](https://diskframe.com/articles/custom-group-by.html), we will cover
 
 * The architecture of `{disk.frame}` and its implications for group-by
-* How to define custom one-stage group-by functions and its limitatons
+* How to define custom one-stage group-by functions and its limitations
 
 
 ## One-stage Group-by
 
-A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitaions imposed by the disk-based nature of `{disk.frame}`.  Before v0.3.0 of `{disk.frame}`, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like `mean`. 
+A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitations imposed by the disk-based nature of `{disk.frame}`.  Before v0.3.0 of `{disk.frame}`, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like `mean`. 
 
-However, now that one-stage group-by is possible, there are still limiations and not all functions are supported out-of-the-box. Hence, in the next chapter we will describe how to define custom one-stage group-by functions.
+However, now that one-stage group-by is possible, there are still limitations and not all functions are supported out-of-the-box. Hence, in the next chapter we will describe how to define custom one-stage group-by functions.
 
 An example of one-stage group-by:
 

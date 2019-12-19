@@ -63,7 +63,7 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 Please see these vignettes and articles about `{disk.frame}`
 
   - [Quick start:
-    `{disk.frame}`](https://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    `{disk.frame}`](https://diskframe.com/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into
@@ -336,7 +336,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpMTeRLq\\file3b941e046e86.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpABqAEb\\file43942e9efc7.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame

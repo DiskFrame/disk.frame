@@ -38,7 +38,7 @@ mtcars.df %>%
 
 you can press tab in RStudio and it will show all column available
 
-### Insert ceremony/boilerplace into code in RStudio
+### Insert ceremony/boilerplate into code in RStudio
 
 The below will insert the recommended ceremony code into your editor
 ```r
