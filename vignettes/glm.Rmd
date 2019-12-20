@@ -44,7 +44,7 @@ would fit a linear model on the data `cars` with `dist` as the target and `speed
 summary(m)
 ```
 
-or if you have {`broom`} installed
+or if you have `{broom}` installed
 
 ```{r, depeondson='glm'}
 broom::tidy(m)
@@ -54,17 +54,26 @@ With {`disk.frame`}, you can run GLM `dfglm` function, where the `df` stands for
 ```{r dependson='setup'}
 cars.df = as.disk.frame(cars)
 
-m = dfglm(dist ~speed, cars.df)
+m = dfglm(dist ~ speed, cars.df)
 
 summary(m)
 
-broom::tidy(m)
+
+majorv = as.integer(version$major)
+minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+
+if((majorv == 3) & (minorv >= 6)) {
+  broom::tidy(m)
+} else {
+  # broom doesn't work in version < R3.6 because biglm does not work
+}
+
 ```
 
 The syntax didn't change at all! You are able to enjoy the benefits of `disk.frame` when dealing with larger-than-RAM data.
 
 ## Logistic regression
-Logistic regression is one of the most commonly deployed machine learning (ML) models. It is often used to build binary classification model
+Logistic regression is one of the most commonly deployed machine learning (ML) models. It is often used to build binary classification models
 
 ```{r dependson='setup'}
 iris.df = as.disk.frame(iris)
@@ -81,14 +90,22 @@ iris_model = dfglm(formula , data = iris.df, family=binomial())
 
 summary(iris_model)
 
-broom::tidy(iris_model)
+majorv = as.integer(version$major)
+minorv = as.integer(strsplit(version$minor, ".", fixed=TRUE)[[1]][1])
+
+if((majorv == 3) & (minorv >= 6)) {
+  broom::tidy(iris_model)
+} else {
+  # broom doesn't work in version < R3.6 because biglm does not work
+}
+
 ```
 
 The arguments to the `dfglm` function are the same as the arguments to `biglm::bigglm` which are based on the `glm` function. Please check their documentations for other argument options.
 
 ## Notes
-Unfortunately, neither `biglm` nor `speedglm` are managed on open-source platforms, so it's more difficult to contribute to them by making bug fixes and submitting bug reports. So bugs are likely to persists. There is an active effort on `disk.frame` to look for alternatives. Example of avenues to explore include tighter integration with {`keras`}, h2o, or Julia's OnlineStats.jl for model fit purposes.
+`{disk.frame}` uses `{biglm}` and `{speedglm}` as the backend for GLMs. Unfortunately, neither package is managed on open-source platforms, so it's more difficult to contribute to them by making bug fixes and submitting bug reports. So bugs are likely to persists. There is an active effort on `disk.frame` to look for alternatives. Example of avenues to explore include tighter integration with `{keras}`, h2o, or Julia's OnlineStats.jl for model fit purposes.
 
-Another package for larger-than-RAM glm fitting, {`bigFastlm`}, has been taken off CRAN, it is managed on Github.
+Another package for larger-than-RAM glm fitting, `{bigFastlm}`, has been taken off CRAN, it is managed on Github.
 
 Currently, parallel processing of GLM fit are not possible with {`disk.frame`}. 

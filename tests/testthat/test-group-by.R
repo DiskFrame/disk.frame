@@ -89,6 +89,27 @@ test_that("new group_by framework - nested-group-by", {
   expect_true(TRUE)
 })
 
+test_that("guard against github #241", {
+  if(interactive()) {
+    result_from_disk.frame = iris %>%
+      as.disk.frame(nchunks = 1) %>%
+      group_by(Species) %>%
+      summarize(
+        mean(Petal.Length),
+        sumx = sum(Petal.Length/Sepal.Width),
+        sd(Sepal.Width/ Petal.Length),
+        var(Sepal.Width/ Sepal.Width),
+        l = length(Sepal.Width/ Sepal.Width + 2),
+        max(Sepal.Width),
+        min(Sepal.Width),
+        median(Sepal.Width)
+      ) %>%
+      collect
+  } else {
+    expect_true(TRUE)
+  }
+})
+
 
 test_that("group_by", {
   dff = csv_to_disk.frame(

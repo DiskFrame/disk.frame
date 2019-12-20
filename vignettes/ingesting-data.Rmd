@@ -15,7 +15,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-Let's set-up `disk.frame`
+# Ingesting Data
+
+One of the most important tasks to perform before using the `{disk.frame}` package is to make some `disk.frame`s! There are a few functions to help you do that. Before we do that, we set up the `{disk.frame}` as usual
+
+**Setting up**
+
 ```r
 library(disk.frame)
 
@@ -31,10 +36,8 @@ if(interactive()) {
 
 ```
 
-One of the most important tasks to perform before using the `disk.frame` package is to make some `disk.frame`s! There are a few functions to help you do that.
-
 ## Convert a `data.frame` to `disk.frame`
-Firstly there is `as.disk.frame()` which allows you to make a `disk.frame` from a `data.frame`, e.g.
+Firstly, there is `as.disk.frame()` which allows you to make a `disk.frame` from a `data.frame`, e.g.
 
 ```r
 flights.df = as.disk.frame(nycflights13::flights)
