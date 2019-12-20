@@ -274,6 +274,7 @@ The work priorities at this stage are
 
 | Title | Author | Date | Description |
 | -- | -- | -- | -- |
+| 25 days of disk.frame | ZJ | 2019-12-01 | 25 tweets about `{disk.frame}` |
 | https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining | Knut Jägersberg | 20191111 | Great answer on using disk.frame |
 | [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/) | Bruno Rodriguez | 20190903 | It's about loading a 30G file into `{disk.frame}` |
 | [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/) | Jacky Poon | 20190903 | `{disk.frame}` was number 3 |

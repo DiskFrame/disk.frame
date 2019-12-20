@@ -6,7 +6,8 @@
 #' @rdname one-stage-group-by-verbs
 #' @export
 var_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
-  c(
+  # Guard against Github #241
+  data.frame(
     sumx = sum(x, na.rm = na.rm), 
     sumsqrx = sum(x^2, na.rm = na.rm), 
     nx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
@@ -18,7 +19,7 @@ var_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE) {
 #' @importFrom dplyr bind_rows
 var_df.collected_agg.disk.frame <- function(listx)  {
   df = Reduce(dplyr::bind_rows, listx)
-  
+
   sumlengthx = sum(df$nx)
 
   first_part = sum(df$sumsqrx) / sumlengthx
@@ -45,14 +46,14 @@ sd_df.collected_agg.disk.frame <- function(listx)  {
 mean_df.chunk_agg.disk.frame <- function(x, na.rm = FALSE, ...) {
   sumx = sum(x, na.rm = na.rm)
   lengthx = length(x) - ifelse(na.rm, sum(is.na(x)), 0)
-  c(sumx = sumx, lengthx = lengthx)
+  data.frame(sumx = sumx, lengthx = lengthx)
 }
 
 #' mean collected_agg
 #' @export
 #' @rdname one-stage-group-by-verbs
 mean_df.collected_agg.disk.frame <- function(listx) {
-  sum(sapply(listx, function(x) x["sumx"]))/sum(sapply(listx, function(x) x["lengthx"]))
+  sum(sapply(listx, function(x) x$sumx))/sum(sapply(listx, function(x) x$lengthx))
 }
 
 #' @export

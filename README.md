@@ -326,7 +326,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpw1XZxE\\file324828a078e7.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpa6R05d\\file1b086cec36c7.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -384,15 +384,16 @@ The work priorities at this stage are
 
 ## Blogs and other resources
 
-| Title                                                                                                                                 | Author          | Date     | Description                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------- | --------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| <https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining>                                | Knut Jägersberg | 20191111 | Great answer on using disk.frame                                                                   |
-| [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/)                                                       | Bruno Rodriguez | 20190903 | It’s about loading a 30G file into `{disk.frame}`                                                  |
-| [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/)          | Jacky Poon      | 20190903 | `{disk.frame}` was number 3                                                                        |
-| [useR\! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                         | Dai ZJ          | 20190803 |                                                                                                    |
-| [useR\! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                               | Dai ZJ          | 20190803 |                                                                                                    |
-| [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | Bruno Rodriguez | 20191006 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
-| [Emma goes to useR\! 2019](https://emmavestesson.netlify.com/2019/07/user2019/)                                                       | Emma Vestesson  | 20190716 | The first mention of `{disk.frame}` in a blog post                                                 |
+| Title                                                                                                                                 | Author          | Date       | Description                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+| 25 days of disk.frame                                                                                                                 | ZJ              | 2019-12-01 | 25 tweets about `{disk.frame}`                                                                     |
+| <https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining>                                | Knut Jägersberg | 20191111   | Great answer on using disk.frame                                                                   |
+| [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/)                                                       | Bruno Rodriguez | 20190903   | It’s about loading a 30G file into `{disk.frame}`                                                  |
+| [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/)          | Jacky Poon      | 20190903   | `{disk.frame}` was number 3                                                                        |
+| [useR\! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                         | Dai ZJ          | 20190803   |                                                                                                    |
+| [useR\! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                               | Dai ZJ          | 20190803   |                                                                                                    |
+| [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | Bruno Rodriguez | 20191006   | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
+| [Emma goes to useR\! 2019](https://emmavestesson.netlify.com/2019/07/user2019/)                                                       | Emma Vestesson  | 20190716   | The first mention of `{disk.frame}` in a blog post                                                 |
 
 ### Interested in learning `{disk.frame}` in a structured course?
 
