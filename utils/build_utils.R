@@ -28,12 +28,20 @@ df_build_readme <- function() {
   if(fs::dir_exists("README_cache")) {
     fs::dir_delete("README_cache")
   }
-  
-  if(fs::file_exists("README.md")) {
-    fs::file_delete("README.md")
-  }
+  # 
+  # if(fs::file_exists("README.md")) {
+  #   fs::file_delete("README.md")
+  # }
   
   rmarkdown::render("README.rmd", output_file = "README.md")
+
+  if(fs::file_exists("README.html")) {
+    fs::file_delete("README.html")
+  }
+
+  if(fs::dir_exists("README_cache")) {
+    fs::dir_delete("README_cache")
+  }
 }
 
 # setup vignette but does not build

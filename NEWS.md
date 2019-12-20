@@ -1,3 +1,6 @@
+# disk.frame 0.3.1
+* urgent bug fix for group-by failing when the number chunks is 1; see Github #241
+
 # disk.frame 0.3.0
 * experimental one-stage group-by framework!
 * bug fixes for data.table trigger by integration with tidyfast
