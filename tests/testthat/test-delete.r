@@ -7,7 +7,7 @@ setup({
 
 test_that("data.table .N", {
   df = disk.frame(file.path(tempdir(), "tmp_del_delete"))
-  p = attr(df, "path")
+  p = attr(df, "path", exact=TRUE)
   expect_true(fs::dir_exists(p))
   
   delete(df)
