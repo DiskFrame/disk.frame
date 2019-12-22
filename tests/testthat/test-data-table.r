@@ -1,4 +1,4 @@
-context("test-data.table [")
+context("test-data.table [[")
 
 setup({
   library(data.table)
@@ -9,7 +9,8 @@ setup({
 test_that("data.table .N", {
   library(data.table)
   df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
-  expect_warning(res <- sum(unlist(df[,.N])))
+  df[[, .N]]
+  expect_warning(res <- sum(unlist(df[[,.N]])))
   expect_equal(res , 1e5+11)
 })
 
