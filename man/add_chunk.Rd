@@ -50,7 +50,7 @@ add_chunk(df2, data.frame(chunk=2), 3)
 
 nchunks(df2) # 2
 
-dir(attr(df2, "path"))
+dir(attr(df2, "path", exact=TRUE))
 # [1] "1.fst" "3.fst"
 
 # clean up

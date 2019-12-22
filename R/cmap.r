@@ -76,7 +76,7 @@ cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nc
   
   stopifnot(is_ready(.x))
   
-  keep1 = attr(.x,"keep")
+  keep1 = attr(.x,"keep", exact=TRUE)
   
   if(is.null(keep)) {
     keep = keep1
@@ -163,7 +163,7 @@ cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunk
   
   stopifnot(is_ready(.x))
   
-  keep1 = attr(.x,"keep")
+  keep1 = attr(.x,"keep", exact=TRUE)
   
   if(is.null(keep)) {
     keep = keep1

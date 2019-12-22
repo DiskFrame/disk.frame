@@ -32,8 +32,8 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
   } else if (merge_by_chunk_id | shardkey_equal(shardkey(x), shardkey(y))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
-    path1 = attr(x,"path")
-    path2 = attr(y,"path")
+    path1 = attr(x,"path", exact=TRUE)
+    path2 = attr(y,"path", exact=TRUE)
     
     df3 = merge(
       data.table(

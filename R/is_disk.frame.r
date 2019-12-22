@@ -12,7 +12,7 @@
 is_disk.frame <- function(df) {
   ##browser
   if("disk.frame" %in% class(df)) {
-    df = attr(df, "path")
+    df = attr(df, "path", exact=TRUE)
   } else if(!"character" %in% class(df)) { # character then check the path
     return(FALSE)
   }

@@ -100,7 +100,6 @@ df_ready_for_cran <- function() {
   df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"), strip_number = TRUE)
   
   devtools::document()
-  #devtools::build_readme()
   
   # rename tests
   if(fs::dir_exists("tests")) {

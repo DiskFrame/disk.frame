@@ -33,7 +33,7 @@ rbindlist.disk.frame <- function(df_list, outdir = tempfile(fileext = ".df"), by
   })
   
   if(by_chunk_id) {
-    list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path"))
+    list_of_paths = purrr::map_chr(df_list, ~attr(.x,"path", exact=TRUE))
     list_of_chunks = purrr::map_dfr(list_of_paths, ~data.table(path = list.files(.x),full_path = list.files(.x,full.names = TRUE)))
     setDT(list_of_chunks)
     

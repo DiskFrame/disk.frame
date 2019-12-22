@@ -12,6 +12,10 @@ hashstr2i2 <- function(x, ngrp, i) {
 #' Use bloomfilters to make 
 #' @importFrom data.table setDT
 #' @param df a disk.frame
+#' @param cols columns to make bloomfilters with
+#' @param ... not used
+#' @rdname bloomfilter
+#' @family bloomfilter
 #' @export
 make_bloomfilter <- function(df, cols, ...) {
   # TODO multicolumn bloomfilter
@@ -62,6 +66,9 @@ make_bloomfilter <- function(df, cols, ...) {
 }
 
 #' Return the chunks that values are in certain chunks
+#' @param values the values to lookup using bloomfilter
+#' @rdname bloomfilter
+#' @family bloomfilter
 #' @export
 bf_likely_in_chunks <- function(df, cols, values) {
   p  = attr(df, "path")
@@ -107,8 +114,20 @@ bf_likely_in_chunks <- function(df, cols, values) {
   }, USE.NAMES = FALSE) %>% which
 }
 
-#' Use bloom filter
+#' Use bloomfilter
+#' @rdname bloomfilter
+#' @family bloomfilter
 #' @export
+#' @examples
+#' df = nycflights13::flights %>% as.disk.frame(shardby = c("carrier"))
+#' values = "UA"
+#' system.time(make_bloomfilter(df, "carrier"))
+#' bf_likely_in_chunks(df, "carrier", values)
+#' system.time(bf_likely_in_chunks(df, "carrier", "values"))
+#' 
+#' system.time(d1 <- df %>% 
+#'   use_bloom_filter("carrier",  "UA") %>% 
+#'   collect)
 use_bloom_filter <- function(df, cols, values) {
   chunks = bf_likely_in_chunks(df, cols, values)
   df = srckeepchunks(df, chunks)
@@ -122,9 +141,13 @@ use_bloom_filter <- function(df, cols, values) {
 }
 
 
+
+# testing bloomfilter -----------------------------------------------------
 if (FALSE) {
   library(disk.frame)
+  library(data.table)
   setup_disk.frame()
+  library(future)
   plan(sequential)
   df = nycflights13::flights %>% as.disk.frame(shardby = c("carrier"))
   df
@@ -152,6 +175,7 @@ if (FALSE) {
     collect)
   
   df = disk.frame("C:/data/airontimecsv.df")
+  get_chunk(df,1)
   
   
   

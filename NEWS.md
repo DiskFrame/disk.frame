@@ -1,3 +1,6 @@
+# disk.frame 0.3.2
+* added (experimental) bloomfilter
+
 # disk.frame 0.3.1
 * urgent bug fix for group-by failing when the number chunks is 1; see Github #241
 
