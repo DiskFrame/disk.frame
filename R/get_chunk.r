@@ -25,13 +25,33 @@ get_chunk <- function(...) {
 #' @importFrom fst read_fst
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
-  
   stopifnot("disk.frame" %in% class(df))
   
-  path = attr(df,"path")
-  keep1 = attr(df,"keep")
+  keep_chunks = attr(df, "keep_chunks", exact=TRUE)
   
-  cmds = attr(df,"lazyfn")
+  # TODO relax this
+  # if(!is.null(keep_chunks)) {
+  #   # browser()
+  #   # n_int = as.integer(n)
+  #   # 
+  #   # if(is.na(n_int)) {
+  #   #   if(as.character(n) %in% get_chunk_ids(df)[keep_chunks]) {
+  #   #     return(NULL)
+  #   #   } else if(normalizePath(as.character(n)) %in% sapply(get_chunk_ids(df, full.names = TRUE)[keep_chunks],normalizePath)) {
+  #   #     return(NULL)
+  #   #   }
+  #   # } else {
+  #   #   if(!n %in% keep_chunk) {
+  #   #     return(NULL)
+  #   #   }
+  #   # }
+  # }
+  
+  
+  path = attr(df,"path", exact=TRUE)
+  keep1 = attr(df,"keep", exact=TRUE)
+  
+  cmds = attr(df,"lazyfn", exact=TRUE)
   filename = ""
   
   if (typeof(keep) == "closure") {

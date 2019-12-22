@@ -4,7 +4,7 @@
 #' @export
 # TODO make this work
 shardkey <- function(df) {
-  meta_file = file.path(attr(df,"path"),".metadata", "meta.json")
+  meta_file = file.path(attr(df,"path", exact=TRUE),".metadata", "meta.json")
   if(!file.exists(meta_file)) {
     add_meta(df)
   }

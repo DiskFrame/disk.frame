@@ -1,9 +1,9 @@
 #' The dplyr verbs implemented for disk.frame
-#' @description 
-#' Please see the dplyr document for their usage. Please note that `group_by`
-#' and `arrange` performs the actions within each chunk
+#' @description Please see the dplyr document for their usage. Please note
+#' `chunk_arrange` performs the actions within each chunk
 #' @export
-#' @importFrom dplyr select rename filter mutate transmute arrange do groups group_by group_by glimpse summarise
+#' @importFrom dplyr select rename filter mutate transmute arrange do groups
+#'   group_by group_by glimpse summarise
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
 #' @rdname dplyr_verbs

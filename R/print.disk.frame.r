@@ -8,7 +8,7 @@
 # TODO add chunk
 print.disk.frame <- function(x, ...) {
   a = paste(sep = "\n"
-             ,glue::glue("path: \"{attr(x,'path')}\"")
+             ,glue::glue("path: \"{attr(x,'path', exact=TRUE)}\"")
              ,glue::glue("nchunks: {disk.frame::nchunks(x)}")
              ,glue::glue("nrow (at source): {disk.frame::nrow(x)}")
              ,glue::glue("ncol (at source): {disk.frame::ncol(x)}")

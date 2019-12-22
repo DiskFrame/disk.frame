@@ -3,12 +3,12 @@
 #' @param df a disk.frame
 #' @noRd
 progressbar <- function(df) {
-  if(attr(df,"performing") == "hard_group_by") {
+  if(attr(df,"performing", exact=TRUE) == "hard_group_by") {
     # create progress bar
     
     shardby = "acct_id"
     #list.files(
-    fparent = attr(df,"parent")
+    fparent = attr(df,"parent", exact=TRUE)
     
     #tmp = file.path(fparent,".performing","inchunks")
     tmp = "tmphardgroupby2"
@@ -177,7 +177,7 @@ hard_group_by.disk.frame <- function(
     
     # clean up the tmp dir
     purrr::walk(tmp_df, ~{
-      fs::dir_delete(attr(.x, "path"))
+      fs::dir_delete(attr(.x, "path", exact=TRUE))
     })
     
 
@@ -210,7 +210,7 @@ hard_group_by.disk.frame <- function(
     
     # clean up the tmp dir
     purrr::walk(tmp_df, ~{
-      fs::dir_delete(attr(.x, "path"))
+      fs::dir_delete(attr(.x, "path", exact=TRUE))
     })
     
     res1 = res %>% chunk_group_by(!!!syms(by))

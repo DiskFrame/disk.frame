@@ -27,7 +27,7 @@ nrow.default <- function(df, ...) {
 #' @import fst
 nrow.disk.frame <- function(df, ...) {
   stopifnot(is_ready(df))
-  path1 <- attr(df,"path")
+  path1 <- attr(df,"path", exact=TRUE)
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = TRUE)
     if(length(path2) == 0) {
