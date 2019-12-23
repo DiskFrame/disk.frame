@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -270,7 +270,7 @@
 <div id="group-by" class="section level2">
 <h2 class="hasAnchor">
 <a href="#group-by" class="anchor"></a>Group-by</h2>
-<p><code>{disk.frame}</code> implements the <code>group_by</code> operation some caveats. In the <code>{disk.frame}</code> framework, only a set functions are supported in <code>summarize</code>. However, the user can create more custom <code>group-by</code> functions can be defined. For more information see <a href="10-group-by.Rmd">group-by</a></p>
+<p><code>{disk.frame}</code> implements the <code>group_by</code> operation some caveats. In the <code>{disk.frame}</code> framework, only a set functions are supported in <code>summarize</code>. However, the user can create more custom <code>group-by</code> functions can be defined.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">flights.df <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(carrier) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># notice that hard_group_by needs to be set</span></a>
 <a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">count =</span> <span class="kw">n</span>(), <span class="dt">mean_dep_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dep_delay, <span class="dt">na.rm=</span>T)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># mean follows normal R rules</span></a>

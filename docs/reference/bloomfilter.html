@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>`cmap2` a function to two disk.frames — cmap2 • disk.frame</title>
+<title>Use bloomfilters to make — make_bloomfilter • disk.frame</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="`cmap2` a function to two disk.frames — cmap2" />
-<meta property="og:description" content="Perform a function on both disk.frames .x and .y, each chunk of .x and .y
-gets run by .f(x.chunk, y.chunk)" />
+<meta property="og:title" content="Use bloomfilters to make — make_bloomfilter" />
+<meta property="og:description" content="Use bloomfilters to make
+Return the chunks that values are in certain chunks
+Use bloomfilter" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -146,158 +147,51 @@ gets run by .f(x.chunk, y.chunk)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>`cmap2` a function to two disk.frames</h1>
+    <h1>Use bloomfilters to make</h1>
     
-    <div class="hidden name"><code>cmap2.Rd</code></div>
+    <div class="hidden name"><code>bloomfilter.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform a function on both disk.frames .x and .y, each chunk of .x and .y
-gets run by .f(x.chunk, y.chunk)</p>
+    <p>Use bloomfilters to make</p>
+<p>Return the chunks that values are in certain chunks</p>
+<p>Use bloomfilter</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap2</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>make_bloomfilter</span>(<span class='no'>df</span>, <span class='no'>cols</span>, <span class='no'>...</span>)
 
-<span class='fu'>map2</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>bf_likely_in_chunks</span>(<span class='no'>df</span>, <span class='no'>cols</span>, <span class='no'>values</span>)
 
-<span class='fu'>map_by_chunk_id</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='no'>outdir</span>)</pre>
+<span class='fu'>use_bloom_filter</span>(<span class='no'>df</span>, <span class='no'>cols</span>, <span class='no'>values</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.x</th>
+      <th>df</th>
       <td><p>a disk.frame</p></td>
     </tr>
     <tr>
-      <th>.y</th>
-      <td><p>a disk.frame</p></td>
-    </tr>
-    <tr>
-      <th>.f</th>
-      <td><p>a function to be called on each chunk of x and y matched by
-chunk_id</p></td>
+      <th>cols</th>
+      <td><p>columns to make bloomfilters with</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>not used</p></td>
     </tr>
     <tr>
-      <th>outdir</th>
-      <td><p>output directory</p></td>
+      <th>values</th>
+      <td><p>the values to lookup using bloomfilter</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
-
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>cmap2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html'>rbindlist</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
-<span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;      speed dist
-#&gt;   1:     4    2
-#&gt;   2:     4   10
-#&gt;   3:     7    4
-#&gt;   4:     7   22
-#&gt;   5:     8   16
-#&gt;   6:     9   10
-#&gt;   7:    10   18
-#&gt;   8:    10   26
-#&gt;   9:    10   34
-#&gt;  10:     4    2
-#&gt;  11:     4   10
-#&gt;  12:     7    4
-#&gt;  13:     7   22
-#&gt;  14:     8   16
-#&gt;  15:     9   10
-#&gt;  16:    10   18
-#&gt;  17:    10   26
-#&gt;  18:    10   34
-#&gt;  19:    11   17
-#&gt;  20:    11   28
-#&gt;  21:    12   14
-#&gt;  22:    12   20
-#&gt;  23:    12   24
-#&gt;  24:    12   28
-#&gt;  25:    13   26
-#&gt;  26:    13   34
-#&gt;  27:    13   34
-#&gt;  28:    11   17
-#&gt;  29:    11   28
-#&gt;  30:    12   14
-#&gt;  31:    12   20
-#&gt;  32:    12   24
-#&gt;  33:    12   28
-#&gt;  34:    13   26
-#&gt;  35:    13   34
-#&gt;  36:    13   34
-#&gt;  37:    13   46
-#&gt;  38:    14   26
-#&gt;  39:    14   36
-#&gt;  40:    14   60
-#&gt;  41:    14   80
-#&gt;  42:    15   20
-#&gt;  43:    15   26
-#&gt;  44:    15   54
-#&gt;  45:    16   32
-#&gt;  46:    13   46
-#&gt;  47:    14   26
-#&gt;  48:    14   36
-#&gt;  49:    14   60
-#&gt;  50:    14   80
-#&gt;  51:    15   20
-#&gt;  52:    15   26
-#&gt;  53:    15   54
-#&gt;  54:    16   32
-#&gt;  55:    16   40
-#&gt;  56:    17   32
-#&gt;  57:    17   40
-#&gt;  58:    17   50
-#&gt;  59:    18   42
-#&gt;  60:    18   56
-#&gt;  61:    18   76
-#&gt;  62:    18   84
-#&gt;  63:    19   36
-#&gt;  64:    16   40
-#&gt;  65:    17   32
-#&gt;  66:    17   40
-#&gt;  67:    17   50
-#&gt;  68:    18   42
-#&gt;  69:    18   56
-#&gt;  70:    18   76
-#&gt;  71:    18   84
-#&gt;  72:    19   36
-#&gt;  73:    19   46
-#&gt;  74:    19   68
-#&gt;  75:    20   32
-#&gt;  76:    20   48
-#&gt;  77:    20   52
-#&gt;  78:    20   56
-#&gt;  79:    20   64
-#&gt;  80:    22   66
-#&gt;  81:    23   54
-#&gt;  82:    19   46
-#&gt;  83:    19   68
-#&gt;  84:    20   32
-#&gt;  85:    20   48
-#&gt;  86:    20   52
-#&gt;  87:    20   56
-#&gt;  88:    20   64
-#&gt;  89:    22   66
-#&gt;  90:    23   54
-#&gt;  91:    24   70
-#&gt;  92:    24   92
-#&gt;  93:    24   93
-#&gt;  94:    24  120
-#&gt;  95:    25   85
-#&gt;  96:    24   70
-#&gt;  97:    24   92
-#&gt;  98:    24   93
-#&gt;  99:    24  120
-#&gt; 100:    25   85
-#&gt;      speed dist</div><div class='input'>
-<span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>=</span> <span class='kw pkg'>nycflights13</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/nycflights13/man/flights.html'>flights</a></span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='kw'>shardby</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"carrier"</span>))</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='input'><span class='no'>values</span> <span class='kw'>=</span> <span class='st'>"UA"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span>(<span class='fu'>make_bloomfilter</span>(<span class='no'>df</span>, <span class='st'>"carrier"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in make_bloomfilter(df, "carrier"): could not find function "make_bloomfilter"</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 0 0 0</span></div><div class='input'><span class='fu'>bf_likely_in_chunks</span>(<span class='no'>df</span>, <span class='st'>"carrier"</span>, <span class='no'>values</span>)</div><div class='output co'>#&gt; <span class='error'>Error in bf_likely_in_chunks(df, "carrier", values): could not find function "bf_likely_in_chunks"</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span>(<span class='fu'>bf_likely_in_chunks</span>(<span class='no'>df</span>, <span class='st'>"carrier"</span>, <span class='st'>"values"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in bf_likely_in_chunks(df, "carrier", "values"): could not find function "bf_likely_in_chunks"</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 0 0 0</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span>(<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='no'>df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>use_bloom_filter</span>(<span class='st'>"carrier"</span>,  <span class='st'>"UA"</span>) <span class='kw'>%&gt;%</span>
+  <span class='no'>collect</span>)</div><div class='output co'>#&gt; <span class='error'>Error in use_bloom_filter(., "carrier", "UA"): could not find function "use_bloom_filter"</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 0 0 0</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

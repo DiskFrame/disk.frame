@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -154,7 +154,9 @@
     <p>Keep only the variables from the input listed in selections</p>
     </div>
 
-    <pre class="usage"><span class='fu'>srckeep</span>(<span class='no'>df</span>, <span class='no'>selections</span>)</pre>
+    <pre class="usage"><span class='fu'>srckeep</span>(<span class='no'>df</span>, <span class='no'>selections</span>, <span class='no'>...</span>)
+
+<span class='fu'>srckeepchunks</span>(<span class='no'>df</span>, <span class='no'>chunks</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,6 +168,14 @@
     <tr>
       <th>selections</th>
       <td><p>The list of variables to keep from the input source</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not yet used</p></td>
+    </tr>
+    <tr>
+      <th>chunks</th>
+      <td><p>The chunks to load</p></td>
     </tr>
     </table>
 
