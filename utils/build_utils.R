@@ -28,12 +28,20 @@ df_build_readme <- function() {
   if(fs::dir_exists("README_cache")) {
     fs::dir_delete("README_cache")
   }
-  
-  if(fs::file_exists("README.md")) {
-    fs::file_delete("README.md")
-  }
+  # 
+  # if(fs::file_exists("README.md")) {
+  #   fs::file_delete("README.md")
+  # }
   
   rmarkdown::render("README.rmd", output_file = "README.md")
+
+  if(fs::file_exists("README.html")) {
+    fs::file_delete("README.html")
+  }
+
+  if(fs::dir_exists("README_cache")) {
+    fs::dir_delete("README_cache")
+  }
 }
 
 # setup vignette but does not build
@@ -92,7 +100,6 @@ df_ready_for_cran <- function() {
   df_setup_vignette(excl = c("08-more-epic.Rmd", "06-vs-dask-juliadb.Rmd", "01-intro.Rmd"), strip_number = TRUE)
   
   devtools::document()
-  #devtools::build_readme()
   
   # rename tests
   if(fs::dir_exists("tests")) {

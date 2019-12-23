@@ -1,16 +1,5 @@
-## Re-submission 3 for v0.3.0
-* removed one last pesky invalid URI
-
-## Re-submission 2 for v0.3.0
-* fixed invalid URLs
-
-## Re-submission 1 for v0.3.0
-* fixed two NOTES - invalid URLs
-
-## Submission for v0.3.0
-* add new features and bug fixes
-* replaced deprecated functions like group_by
-* deprecating map replaced with cmap
+## Submission for v0.3.1
+* added urgent bug fixes; apologies for resubmitting so soon
 
 ## Test environments
 * local Windows 10 Pro install, R 3.6.2

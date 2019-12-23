@@ -76,7 +76,7 @@ cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nc
   
   stopifnot(is_ready(.x))
   
-  keep1 = attr(.x,"keep")
+  keep1 = attr(.x,"keep", exact=TRUE)
   
   if(is.null(keep)) {
     keep = keep1
@@ -163,7 +163,7 @@ cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunk
   
   stopifnot(is_ready(.x))
   
-  keep1 = attr(.x,"keep")
+  keep1 = attr(.x,"keep", exact=TRUE)
   
   if(is.null(keep)) {
     keep = keep1
@@ -175,7 +175,7 @@ cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunk
   
   keep_future = keep
   res = future.apply::future_lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(.x, ii, keep=keep_future)
+    ds = disk.frame::get_chunk(.x, files_shortname[ii], keep=keep_future)
     res = .f(ds, ii)
     if(!is.null(outdir)) {
       fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)

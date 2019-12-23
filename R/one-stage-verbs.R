@@ -215,7 +215,7 @@ summarise.grouped_disk.frame <- function(.data, ...) {
   agg_summ_code = ca_code$agg_summ_code
   
   # get the by variables
-  group_by_cols = purrr::map_chr(attr(.data, "group_by_cols"), ~{deparse(.x)})
+  group_by_cols = purrr::map_chr(attr(.data, "group_by_cols", exact=TRUE), ~{deparse(.x)})
   
   list(group_by_cols = group_by_cols, chunk_summ_code = chunk_summ_code, agg_summ_code = agg_summ_code)
   

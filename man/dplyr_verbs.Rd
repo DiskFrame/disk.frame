@@ -114,8 +114,8 @@ chunk_distinct(.data, ...)
 \item{...}{Same as the dplyr functions}
 }
 \description{
-Please see the dplyr document for their usage. Please note that `group_by`
-and `arrange` performs the actions within each chunk
+Please see the dplyr document for their usage. Please note
+`chunk_arrange` performs the actions within each chunk
 }
 \examples{
 library(dplyr)

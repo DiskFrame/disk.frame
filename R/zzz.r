@@ -25,6 +25,10 @@ options(future.globals.maxSize = Inf)
 }
 
 globalVariables(c(
+                  "sym", # from dplyr
+                  "type", # used in bloomfilter
+                  "size", # used in bloomfilter
+                  "modification_time", # used in bloomfilter
                   "name", # used in gen_summ_code
                   "agg_expr", # used in gen_summ_code
                   "orig_code", # used in gen_summ_code

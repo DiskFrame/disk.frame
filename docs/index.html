@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -113,10 +113,9 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#diskframe-" class="anchor"></a>disk.frame <img src="inst/figures/disk.frame.png" align="right">
 </h1></div>
-<details><summary>Please take a moment to star the disk.frame Github repo if you
-like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&amp;repo=disk.frame&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
-
-</details><!-- badges: start --><!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") --><!-- badges: end -->
+<!-- badges: start -->
+<!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
+<!-- badges: end -->
 </div>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
@@ -185,7 +184,7 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <h3 class="hasAnchor">
 <a href="#d-how-does-diskframe-work" class="anchor"></a>d) How does <code>{disk.frame}</code> work?</h3>
 <p><code>{disk.frame}</code> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
-<p><code>{disk.frame}</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/cmap.html">map.disk.frame(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>{disk.frame}</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
+<p><code>{disk.frame}</code> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/cmap.html">cmap(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <code>{disk.frame}</code> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
 </div>
 <div id="e-how-is-diskframe-different-from-spark-dask-and-juliadbjl" class="section level3">
 <h3 class="hasAnchor">
@@ -241,12 +240,12 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
 <a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; 1 2013     1   1      517            515         2      830            819</span></a>
 <a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt; 2 2013     1   1      533            529         4      850            830</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour minute</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; 1        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; 2        20      UA   1714  N24211    LGA  IAH      227     1416    5     29</span></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt;             time_hour origin_dest</span></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; 1 2013-01-01 05:00:00      EWRIAH</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; 2 2013-01-01 05:00:00      LGAIAH</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; 1        11      UA   1545  N14228    EWR  IAH      227     1400    5</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; 2        20      UA   1714  N24211    LGA  IAH      227     1416    5</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt;   minute           time_hour origin_dest</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; 1     15 2013-01-01 05:00:00      EWRIAH</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; 2     29 2013-01-01 05:00:00      LGAIAH</span></a></code></pre></div>
 </div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
@@ -359,31 +358,32 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <h2 class="hasAnchor">
 <a href="#example-datatable-syntax" class="anchor"></a>Example: data.table syntax</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; Attaching package: 'data.table'</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; The following object is masked from 'package:purrr':</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;     transpose</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt;     between, first, last</span></a>
-<a class="sourceLine" id="cb8-10" title="10"></a>
-<a class="sourceLine" id="cb8-11" title="11">grp_by_stage1 =<span class="st"> </span></a>
-<a class="sourceLine" id="cb8-12" title="12"><span class="st">  </span>flights.df[</a>
-<a class="sourceLine" id="cb8-13" title="13">    keep =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span></a>
-<a class="sourceLine" id="cb8-14" title="14">    month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, </a>
-<a class="sourceLine" id="cb8-15" title="15">    .(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)), </a>
-<a class="sourceLine" id="cb8-16" title="16">    .(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))</a>
-<a class="sourceLine" id="cb8-17" title="17">    ]</a>
-<a class="sourceLine" id="cb8-18" title="18"></a>
-<a class="sourceLine" id="cb8-19" title="19">grp_by_stage1</a>
-<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt;    qtr sum_dist</span></a>
-<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt; 1:  Q1 27188805</span></a>
-<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt; 2:  Q1   953578</span></a>
-<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt; 3:  Q1 53201567</span></a>
-<a class="sourceLine" id="cb8-24" title="24"><span class="co">#&gt; 4:  Q2  3383527</span></a>
-<a class="sourceLine" id="cb8-25" title="25"><span class="co">#&gt; 5:  Q2 58476357</span></a>
-<a class="sourceLine" id="cb8-26" title="26"><span class="co">#&gt; 6:  Q2 27397926</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; data.table 1.12.8 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; Attaching package: 'data.table'</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; The following object is masked from 'package:purrr':</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt;     transpose</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt;     between, first, last</span></a>
+<a class="sourceLine" id="cb8-11" title="11"></a>
+<a class="sourceLine" id="cb8-12" title="12">grp_by_stage1 =<span class="st"> </span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="st">  </span>flights.df[</a>
+<a class="sourceLine" id="cb8-14" title="14">    keep =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span></a>
+<a class="sourceLine" id="cb8-15" title="15">    month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, </a>
+<a class="sourceLine" id="cb8-16" title="16">    .(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(distance)), </a>
+<a class="sourceLine" id="cb8-17" title="17">    .(<span class="dt">qtr =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(month <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))</a>
+<a class="sourceLine" id="cb8-18" title="18">    ]</a>
+<a class="sourceLine" id="cb8-19" title="19"></a>
+<a class="sourceLine" id="cb8-20" title="20">grp_by_stage1</a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt;    qtr sum_dist</span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt; 1:  Q1 27188805</span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt; 2:  Q1   953578</span></a>
+<a class="sourceLine" id="cb8-24" title="24"><span class="co">#&gt; 3:  Q1 53201567</span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="co">#&gt; 4:  Q2  3383527</span></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="co">#&gt; 5:  Q2 58476357</span></a>
+<a class="sourceLine" id="cb8-27" title="27"><span class="co">#&gt; 6:  Q2 27397926</span></a></code></pre></div>
 <p>The result <code>grp_by_stage1</code> is a <code>data.table</code> so we can finish off the two-stage aggregation using data.table syntax</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">grp_by_stage2 =<span class="st"> </span>grp_by_stage1[,.(<span class="dt">sum_dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_dist)), qtr]</a>
 <a class="sourceLine" id="cb9-2" title="2"></a>
@@ -398,24 +398,24 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># where is the disk.frame stored</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(flights.df, <span class="st">"path"</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpABqAEb\\file43942e9efc7.df"</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpGCWvCf\\file1ce05ae26327.df"</span></a></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># get first few rows</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(flights.df, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span></a>
-<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt;              time_hour</span></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt; 1: 2013-01-01 05:00:00</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; 1: 2013     1   1      517            515         2      830</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; 1:            819        11      UA   1545  N14228    EWR  IAH      227</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt;    distance hour minute           time_hour</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt; 1:     1400    5     15 2013-01-01 05:00:00</span></a></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># get last few rows</span></a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(flights.df, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt; 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40</span></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;              time_hour</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt; 1: 2013-09-30 08:00:00</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest air_time</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt; 1:           1020        NA      MQ   3531  N839MQ    LGA  RDU       NA</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="co">#&gt;    distance hour minute           time_hour</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt; 1:      431    8     40 2013-09-30 08:00:00</span></a></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># number of rows</span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="kw"><a href="reference/ncol_nrow.html">nrow</a></span>(flights.df)</a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt; [1] 336776</span></a></code></pre></div>
@@ -451,7 +451,7 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <a href="#blogs-and-other-resources" class="anchor"></a>Blogs and other resources</h2>
 <table class="table">
 <colgroup>
-<col width="52%">
+<col width="51%">
 <col width="5%">
 <col width="3%">
 <col width="38%">
@@ -464,45 +464,52 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td>25 days of disk.frame</td>
+<td>ZJ</td>
+<td>2019-12-01</td>
+<td>25 tweets about <code>{disk.frame}</code>
+</td>
+</tr>
+<tr class="even">
 <td><a href="https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining" class="uri">https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining</a></td>
 <td>Knut Jägersberg</td>
 <td>20191111</td>
 <td>Great answer on using disk.frame</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/"><code>{disk.frame}</code> is epic</a></td>
 <td>Bruno Rodriguez</td>
 <td>20190903</td>
 <td>It’s about loading a 30G file into <code>{disk.frame}</code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/">My top 10 R packages for data analytics</a></td>
 <td>Jacky Poon</td>
 <td>20190903</td>
 <td>
 <code>{disk.frame}</code> was number 3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://www.youtube.com/watch?v=3XMTyi_H4q4">useR! 2019 presentation video</a></td>
 <td>Dai ZJ</td>
 <td>20190803</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY">useR! 2019 presentation slides</a></td>
 <td>Dai ZJ</td>
 <td>20190803</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/">Split-apply-combine for Maximum Likelihood Estimation of a linear model</a></td>
 <td>Bruno Rodriguez</td>
 <td>20191006</td>
 <td>
 <code>{disk.frame}</code> used in helping to create a maximum likelihood estimation program for linear models</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://emmavestesson.netlify.com/2019/07/user2019/">Emma goes to useR! 2019</a></td>
 <td>Emma Vestesson</td>
 <td>20190716</td>
@@ -527,9 +534,10 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <p>Thank you to all our backers! [<a href="https://opencollective.com/diskframe#backer">Become a backer</a>]</p>
 <p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
 </div>
-<div id="sponsors" class="section level3">
+<div id="sponsor-and-back-diskframe" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sponsors" class="anchor"></a>Sponsors</h3>
+<a href="#sponsor-and-back-diskframe" class="anchor"></a>Sponsor and back <code>{disk.frame}</code>
+</h3>
 <p>Support <code>{disk.frame}</code> development by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/diskframe#sponsor">Become a sponsor</a>]</p>
 <p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
 </div>
@@ -538,6 +546,21 @@ like disk.frame. It keeps me going. </summary><iframe src="https://ghbtns.com/gi
 <h2 class="hasAnchor">
 <a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h2>
 <p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
+</div>
+<div id="non-financial-ways-to-contribute" class="section level2">
+<h2 class="hasAnchor">
+<a href="#non-financial-ways-to-contribute" class="anchor"></a>Non-financial ways to contribute</h2>
+<p>Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute</p>
+<ul>
+<li>Write a blogpost about your <code>{disk.frame}</code>. I would love to learn more about how <code>{disk.frame}</code> has helped you</li>
+<li>Tweet or post on social media (e.g LinkedIn) about <code>{disk.frame}</code> to help promote it</li>
+<li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/xiaodaigh/disk.frame/issues">raising an issue here</a>
+</li>
+<li>Star the <a href="https://github.com/xiaodaigh/disk.frame"><code>{disk.frame}</code> Github repo</a>
+</li>
+<li>Star any repo that <code>{disk.frame}</code> depends on e.g. <a href="https://github.com/fstpackage/fst"><code>{fst}</code></a> and <a href="https://github.com/HenrikBengtsson/future"><code>{future}</code></a>
+</li>
+</ul>
 </div>
 <div id="download-counts--build-status" class="section level2">
 <h2 class="hasAnchor">
