@@ -1,5 +1,5 @@
-## Submission for v0.3.1
-* added urgent bug fixes; apologies for resubmitting so soon
+## Submission for v0.3.2
+* Removed usage of proc/meminfo inline with CRAN policy
 
 ## Test environments
 * local Windows 10 Pro install, R 3.6.2
