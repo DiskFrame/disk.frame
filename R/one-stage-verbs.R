@@ -217,10 +217,8 @@ summarise.grouped_disk.frame <- function(.data, ...) {
   # get the by variables
   group_by_cols = purrr::map_chr(attr(.data, "group_by_cols", exact=TRUE), ~{deparse(.x)})
   
-  list(group_by_cols = group_by_cols, chunk_summ_code = chunk_summ_code, agg_summ_code = agg_summ_code)
-  
   # generate full code
-  code_to_run = glue::glue("chunk_group_by({group_by_cols}) %>% chunk_summarize({chunk_summ_code}) %>% collect %>% group_by({group_by_cols}) %>% summarize({agg_summ_code})")
+  code_to_run = glue::glue("chunk_group_by({paste0(group_by_cols, collapse=',')}) %>% chunk_summarize({chunk_summ_code}) %>% collect %>% group_by({paste0(group_by_cols, collapse=',')}) %>% summarize({agg_summ_code})")
   
   class(.data) <- c("summarized_disk.frame", "disk.frame")
   attr(.data, "summarize_code") = code_to_run
@@ -279,18 +277,26 @@ summarize.disk.frame <- function(.data, ...) {
 generate_summ_code <- function(...) {
   
   code = substitute(list(...))[-1]
+  # print("hehe")
+  # print(code)
   expr_id = 0
   temp_varn = 0
   
   list_of_chunk_agg_fns <- as.character(utils::methods(class = "chunk_agg.disk.frame"))
   list_of_collected_agg_fns <- as.character(utils::methods(class = "collected_agg.disk.frame"))
-  
+  # browser()
   # generate the chunk_summarize_code
   summarize_code = purrr::map_dfr(code, ~{
-    
+    # browser()
+    # print("raw code")
+    # print(.x)
     expr_id <<- expr_id  + 1
     # parse the function into table form for easy interrogration
-    gpd = getParseData(parse(text = deparse(.x)), includeText = TRUE); 
+    # The keep.source = TRUE options seems necessary to keep it working in Rscript mode
+    gpd = getParseData(parse(text = deparse(.x), keep.source = TRUE), includeText = TRUE); 
+    # print("raw table")
+    # print(deparse(.x))
+    # print(gpd)
     grp_funcs = gpd %>% filter(token == "SYMBOL_FUNCTION_CALL") %>% select(text) %>% pull
     grp_funcs = grp_funcs %>% paste0("_df")
     

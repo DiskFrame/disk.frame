@@ -1,3 +1,7 @@
+# disk.frame 0.3.4
+* fixed bugs with group-by when run with Rscript
+* also fixed bugs with multiple group-by columns
+
 # disk.frame 0.3.3
 * removed bloom filters as they were causing issues with CRAN solaris system for some reason
 

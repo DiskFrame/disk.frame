@@ -192,6 +192,51 @@ test_that("test hard_group_by on data.frame (sort)", {
   expect_equal(nrow(dff1), nrow(df1))
 })
 
+test_that("guard against github 256", {
+  test2 <- tibble::tibble(
+    date = lubridate::ymd(rep(c("2019-01-02", "2019-02-03", "2019-03-04"), 4)),
+    uid = as.factor(rep(c(uuid::UUIDgenerate(), uuid::UUIDgenerate()), 6)),
+    proto = as.factor(rep(c("TCP", "UDP", "ICMP"), 4)),
+    port = as.double(rep(c(22, 21, 0), 4))
+  )
+  
+  correct_result = test2 %>%
+    group_by(date, uid, proto, port) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  test_df = as.disk.frame(test2, nchunks = 2, overwrite=TRUE)
+  
+  incorrect_result = test_df %>%
+    group_by(date, uid, proto, port) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  expect_equal(dim(incorrect_result), dim(correct_result))
+})
+
+test_that("guard against github 256 #2", {
+  test2 <- tibble::tibble(
+    date = lubridate::ymd(rep(c("2019-01-02", "2019-02-03", "2019-03-04"), 4)),
+    uid = as.factor(rep(c(uuid::UUIDgenerate(), uuid::UUIDgenerate()), 6)),
+    proto = as.factor(rep(c("TCP", "UDP", "ICMP"), 4)),
+    port = as.double(rep(c(22, 21, 0), 4))
+  )
+  
+  test_df = as.disk.frame(test2, nchunks = 2, overwrite=TRUE)
+  
+  correct_result = test_df %>%
+    group_by(!!!syms(names(test_df))) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  incorrect_result = test_df %>%
+    group_by(date, uid, proto, port) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  expect_equal(dim(incorrect_result), dim(correct_result))
+})
 
 teardown({
   fs::file_delete(file.path(tempdir(), "tmp_pls_delete_gb.csv"))
