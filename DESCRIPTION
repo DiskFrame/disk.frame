@@ -30,13 +30,13 @@ Imports:
     data.table (>= 1.12.2),
     crayon (>= 1.3.4),
     bigreadr (>= 0.2.0),
-    bit64
+    bit64,
+    benchmarkme
 Depends:
     R (>= 3.4),
     dplyr (>= 0.8.3),
     purrr (>= 0.3.2)
 Suggests:
-    benchmarkme,
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
