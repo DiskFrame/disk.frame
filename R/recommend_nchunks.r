@@ -128,14 +128,9 @@ df_ram_size <- function() {
         return(ram_size)
       }
     } else{
-      if(is.na(ram_size)) {
-        warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-        warning("You can try to `install.packages('benchmarkme')` as that may help determine RAM size")
-        return(16)
-      } else {
-        ram_size = max(ram_size, 1, na.rm = TRUE)
-        return(ram_size)
-      }
+      warning("RAM size can't be determined. Assume you have 16GB of RAM.")
+      warning("You can try to `install.packages('benchmarkme')` as that may help determine RAM size")
+      return(16)
     }
   })
 }
