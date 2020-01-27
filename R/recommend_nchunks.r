@@ -13,7 +13,7 @@
 #' @param ram_size The amount of RAM available which is usually computed. Except on RStudio with R3.6+
 #' @importFrom pryr object_size
 #' @importFrom utils memory.limit
-# #' @importFrom benchmarkme get_ram
+#' @importFrom benchmarkme get_ram
 #' @export
 #' @examples
 #' # recommend nchunks based on data.frame
