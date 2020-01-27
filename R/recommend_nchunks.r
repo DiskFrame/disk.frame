@@ -100,7 +100,6 @@ df_ram_size <- function() {
       l = strsplit(a, " ")[[1]]
       l = as.numeric(l[length(l)-1])
       ram_size = l/1024^2
-      #ram_size = benchmarkme::get_ram()/1024/1024/1024
     } 
     
     if(is.null(ram_size)) {
@@ -115,7 +114,7 @@ df_ram_size <- function() {
     
     return(ram_size)
   }, error = function(e) {
-    if(requireNamespace("benchmarkme")) {
+    if(!require("benchmarkme")) {
       ram_size = benchmarkme::get_ram()/1024^3
       
       if(is.na(ram_size)) {

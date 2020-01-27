@@ -1,4 +1,8 @@
+# disk.frame 0.3.3
+* removed bloom filters as they were causing issues with CRAN solaris system for some reason
+
 # disk.frame 0.3.2
+* removed usage proc/meminfo inline with CRAN policy
 * added (experimental) bloomfilter
 
 # disk.frame 0.3.1

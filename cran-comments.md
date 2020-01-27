@@ -1,5 +1,5 @@
-## Submission for v0.3.2
-* Removed usage of proc/meminfo inline with CRAN policy
+## Submission for v0.3.3
+* Removed usage bloom-filter which was causing issues with solaris 
 
 ## Test environments
 * local Windows 10 Pro install, R 3.6.2
