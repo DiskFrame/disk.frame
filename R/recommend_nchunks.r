@@ -115,7 +115,7 @@ df_ram_size <- function() {
     
     return(ram_size)
   }, error = function(e) {
-    if(!require("benchmarkme")) {
+    if(requireNamespace("benchmarkme")) {
       ram_size = benchmarkme::get_ram()/1024^3
       
       if(is.na(ram_size)) {
