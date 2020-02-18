@@ -89,8 +89,68 @@ df_test <- function() {
 df_build_vignettes_for_cran <- function() {
   rmd_files = list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE)
   purrr::map(rmd_files, fs::file_delete)
+
+  rmd_files = list.files("vignettes/", pattern = "*.tex", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+
+  rmd_files = list.files("vignettes/", pattern = "*.pdf", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+  
   df_ready_for_cran()
-  devtools::build_vignettes()
+  
+  # knit all files
+  lapply(
+    list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE),
+    rmarkdown::render
+  )
+
+  rmd_files = list.files("vignettes/", pattern = "*.pdf", full.names = TRUE)
+  rmd_files = paste0(substr(rmd_files, 1, nchar(rmd_files)-3),"Rmd")
+  purrr::map(rmd_files, function(x) {
+    if (file.exists(x)) {
+      fs::file_delete(x)
+    }
+  })
+  
+  rmd_files = list.files("vignettes/", pattern = "*.tex", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+  
+  rmd_files = list.dirs("vignettes/", recursive = FALSE)
+  purrr::map(rmd_files, fs::file_delete)
+  
+  # create the as is files
+  mergedf = data.frame(
+    pdfs = c("concepts", "convenience-features", "custom-group-by", "data-table-syntax", "glm", "group-by", "ingesting-data", "intro-disk-frame"),
+    asis = c("concepts", "convenience-features", "custom-group-by", "data-table-syntax", "glm", "group-by", "ingesting-data", "intro-disk-frame"),
+    index_entry = c(
+      "Key disk.frame concepts",
+      "Convenience Features",
+      "Custom Group-by",
+      "Using data.table syntax",
+      "Generalized Linear Models (GLMs)",
+      "Group-by",
+      "Ingesting Data",
+      "Quick-start"
+      )
+  )
+  
+  mergedf$rmd_files = paste0("vignettes/", mergedf$pdfs, ".pdf")
+  
+  abc = data.frame(rmd_files = list.files("vignettes/", pattern = "*.pdf", full.names = TRUE))
+  
+  mergedf = mergedf %>% left_join(abc, by = "rmd_files")
+  
+  purrr::walk2(paste0(mergedf$rmd_files, ".asis"), mergedf$index_entry,  function(x, y) {
+    xf = file(x)
+    writeLines(glue::glue("%\\VignetteIndexEntry{|y|}", .open="|", .close="|"), xf)
+    writeLines(glue::glue("%\\VignetteEngine{R.rsp::asis}", .open="|", .close="|"), xf)
+    writeLines(glue::glue("%\\VignetteKeyword{PDF}", .open="|", .close="|"), xf)
+    writeLines(glue::glue("%\\VignetteKeyword{HTML}", .open="|", .close="|"), xf)
+    writeLines(glue::glue("%\\VignetteKeyword{vignette}", .open="|", .close="|"), xf)
+    writeLines(glue::glue("%\\VignetteKeyword{package}", .open="|", .close="|"), xf)
+    close(xf)
+  })
+  
 }
 
 df_ready_for_cran <- function() {

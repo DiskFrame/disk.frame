@@ -1,27 +1,34 @@
 ---
 title: "Custom One-Stage Group-by functions"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Custom One-Stage Group-by functions}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval=FALSE,
+  eval=TRUE,
   include=TRUE
 )
 ```
 
 # Custom one-stage group-by
 
+Group-by is one the most useful and commonly used operations in data manipulation. The most common to perform group with dplyr syntax would be something similar to the below
+
+```r
+dataf %>% 
+  group_by(grpA) %>% 
+  summarize(mean(X))
+```
+
+However, the above nice and concise group-by syntax creates a challenge in `{disk.frame}`, because `{disk.frame}` organises the data in chunks and these chunks are often manipulated independently to each other which makes it difficult to compute the `mean` of any column if the group-by column is stored in different chunks. In this chapter, I will explain how `{disk.frame}` achieve the one-stage group-by syntax that you see, and how you can define custom one-stage group-by functions for use with `{disk.frame}`.
+
 ## At a glance
 
-`{disk.frame}` allows the user to enable create custom one-stage group-by functions. To make a function `fn` one stage. One needs to define two functions
+
+`{disk.frame}` allows the user to create custom one-stage group-by functions. To make a function `fn` one stage, one needs to define two functions:
 
 1. `fn_df.chunk_agg.disk.frame` which applies itself to each chunk
 2. `fn_df.collected_agg.disk.frame` which accepts a `list` of returns from `fn_df.chunk_agg.disk.frame` and finalize the computation
@@ -32,13 +39,13 @@ But first, we shall explain some theory behind `{disk.frame}` to help you better
 
 ## How does `{disk.frame}` work
 
-One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like `median` only produce estimates instead of producing the exact figure? To answer these question, we need to have an understanding of how `{disk.frame}` works.
+One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like `median` only produce estimates instead of producing the exact figure? To answer these questions, we need to have an understanding of how `{disk.frame}` works.
 
 A `disk.frame` is organized as chunks stored on disk. Each chunk is a file stored in [fst format](https://www.fstpackage.org/). The [`{future}` package](https://CRAN.R-project.org/package=future) is used to apply the same function to each chunk, each of these operations are carried out in a separate R session. These R sessions cannot communicate with each other during the execution of the operations.
 
 Once the operations have been performed on all chunks, the results will be bought back to the session from which the operations were called. This is the only point of inter-process communication. 
 
-To summarize, the two phases of a `df %>% some_fn %>% collect` operation is 
+To summarize, the two phases of a `df %>% some_fn %>% collect` operation are 
 
 1. The `some_fn` is applied to each chunk, and the result is assumed to be a data.frame
 2. `collect` then row-binds (`rbind`/`bind_rows`/`rbindlist`) the results together to form a data.frame in the main session

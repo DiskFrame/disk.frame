@@ -1,11 +1,7 @@
 ---
 title: "Convenience features"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Convenience features}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r, include = FALSE}
@@ -17,14 +13,15 @@ knitr::opts_chunk$set(
 
 ## Convenience Features
 
-### GUI for setting options
+### Graphical User Interface (GUI) for setting options
 
-I wanted to make `{disk.frame}` as easy to use as possible. I often forget what options are available to me. So I've made a GUI
+I wanted to make `{disk.frame}` as easy to use as possible. I often forget what options are available to me. So I've made a graphical user interface (GUI) which can invoked with
 
 ```r
 setup_disk.frame(gui = TRUE)
 ```
-which opens up a Shiny app where the user can choose the options.
+
+The above opens up a Shiny app where the user can adjust the `{disk.frame}` options in a .
 
 ### RStudio column name completion
 
@@ -36,7 +33,7 @@ mtcars.df %>%
   filter(<press tab>)
 ```
 
-you can press tab in RStudio and it will show all column available
+you can press tab in RStudio and it will show all columns available.
 
 ### Insert ceremony/boilerplate into code in RStudio
 
