@@ -1,11 +1,7 @@
 ---
 title: "Quick Start: Basic Operations with nycflights13"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Quick Start}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r setup, include = FALSE}
@@ -30,7 +26,8 @@ if(interactive()) {
 
 
 knitr::opts_chunk$set(
-	eval = FALSE,
+	eval = TRUE,
+	message = FALSE,
 	collapse = TRUE,
 	comment = "#>",
 	include = TRUE
@@ -83,7 +80,7 @@ The `disk.frame` package provides convenient functions to convert `data.frame`s 
 ### Creating a `disk.frame` from `data.frame`
 We convert a `data.frame` to `disk.frame` using the `as.data.frame` function.
 
-```{r asdiskframe, cache=TRUE}
+```{r asdiskframe}
 library(nycflights13)
 library(dplyr)
 library(disk.frame)
@@ -141,19 +138,19 @@ flights.df
 `disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to `disk.frame`s.
 
 ### Simple `dplyr` verbs and lazy evaluation
-```{r dfselect, dependson='asdiskframe', cache=TRUE}
+```{r dfselect}
 flights.df1 <- select(flights.df, year:day, arr_delay, dep_delay)
 flights.df1
 ```
 
-```{r dependson='dfselect'}
+```{r}
 class(flights.df1)
 ```
 
 The class of `flights.df1` is also a `disk.frame` after the   `dplyr::select` transformation. Also, `disk.frame` operations are by default (and where possible) **lazy**, meaning it doesn't perform the operations right away. Instead, it waits until you call `collect`. Exceptions to this rule are the `*_join` operations which evaluated *eagerly* under certain conditions see **Joins for disk.frame in-depth** for details.
 
 For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect` can be used to bring the results from disk into R, e.g.
-```{r, dependson='dfselect'}
+```{r}
 collect(flights.df1) %>% head(2)
 ```
 
@@ -161,11 +158,11 @@ Of course, for larger-than-RAM datasets, one wouldn't call `collect` on the whol
 
 Some examples of other dplyr verbs applied:
 
-```{r, dependson='asdiskframe'}
+```{r}
 filter(flights.df, dep_delay > 1000) %>% collect %>% head(2)
 ```
 
-```{r, dependson='asdiskframe'}
+```{r}
 mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 ```
 
@@ -173,13 +170,13 @@ mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 
 The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard_group_by`s.
 
-```{r, dependson='asdiskframe'}
+```{rH}
 # this only sorts within each chunk
 chunk_arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head(2)
 ```
 
 
-```{r, dependson='asdiskframe'}
+```{r}
 chunk_summarize(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% collect
 ```
 
@@ -187,7 +184,7 @@ chunk_summarize(flights.df, mean_dep_delay = mean(dep_delay, na.rm =T)) %>% coll
 
 One can chain `dplyr` verbs together like with a `data.frame`
 
-```{r, dependson='asdiskframe'}
+```{r}
 c4 <- flights %>%
   filter(month == 5, day == 17, carrier %in% c('UA', 'WN', 'AA', 'DL')) %>%
   select(carrier, dep_delay, air_time, distance) %>%
@@ -228,7 +225,7 @@ The `by` variables that were used to shard the dataset are called the `shardkey`
 
 `{disk.frame}` implements the `group_by` operation some caveats. In the `{disk.frame}` framework, only a set functions are supported in `summarize`. However, the user can create more custom `group-by` functions can be defined.
 
-```{r, dependson='asdiskframe'}
+```{r}
 flights.df %>%
   group_by(carrier) %>% # notice that hard_group_by needs to be set
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
@@ -240,7 +237,7 @@ flights.df %>%
 
 One can restrict which input columns to load into memory for each chunk; this can significantly increase the speed of data processing. To restrict the input columns, use the `srckeep` function which only accepts column names as a string vector.
 
-```{r, dependson='asdiskframe'}
+```{r}
 flights.df %>%
   srckeep(c("carrier","dep_delay")) %>%
   group_by(carrier) %>% 
@@ -269,7 +266,7 @@ Note `disk.frame` does not support `right_join` the user should use `left_join` 
 
 The below joins are performed *lazily* because `airlines.dt` is a `data.table` not a `disk.frame`:
 
-```{r airlines_dt, dependson='asdiskframe', cache=TRUE}
+```{r airlines_dt, cache=TRUE}
 # make airlines a data.table
 airlines.dt <- data.table(airlines)
 # flights %>% left_join(airlines, by = "carrier") #
@@ -292,7 +289,7 @@ flights.df %>%
 
 For the following example, we will use the `hard_group_by` which performs a group-by and also reorganises the chunks so that all records with the same `year`, `month`, and `day` end up in the same chunk. This is typically not advised, as `hard_group_by` can be slow for large datasets.
 
-```{r, dependson='asdiskframe'}
+```{r}
 # Find the most and least delayed flight each day
 bestworst <- flights.df %>%
    srckeep(c("year","month","day", "dep_delay")) %>%
@@ -305,7 +302,7 @@ bestworst %>% head
 
 another example
 
-```{r, dependson='asdiskframe'}
+```{r}
 ranked <- flights.df %>%
   srckeep(c("year","month","day", "dep_delay")) %>%
   hard_group_by(c("year", "month", "day")) %>%
@@ -317,7 +314,7 @@ ranked %>% head
 
 one more example
 
-```{r, dependson='asdiskframe'}
+```{r}
 # Rank each flight within a daily
 ranked <- flights.df %>%
   srckeep(c("year","month","day", "dep_delay")) %>%
@@ -334,18 +331,18 @@ ranked %>% head
 
 One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `map.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk
 
-```{r, dependson='asdiskframe'}
+```{r}
 flights.df1 <- delayed(flights.df, ~nrow(.x))
 collect_list(flights.df1) %>% head # returns number of rows for each data.frame in a list
 ```
 and to do the same with `map.disk.frame`
 
-```{r, dependson='asdiskframe'}
+```{r}
 map(flights.df, ~nrow(.x), lazy = F) %>% head
 ```
 The `map` function can also output the results to another disk.frame folder, e.g.
 
-```{r, dependson='asdiskframe'}
+```{r}
 # return the first 10 rows of each chunk
 flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = file.path(tempdir(), "tmp2"), overwrite = T)
 
@@ -358,7 +355,7 @@ Notice `{disk.frame}` supports the `purrr` syntax for defining a function using 
 
 In the `disk.frame` framework, sampling a proportion of rows within each chunk can be performed using `sample_frac`. 
 
-```{r, dependson='asdiskframe'}
+```{r}
 flights.df %>% sample_frac(0.01) %>% collect %>% head
 ```
 
@@ -371,7 +368,7 @@ write_disk.frame(flights.df, outdir="out")
 ```
 this will output a disk.frame to the folder "out"
 
-```{r cleanup}
+```{r cleanup, include=FALSE}
 fs::dir_delete(file.path(tempdir(), "tmp_flights.df"))
 fs::dir_delete(file.path(tempdir(), "tmp2"))
 fs::file_delete(file.path(tempdir(), "tmp_flights.csv"))

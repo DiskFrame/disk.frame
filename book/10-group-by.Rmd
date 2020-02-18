@@ -1,18 +1,15 @@
 ---
 title: "Group-by"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Group-by}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r eval=FALSE, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval=FALSE,
+  eval=TRUE,
+  message=FALSE,
   include=TRUE
 )
 ```

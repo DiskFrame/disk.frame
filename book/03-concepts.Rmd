@@ -1,11 +1,7 @@
 ---
 title: "Key `{disk.frame}` concepts"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Key disk.frame concepts}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r, include = FALSE}
@@ -24,11 +20,11 @@ A `disk.frame` is a folder containing [`fst`](https://www.fstpackage.org/) files
 
 ## Workers and parallelism
 
-Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. 
+Parallelism in `{disk.frame`} is achieved using the [`{future}` package](https://cran.r-project.org/package=future). When performing many tasks, `{disk.frame}` uses multiple workers to perform the tasks in parallel. A _worker_ is an R session.
 
-It is recommended that you should run the following immediately after `library(disk.frame)` to set-up multiple workers. For example:
+It is recommended that you run the following immediately after `library(disk.frame)` to set-up multiple workers. For example:
 
-```r
+```{r}
 library(disk.frame)
 setup_disk.frame()
 
@@ -52,9 +48,8 @@ srckeep(df, "first_col")[,.N, keep = "first_col"]
 
 Say there are `n` chunks in `df`, and there are `m` workers. Then the first `m` chunks will run `chunk[,.N]` simultaneously.
 
-To see how many workers are at work, use
+To see how many workers are available for `{disk.frame}` to use, run
 ```r
-# see how many workers are available for work
 future::nbrOfWorkers()
 ```
 
