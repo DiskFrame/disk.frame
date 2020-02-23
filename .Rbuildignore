@@ -55,6 +55,7 @@ utils$
 ^\.travis\.yml$
 ^_pkgdown\.yml$
 ^docs$
+^doc$
 ^pkgdown$
 ^report_files$
 ^appveyor\.yml$
