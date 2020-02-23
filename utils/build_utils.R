@@ -139,18 +139,28 @@ df_build_vignettes_for_cran <- function() {
   abc = data.frame(rmd_files = list.files("vignettes/", pattern = "*.pdf", full.names = TRUE))
   
   mergedf = mergedf %>% left_join(abc, by = "rmd_files")
-  
+
   purrr::walk2(paste0(mergedf$rmd_files, ".asis"), mergedf$index_entry,  function(x, y) {
-    xf = file(x)
-    writeLines(glue::glue("%\\VignetteIndexEntry{|y|}", .open="|", .close="|"), xf)
-    writeLines(glue::glue("%\\VignetteEngine{R.rsp::asis}", .open="|", .close="|"), xf)
-    writeLines(glue::glue("%\\VignetteKeyword{PDF}", .open="|", .close="|"), xf)
-    writeLines(glue::glue("%\\VignetteKeyword{HTML}", .open="|", .close="|"), xf)
-    writeLines(glue::glue("%\\VignetteKeyword{vignette}", .open="|", .close="|"), xf)
-    writeLines(glue::glue("%\\VignetteKeyword{package}", .open="|", .close="|"), xf)
-    close(xf)
+   xf = file(x)
+   writeLines(c(
+     glue::glue("%\\VignetteIndexEntry{|y|}", .open="|", .close="|"),
+     glue::glue("%\\VignetteEngine{R.rsp::asis}", .open="|", .close="|")),
+     xf)
+   close(xf)
   })
-  
+ 
+  # purrr::walk2(mergedf$pdf, mergedf$index_entry,  function(x, y) {
+  #   xf = file(file.path("vignettes", paste0(x, ".Rnw")))
+  #   writeLines(c(
+  #     glue::glue("\\documentclass{article}", .open="|", .close="|"),
+  #     glue::glue("\\usepackage{pdfpages}", .open="|", .close="|"),
+  #     glue::glue("%\\VignetteIndexEntry{|y|}", .open="|", .close="|"),
+  #     glue::glue("\\begin{document}", .open="|", .close="|"),
+  #     glue::glue("\\includepdf[pages=-, fitpaper=true]{|x|.pdf}", .open="|", .close="|"),
+  #     glue::glue("\\end{document}", .open="|", .close="|")),
+  #     xf)
+  #   close(xf)
+  # })
 }
 
 df_ready_for_cran <- function() {
@@ -175,11 +185,21 @@ df_ready_for_cran <- function() {
 
 df_check <- function() {
   df_ready_for_cran()
+  # remove the rmd files
+  rmd_files = list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+  
   devtools::check(args = c('--as-cran'))
 }
 
 df_release <- function() {
   df_ready_for_cran()
+  
+  # remove the rmd files
+  rmd_files = list.files("vignettes/", pattern = "*.Rmd", full.names = TRUE)
+  purrr::map(rmd_files, fs::file_delete)
+  
+  
   devtools::release()
 }
 

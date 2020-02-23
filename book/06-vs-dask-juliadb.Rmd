@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   include = TRUE,
-  eval =FALSE
+  eval = TRUE
 )
 ```
 
@@ -86,35 +86,35 @@ We find the largest possible single file to give each of the tool a test run.
 #### disk.frame
 First up is disk.frame
 
-```{r setup, cache=TRUE}
+```{r setup}
 suppressPackageStartupMessages(library(disk.frame))
 system.time(setup_disk.frame()) # ~4s
 ```
 
 We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size
 
-```{r convert, cache=TRUE, dependson='setup'}
-time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/perf/Performance_2004Q3.txt", header = FALSE))[3]
+```{r convert}
+time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/Performance_All/Performance_2004Q3.txt", header = FALSE))[3]
 
 time_to_convert_disk.frame
 ```
 
 Now that we have converted it, we want to a count by the first column. To achieve this we use a  "two-stage" aggregation strategy. Note that use `keep="V1"` to bring only the column `V1` into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly
 
-```{r agg, cache=TRUE, dependson='convert'}
+```{r agg}
 time_to_agg_disk.frame = system.time(summ <- df1[,.N, V1, keep = "V1"][, .(N = sum(N)), V1])
 
 time_to_agg_disk.frame
 ```
 
 We can inspect the result as well.
-```{r, dependson='agg'}
+```{r}
 summ
 ```
 
 Another way to perform the analysis is to use `dplyr` syntax to perform group-by in _one-stage_ which is:
 
-```{r, dependson='convert'}
+```{r}
 system.time(df1 %>% 
   srckeep("V1") %>% 
   group_by(V1) %>% 

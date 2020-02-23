@@ -1,4 +1,5 @@
 # disk.frame 0.3.4
+* fixed vignette bug and all vignette are now in static pdf
 * fixed bugs with group-by when run with Rscript
 * also fixed bugs with multiple group-by columns
 
