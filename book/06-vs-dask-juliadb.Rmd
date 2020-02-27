@@ -94,7 +94,7 @@ system.time(setup_disk.frame()) # ~4s
 We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size
 
 ```{r convert}
-time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/Performance_All/Performance_2004Q3.txt", header = FALSE))[3]
+time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/Performance_2003Q3.txt", header = FALSE))[3]
 
 time_to_convert_disk.frame
 ```
