@@ -3,8 +3,6 @@
 ^manuscript$
 ^cran-mirror$
 ^\.Rproj\.user$
-NAMESPACE_ok$
-NAMESPACE_20190205$
 misc
 cran-comments.md$
 presentation$
@@ -38,9 +36,9 @@ tmp82$
 .csv$
 inst/surf_2019_02_demo/.ipynb_checkpoints$
 tests_manual$
+test_diskframe$
 ^README\.Rmd$
 ^CRAN-RELEASE$
-^doc$
 ^Meta$
 ^rsconnect$
 ^book$
@@ -54,12 +52,13 @@ build_utils.R
 utils$
 ^misc$
 ^inst/tutorials/glm\.Rmd$
-^vignettes/more-epic\.Rmd$
-^vignettes/faster-than-data-table\.Rmd$
 ^\.travis\.yml$
 ^_pkgdown\.yml$
 ^docs$
+^doc$
 ^pkgdown$
 ^report_files$
 ^appveyor\.yml$
 ^\.httr-oauth$
+vignettes.asis.template
+vignettes.Rnw.template
