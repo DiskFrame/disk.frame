@@ -209,20 +209,28 @@ IQR_df.collected_agg.disk.frame <- function(listx, ...) {
 #' @rdname group_by
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
+  
+  
   ca_code = generate_summ_code(...)
   
-  chunk_summ_code = ca_code$chunk_summ_code
-  agg_summ_code = ca_code$agg_summ_code
-  
-  # get the by variables
-  group_by_cols = purrr::map_chr(attr(.data, "group_by_cols", exact=TRUE), ~{deparse(.x)})
-  
-  # generate full code
-  code_to_run = glue::glue("chunk_group_by({paste0(group_by_cols, collapse=',')}) %>% chunk_summarize({chunk_summ_code}) %>% collect %>% group_by({paste0(group_by_cols, collapse=',')}) %>% summarize({agg_summ_code})")
-  
-  class(.data) <- c("summarized_disk.frame", "disk.frame")
-  attr(.data, "summarize_code") = code_to_run
-  .data
+  if(is.null(names(ca_code))) {
+    return(eval(parse(text = glue::glue(".data %>% {rlang::as_label(ca_code)}"))))
+  } else if("chunk_summ_code" %in% names(ca_code)) {
+    chunk_summ_code = ca_code$chunk_summ_code
+    agg_summ_code = ca_code$agg_summ_code
+    
+    # get the by variables
+    group_by_cols = purrr::map_chr(attr(.data, "group_by_cols", exact=TRUE), ~{deparse(.x)})
+    
+    # generate full code
+    code_to_run = glue::glue("chunk_group_by({paste0(group_by_cols, collapse=',')}) %>% chunk_summarize({chunk_summ_code}) %>% collect %>% group_by({paste0(group_by_cols, collapse=',')}) %>% summarize({agg_summ_code})")
+    
+    class(.data) <- c("summarized_disk.frame", "disk.frame")
+    attr(.data, "summarize_code") = code_to_run
+    return(.data)
+  } else {
+    stop("something's wrong mate")
+  }
 }
 
 #' @export
@@ -254,20 +262,23 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = dplyr::group_by
 #' @importFrom dplyr summarize
 #' @rdname group_by
 summarize.disk.frame <- function(.data, ...) {
-  # comment summarize.grouped_disk.frame
-  #warning("`summarize.disk.frame`'s behaviour has changed. Please use `chunk_summarize` if you wish to `dplyr::summarize` to each chunk")
-  
   ca_code = generate_summ_code(...)
   
-  chunk_summ_code = ca_code$chunk_summ_code
-  agg_summ_code = ca_code$agg_summ_code
-  
-  # generate full code
-  code_to_run = glue::glue("chunk_summarize({chunk_summ_code}) %>% collect %>% summarize({agg_summ_code})")
-  
-  class(.data) <- c("summarized_disk.frame", "disk.frame")
-  attr(.data, "summarize_code") = code_to_run
-  .data
+  if(is.null(names(ca_code))) {
+    return(eval(parse(text = glue::glue(".data %>% {rlang::as_label(ca_code)}"))))
+  } else if("chunk_summ_code" %in% names(ca_code)) {
+    chunk_summ_code = ca_code$chunk_summ_code
+    agg_summ_code = ca_code$agg_summ_code
+    
+    # generate full code
+    code_to_run = glue::glue("chunk_summarize({chunk_summ_code}) %>% collect %>% summarize({agg_summ_code})")
+    
+    class(.data) <- c("summarized_disk.frame", "disk.frame")
+    attr(.data, "summarize_code") = code_to_run
+    return(.data )
+  } else {
+    stop("something's wrong")
+  } 
 }
 
 #' Helper function to generate summarisation code
@@ -275,85 +286,96 @@ summarize.disk.frame <- function(.data, ...) {
 #' @importFrom utils methods
 #' @noRd
 generate_summ_code <- function(...) {
+  # expand the code
+  code_to_expand = glue::glue("quo(summarise({rlang::as_label(substitute(...))}))")
   
-  code = substitute(list(...))[-1]
-  # print("hehe")
-  # print(code)
-  expr_id = 0
-  temp_varn = 0
+  summ_code_quosure = eval(parse(text = code_to_expand))
+  #print(summ_code_quosure)
   
-  list_of_chunk_agg_fns <- as.character(utils::methods(class = "chunk_agg.disk.frame"))
-  list_of_collected_agg_fns <- as.character(utils::methods(class = "collected_agg.disk.frame"))
-  # browser()
-  # generate the chunk_summarize_code
-  summarize_code = purrr::map_dfr(code, ~{
+  # ZJ: 
+  # try the traditional route which can't deal with !!!, so if this fails then try the !!! route
+  tryCatch({
+    code = substitute(list(...))[-1]
+    # print("hehe")
+    # print(code)
+    expr_id = 0
+    temp_varn = 0
+    
+    list_of_chunk_agg_fns <- as.character(utils::methods(class = "chunk_agg.disk.frame"))
+    list_of_collected_agg_fns <- as.character(utils::methods(class = "collected_agg.disk.frame"))
     # browser()
-    # print("raw code")
-    # print(.x)
-    expr_id <<- expr_id  + 1
-    # parse the function into table form for easy interrogration
-    # The keep.source = TRUE options seems necessary to keep it working in Rscript mode
-    gpd = getParseData(parse(text = deparse(.x), keep.source = TRUE), includeText = TRUE); 
-    # print("raw table")
-    # print(deparse(.x))
-    # print(gpd)
-    grp_funcs = gpd %>% filter(token == "SYMBOL_FUNCTION_CALL") %>% select(text) %>% pull
-    grp_funcs = grp_funcs %>% paste0("_df")
+    # generate the chunk_summarize_code
+    summarize_code = purrr::map_dfr(code, ~{
+      # print("raw code")
+      # print(.x)
+      expr_id <<- expr_id  + 1
+      # parse the function into table form for easy interrogration
+      # The keep.source = TRUE options seems necessary to keep it working in Rscript mode
+      gpd = getParseData(parse(text = deparse(.x), keep.source = TRUE), includeText = TRUE); 
+      # print("raw table")
+      # print(deparse(.x))
+      # print(gpd)
+      grp_funcs = gpd %>% filter(token == "SYMBOL_FUNCTION_CALL") %>% select(text) %>% pull
+      grp_funcs = grp_funcs %>% paste0("_df")
+      
+      # search in the space to find functions name `fn`.chunk_agg.disk.frame
+      # only allow one such functions for now TODO improve it
+      num_of_chunk_functions = sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".chunk_agg.disk.frame"))))
+      num_of_collected_functions= sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".collected_agg.disk.frame"))))
+      
+      # the number chunk and aggregation functions must match
+      stopifnot(num_of_chunk_functions == num_of_collected_functions)
+      
+      # keep only grp_functions
+      grp_funcs= grp_funcs[sapply(grp_funcs, function(x) exists(paste0(x, ".chunk_agg.disk.frame")))]
+      
+      if(num_of_chunk_functions == 0) {
+        stop(sprintf("There must be at least one summarization function in %s", deparse(.x)))
+      } else if (num_of_chunk_functions > 1) {
+        stop(sprintf("Two or more summarisation functions are detected in \n\n```\n%s\n```\n\nThese are currently not supported by {disk.frame} at the moment \n    * Nestling (like mean(sum(x) + y)) or \n    * combinations (like sum(x) + mean(x))\n\nIf you want this implemented, please leave a comment or upvote at: https://github.com/xiaodaigh/disk.frame/issues/228 \n\n", deparse(.x)))
+      }
+      
+      # check to see if the mean is only two from parent 0, otherwise it would a statement in the form of 1 + mean(x)
+      # which isn't supported
+      data.table::setDT(gpd)
+      data.table::setkey(gpd, parent)
+      if (gpd[id == gpd[id == gpd[(paste0(text,"_df") == grp_funcs) & (token == "SYMBOL_FUNCTION_CALL"), parent], parent], parent] != 0) {
+        stop(sprintf("Combining summarization with other operations \n\n```\n%s\n```\n\nThese are currently not supported by {disk.frame} at the moment \n    * combinations (like sum(x) + 1)\n* combinations (like list(sum(x)))\n\nIf you want this implemented, please leave a comment or upvote at: https://github.com/xiaodaigh/disk.frame/issues/228 \n\n", deparse(.x)))
+      }
+      
+      temp_varn <<- temp_varn + 1
+      grp_funcs_wo_df = sapply(grp_funcs, function(grp_func) substr(grp_func, 1, nchar(grp_func)-3))
+      
+      tmpcode = deparse(evalparseglue("substitute({deparse(.x)}, list({grp_funcs_wo_df} = quote({grp_funcs}.chunk_agg.disk.frame)))")) %>% paste0(collapse = " ")
+      
+      chunk_code = data.frame(assign_to = as.character(glue::glue("tmp{temp_varn}")), expr = tmpcode, stringsAsFactors = FALSE)
+      
+      chunk_code$orig_code = deparse(.x)
+      chunk_code$expr_id = expr_id
+      chunk_code$grp_fn = grp_funcs
+      chunk_code$name = ifelse(is.null(names(code[expr_id])), "", names(code[expr_id]))
+      
+      # create the aggregation code
+      chunk_code$agg_expr = as.character(glue::glue("{grp_funcs}.collected_agg.disk.frame({paste0(chunk_code$assign_to, collapse=', ')})"))
+      
+      #print(sapply(chunk_code, typeof))
+      chunk_code
+    })
     
-    # search in the space to find functions name `fn`.chunk_agg.disk.frame
-    # only allow one such functions for now TODO improve it
-    num_of_chunk_functions = sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".chunk_agg.disk.frame"))))
-    num_of_collected_functions= sum(sapply(unique(grp_funcs), function(x) exists(paste0(x, ".collected_agg.disk.frame"))))
+    chunk_summ_code = paste0(summarize_code$assign_to, "=list(", summarize_code$expr, ")") %>% paste0(collapse = ", ")
     
-    # the number chunk and aggregation functions must match
-    stopifnot(num_of_chunk_functions == num_of_collected_functions)
+    agg_code_df = summarize_code %>% 
+      select(expr_id, name, agg_expr, orig_code) %>% 
+      unique %>% 
+      transmute(agg_code = paste0(ifelse(name == "", paste0("`", orig_code, "` = "), paste0(name, "=")), agg_expr))
     
-    # keep only grp_functions
-    grp_funcs= grp_funcs[sapply(grp_funcs, function(x) exists(paste0(x, ".chunk_agg.disk.frame")))]
+    agg_summ_code = paste0(agg_code_df$agg_code, collapse = ",")
     
-    if(num_of_chunk_functions == 0) {
-      stop(sprintf("There must be at least one summarization function in %s", deparse(.x)))
-    } else if (num_of_chunk_functions > 1) {
-      stop(sprintf("Two or more summarisation functions are detected in \n\n```\n%s\n```\n\nThese are currently not supported by {disk.frame} at the moment \n    * Nestling (like mean(sum(x) + y)) or \n    * combinations (like sum(x) + mean(x))\n\nIf you want this implemented, please leave a comment or upvote at: https://github.com/xiaodaigh/disk.frame/issues/228 \n\n", deparse(.x)))
-    }
-    
-    # check to see if the mean is only two from parent 0, otherwise it would a statement in the form of 1 + mean(x)
-    # which isn't supported
-    data.table::setDT(gpd)
-    data.table::setkey(gpd, parent)
-    if (gpd[id == gpd[id == gpd[(paste0(text,"_df") == grp_funcs) & (token == "SYMBOL_FUNCTION_CALL"), parent], parent], parent] != 0) {
-      stop(sprintf("Combining summarization with other operations \n\n```\n%s\n```\n\nThese are currently not supported by {disk.frame} at the moment \n    * combinations (like sum(x) + 1)\n* combinations (like list(sum(x)))\n\nIf you want this implemented, please leave a comment or upvote at: https://github.com/xiaodaigh/disk.frame/issues/228 \n\n", deparse(.x)))
-    }
-    
-    temp_varn <<- temp_varn + 1
-    grp_funcs_wo_df = sapply(grp_funcs, function(grp_func) substr(grp_func, 1, nchar(grp_func)-3))
-    
-    tmpcode = deparse(evalparseglue("substitute({deparse(.x)}, list({grp_funcs_wo_df} = quote({grp_funcs}.chunk_agg.disk.frame)))")) %>% paste0(collapse = " ")
-    
-    chunk_code = data.frame(assign_to = as.character(glue::glue("tmp{temp_varn}")), expr = tmpcode, stringsAsFactors = FALSE)
-    
-    chunk_code$orig_code = deparse(.x)
-    chunk_code$expr_id = expr_id
-    chunk_code$grp_fn = grp_funcs
-    chunk_code$name = ifelse(is.null(names(code[expr_id])), "", names(code[expr_id]))
-    
-    # create the aggregation code
-    chunk_code$agg_expr = as.character(glue::glue("{grp_funcs}.collected_agg.disk.frame({paste0(chunk_code$assign_to, collapse=', ')})"))
-    
-    #print(sapply(chunk_code, typeof))
-    chunk_code
+    return(list(chunk_summ_code = chunk_summ_code, agg_summ_code = agg_summ_code))
+  }, error = function(e) {
+    return(summ_code_quosure)
   })
   
-  chunk_summ_code = paste0(summarize_code$assign_to, "=list(", summarize_code$expr, ")") %>% paste0(collapse = ", ")
-  
-  agg_code_df = summarize_code %>% 
-    select(expr_id, name, agg_expr, orig_code) %>% 
-    unique %>% 
-    transmute(agg_code = paste0(ifelse(name == "", paste0("`", orig_code, "` = "), paste0(name, "=")), agg_expr))
-  
-  agg_summ_code = paste0(agg_code_df$agg_code, collapse = ",")
-  
-  list(chunk_summ_code = chunk_summ_code, agg_summ_code = agg_summ_code)
 }
 
 

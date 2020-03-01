@@ -266,6 +266,42 @@ test_that("guard against github 256 #3", {
   expect_equal(dim(incorrect_result), dim(correct_result))
 })
 
+test_that("tests for github #250", {
+  aggregate_expressions <- list(n = quote(n()))
+  
+  result1 = iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarise(n = n()) %>% 
+    collect
+  
+  result2 <- iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarize(!!!(aggregate_expressions)) %>% 
+    collect
+  
+  expect_equal(result1, result2)
+})
+
+test_that("tests for github #250 2", {
+  aggregate_expressions <- list(n = quote(n()), quote(n()))
+  
+  result1 = iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarise(n = n(), n()) %>% 
+    collect; result1
+  
+  result2 <- iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarize(!!!(aggregate_expressions)) %>% 
+    collect
+  
+  expect_equal(result1, result2)
+})
+
 teardown({
   fs::file_delete(file.path(tempdir(), "tmp_pls_delete_gb.csv"))
   fs::dir_delete(file.path(tempdir(), "tmp_pls_delete_gb.df"))
