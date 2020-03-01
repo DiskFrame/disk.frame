@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.3.4
-Date: 2020-02-23
+Version: 0.3.5
+Date: 2020-03-01
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))

@@ -225,6 +225,7 @@ test_that("guard against github 256 #2", {
   
   test_df = as.disk.frame(test2, nchunks = 2, overwrite=TRUE)
   
+  
   correct_result = test_df %>%
     group_by(!!!syms(names(test_df))) %>%
     summarize(n=n()) %>% 
@@ -236,6 +237,69 @@ test_that("guard against github 256 #2", {
     collect
   
   expect_equal(dim(incorrect_result), dim(correct_result))
+})
+
+test_that("guard against github 256 #3", {
+  library(testthat)
+  library(disk.frame)
+  setup_disk.frame()
+  
+  test2 <- tibble::tibble(
+    date = sample(1:10, 20, replace = TRUE),
+    uid = sample(1:10, 20, replace = TRUE)
+  )
+  
+  test_df = as.disk.frame(test2, nchunks = 2, overwrite=TRUE)
+  
+  ntd = names(test_df)
+  
+  correct_result = test_df %>%
+    group_by(!!!syms(ntd)) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  incorrect_result = test_df %>%
+    group_by(date, uid) %>%
+    summarize(n=n()) %>% 
+    collect
+  
+  expect_equal(dim(incorrect_result), dim(correct_result))
+})
+
+test_that("tests for github #250", {
+  aggregate_expressions <- list(n = quote(n()))
+  
+  result1 = iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarise(n = n()) %>% 
+    collect
+  
+  result2 <- iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarize(!!!(aggregate_expressions)) %>% 
+    collect
+  
+  expect_equal(result1, result2)
+})
+
+test_that("tests for github #250 2", {
+  aggregate_expressions <- list(n = quote(n()), quote(n()))
+  
+  result1 = iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarise(n = n(), n()) %>% 
+    collect; result1
+  
+  result2 <- iris %>% 
+    as.disk.frame() %>% 
+    group_by(Species) %>%
+    summarize(!!!(aggregate_expressions)) %>% 
+    collect
+  
+  expect_equal(result1, result2)
 })
 
 teardown({
