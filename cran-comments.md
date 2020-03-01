@@ -1,5 +1,12 @@
-## Submission for v0.3.4
-* Updated
+## Re- Submission for v0.3.4
+* Updated and removed vignette
+* I keep getting this error on R-devel, but when I run the code in the REPL it's fine, so I suspect it's a bug with R-devel.
+```
+Error in print.default(toprint, right = TRUE, quote = quote) : 
+    invalid 'useSource' argument
+  Calls: <Anonymous> -> print.data.table -> print -> print.default
+  Execution halted
+```
 
 ## Test environments
 * local Windows 10 Pro install, R 3.6.2
