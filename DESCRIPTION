@@ -48,7 +48,8 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2
+    ggplot2,
+    tidytable(>= 0.3.2)
 LinkingTo: 
     Rcpp
 RoxygenNote: 7.0.2
