@@ -217,12 +217,15 @@ flights.df %>%
   filter(year == 2013) %>% 
   mutate(origin_dest = paste0(origin, dest)) %>% 
   head(2)
-#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum
-#> 1 2013     1   1      517            515         2      830            819        11      UA   1545  N14228
-#> 2 2013     1   1      533            529         4      850            830        20      UA   1714  N24211
-#>   origin dest air_time distance hour minute           time_hour origin_dest
-#> 1    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH
-#> 2    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH
+#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1 2013     1   1      517            515         2      830            819
+#> 2 2013     1   1      533            529         4      850            830
+#>   arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#> 2        20      UA   1714  N24211    LGA  IAH      227     1416    5     29
+#>             time_hour origin_dest
+#> 1 2013-01-01 05:00:00      EWRIAH
+#> 2 2013-01-01 05:00:00      LGAIAH
 ```
 
 ### Group-by
@@ -279,7 +282,6 @@ obtained using estimated methods.
 
 ``` r
 library(data.table)
-#> data.table 1.12.8 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
 #> 
 #> Attaching package: 'data.table'
 #> The following object is masked from 'package:purrr':
@@ -296,6 +298,30 @@ grp_by_stage1 =
     .(sum_dist = sum(distance)), 
     .(qtr = ifelse(month <= 3, "Q1", "Q2"))
     ]
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
 
 grp_by_stage1
 #>    qtr sum_dist
@@ -326,7 +352,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpa6R05d\\file1b086cec36c7.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpOeAro4\\file17a0150634fd.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -334,19 +360,23 @@ A number of data.frame functions are implemented for disk.frame
 ``` r
 # get first few rows
 head(flights.df, 1)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum
-#> 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228
-#>    origin dest air_time distance hour minute           time_hour
-#> 1:    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     1   1      517            515         2      830            819
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#>              time_hour
+#> 1: 2013-01-01 05:00:00
 ```
 
 ``` r
 # get last few rows
 tail(flights.df, 1)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum
-#> 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ   3531  N839MQ
-#>    origin dest air_time distance hour minute           time_hour
-#> 1:    LGA  RDU       NA      431    8     40 2013-09-30 08:00:00
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     9  30       NA            840        NA       NA           1020
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40
+#>              time_hour
+#> 1: 2013-09-30 08:00:00
 ```
 
 ``` r
@@ -455,3 +485,7 @@ ways? Here are some ways you can contribute
 status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
+
+## Live Stream of `{disk.frame}` development
+
+  - <https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe>
