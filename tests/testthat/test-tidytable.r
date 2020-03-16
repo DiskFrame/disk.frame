@@ -1,6 +1,8 @@
 context("test-tidytable-verbs")
 
 setup({
+  # require tidytable to work
+  library(tidytable)
   b = data.frame(a = 51:150, b = 1:100)
   as.disk.frame(b, file.path(tempdir(), "tmp_b_dv.df"), nchunks = 5, overwrite = T)
 })
@@ -52,10 +54,6 @@ test_that("testing filter - global vars", {
 })
 
 test_that("testing mutate", {
-  library(disk.frame)
-  setup_disk.frame()
-  library(testthat)
-  library(tidytable)
   b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
   
   df_orig = b %>% 
@@ -91,7 +89,7 @@ test_that("testing mutate", {
   }
   
   df3 = value %>%
-    dt_mutate(b =  fn(num, num)) %>%
+    mutate(b =  fn(num, num)) %>%
     collect
   
   expect_equal(ncol(df3), 3)

@@ -52,7 +52,7 @@ Suggests:
     tidytable(>= 0.3.2)
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues
