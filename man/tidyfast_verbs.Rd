@@ -22,7 +22,7 @@ chunk_dt_hoist(.data, ...)
 
 chunk_dt_fill(.data, ...)
 
-\method{dt_separate}{disk.frame}(.data, ...)
+dt_separate.disk.frame(.data, ...)
 }
 \arguments{
 \item{.data}{a disk.frame}

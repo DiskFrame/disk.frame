@@ -39,7 +39,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TR
       warning(warning_msg)
     }
     
-    
+    browser()
     quo_dotdotdot = rlang::enquos(...)
     
     # this is designed to capture any global stuff

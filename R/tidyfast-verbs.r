@@ -22,11 +22,21 @@
 #' 
 #' #' clean up
 #' delete(disk.frame_to_split)
-chunk_dt_count.disk.frame <- create_chunk_mapper(tidyfast::dt_count, as.data.frame = FALSE)
+chunk_dt_count <- create_chunk_mapper(tidyfast::dt_count, as.data.frame = FALSE)
+
+#' dt_count working on whole disk.frame
+dt_count.disk.frame <- function(dt_, ..., na.rm = FALSE, wt = NULL) {
+  stop("ZJ: I was up to here, and I need better understanding of NSE. Why?
+       ifelse(is.null(wt), NULL, wt) is not going to work if wt is a column name")
+  
+  dt_ %>% 
+    chunk_dt_count(..., na.rm = force(na.rm), wt = ifelse(is.null(wt), NULL, wt)) %>% 
+    collect
+}
 
 #' @rdname tidyfast_verbs
 #' @export
-chunk_dt_uncount.disk.frame <- create_chunk_mapper(tidyfast::dt_uncount, as.data.frame = FALSE)
+chunk_dt_uncount <- create_chunk_mapper(tidyfast::dt_uncount, as.data.frame = FALSE)
 
 #' @rdname tidyfast_verbs
 #' @export
