@@ -123,60 +123,45 @@ add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
 #' @rdname chunk_group_by
 chunk_summarize <- create_chunk_mapper(dplyr::summarize)
 
-
-#' @export
-#' @importFrom dplyr summarise
-#' @rdname chunk_group_by
-chunk_summarise <- create_chunk_mapper(dplyr::summarise)
-
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr do
 do.disk.frame <- create_chunk_mapper(dplyr::do)
-
 
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_all
 chunk_group_by_all.disk.frame <- create_chunk_mapper(dplyr::group_by_all)
 
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_at
 chunk_group_by_at.disk.frame <- create_chunk_mapper(dplyr::group_by_at)
-
 
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr group_by_if
 chunk_group_by_if.disk.frame <- create_chunk_mapper(dplyr::group_by_if)
 
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_all
 mutate_all.disk.frame <- create_chunk_mapper(dplyr::mutate_all)
-
 
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_at
 mutate_at.disk.frame <- create_chunk_mapper(dplyr::mutate_at)
 
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr mutate_if
 mutate_if.disk.frame <- create_chunk_mapper(dplyr::mutate_if)
 
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr rename_all
 rename_all.disk.frame <- create_chunk_mapper(dplyr::rename_all)
-
 
 #' @export
 #' @rdname dplyr_verbs
@@ -218,7 +203,6 @@ chunk_summarise_all <- create_chunk_mapper(dplyr::summarise_all)
 #' @rdname dplyr_verbs
 #' @importFrom dplyr summarise_at
 chunk_summarise_at <- create_chunk_mapper(dplyr::summarise_at)
-
 
 #' @export
 #' @rdname dplyr_verbs
@@ -279,7 +263,6 @@ chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 
 # do not introduce it as it was never introduced
 #ungroup.disk.frame( < - create_dplyr_mapper(dplyr::ungroup, , warning_msg="`ungroup.disk.frame` is now deprecated. Please use `chunk_ungroup` instead. This is in preparation for a more powerful `group_by` framework")
-
 
 #' @export
 #' @rdname dplyr_verbs

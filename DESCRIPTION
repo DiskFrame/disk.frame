@@ -2,7 +2,7 @@ Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
 Version: 0.3.5
-Date: 2020-03-01
+Date: 2020-03-21
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))
@@ -48,10 +48,11 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2
+    ggplot2, 
+    tidyfast (>= 0.2.1)
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

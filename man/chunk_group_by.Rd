@@ -2,14 +2,11 @@
 % Please edit documentation in R/dplyr_verbs.r
 \name{chunk_summarize}
 \alias{chunk_summarize}
-\alias{chunk_summarise}
 \alias{chunk_group_by}
 \alias{chunk_ungroup}
 \title{Group by within each disk.frame}
 \usage{
 chunk_summarize(.data, ...)
-
-chunk_summarise(.data, ...)
 
 chunk_group_by(.data, ...)
 

@@ -39,7 +39,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TR
       warning(warning_msg)
     }
     
-    
+    browser()
     quo_dotdotdot = rlang::enquos(...)
     
     # this is designed to capture any global stuff
@@ -47,7 +47,6 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TR
     data_for_eval_tidy = force(vars_and_pkgs$globals)
     
     res = cmap(.data, ~{
-      
       this_env = environment()
       
       if(length(data_for_eval_tidy) > 0) {
