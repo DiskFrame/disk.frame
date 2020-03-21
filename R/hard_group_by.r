@@ -3,12 +3,12 @@
 #' @param df a disk.frame
 #' @noRd
 progressbar <- function(df) {
-  if(attr(df,"performing") == "hard_group_by") {
+  if(attr(df,"performing", exact=TRUE) == "hard_group_by") {
     # create progress bar
     
     shardby = "acct_id"
     #list.files(
-    fparent = attr(df,"parent")
+    fparent = attr(df,"parent", exact=TRUE)
     
     #tmp = file.path(fparent,".performing","inchunks")
     tmp = "tmphardgroupby2"
@@ -133,7 +133,7 @@ hard_group_by.disk.frame <- function(
     sample_size_per_chunk = ceiling(nchunks / disk.frame::nchunks(df)) * sort_split_sample_size
     
     # Sample and sort
-    sort_splits_sample <- map(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
+    sort_splits_sample <- cmap(df, dplyr::sample_n, size=sample_size_per_chunk, replace=TRUE) %>% 
       select(...) %>%
       collect()
     
@@ -166,7 +166,7 @@ hard_group_by.disk.frame <- function(
     by <- unlist(list(...))
     
     # shard and create temporary diskframes
-    tmp_df  = map(df, function(df1) {
+    tmp_df  = cmap(df, function(df1) {
       tmpdir = tempfile()
       shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
@@ -177,7 +177,7 @@ hard_group_by.disk.frame <- function(
     
     # clean up the tmp dir
     purrr::walk(tmp_df, ~{
-      fs::dir_delete(attr(.x, "path"))
+      fs::dir_delete(attr(.x, "path", exact=TRUE))
     })
     
 
@@ -200,8 +200,7 @@ hard_group_by.disk.frame <- function(
 
     
     # shard and create temporary diskframes
-    tmp_df  = map(df, function(df1) {
-      ##browser
+    tmp_df  = cmap(df, function(df1) {
       tmpdir = tempfile()
       shard(df1, shardby = by, nchunks = nchunks, outdir = tmpdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars)
     }, lazy = FALSE)
@@ -211,7 +210,7 @@ hard_group_by.disk.frame <- function(
     
     # clean up the tmp dir
     purrr::walk(tmp_df, ~{
-      fs::dir_delete(attr(.x, "path"))
+      fs::dir_delete(attr(.x, "path", exact=TRUE))
     })
     
     res1 = res %>% chunk_group_by(!!!syms(by))

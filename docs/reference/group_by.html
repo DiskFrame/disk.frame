@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group by within each disk.frame — group_by.disk.frame • disk.frame</title>
+<title>A function to parse the summarize function — summarise.grouped_disk.frame • disk.frame</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Group by within each disk.frame — group_by.disk.frame" />
+<meta property="og:title" content="A function to parse the summarize function — summarise.grouped_disk.frame" />
 <meta property="og:description" content="The disk.frame group by operation perform group WITHIN each chunk. This is
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
@@ -72,7 +72,7 @@ reorganizes the chunks by the shard key." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -95,31 +95,37 @@ reorganizes the chunks by the shard key." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/01-intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/convenience-features.html">Convenience features</a>
+      <a href="../articles/02-intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
-      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="../articles/06-vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+      <a href="../articles/07-glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+      <a href="../articles/08-more-epic.html">{disk.frame} can be more 'epic'</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/09-convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/10-group-by.html">Group-by</a>
+    </li>
+    <li>
+      <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
   </ul>
 </li>
@@ -142,7 +148,7 @@ reorganizes the chunks by the shard key." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Group by within each disk.frame</h1>
+    <h1>A function to parse the summarize function</h1>
     
     <div class="hidden name"><code>group_by.Rd</code></div>
     </div>
@@ -154,10 +160,20 @@ they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='co'># S3 method for grouped_disk.frame</span>
+<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>chunk_group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for grouped_disk.frame</span>
+<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>group_by</span>(<span class='no'>.data</span>, <span class='no'>...</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by_drop_default.html'>group_by_drop_default</a></span>(<span class='no'>.data</span>))
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,6 +185,14 @@ reorganizes the chunks by the shard key.</p>
     <tr>
       <th>...</th>
       <td><p>same as the dplyr::group_by</p></td>
+    </tr>
+    <tr>
+      <th>add</th>
+      <td><p>from dplyr</p></td>
+    </tr>
+    <tr>
+      <th>.drop</th>
+      <td><p>from dplyr</p></td>
     </tr>
     </table>
 

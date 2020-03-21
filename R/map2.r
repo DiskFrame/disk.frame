@@ -1,4 +1,4 @@
-#' `map` a function to two disk.frames
+#' `cmap2` a function to two disk.frames
 #' @description
 #' Perform a function on both disk.frames .x and .y, each chunk of .x and .y
 #' gets run by .f(x.chunk, y.chunk)
@@ -12,15 +12,22 @@
 #' @importFrom purrr as_mapper map2
 #' @importFrom data.table data.table
 #' @export
+#' @rdname cmap2
 #' @examples
 #' cars.df = as.disk.frame(cars)
 #'
-#' cars2.df = map2(cars.df, cars.df, ~data.table::rbindlist(list(.x, .y)))
+#' cars2.df = cmap2(cars.df, cars.df, ~data.table::rbindlist(list(.x, .y)))
 #' collect(cars2.df)
 #'
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
+cmap2 <- function(.x, .y, .f, ...){
+  UseMethod("cmap2")
+}
+
+#' @export
+#' @rdname cmap2
 map2 <- function(.x, .y, .f, ...){
   UseMethod("map2")
 }
@@ -31,10 +38,20 @@ map2.default <- function(.x, .y, .f, ...) {
 }
 
 #' @export
-#' @importFrom assertthat assert_that
+map2.disk.frame <- function(...) {
+  warning("map2.disk.frame(df, df1, ..) where df is disk.frame is deprecated. Use cmap(df, df1, ...) instead")
+  cmap2.disk.frame(...)
+}
+
+#' @export
 #' @importFrom pryr do_call
-map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"), .progress = TRUE) {
-  assertthat::assert_that("disk.frame" %in% class(.x), msg = "running map2.disk.frame(.x,.y, ...): the .x argument must be a disk.frame")
+cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"), .progress = TRUE) {
+  if(!"disk.frame" %in% class(.x)) {
+    code = deparse(substitute(cmap2.disk.frame(.x,.y, ...))) %>% paste(collapse = "\n")
+    stop(sprintf("running %s : the .x argument must be a disk.frame", code))
+  } 
+  
+  
   .f = purrr::as_mapper(.f)
   
   
@@ -72,7 +89,7 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"),
     return(disk.frame(outdir))
   } else {
     # if .y is not a disk.frame
-    warning("in map2(.x,.y,...) the .y is not a disk.frame, so returning a list instead of a disk.frame")
+    warning("in cmap2(.x,.y,...) the .y is not a disk.frame, so returning a list instead of a disk.frame")
     
     f_for_passing = force(.f)
     ddd = list(...)
@@ -87,8 +104,3 @@ map2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df"),
   }
 }
 
-#' @rdname map2
-map_by_chunk_id <- function(.x, .y, .f, ..., outdir) {
-  warning("map_by_chunk_id is deprecated. Use map2 instead")
-  map2.disk.frame(.x, .y, .f, ..., outdir = outdir)
-}

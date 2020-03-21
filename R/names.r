@@ -23,7 +23,7 @@ names.disk.frame <- function(x, ...) {
 #' @rdname colnames
 #' @export
 colnames.disk.frame <- function(x, ...) {
-  res = attr(x, "path") %>% 
+  res = attr(x, "path", exact=TRUE) %>% 
     fs::dir_ls(type="file")
   if(length(res) == 0) {
     return(vector("character"))

@@ -70,7 +70,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -93,31 +93,37 @@ into. It can accept filesizes in bytes (as integer) or a data.frame" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/01-intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/convenience-features.html">Convenience features</a>
+      <a href="../articles/02-intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
-      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="../articles/06-vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+      <a href="../articles/07-glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+      <a href="../articles/08-more-epic.html">{disk.frame} can be more 'epic'</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/09-convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/10-group-by.html">Group-by</a>
+    </li>
+    <li>
+      <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
   </ul>
 </li>
@@ -153,8 +159,8 @@ into. It can accept filesizes in bytes (as integer) or a data.frame</p>
     <pre class="usage"><span class='fu'>recommend_nchunks</span>(
   <span class='no'>df</span>,
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"csv"</span>,
-  <span class='kw'>minchunks</span> <span class='kw'>=</span> <span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-  <span class='kw'>conservatism</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>minchunks</span> <span class='kw'>=</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html'>getDTthreads</a></span>(),
+  <span class='kw'>conservatism</span> <span class='kw'>=</span> <span class='fl'>8</span>,
   <span class='kw'>ram_size</span> <span class='kw'>=</span> <span class='fu'><a href='df_ram_size.html'>df_ram_size</a></span>()
 )</pre>
 

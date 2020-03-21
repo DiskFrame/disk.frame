@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -54,16 +54,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
       <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+    </li>
+    <li>
+      <a href="../articles/group-by.html">Group-by</a>
     </li>
     <li>
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
@@ -110,9 +116,9 @@
 
     
     
-<div id="intro" class="section level2">
-<h2 class="hasAnchor">
-<a href="#intro" class="anchor"></a>Intro</h2>
+<div id="intro---benchmark-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#intro---benchmark-1" class="anchor"></a>Intro - Benchmark 1</h1>
 <p>This is the first in a series to benchmark the performance of disk.frame vs other medium-data tools. For Python, we will benchmark Dask, and for Julia, we will benchmark JuliaDB.jl. In the process, I will do a warts-and-all account of the tools I have tested.</p>
 <p>The title was ‘inspired’ by <a href="https://matloff.wordpress.com/2014/05/21/r-beats-python-r-beats-julia-anyone-else-wanna-challenge-r/">this post titled “R beats Python! R beats Julia! Anyone else wanna challenge R?”</a>.</p>
 </div>
@@ -135,7 +141,6 @@
 <a class="sourceLine" id="cb1-9" title="9"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tool, <span class="dt">weight =</span> timing), <span class="dt">stat =</span> <span class="st">"count"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-10" title="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"seconds"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb1-11" title="11"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"Convert to desired format timing"</span>)</a></code></pre></div>
-<p><img src="vs-dask-juliadb_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>Next up is timings for the simple aggregation</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">df =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="dt">tool =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span>),</a>
@@ -146,8 +151,7 @@
 <a class="sourceLine" id="cb2-7" title="7"><span class="kw">ggplot</span>(df) <span class="op">+</span></a>
 <a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tool, <span class="dt">weight =</span> timing), <span class="dt">stat =</span> <span class="st">"count"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-9" title="9"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"seconds"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"Count(*) gorup-by timings"</span>)</a></code></pre></div>
-<p><img src="vs-dask-juliadb_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<a class="sourceLine" id="cb2-10" title="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"Count(*) group-by timings"</span>)</a></code></pre></div>
 </div>
 <div id="data" class="section level2">
 <h2 class="hasAnchor">
@@ -171,45 +175,24 @@
 <a href="#disk-frame" class="anchor"></a>disk.frame</h4>
 <p>First up is disk.frame</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(disk.frame))</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; The number of workers available for disk.frame is 6</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;    0.05    0.05    3.73</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span></a></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">time_to_convert_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(df1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>))[<span class="dv">3</span>]</a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
-<a class="sourceLine" id="cb6-3" title="3">time_to_convert_disk.frame</a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; elapsed </span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;   22.64</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-3" title="3">time_to_convert_disk.frame</a></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">time_to_agg_disk.frame =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(summ &lt;-<span class="st"> </span>df1[,.N, V1, <span class="dt">keep =</span> <span class="st">"V1"</span>][, .(<span class="dt">N =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(N)), V1])</a>
 <a class="sourceLine" id="cb7-2" title="2"></a>
-<a class="sourceLine" id="cb7-3" title="3">time_to_agg_disk.frame</a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;    0.07    0.08    3.47</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-3" title="3">time_to_agg_disk.frame</a></code></pre></div>
 <p>We can inspect the result as well.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">summ</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;                   V1   N</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;      1: 100001458647 111</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;      2: 100004788186  95</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt;      3: 100008528816 133</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;      4: 100014656651 115</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt;      5: 100021529837  75</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;     ---                 </span></a>
-<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; 389486: 999981910757  17</span></a>
-<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; 389487: 999982397951 104</span></a>
-<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; 389488: 999986952752  97</span></a>
-<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; 389489: 999990008973 162</span></a>
-<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; 389490: 999994125744  15</span></a></code></pre></div>
-<p>Another way to perform the analysis is to use <code>dplyr</code> syntax to perform a two-stage “group-by” which is:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">df1 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">summ</a></code></pre></div>
+<p>Another way to perform the analysis is to use <code>dplyr</code> syntax to perform group-by in <em>one-stage</em> which is:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(df1 <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="st">"V1"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">N =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span>collect <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">N =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(N)) <span class="op">%&gt;%</span><span class="st"> </span></a></code></pre></div>
-<p>However, the <code>dplyr</code> syntax tends to be slightly slower than using data.table syntax.</p>
+<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(V1) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">N =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span>collect)</a></code></pre></div>
+<p>However, the <code>dplyr</code> syntax tends to be slightly slower than using data.table syntax. This may be improved as much of the overhead is due to inefficient use of NSE.</p>
 </div>
 <div id="dask" class="section level4">
 <h4 class="hasAnchor">
@@ -284,7 +267,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#intro">Intro</a></li>
+<li><a href="#intro---benchmark-1">Intro - Benchmark 1</a></li>
       <li>
 <a href="#tldr">TL;DR</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#data">Data</a></li>

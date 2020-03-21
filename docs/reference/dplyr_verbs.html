@@ -36,8 +36,8 @@
 
 
 <meta property="og:title" content="The dplyr verbs implemented for disk.frame — select.disk.frame" />
-<meta property="og:description" content="Please see the dplyr document for their usage. Please note that `group_by`
-and `arrange` performs the actions within each chunk" />
+<meta property="og:description" content="Please see the dplyr document for their usage. Please note
+`chunk_arrange` performs the actions within each chunk" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@ and `arrange` performs the actions within each chunk" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -93,31 +93,37 @@ and `arrange` performs the actions within each chunk" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/01-intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/convenience-features.html">Convenience features</a>
+      <a href="../articles/02-intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
-      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="../articles/06-vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+      <a href="../articles/07-glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+      <a href="../articles/08-more-epic.html">{disk.frame} can be more 'epic'</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/09-convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/10-group-by.html">Group-by</a>
+    </li>
+    <li>
+      <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
   </ul>
 </li>
@@ -146,8 +152,8 @@ and `arrange` performs the actions within each chunk" />
     </div>
 
     <div class="ref-description">
-    <p>Please see the dplyr document for their usage. Please note that `group_by`
-and `arrange` performs the actions within each chunk</p>
+    <p>Please see the dplyr document for their usage. Please note
+`chunk_arrange` performs the actions within each chunk</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
@@ -184,24 +190,14 @@ and `arrange` performs the actions within each chunk</p>
 
 <span class='fu'>add_tally.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>chunk_summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>summarise</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>do</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>group_by_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+<span class='fu'>chunk_group_by_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>group_by_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+<span class='fu'>chunk_group_by_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>group_by_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
+<span class='fu'>chunk_group_by_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='fu'>mutate_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
@@ -224,8 +220,6 @@ and `arrange` performs the actions within each chunk</p>
 <span class='fu'>chunk_summarise_all</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='fu'>chunk_summarise_at</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarize</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='fu'>chunk_summarize_all</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
@@ -257,10 +251,7 @@ and `arrange` performs the actions within each chunk</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'magrittr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:purrr':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    set_names</span></div><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
 <span class='no'>mult</span> <span class='kw'>=</span> <span class='fl'>2</span>
 
 <span class='co'># use all any of the supported dplyr</span>

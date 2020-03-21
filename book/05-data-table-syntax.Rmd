@@ -1,11 +1,7 @@
 ---
 title: "Using data.table syntax with disk.frame"
 author: "ZJ"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Using data.table syntax}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r, include = FALSE}
@@ -18,7 +14,7 @@ knitr::opts_chunk$set(
 ## `disk.frame` supports `data.table` syntax
 
 
-```{r setup_data_table, cache=TRUE}
+```{r setup_data_table, message=FALSE}
 library(disk.frame)
 
 # set-up disk.frame to use multiple workers
@@ -40,7 +36,7 @@ flights.df = as.disk.frame(nycflights13::flights, outdir = file.path(tempdir(),"
 
 In the following example, I will use the `.N` from the `data.table` package to count the unique combinations `year` and `month` within each chunk.
 
-```{r ok, dependson='setup_data_table'}
+```{r ok, warning=FALSE}
 library(data.table)
 library(disk.frame)
 
@@ -63,7 +59,7 @@ srckeep(flights.df, c("year", "month"))[,.N, .(year, month)]
 
 `disk.frame` sends the computation to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren't visible in the other R sessions, but `disk.frame` uses the `future` package's variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.
 
-```{r var_detect, dependson='setup_data_table'}
+```{r var_detect, warning=FALSE}
 y = 42 
 some_fn <- function(x) x
 

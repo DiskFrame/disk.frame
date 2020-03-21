@@ -7,7 +7,7 @@
 rechunk(
   df,
   nchunks,
-  outdir = attr(df, "path"),
+  outdir = attr(df, "path", exact = TRUE),
   shardby = NULL,
   overwrite = TRUE,
   shardby_function = "hash",

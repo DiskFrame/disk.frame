@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -54,16 +54,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
       <a href="../articles/convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
     <li>
       <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
       <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+    </li>
+    <li>
+      <a href="../articles/group-by.html">Group-by</a>
     </li>
     <li>
       <a href="../articles/ingesting-data.html">Ingesting Data</a>
@@ -246,29 +252,23 @@
 <div id="can-disk-frame-be-even-more-epic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-disk-frame-be-even-more-epic" class="anchor"></a>Can {disk.frame} be even more “epic”?</h2>
-<p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced! However, we do have to live with the two-stage group-by annoyance for now.</p>
+<p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced!</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
 <a class="sourceLine" id="cb12-2" title="2"></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span></a>
 <a class="sourceLine" id="cb12-4" title="4">mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</a>
-<a class="sourceLine" id="cb12-11" title="11">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="co">#&gt; Time difference of 2.800005 secs</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) </a>
+<a class="sourceLine" id="cb12-8" title="8">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">#&gt; Time difference of 2.800005 secs</span></a></code></pre></div>
 <p>Compare the above the to timing without <code>srckeep</code></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">tic =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
 <a class="sourceLine" id="cb13-2" title="2">mean_dep_delay &lt;-<span class="st"> </span>flights.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/group_by.html">chunk_group_by</a></span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/dplyr_verbs.html">chunk_summarise</a></span>(<span class="dt">sum_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sum_delay)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(n))</a>
-<a class="sourceLine" id="cb13-8" title="8">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt; Time difference of 15.62312 secs</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(YEAR, MONTH, DAY_OF_MONTH) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_delay =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(DEP_DELAY, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) </a>
+<a class="sourceLine" id="cb13-5" title="5">(<span class="dt">toc =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span>tic)</a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; Time difference of 15.62312 secs</span></a></code></pre></div>
 <p>On my computer, with <code>srckeep</code> the timing is only ~3 seconds and without it is 16 seconds!</p>
 <p><img src="more-epic_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
@@ -279,7 +279,7 @@
 <ol style="list-style-type: decimal">
 <li>Load CSV files as many individual files if possible to take advantage of multi-core parallelism</li>
 <li>
-<code>srckeep</code> is your friend! Disk IO is often the bottleneck in data manipulation, and you can reduce Disk IO by specifying only columns that you will use with <code><a href="../reference/srckeep.html">srckeep(c(columns1, columns2, ...))</a></code>.</li>
+<code>srckeep</code> is your friend! Disk IO is often the bottleneck in data manipulation, and you can reduce disk IO by specifying only columns that you will use with <code><a href="../reference/srckeep.html">srckeep(c(columns1, columns2, ...))</a></code>.</li>
 </ol>
 </div>
 <div id="advertisements" class="section level2">

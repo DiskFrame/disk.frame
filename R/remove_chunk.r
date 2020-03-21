@@ -16,14 +16,14 @@
 #' nchunks(cars.df) # 3
 #'
 #' # removes 2nd chunk
-#' remove_chunk(cars.df, file.path(attr(cars.df, "path"), "2.fst"), full.names = TRUE)
+#' remove_chunk(cars.df, file.path(attr(cars.df, "path", exact=TRUE), "2.fst"), full.names = TRUE)
 #' nchunks(cars.df) # 1
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
 remove_chunk <- function(df, chunk_id, full.names = FALSE) {
   filename = ""
-  path = attr(df,"path")
+  path = attr(df,"path", exact=TRUE)
   if(is.numeric(chunk_id)) {
     filename = file.path(path, glue::glue("{as.integer(chunk_id)}.fst"))
   } else {

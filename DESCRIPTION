@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.2.1
-Date: 2019-11-07
+Version: 0.3.5
+Date: 2020-03-21
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))
@@ -25,21 +25,19 @@ Imports:
     pryr (>= 0.1.4),
     stringr (>= 1.4.0),
     fst (>= 0.8.0),
-    assertthat (>= 0.2.1),
     globals (>= 0.12.4),
     future (>= 1.14.0),
     data.table (>= 1.12.2),
     crayon (>= 1.3.4),
     bigreadr (>= 0.2.0),
-    bit64
+    bit64,
+    benchmarkme
 Depends:
     R (>= 3.4),
     dplyr (>= 0.8.3),
     purrr (>= 0.3.2)
-Suggests: 
+Suggests:
     testthat (>= 2.1.0),
-    knitr,
-    rmarkdown,
     nycflights13,
     magrittr,
     shiny,
@@ -50,13 +48,11 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    learnr,
     ggplot2, 
-    tidyfast (>= 0.1.8)
+    tidyfast (>= 0.2.1)
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.0.1
-VignetteBuilder: knitr
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

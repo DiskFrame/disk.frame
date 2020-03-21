@@ -7,8 +7,8 @@
 recommend_nchunks(
   df,
   type = "csv",
-  minchunks = parallel::detectCores(logical = FALSE),
-  conservatism = 2,
+  minchunks = data.table::getDTthreads(),
+  conservatism = 8,
   ram_size = df_ram_size()
 )
 }

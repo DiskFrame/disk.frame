@@ -29,7 +29,7 @@ remove_chunk(cars.df, "4.fst")
 nchunks(cars.df) # 3
 
 # removes 2nd chunk
-remove_chunk(cars.df, file.path(attr(cars.df, "path"), "2.fst"), full.names = TRUE)
+remove_chunk(cars.df, file.path(attr(cars.df, "path", exact=TRUE), "2.fst"), full.names = TRUE)
 nchunks(cars.df) # 1
 
 # clean up cars.df

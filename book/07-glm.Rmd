@@ -1,10 +1,6 @@
 ---
 title: "Generalized Linear Models (GLM) including logistic regression with disk.frame"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Generalized Linear Models (logistic regression etc) with disk.frame}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: pdf_document
 ---
 
 ```{r, include = FALSE}
@@ -14,7 +10,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache=TRUE}
+```{r setup}
 suppressPackageStartupMessages(library(disk.frame))
 
 if(interactive()) {
@@ -34,24 +30,24 @@ In this article, we will assume you are familiar with Generalized Linear Models 
 ## Introduction
 One can fit a GLM using the `glm` function. For example,
 
-```{r glm, cache=TRUE}
+```{r glm}
 m = glm(dist ~ speed, data = cars)
 ```
 
 would fit a linear model on the data `cars` with `dist` as the target and `speed` as the explanatory variable. You can inspect the results of the model fit using
 
-```{r, depeondson='glm'}
+```{r}
 summary(m)
 ```
 
 or if you have `{broom}` installed
 
-```{r, depeondson='glm'}
+```{r}
 broom::tidy(m)
 ```
 
 With {`disk.frame`}, you can run GLM `dfglm` function, where the `df` stands for `disk.frame` of course!
-```{r dependson='setup'}
+```{r }
 cars.df = as.disk.frame(cars)
 
 m = dfglm(dist ~ speed, cars.df)
@@ -75,7 +71,7 @@ The syntax didn't change at all! You are able to enjoy the benefits of `disk.fra
 ## Logistic regression
 Logistic regression is one of the most commonly deployed machine learning (ML) models. It is often used to build binary classification models
 
-```{r dependson='setup'}
+```{r }
 iris.df = as.disk.frame(iris)
 
 # fit a logistic regression model to predict Speciess == "setosa" using all variables

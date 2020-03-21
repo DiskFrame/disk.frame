@@ -26,7 +26,7 @@ foverlaps.disk.frame(
 
 \item{by.y}{character/string vector. by.x used in foverlaps}
 
-\item{...}{passed to data.table::foverlaps and disk.frame::map.disk.frame}
+\item{...}{passed to data.table::foverlaps and disk.frame::cmap.disk.frame}
 
 \item{outdir}{The output directory of the disk.frame}
 

@@ -3,34 +3,18 @@
 
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-<details>
-
-<summary>Please take a moment to star the disk.frame Github repo if you
-like disk.frame. It keeps me going.</summary>
-<iframe src="https://ghbtns.com/github-btn.html?user=xiaodaigh&repo=disk.frame&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
-
-</details>
-
 <!-- badges: start -->
 
 <!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
 
-[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Sponsors on Open
-Collective](https://opencollective.com/diskframe/sponsors/badge.svg)](#sponsors)
-[![Backers on Open
-Collective](https://opencollective.com/diskframe/backers/badge.svg)](#backers)
-[![Travis build
-status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
 <!-- badges: end -->
 
 # Introduction
 
-How can I manipulate structured tabular data that doesn’t fit into
-Random Access Memory (RAM)? Use `{disk.frame}`\!
+How do I manipulate tabular data that doesn’t fit into Random Access
+Memory (RAM)?
+
+Use `{disk.frame}`\!
 
 In a nutshell, `{disk.frame}` makes use of two simple ideas
 
@@ -41,16 +25,7 @@ In a nutshell, `{disk.frame}` makes use of two simple ideas
 `{disk.frame}` performs a similar role to distributed systems such as
 Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for *medium data*
 which are datasets that are too large for RAM but not quite large enough
-to qualify as *big data* that require distributing processing over many
-computers to be effective.
-
-## Sponsors & Backers
-
-I would like to thank our backer and sponsor:
-
-<a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a>
-
-<a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
+to qualify as *big data*.
 
 ## Installation
 
@@ -80,29 +55,28 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 Please see these vignettes and articles about `{disk.frame}`
 
   - [Quick start:
-    `{disk.frame}`](http://daizj.net/disk.frame/articles/intro-disk-frame.html)
+    `{disk.frame}`](https://diskframe.com/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
   - [Ingesting data into
-    `{disk.frame}`](http://diskframe.com/articles/ingesting-data.html)
+    `{disk.frame}`](https://diskframe.com/articles/ingesting-data.html)
     which lists some commons way of creating disk.frames
   - [`{disk.frame}` can be more
-    epic\!](http://diskframe.com/articles/more-epic.html) shows some
+    epic\!](https://diskframe.com/articles/more-epic.html) shows some
     ways of loading large CSVs and the importance of `srckeep`
+  - [Group-by](https://diskframe.com/articles/group-by.html) the various
+    types of group-bys
+  - [Custom one-stage group-by
+    functions](https://diskframe.com/articles/custom-group-by.html) how
+    to define custom one-stage group-by functions
   - [Fitting GLMs (including logistic
-    regression)](http://diskframe.com/articles/glm.html) introduces the
+    regression)](https://diskframe.com/articles/glm.html) introduces the
     `dfglm` function for fitting generalized linear models
   - [Using data.table syntax with
-    disk.frame](http://diskframe.com/articles/data-table-syntax.html)
-  - [disk.frame concepts](http://diskframe.com/articles/concepts.html)
+    disk.frame](https://diskframe.com/articles/data-table-syntax.html)
+  - [disk.frame concepts](https://diskframe.com/articles/concepts.html)
   - [Benchmark 1: disk.frame vs Dask vs
-    JuliaDB](http://diskframe.com/articles/vs-dask-juliadb.html)
-
-### Interested in learning `{disk.frame}` in a structured course?
-
-Please register your interest at:
-
-<https://leanpub.com/c/taminglarger-than-ramwithdiskframe>
+    JuliaDB](https://diskframe.com/articles/vs-dask-juliadb.html)
 
 ## Common questions
 
@@ -169,10 +143,10 @@ individual chunks.
 
 `{disk.frame}` makes it easy to manipulate the underlying chunks by
 implementing `dplyr` functions/verbs and other convenient functions
-(e.g. the `map.disk.frame(a.disk.frame, fn, lazy = F)` function which
-applies the function `fn` to each chunk of `a.disk.frame` in parallel).
-So that `{disk.frame}` can be manipulated in a similar fashion to
-in-memory `data.frame`s.
+(e.g. the `cmap(a.disk.frame, fn, lazy = F)` function which applies the
+function `fn` to each chunk of `a.disk.frame` in parallel). So that
+`{disk.frame}` can be manipulated in a similar fashion to in-memory
+`data.frame`s.
 
 ### e) How is `{disk.frame}` different from Spark, Dask, and JuliaDB.jl?
 
@@ -191,19 +165,6 @@ zero-setup apart from running `install.packages("disk.frame")` or
 Finally, Spark can only apply functions that are implemented for Spark,
 whereas `{disk.frame}` can use any function in R including user-defined
 functions.
-
-### f) How is `{disk.frame}` different from multidplyr, partools and distributedR?
-
-The packages [multidplyr](https://github.com/tidyverse/multidplyr)
-doesn’t seem to be disk-focused and hence does not allow arbitrarily
-large dataset to be manipulated; the focus on parallel processing is
-similar to disk.frame though. For partools
-\[<https://matloff.wordpress.com/2015/08/05/partools-a-sensible-r-package-for-large-data-sets/>\],
-it seems to use it’s own verbs for aggregating data instead of relying
-on existing verbs provided by data.table and dplyr. The package
-[`distributedR`](https://github.com/vertica/DistributedR) hasn’t been
-updated for a few years and also seems to require its own functions and
-verbs.
 
 # Example usage
 
@@ -244,198 +205,78 @@ options(future.globals.maxSize = Inf)
 flights.df <- as.disk.frame(nycflights13::flights)
 ```
 
-To find out where the disk.frame is stored on disk:
-
-``` r
-# where is the disk.frame stored
-attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2Ps66a\\file287c4e97742d.df"
-```
-
-A number of data.frame functions are implemented for disk.frame
-
-``` r
-# get first few rows
-head(flights.df)
-#>    year month day dep_time sched_dep_time dep_delay arr_time
-#> 1: 2013     1   1      517            515         2      830
-#> 2: 2013     1   1      533            529         4      850
-#> 3: 2013     1   1      542            540         2      923
-#> 4: 2013     1   1      544            545        -1     1004
-#> 5: 2013     1   1      554            600        -6      812
-#> 6: 2013     1   1      554            558        -4      740
-#>    sched_arr_time arr_delay carrier flight tailnum origin dest air_time
-#> 1:            819        11      UA   1545  N14228    EWR  IAH      227
-#> 2:            830        20      UA   1714  N24211    LGA  IAH      227
-#> 3:            850        33      AA   1141  N619AA    JFK  MIA      160
-#> 4:           1022       -18      B6    725  N804JB    JFK  BQN      183
-#> 5:            837       -25      DL    461  N668DN    LGA  ATL      116
-#> 6:            728        12      UA   1696  N39463    EWR  ORD      150
-#>    distance hour minute           time_hour
-#> 1:     1400    5     15 2013-01-01 05:00:00
-#> 2:     1416    5     29 2013-01-01 05:00:00
-#> 3:     1089    5     40 2013-01-01 05:00:00
-#> 4:     1576    5     45 2013-01-01 05:00:00
-#> 5:      762    6      0 2013-01-01 06:00:00
-#> 6:      719    5     58 2013-01-01 05:00:00
-```
-
-``` r
-# get last few rows
-tail(flights.df)
-#>    year month day dep_time sched_dep_time dep_delay arr_time
-#> 1: 2013     9  30       NA           1842        NA       NA
-#> 2: 2013     9  30       NA           1455        NA       NA
-#> 3: 2013     9  30       NA           2200        NA       NA
-#> 4: 2013     9  30       NA           1210        NA       NA
-#> 5: 2013     9  30       NA           1159        NA       NA
-#> 6: 2013     9  30       NA            840        NA       NA
-#>    sched_arr_time arr_delay carrier flight tailnum origin dest air_time
-#> 1:           2019        NA      EV   5274  N740EV    LGA  BNA       NA
-#> 2:           1634        NA      9E   3393    <NA>    JFK  DCA       NA
-#> 3:           2312        NA      9E   3525    <NA>    LGA  SYR       NA
-#> 4:           1330        NA      MQ   3461  N535MQ    LGA  BNA       NA
-#> 5:           1344        NA      MQ   3572  N511MQ    LGA  CLE       NA
-#> 6:           1020        NA      MQ   3531  N839MQ    LGA  RDU       NA
-#>    distance hour minute           time_hour
-#> 1:      764   18     42 2013-09-30 18:00:00
-#> 2:      213   14     55 2013-09-30 14:00:00
-#> 3:      198   22      0 2013-09-30 22:00:00
-#> 4:      764   12     10 2013-09-30 12:00:00
-#> 5:      419   11     59 2013-09-30 11:00:00
-#> 6:      431    8     40 2013-09-30 08:00:00
-```
-
-``` r
-# number of rows
-nrow(flights.df)
-#> [1] 336776
-```
-
-``` r
-# number of columns
-ncol(flights.df)
-#> [1] 19
-```
-
 ## Example: dplyr verbs
 
-### Group by
+### dplyr verbs
 
-Group-by in disk.frame are performed within each chunk, hence a
-two-stage group by is required to obtain the correct group by results.
-The two-stage approach is preferred for performance reasons too.
-
-To perform group-by one needs to do it in two-stage approach as the
-group-by’s are performed within each chunk. This will be addressed in a
-future package called `disk.frame.db`, but for now two-stage aggregation
-is the best to do group-bys in `{disk.frame}`.
+{disk.frame} aims to support as many dplyr verbs as possible. For
+example
 
 ``` r
-flights.df = as.disk.frame(nycflights13::flights)
+flights.df %>% 
+  filter(year == 2013) %>% 
+  mutate(origin_dest = paste0(origin, dest)) %>% 
+  head(2)
+#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1 2013     1   1      517            515         2      830            819
+#> 2 2013     1   1      533            529         4      850            830
+#>   arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#> 2        20      UA   1714  N24211    LGA  IAH      227     1416    5     29
+#>             time_hour origin_dest
+#> 1 2013-01-01 05:00:00      EWRIAH
+#> 2 2013-01-01 05:00:00      LGAIAH
+```
 
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
+### Group-by
+
+Starting from `{disk.frame}` v0.3.0, there is for support `group_by` for
+a limited set of functions. For example:
+
+``` r
+result_from_disk.frame = iris %>% 
+  as.disk.frame %>% 
+  group_by(Species) %>% 
+  summarize(
+    mean(Petal.Length), 
+    sumx = sum(Petal.Length/Sepal.Width), 
+    sd(Sepal.Width/ Petal.Length), 
+    var(Sepal.Width/ Sepal.Width), 
+    l = length(Sepal.Width/ Sepal.Width + 2),
+    max(Sepal.Width), 
+    min(Sepal.Width), 
+    median(Sepal.Width)
+    ) %>% 
   collect
-#> # A tibble: 6 x 2
-#>    year sum_dist
-#>   <int>    <dbl>
-#> 1  2013 57446059
-#> 2  2013 59302212
-#> 3  2013 56585094
-#> 4  2013 58476357
-#> 5  2013 59407019
-#> 6  2013 59000866
 ```
 
-This is two-stage group-by in action
+The results should be exactly the same as if applying the same group-by
+operations on a data.frame. If not, please [report a
+bug](https://github.com/xiaodaigh/disk.frame/issues).
 
-``` r
-# need a 2nd stage to finalise summing
-flights.df %>%
-  srckeep(c("year","distance")) %>%  # keep only carrier and distance columns
-  chunk_group_by(year) %>% 
-  chunk_summarise(sum_dist = sum(distance)) %>% # this does a count per chunk
-  collect %>% 
-  group_by(year) %>% 
-  summarise(sum_dist = sum(sum_dist))
-#> # A tibble: 1 x 2
-#>    year  sum_dist
-#>   <int>     <dbl>
-#> 1  2013 350217607
-```
+#### List of supported group-by functions
 
-Here an example of using `filter`
+If a function you like is missing, please make a feature request
+[here](https://github.com/xiaodaigh/disk.frame/issues). It is a
+limitation that function that depend on the order a column can only be
+obtained using estimated methods.
 
-``` r
-# filter
-pt = proc.time()
-df_filtered <-
-  flights.df %>% 
-  filter(month == 1)
-cat("filtering a < 0.1 took: ", data.table::timetaken(pt), "\n")
-#> filtering a < 0.1 took:  0.020s elapsed (0.010s cpu)
-nrow(df_filtered)
-#> [1] 336776
-```
-
-You can mix group-by with other dplyr verbs as below
-
-``` r
-pt = proc.time()
-res1 <- flights.df %>% 
-  srckeep(c("month", "dep_delay")) %>% 
-  filter(month <= 6) %>% 
-  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  chunk_group_by(qtr) %>% 
-  chunk_summarise(sum_delay = sum(dep_delay, na.rm = TRUE), n = n()) %>% 
-  collect %>%
-  group_by(qtr) %>% 
-  summarise(sum_delay = sum(sum_delay), n = sum(n)) %>% 
-  mutate(avg_delay = sum_delay/n)
-cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  0.390s elapsed (0.180s cpu)
-
-collect(res1)
-#> # A tibble: 2 x 4
-#>   qtr   sum_delay     n avg_delay
-#>   <chr>     <dbl> <int>     <dbl>
-#> 1 Q1       892053 80789      11.0
-#> 2 Q2      1319941 85369      15.5
-```
-
-However, a one-stage `group_by` is possible with a `hard_group_by` to
-first rechunk the disk.frame. This **not** recommended for performance
-reasons, as it can quite slow.
-
-``` r
-pt = proc.time()
-res1 <- flights.df %>% 
-  srckeep(c("month", "dep_delay")) %>% 
-  filter(month <= 6) %>% 
-  mutate(qtr = ifelse(month <= 3, "Q1", "Q2")) %>% 
-  hard_group_by(qtr) %>% # hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation
-  chunk_summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>% 
-  collect
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Hashing...
-#> Appending disk.frames:
-cat("group by took: ", data.table::timetaken(pt), "\n")
-#> group by took:  1.700s elapsed (0.270s cpu)
-
-collect(res1)
-#> # A tibble: 2 x 2
-#>   qtr   avg_delay
-#>   <chr>     <dbl>
-#> 1 Q1         11.4
-#> 2 Q2         15.9
-```
+| Function     | Exact/Estimate | Notes                                      |
+| ------------ | -------------- | ------------------------------------------ |
+| `min`        | Exact          |                                            |
+| `max`        | Exact          |                                            |
+| `mean`       | Exact          |                                            |
+| `sum`        | Exact          |                                            |
+| `length`     | Exact          |                                            |
+| `n`          | Exact          |                                            |
+| `n_distinct` | Exact          |                                            |
+| `sd`         | Exact          |                                            |
+| `var`        | Exact          | `var(x)` only `cor, cov` support *planned* |
+| `any`        | Exact          |                                            |
+| `all`        | Exact          |                                            |
+| `median`     | Estimate       |                                            |
+| `quantile`   | Estimate       | One quantile only                          |
+| `IQR`        | Estimate       |                                            |
 
 ## Example: data.table syntax
 
@@ -457,6 +298,30 @@ grp_by_stage1 =
     .(sum_dist = sum(distance)), 
     .(qtr = ifelse(month <= 3, "Q1", "Q2"))
     ]
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
+#> Warning in serialize(data, node$con): 'package:stats' may not be available when
+#> loading
+#> Warning in serialize(data, node$con): 'package:data.table' may not be available
+#> when loading
 
 grp_by_stage1
 #>    qtr sum_dist
@@ -478,6 +343,52 @@ grp_by_stage2
 #>    qtr sum_dist
 #> 1:  Q1 81343950
 #> 2:  Q2 89257810
+```
+
+## Basic info
+
+To find out where the disk.frame is stored on disk:
+
+``` r
+# where is the disk.frame stored
+attr(flights.df, "path")
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpOeAro4\\file17a0150634fd.df"
+```
+
+A number of data.frame functions are implemented for disk.frame
+
+``` r
+# get first few rows
+head(flights.df, 1)
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     1   1      517            515         2      830            819
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
+#>              time_hour
+#> 1: 2013-01-01 05:00:00
+```
+
+``` r
+# get last few rows
+tail(flights.df, 1)
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#> 1: 2013     9  30       NA            840        NA       NA           1020
+#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
+#> 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40
+#>              time_hour
+#> 1: 2013-09-30 08:00:00
+```
+
+``` r
+# number of rows
+nrow(flights.df)
+#> [1] 336776
+```
+
+``` r
+# number of columns
+ncol(flights.df)
+#> [1] 19
 ```
 
 ## Hex logo
@@ -503,14 +414,22 @@ The work priorities at this stage are
 
 ## Blogs and other resources
 
-| Title                                                                                                                                 | Author          | Date     | Description                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------- | --------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/)                                                       | Bruno Rodriguez | 20190903 | It’s about loading a 30G file into `{disk.frame}`                                                  |
-| [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/)          | Jacky Poon      | 20190903 | `{disk.frame}` was number 3                                                                        |
-| [useR\! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                         | Dai ZJ          | 20190803 |                                                                                                    |
-| [useR\! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                               | Dai ZJ          | 20190803 |                                                                                                    |
-| [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | Bruno Rodriguez | 20191006 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
-| [Emma goes to useR\! 2019](https://emmavestesson.netlify.com/2019/07/user2019/)                                                       | Emma Vestesson  | 20190716 | The first mention of `{disk.frame}` in a blog post                                                 |
+| Title                                                                                                                                 | Author          | Date       | Description                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+| 25 days of disk.frame                                                                                                                 | ZJ              | 2019-12-01 | 25 tweets about `{disk.frame}`                                                                     |
+| <https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining>                                | Knut Jägersberg | 20191111   | Great answer on using disk.frame                                                                   |
+| [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/)                                                       | Bruno Rodriguez | 20190903   | It’s about loading a 30G file into `{disk.frame}`                                                  |
+| [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/)          | Jacky Poon      | 20190903   | `{disk.frame}` was number 3                                                                        |
+| [useR\! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                         | Dai ZJ          | 20190803   |                                                                                                    |
+| [useR\! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                               | Dai ZJ          | 20190803   |                                                                                                    |
+| [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | Bruno Rodriguez | 20191006   | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
+| [Emma goes to useR\! 2019](https://emmavestesson.netlify.com/2019/07/user2019/)                                                       | Emma Vestesson  | 20190716   | The first mention of `{disk.frame}` in a blog post                                                 |
+
+### Interested in learning `{disk.frame}` in a structured course?
+
+Please register your interest at:
+
+<https://leanpub.com/c/taminglarger-than-ramwithdiskframe>
 
 ## Open Collective
 
@@ -525,7 +444,7 @@ backer](https://opencollective.com/diskframe#backer)\]
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
-### Sponsors
+### Sponsor and back `{disk.frame}`
 
 Support `{disk.frame}` development by becoming a sponsor. Your logo will
 show up here with a link to your website. \[[Become a
@@ -539,3 +458,34 @@ sponsor](https://opencollective.com/diskframe#sponsor)\]
 or Julia?** I am available for Machine Learning/Data
 Science/R/Python/Julia consulting\! [Email
 me](mailto:dzj@analytixware.com)
+
+## Non-financial ways to contribute
+
+Do you wish to give back the open-source community in non-financial
+ways? Here are some ways you can contribute
+
+  - Write a blogpost about your `{disk.frame}`. I would love to learn
+    more about how `{disk.frame}` has helped you
+  - Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to
+    help promote it
+  - Bring attention to typos and grammatical errors by correcting and
+    making a PR. Or simply by [raising an issue
+    here](https://github.com/xiaodaigh/disk.frame/issues)
+  - Star the [`{disk.frame}` Github
+    repo](https://github.com/xiaodaigh/disk.frame)
+  - Star any repo that `{disk.frame}` depends on
+    e.g. [`{fst}`](https://github.com/fstpackage/fst) and
+    [`{future}`](https://github.com/HenrikBengtsson/future)
+
+## Download Counts & Build Status
+
+[![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
+[![Travis build
+status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
+
+## Live Stream of `{disk.frame}` development
+
+  - <https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe>

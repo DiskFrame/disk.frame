@@ -22,7 +22,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
-rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
+rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby = NULL, overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
   
   # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
@@ -38,7 +38,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
   user_had_set_shard_by = !user_had_not_set_shard_by
 
   # back up the files if writing to the same directory
-  if(outdir == attr(df,"path")) {
+  if(outdir == attr(df,"path", exact=TRUE)) {
     back_up_tmp_dir <- tempfile("back_up_tmp_dir")
     fs::dir_create(back_up_tmp_dir)
     
@@ -68,7 +68,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
   
   overwrite_check(outdir, overwrite)
   
-  dfp = attr(df, "path")
+  dfp = attr(df, "path", exact=TRUE)
   existing_shardkey = shardkey(df)
   
   # by default, if shardkey is defined then rechunk will continue to reuse it
@@ -139,7 +139,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path"), shardby = NULL, over
     fs::dir_create(tmp_fdlr)
 
     oks = furrr::future_map(which(lp == 1), function(i) {
-      file_chunk = file.path(attr(df, "path"), i %>% paste0(".fst"))
+      file_chunk = file.path(attr(df, "path", exact=TRUE), i %>% paste0(".fst"))
       fs::file_move(file_chunk, file.path(tmp_fdlr, possibles_new_chunk_id[[i]] %>% paste0(".fst")))
       disk.frame(tmp_fdlr)
     })

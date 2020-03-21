@@ -6,7 +6,7 @@
 #' @param outdir The output directory for the disk.frame
 #' @param merge_by_chunk_id if TRUE then only chunks in df1 and df2 with the same chunk id will get merged
 #' @param overwrite overwrite the outdir or not
-#' @param ... passed to merge and map.disk.frame
+#' @param ... passed to merge and cmap.disk.frame
 #' @importFrom data.table data.table setDT
 #' @examples
 #' b = as.disk.frame(data.frame(a = 51:150, b = 1:100))
@@ -24,7 +24,7 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
   
   if("data.frame" %in% class(y)) {
     yby = c(list(y=y, by=by), list(...))
-    res = map(x, ~{
+    res = cmap(x, ~{
       res = do.call(merge, c(list(x = .x), yby))
       res
       }, outdir=outdir, ...)
@@ -32,8 +32,8 @@ merge.disk.frame <- function(x, y, by, outdir = tempfile(fileext = ".df"), ..., 
   } else if (merge_by_chunk_id | shardkey_equal(shardkey(x), shardkey(y))) {
     # ifthe shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
-    path1 = attr(x,"path")
-    path2 = attr(y,"path")
+    path1 = attr(x,"path", exact=TRUE)
+    path2 = attr(y,"path", exact=TRUE)
     
     df3 = merge(
       data.table(

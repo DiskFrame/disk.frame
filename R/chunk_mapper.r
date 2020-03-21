@@ -28,7 +28,7 @@
 #' #' clean up
 #' delete(mtcars.df)
 #' 
-#' @param fn The dplyr function to create a mapper for
+#' @param chunk_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
 #' @param as.data.frame force the input chunk of a data.frame; needed for dtplyr
 #' @importFrom rlang enquos quo
@@ -46,8 +46,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TR
     vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
     data_for_eval_tidy = force(vars_and_pkgs$globals)
     
-    res = map(.data, ~{
-      
+    res = cmap(.data, ~{
       this_env = environment()
       
       if(length(data_for_eval_tidy) > 0) {

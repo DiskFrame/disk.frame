@@ -6,20 +6,23 @@
 using namespace Rcpp;
 
 // hashstr2i
-NumericVector hashstr2i(std::vector< std::string > x, int ngrps);
-RcppExport SEXP _disk_frame_hashstr2i(SEXP xSEXP, SEXP ngrpsSEXP) {
+NumericVector hashstr2i(std::vector< std::string > x, int ngrps, int prime1, int prime2, int prime3);
+RcppExport SEXP _disk_frame_hashstr2i(SEXP xSEXP, SEXP ngrpsSEXP, SEXP prime1SEXP, SEXP prime2SEXP, SEXP prime3SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector< std::string > >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type ngrps(ngrpsSEXP);
-    rcpp_result_gen = Rcpp::wrap(hashstr2i(x, ngrps));
+    Rcpp::traits::input_parameter< int >::type prime1(prime1SEXP);
+    Rcpp::traits::input_parameter< int >::type prime2(prime2SEXP);
+    Rcpp::traits::input_parameter< int >::type prime3(prime3SEXP);
+    rcpp_result_gen = Rcpp::wrap(hashstr2i(x, ngrps, prime1, prime2, prime3));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_disk_frame_hashstr2i", (DL_FUNC) &_disk_frame_hashstr2i, 2},
+    {"_disk_frame_hashstr2i", (DL_FUNC) &_disk_frame_hashstr2i, 5},
     {NULL, NULL, 0}
 };
 

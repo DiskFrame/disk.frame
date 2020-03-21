@@ -1,5 +1,5 @@
 ---
-title: "Key disk.frame concepts"
+title: "Key `{disk.frame}` concepts"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,15 +15,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Key `{disk.frame}` concepts
 There are a number of concepts and terminologies that are useful to understand in order to use `disk.frame` effectively.
 
 ## What is a `disk.frame` and what are chunks?
-A `disk.frame` is nothing more a folder and in that folder there should be [`fst`](https://www.fstpackage.org/) files named "1.fst", "2.fst", "3.fst" etc. Each of the ".fst" file is called a _chunk_.
+
+A `disk.frame` is a folder containing [`fst`](https://www.fstpackage.org/) files named "1.fst", "2.fst", "3.fst" etc. Each of the ".fst" file is called a _chunk_.
 
 ## Workers and parallelism
+
 Parallelism in `disk.frame` is achieved using the [`future` package](https://cran.r-project.org/package=future). When performing many tasks, `disk.frame` uses multiple workers, where each _worker_ is an R session, to perform the tasks in parallel. 
 
-It is recommended that you should running these to set-up immediately after you `library(disk.frame)`. For example:
+It is recommended that you should run the following immediately after `library(disk.frame)` to set-up multiple workers. For example:
 
 ```r
 library(disk.frame)
@@ -54,5 +57,13 @@ To see how many workers are at work, use
 # see how many workers are available for work
 future::nbrOfWorkers()
 ```
+
+## How `{disk.frame}` works
+
+When `df %>% some_fn %>% collect` is called. The `some_fn` is applied to each chunk of `df`. The collect will row-bind the results from `some_fn(chunk)`together if the returned value of `some_fn` is a data.frame, or it will return a `list` containing the results of `some_fn`.
+
+The session that receives these results is called the **main session**. In general, we should try to minimize the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.
+
+Also, please note that there is no communication between the workers, except for workers passing data back to the main session.
 
 

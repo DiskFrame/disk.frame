@@ -23,7 +23,7 @@
 
 \item{outdir}{The output directory for the disk.frame}
 
-\item{...}{passed to merge and map.disk.frame}
+\item{...}{passed to merge and cmap.disk.frame}
 
 \item{merge_by_chunk_id}{if TRUE then only chunks in df1 and df2 with the same chunk id will get merged}
 

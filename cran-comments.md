@@ -1,21 +1,21 @@
-## Re-submission 2 for v0.2.1
-* fixed broken functions
-* added support for R3.4 and tested
-
-## Re-submission 1 for v0.2.1
-* disabled tests that are not meant for CRAN yet; all the tests in the examples still pass checks
-
-## Submission for v0.2.1
-* add some features and bug fixes
+## Re- Submission for v0.3.4
+* Updated and removed vignette
+* I keep getting this error on R-devel, but when I run the code in the REPL it's fine, so I suspect it's a bug with R-devel.
+```
+Error in print.default(toprint, right = TRUE, quote = quote) : 
+    invalid 'useSource' argument
+  Calls: <Anonymous> -> print.data.table -> print -> print.default
+  Execution halted
+```
 
 ## Test environments
-* local Windows 10 Pro install, R 3.6.1
-* local Windows 10 Pro install, R devel (as of 2019-11-07)
-* local Linux/Ubuntu install, R 3.6.1
-* local Linux/Ubuntu install, R devel (as of 2019-11-07)
+* local Windows 10 Pro install, R 3.6.2
+* local Windows 10 Pro install, R devel (as of 2020-02-19)
+* local Linux/Ubuntu install, R 3.6.2
+* local Linux/Ubuntu install, R devel (as of 2020-02-19)
 
 ## R CMD check results
 There were no ERRORs nor WARNINGs nor NOTEs when run locally
 
 ## Downstream dependencies
-I have tested the relevant tests in {drake}, the only downstream dependencies
+I have tested the relevant tests in {drake}, the only downstream dependency

@@ -45,7 +45,7 @@ head(nyc.df)
 library(magrittr)
 library(lubridate)
 system.time(nyc2.df <- nyc.df %>%
-  map(function(chunk) {
+  cmap(function(chunk) {
     chunk[!is.na(Dispatching_base_number), Dispatching_base_num := Dispatching_base_number]
     chunk[, Dispatching_base_number:=NULL]
     chunk[, Pickup_DateTime := lubridate::as_datetime(Pickup_DateTime)]
@@ -62,9 +62,9 @@ head(nyc2.df)
 
 
 ```{r}
-system.time(rechunk(nyc2.df, nchunks = nchunks(nyc.df), shardby = "Dispatching_base_num"))
+system.time(shard(nyc2.df, shardby = "Dispatching_base_num", outdir="nyc.sharded.df"))
 ```
 
 ```{r}
-a = collect(nyc2.df)
+
 ```

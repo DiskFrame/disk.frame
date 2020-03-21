@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -90,31 +90,37 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/01-intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/convenience-features.html">Convenience features</a>
+      <a href="../articles/02-intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
-      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="../articles/06-vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+      <a href="../articles/07-glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+      <a href="../articles/08-more-epic.html">{disk.frame} can be more 'epic'</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/09-convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/10-group-by.html">Group-by</a>
+    </li>
+    <li>
+      <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
   </ul>
 </li>
@@ -141,9 +147,55 @@
       
     </div>
 
+    <div id="diskframe-034" class="section level1">
+<h1 class="page-header">
+<a href="#diskframe-034" class="anchor"></a>disk.frame 0.3.4<small> 2020-02-26 </small>
+</h1>
+<ul>
+<li>fixed vignette bug and all vignette are now in static pdf</li>
+<li>fixed bugs with group-by when run with Rscript</li>
+<li>also fixed bugs with multiple group-by columns</li>
+</ul>
+</div>
+    <div id="diskframe-033" class="section level1">
+<h1 class="page-header">
+<a href="#diskframe-033" class="anchor"></a>disk.frame 0.3.3<small> 2020-01-21 </small>
+</h1>
+<ul>
+<li>removed bloom filters as they were causing issues with CRAN solaris system for some reason</li>
+</ul>
+</div>
+    <div id="diskframe-032" class="section level1">
+<h1 class="page-header">
+<a href="#diskframe-032" class="anchor"></a>disk.frame 0.3.2<small> 2020-01-19 </small>
+</h1>
+<ul>
+<li>removed usage proc/meminfo inline with CRAN policy</li>
+<li>added (experimental) bloomfilter</li>
+</ul>
+</div>
+    <div id="diskframe-031" class="section level1">
+<h1 class="page-header">
+<a href="#diskframe-031" class="anchor"></a>disk.frame 0.3.1<small> 2019-12-20 </small>
+</h1>
+<ul>
+<li>urgent bug fix for group-by failing when the number chunks is 1; see Github #241</li>
+</ul>
+</div>
+    <div id="diskframe-030" class="section level1">
+<h1 class="page-header">
+<a href="#diskframe-030" class="anchor"></a>disk.frame 0.3.0<small> 2019-12-18 </small>
+</h1>
+<ul>
+<li>experimental one-stage group-by framework!</li>
+<li>bug fixes for data.table trigger by integration with tidyfast</li>
+<li>removed assertthat from imports</li>
+<li>add benchmarkme to Suggests</li>
+</ul>
+</div>
     <div id="diskframe-021" class="section level1">
 <h1 class="page-header">
-<a href="#diskframe-021" class="anchor"></a>disk.frame 0.2.1<small> Unreleased </small>
+<a href="#diskframe-021" class="anchor"></a>disk.frame 0.2.1<small> 2019-11-23 </small>
 </h1>
 <ul>
 <li>got rid of benchmarkme as a dependency</li>
@@ -190,6 +242,11 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#diskframe-034">0.3.4</a></li>
+        <li><a href="#diskframe-033">0.3.3</a></li>
+        <li><a href="#diskframe-032">0.3.2</a></li>
+        <li><a href="#diskframe-031">0.3.1</a></li>
+        <li><a href="#diskframe-030">0.3.0</a></li>
         <li><a href="#diskframe-021">0.2.1</a></li>
         <li><a href="#diskframe-020">0.2.0</a></li>
         <li><a href="#diskframe-011">0.1.1</a></li>

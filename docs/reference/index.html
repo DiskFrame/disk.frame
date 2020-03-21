@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -90,31 +90,37 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/concepts.html">Key disk.frame concepts</a>
+      <a href="../articles/01-intro.html">Preface - The birth of `disk.frame`</a>
     </li>
     <li>
-      <a href="../articles/convenience-features.html">Convenience features</a>
+      <a href="../articles/02-intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
     </li>
     <li>
-      <a href="../articles/data-table-syntax.html">Using data.table syntax with disk.frame</a>
+      <a href="../articles/03-concepts.html">Key `{disk.frame}` concepts</a>
     </li>
     <li>
-      <a href="../articles/glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
+      <a href="../articles/04-ingesting-data.html">Ingesting Data</a>
     </li>
     <li>
-      <a href="../articles/ingesting-data.html">Ingesting Data</a>
+      <a href="../articles/05-data-table-syntax.html">Using data.table syntax with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/intro-disk-frame.html">Quick Start: Basic Operations with nycflights13</a>
+      <a href="../articles/06-vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Preface - The birth of `disk.frame`</a>
+      <a href="../articles/07-glm.html">Generalized Linear Models (GLM) including logistic regression with disk.frame</a>
     </li>
     <li>
-      <a href="../articles/more-epic.html">{disk.frame} can be more 'epic'</a>
+      <a href="../articles/08-more-epic.html">{disk.frame} can be more 'epic'</a>
     </li>
     <li>
-      <a href="../articles/vs-dask-juliadb.html">Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</a>
+      <a href="../articles/09-convenience-features.html">Convenience features</a>
+    </li>
+    <li>
+      <a href="../articles/10-group-by.html">Group-by</a>
+    </li>
+    <li>
+      <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
   </ul>
 </li>
@@ -182,7 +188,25 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> </p>
+          <p><code><a href="chunk_group_by.html">chunk_summarize()</a></code> <code><a href="chunk_group_by.html">chunk_summarise()</a></code> <code><a href="chunk_group_by.html">chunk_group_by()</a></code> <code><a href="chunk_group_by.html">chunk_ungroup()</a></code> </p>
+        </td>
+        <td><p>Group by within each disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cmap.html">cmap()</a></code> <code><a href="cmap.html">cmap_dfr()</a></code> <code><a href="cmap.html">cimap()</a></code> <code><a href="cmap.html">cimap_dfr()</a></code> <code><a href="cmap.html">lazy()</a></code> <code><a href="cmap.html">delayed()</a></code> <code><a href="cmap.html">chunk_lapply()</a></code> <code><a href="cmap.html">map()</a></code> <code><a href="cmap.html">imap_dfr()</a></code> <code><a href="cmap.html">imap()</a></code> <code><a href="cmap.html">map_dfr(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="cmap.html">map_dfr(<i>&lt;default&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Apply the same function to all chunks</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cmap2.html">cmap2()</a></code> <code><a href="cmap2.html">map2()</a></code> <code><a href="cmap2.html">map_by_chunk_id()</a></code> </p>
+        </td>
+        <td><p>`cmap2` a function to two disk.frames</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="collect.html">collect(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="collect.html">collect_list()</a></code> <code><a href="collect.html">collect(<i>&lt;summarized_disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Bring the disk.frame into R</p></td>
       </tr><tr>
@@ -200,9 +224,15 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="create_chunk_mapper.html">create_chunk_mapper()</a></code> </p>
+        </td>
+        <td><p>Create function that applies to each chunk if disk.frame</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="create_dplyr_mapper.html">create_dplyr_mapper()</a></code> </p>
         </td>
-        <td><p>Create dplyr function for disk.frame</p></td>
+        <td><p>Kept for backwards-compatibility to be removed in 0.3</p></td>
       </tr><tr>
         
         <td>
@@ -236,7 +266,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise()</a></code> <code><a href="dplyr_verbs.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">do(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">group_by_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">group_by_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">group_by_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_if()</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">filter_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_count.disk.frame()</a></code> <code><a href="dplyr_verbs.html">add_tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">do(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_group_by_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">mutate_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">rename_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_all.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_at.disk.frame()</a></code> <code><a href="dplyr_verbs.html">select_if.disk.frame()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarise_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_all()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_at()</a></code> <code><a href="dplyr_verbs.html">chunk_summarize_if()</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>The dplyr verbs implemented for disk.frame</p></td>
       </tr><tr>
@@ -278,9 +308,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">chunk_group_by()</a></code> </p>
+          <p><code><a href="group_by.html">summarise(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Group by within each disk.frame</p></td>
+        <td><p>A function to parse the summarize function</p></td>
       </tr><tr>
         
         <td>
@@ -320,18 +350,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="map.html">map()</a></code> <code><a href="map.html">map_dfr()</a></code> <code><a href="map.html">imap()</a></code> <code><a href="map.html">imap_dfr()</a></code> <code><a href="map.html">lazy()</a></code> <code><a href="map.html">delayed()</a></code> <code><a href="map.html">chunk_lapply()</a></code> </p>
-        </td>
-        <td><p>Apply the same function to all chunks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map2.html">map2()</a></code> <code><a href="map2.html">map_by_chunk_id()</a></code> </p>
-        </td>
-        <td><p>`map` a function to two disk.frames</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="merge.disk.frame.html">merge(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Merge function for disk.frames</p></td>
@@ -353,6 +371,12 @@
           <p><code><a href="ncol_nrow.html">nrow()</a></code> <code><a href="ncol_nrow.html">ncol()</a></code> </p>
         </td>
         <td><p>Number of rows or columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="one-stage-group-by-verbs.html">var_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">var_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sd_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sd_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">mean_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">mean_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sum_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">sum_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">min_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">min_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">max_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">max_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">median_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">median_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">length_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">length_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">any_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">any_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">all_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">all_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_distinct_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">n_distinct_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">quantile_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">quantile_df.collected_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">IQR_df.chunk_agg.disk.frame()</a></code> <code><a href="one-stage-group-by-verbs.html">IQR_df.collected_agg.disk.frame()</a></code> </p>
+        </td>
+        <td><p>One Stage function</p></td>
       </tr><tr>
         
         <td>
@@ -428,7 +452,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="srckeep.html">srckeep()</a></code> </p>
+          <p><code><a href="srckeep.html">srckeep()</a></code> <code><a href="srckeep.html">srckeepchunks()</a></code> </p>
         </td>
         <td><p>Keep only the variables from the input listed in selections</p></td>
       </tr><tr>

@@ -1,15 +1,15 @@
-context("test-map")
+context("test-cmap")
 
 setup({
   b = data.frame(a = 51:150, b = 1:100)
   as.disk.frame(b, file.path(tempdir(), "tmp_map.df"), nchunks = 5, overwrite = T)
 })
 
-test_that("testing map lazy", {
+test_that("testing cmap lazy", {
   b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
-  df = b %>% map(~.x[1])
+  df = b %>% cmap(~.x[1])
   
   expect_s3_class(df, "disk.frame")
   
@@ -20,15 +20,15 @@ test_that("testing map lazy", {
   expect_equal(nrow(df2), 5L)
 })
 
-test_that("testing map eager", {
+test_that("testing cmap eager", {
   b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
-  df = b %>% map(~.x[1], lazy = F)
+  df = b %>% cmap(~.x[1], lazy = F)
   expect_false("disk.frame" %in% class(df))
 
   # return 1 row from each chunk
-  df = b %>% map_dfr(~.x[1])
+  df = b %>% cmap_dfr(~.x[1])
   expect_false("disk.frame" %in% class(df))
   expect_true("data.frame" %in% class(df))
 })
@@ -51,7 +51,7 @@ test_that("testing map_dfr", {
   b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
-  df = b %>% map_dfr(~.x[1,])
+  df = b %>% cmap_dfr(~.x[1,])
   
   expect_s3_class(df, "data.frame")
 })
@@ -61,7 +61,7 @@ test_that("testing imap", {
   b = disk.frame(file.path(tempdir(), "tmp_map.df"))
   
   # return 1 row from each chunk
-  df = b %>% imap_dfr(~{
+  df = b %>% cimap_dfr(~{
     y = .x[1,]
     y[,ok := .y]
     y

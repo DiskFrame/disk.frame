@@ -38,7 +38,7 @@
 #'
 #' nchunks(df2) # 2
 #'
-#' dir(attr(df2, "path"))
+#' dir(attr(df2, "path", exact=TRUE))
 #' # [1] "1.fst" "3.fst"
 #'
 #' # clean up
@@ -53,7 +53,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
   }
   
   # get the metadata for all chunks
-  path = attr(df,"path")
+  path = attr(df,"path", exact=TRUE)
   files <- fs::dir_ls(path, type="file", glob = "*.fst")
   
   
@@ -142,6 +142,6 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE) {
     }
   }
 
-  fst::write_fst(chunk, file.path(attr(df,"path"), paste0(chunk_id,".fst")))
-  disk.frame(attr(df,"path"))
+  fst::write_fst(chunk, file.path(attr(df,"path", exact=TRUE), paste0(chunk_id,".fst")))
+  disk.frame(attr(df,"path", exact=TRUE))
 }

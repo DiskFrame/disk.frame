@@ -27,8 +27,8 @@ move_to <- function(df, outdir, ..., copy = FALSE) {
   }
   
   ## copy all files over
-  listfiles = list.files(attr(df,"path"), full.names = TRUE)
-  shortlistfiles = list.files(attr(df,"path"))
+  listfiles = list.files(attr(df,"path", exact=TRUE), full.names = TRUE)
+  shortlistfiles = list.files(attr(df,"path", exact=TRUE))
   purrr::walk2(listfiles, shortlistfiles, ~{
     if(copy) {
       fs::file_copy(.x, file.path(outdir, .y))
@@ -40,7 +40,7 @@ move_to <- function(df, outdir, ..., copy = FALSE) {
   ## copy .metadata over
   fs::dir_create(file.path(outdir, ".metadata"))
   
-  metadata_path = file.path(attr(df,"path"), ".metadata")
+  metadata_path = file.path(attr(df,"path", exact=TRUE), ".metadata")
   
   listfiles = list.files(metadata_path, full.names = TRUE)
   shortlistfiles = list.files(metadata_path)
