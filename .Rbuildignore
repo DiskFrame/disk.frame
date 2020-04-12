@@ -62,3 +62,4 @@ utils$
 ^\.httr-oauth$
 vignettes.asis.template
 vignettes.Rnw.template
+^codecov\.yml$
