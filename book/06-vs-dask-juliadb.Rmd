@@ -34,7 +34,7 @@ library(ggplot2)
 
 df = data.frame(
   tool = c("disk.frame", "Dask", "JuliaDB.jl"),
-  timing = c(22, 50, 76)
+  timing = c(17.9, 50, 76)
 )
 
 ggplot(df) +
@@ -48,7 +48,7 @@ Next up is timings for the simple aggregation
 ```{r}
 df = data.frame(
   tool = c("disk.frame", "Dask", "JuliaDB.jl"),
-  timing = c(0.5, 1.2, 6)
+  timing = c(1, 1.2, 6)
 )
 
 library(ggplot2)
@@ -91,10 +91,10 @@ suppressPackageStartupMessages(library(disk.frame))
 system.time(setup_disk.frame()) # ~4s
 ```
 
-We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.8GB in size
+We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.2GB in size
 
 ```{r convert}
-time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/Performance_2003Q3.txt", header = FALSE))[3]
+time_to_convert_disk.frame = system.time(df1 <- csv_to_disk.frame("c:/data/Performance_2004Q3.txt", header = FALSE))[3]
 
 time_to_convert_disk.frame
 ```
@@ -133,7 +133,7 @@ To test Dask
 import dask.dataframe as dd
 from datetime import datetime
 
-a = dd.read_csv("c:/data/perf/Performance_2004Q3.txt", sep="|",
+a = dd.read_csv("c:/data/Performance_2004Q3.txt", sep="|",
                 dtype={7: 'double', 14: 'str', 15: 'str', 16:'str'}, header = None)
 a.columns = ["var" + str(i) for i in range(31)]
 a.head()

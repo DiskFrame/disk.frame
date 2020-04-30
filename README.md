@@ -3,12 +3,6 @@
 
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-<!-- badges: start -->
-
-<!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
-
-<!-- badges: end -->
-
 # Introduction
 
 How do I manipulate tabular data that doesn’t fit into Random Access
@@ -352,7 +346,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpOeAro4\\file17a0150634fd.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpK2whlZ\\file25e8785273cc.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
