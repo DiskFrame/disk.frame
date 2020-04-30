@@ -48,10 +48,11 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2
+    ggplot2,
+    covr
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

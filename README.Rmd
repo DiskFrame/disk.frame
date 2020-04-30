@@ -15,10 +15,6 @@ knitr::opts_chunk$set(
 ```
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
-<!-- badges: start -->
-<!-- ![disk.frame logo](inst/figures/disk.frame.png?raw=true "disk.frame logo") -->
-<!-- badges: end -->
-
 # Introduction
 
 How do I manipulate tabular data that doesn't fit into Random Access Memory (RAM)? 
