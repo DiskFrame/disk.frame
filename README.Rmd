@@ -318,6 +318,14 @@ Do you wish to give back the open-source community in non-financial ways? Here a
 * Star the [`{disk.frame}` Github repo](https://github.com/xiaodaigh/disk.frame)
 * Star any repo that `{disk.frame}` depends on e.g. [`{fst}`](https://github.com/fstpackage/fst) and [`{future}`](https://github.com/HenrikBengtsson/future)
 
+## Related Repos
+
+https://github.com/xiaodaigh/disk.frame-fannie-mae-example
+https://github.com/xiaodaigh/disk.frame-vs
+https://github.com/xiaodaigh/disk.frame-fannie-mae-example
+https://github.com/xiaodaigh/disk.frame.ml
+https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame
+
 ## Download Counts & Build Status
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
