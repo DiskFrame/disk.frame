@@ -5,16 +5,16 @@
 \alias{srckeepchunks}
 \title{Keep only the variables from the input listed in selections}
 \usage{
-srckeep(df, selections, ...)
+srckeep(diskf, selections, ...)
 
 srckeepchunks(df, chunks, ...)
 }
 \arguments{
-\item{df}{a disk.frame}
-
 \item{selections}{The list of variables to keep from the input source}
 
 \item{...}{not yet used}
+
+\item{df}{a disk.frame}
 
 \item{chunks}{The chunks to load}
 }

@@ -11,11 +11,11 @@
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
-srckeep <- function(df, selections, ...) {
-  stopifnot("disk.frame" %in% class(df))
-  attr(df,"keep") = selections
+srckeep <- function(diskf, selections, ...) {
+  stopifnot("disk.frame" %in% class(diskf))
+  attr(diskf,"keep") = selections
   
-  df
+  diskf
 }
 
 #' @param chunks The chunks to load
