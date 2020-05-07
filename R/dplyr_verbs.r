@@ -171,7 +171,6 @@ mutate_at.disk.frame <- create_chunk_mapper(dplyr::mutate_at)
 #' @importFrom dplyr mutate_if
 mutate_if.disk.frame <- create_chunk_mapper(dplyr::mutate_if)
 
-
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom dplyr rename_all
