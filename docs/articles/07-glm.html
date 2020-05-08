@@ -197,7 +197,11 @@
 } <span class="kw">else</span> {
   <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span>
 }
-<span class="co">#&gt; NULL</span></pre></body></html></div>
+<span class="co">#&gt; # A tibble: 2 x 4</span>
+<span class="co">#&gt;   term        estimate std.error  p.value</span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (Intercept)   -17.6      6.76  9.29e- 3</span>
+<span class="co">#&gt; 2 speed           3.93     0.416 2.96e-21</span></pre></body></html></div>
 <p>The syntax didn’t change at all! You are able to enjoy the benefits of <code>disk.frame</code> when dealing with larger-than-RAM data.</p>
 </div>
 <div id="logistic-regression" class="section level2">
@@ -234,7 +238,14 @@
 } <span class="kw">else</span> {
   <span class="co"># broom doesn't work in version &lt; R3.6 because biglm does not work</span>
 }
-<span class="co">#&gt; NULL</span></pre></body></html></div>
+<span class="co">#&gt; # A tibble: 5 x 4</span>
+<span class="co">#&gt;   term         estimate std.error  p.value</span>
+<span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (Intercept)     7.38      2.50  0.00315 </span>
+<span class="co">#&gt; 2 Sepal.Length   -0.245     0.650 0.706   </span>
+<span class="co">#&gt; 3 Sepal.Width    -2.80      0.784 0.000358</span>
+<span class="co">#&gt; 4 Petal.Length    1.31      0.684 0.0547  </span>
+<span class="co">#&gt; 5 Petal.Width    -2.78      1.17  0.0179</span></pre></body></html></div>
 <p>The arguments to the <code>dfglm</code> function are the same as the arguments to <code><a href="https://rdrr.io/pkg/biglm/man/bigglm.html">biglm::bigglm</a></code> which are based on the <code>glm</code> function. Please check their documentations for other argument options.</p>
 </div>
 <div id="notes" class="section level2">
