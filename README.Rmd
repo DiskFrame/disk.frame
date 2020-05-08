@@ -197,13 +197,15 @@ If a function you like is missing, please make a feature request [here](https://
 ```{r}
 library(data.table)
 
-grp_by_stage1 = 
-  flights.df[
-    keep = c("month", "distance"), # this analysis only required "month" and "dist" so only load those
-    month <= 6, 
-    .(sum_dist = sum(distance)), 
-    .(qtr = ifelse(month <= 3, "Q1", "Q2"))
-    ]
+suppressWarnings(
+  grp_by_stage1 <- 
+    flights.df[
+      keep = c("month", "distance"), # this analysis only required "month" and "dist" so only load those
+      month <= 6, 
+      .(sum_dist = sum(distance)), 
+      .(qtr = ifelse(month <= 3, "Q1", "Q2"))
+      ]
+)
 
 grp_by_stage1
 ```
