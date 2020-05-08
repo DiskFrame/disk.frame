@@ -1,4 +1,4 @@
-#' Pull a column from table similiar to `dplyr::pull`. 
+#' Pull a column from table similar to `dplyr::pull`. 
 #'
 #' @export
 #' @importFrom dplyr pull

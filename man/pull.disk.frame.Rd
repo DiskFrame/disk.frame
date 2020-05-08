@@ -2,7 +2,7 @@
 % Please edit documentation in R/pull.r
 \name{pull.disk.frame}
 \alias{pull.disk.frame}
-\title{Pull a column from table similiar to `dplyr::pull`.}
+\title{Pull a column from table similar to `dplyr::pull`.}
 \usage{
 \method{pull}{disk.frame}(.data, var = -1)
 }
@@ -12,5 +12,5 @@
 \item{var}{can be an positive or negative integer or a character/string. See dplyr::pull documentation}
 }
 \description{
-Pull a column from table similiar to `dplyr::pull`.
+Pull a column from table similar to `dplyr::pull`.
 }
