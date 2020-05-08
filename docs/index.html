@@ -363,37 +363,15 @@
 <a href="#example-datatable-syntax" class="anchor"></a>Example: data.table syntax</h2>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)
 
-<span class="no">grp_by_stage1</span> <span class="kw">=</span>
-  <span class="no">flights.df</span>[
-    <span class="kw">keep</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span>
-    <span class="no">month</span> <span class="kw">&lt;=</span> <span class="fl">6</span>,
-    <span class="fu">.</span>(<span class="kw">sum_dist</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">distance</span>)),
-    <span class="fu">.</span>(<span class="kw">qtr</span> <span class="kw">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span>(<span class="no">month</span> <span class="kw">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))
-    ]
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:stats' may not be available</span>
-<span class="co">#&gt; when loading</span>
-<span class="co">#&gt; Warning in serialize(data, node$con): 'package:data.table' may not be</span>
-<span class="co">#&gt; available when loading</span>
+<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span>(
+  <span class="no">grp_by_stage1</span> <span class="kw">&lt;-</span>
+    <span class="no">flights.df</span>[
+      <span class="kw">keep</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"month"</span>, <span class="st">"distance"</span>), <span class="co"># this analysis only required "month" and "dist" so only load those</span>
+      <span class="no">month</span> <span class="kw">&lt;=</span> <span class="fl">6</span>,
+      <span class="fu">.</span>(<span class="kw">sum_dist</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">distance</span>)),
+      <span class="fu">.</span>(<span class="kw">qtr</span> <span class="kw">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span>(<span class="no">month</span> <span class="kw">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span>))
+      ]
+)
 
 <span class="no">grp_by_stage1</span>
 <span class="co">#&gt;    qtr sum_dist</span>
@@ -417,24 +395,24 @@
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="r"><span class="co"># where is the disk.frame stored</span>
 <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">flights.df</span>, <span class="st">"path"</span>)
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpExCMlW\\file53205a176622.df"</span></pre></div>
+<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2dayOa\\file3d3077c25356.df"</span></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="r"><span class="co"># get first few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour</span>
-<span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5</span>
-<span class="co">#&gt;    minute           time_hour</span>
-<span class="co">#&gt; 1:     15 2013-01-01 05:00:00</span></pre></div>
+<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
+<span class="co">#&gt;              time_hour</span>
+<span class="co">#&gt; 1: 2013-01-01 05:00:00</span></pre></div>
 <div class="sourceCode" id="cb12"><pre class="r"><span class="co"># get last few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour</span>
-<span class="co">#&gt; 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8</span>
-<span class="co">#&gt;    minute           time_hour</span>
-<span class="co">#&gt; 1:     40 2013-09-30 08:00:00</span></pre></div>
+<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40</span>
+<span class="co">#&gt;              time_hour</span>
+<span class="co">#&gt; 1: 2013-09-30 08:00:00</span></pre></div>
 <div class="sourceCode" id="cb13"><pre class="r"><span class="co"># number of rows</span>
 <span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span>(<span class="no">flights.df</span>)
 <span class="co">#&gt; [1] 336776</span></pre></div>
@@ -470,20 +448,23 @@
 <a href="#blogs-and-other-resources" class="anchor"></a>Blogs and other resources</h2>
 <table class="table">
 <colgroup>
-<col width="51%">
+<col width="50%">
+<col width="3%">
 <col width="5%">
 <col width="3%">
-<col width="38%">
+<col width="37%">
 </colgroup>
 <thead><tr class="header">
 <th>Title</th>
+<th>Language</th>
 <th>Author</th>
 <th>Date</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>25 days of disk.frame</td>
+<td><a href="https://twitter.com/evalparse/status/1200963268270886912">25 days of disk.frame</a></td>
+<td>English</td>
 <td>ZJ</td>
 <td>2019-12-01</td>
 <td>25 tweets about <code>{disk.frame}</code>
@@ -491,48 +472,62 @@
 </tr>
 <tr class="even">
 <td><a href="https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining" class="uri">https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining</a></td>
+<td>English</td>
 <td>Knut Jägersberg</td>
-<td>20191111</td>
+<td>2019-11-11</td>
 <td>Great answer on using disk.frame</td>
 </tr>
 <tr class="odd">
 <td><a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/"><code>{disk.frame}</code> is epic</a></td>
+<td>English</td>
 <td>Bruno Rodriguez</td>
-<td>20190903</td>
+<td>2019-09-03</td>
 <td>It’s about loading a 30G file into <code>{disk.frame}</code>
 </td>
 </tr>
 <tr class="even">
 <td><a href="https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/">My top 10 R packages for data analytics</a></td>
+<td>English</td>
 <td>Jacky Poon</td>
-<td>20190903</td>
+<td>2019-09-03</td>
 <td>
 <code>{disk.frame}</code> was number 3</td>
 </tr>
 <tr class="odd">
 <td><a href="https://www.youtube.com/watch?v=3XMTyi_H4q4">useR! 2019 presentation video</a></td>
+<td>English</td>
 <td>Dai ZJ</td>
-<td>20190803</td>
+<td>2019-08-03</td>
 <td></td>
 </tr>
 <tr class="even">
 <td><a href="https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY">useR! 2019 presentation slides</a></td>
+<td>English</td>
 <td>Dai ZJ</td>
-<td>20190803</td>
+<td>2019-08-03</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td><a href="https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/">Split-apply-combine for Maximum Likelihood Estimation of a linear model</a></td>
+<td>English</td>
 <td>Bruno Rodriguez</td>
-<td>20191006</td>
+<td>2019-10-06</td>
 <td>
 <code>{disk.frame}</code> used in helping to create a maximum likelihood estimation program for linear models</td>
 </tr>
 <tr class="even">
 <td><a href="https://emmavestesson.netlify.com/2019/07/user2019/">Emma goes to useR! 2019</a></td>
+<td>English</td>
 <td>Emma Vestesson</td>
-<td>20190716</td>
+<td>2019-07-16</td>
 <td>The first mention of <code>{disk.frame}</code> in a blog post</td>
+</tr>
+<tr class="odd">
+<td><a href="https://segmentfault.com/a/1190000021653567">深入对比数据科学工具箱：Python3 和 R 之争(2020版)</a></td>
+<td>Chinese</td>
+<td>Harry Zhu</td>
+<td>2020-02-16</td>
+<td>Mentions disk.frame</td>
 </tr>
 </tbody>
 </table>
@@ -582,6 +577,11 @@ sponsor](https://opencollective.com/diskframe#sponsor)$$</span><br></p>
 <li>Star any repo that <code>{disk.frame}</code> depends on e.g. <a href="https://github.com/fstpackage/fst"><code>{fst}</code></a> and <a href="https://github.com/HenrikBengtsson/future"><code>{future}</code></a>
 </li>
 </ul>
+</div>
+<div id="related-repos" class="section level2">
+<h2 class="hasAnchor">
+<a href="#related-repos" class="anchor"></a>Related Repos</h2>
+<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
 </div>
 <div id="download-counts--build-status" class="section level2">
 <h2 class="hasAnchor">
