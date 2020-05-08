@@ -1,7 +1,6 @@
 context("test-dplyr-verbs")
 
 setup({
-  setup_disk.frame(2)
   b = data.frame(a = 51:150, b = 1:100)
   as.disk.frame(b, file.path(tempdir(), "tmp_b_dv.df"), nchunks = 5, overwrite = T)
 })
@@ -110,21 +109,6 @@ test_that("testing mutate user-defined function", {
      collect
    
    expect_setequal(sum(df$d), sum(df$a, df$b))
-})
-
-test_that("testing mutate user-defined function wiht constats", {
-  b = disk.frame(file.path(tempdir(), "tmp_b_dv.df"))
-  
-  
-  udf = function(a1, b1, c1) {
-    a1 + b1 + c1
-  }
-  
-  df = b %>%
-    mutate(d = udf(a,b, 1)) %>%
-    collect
-  
-  expect_setequal(sum(df$d), sum(df$a, df$b))
 })
 
 test_that("testing transmute", {
