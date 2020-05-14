@@ -4,7 +4,9 @@
 #' @importFrom dplyr pull
 #' @param .data The disk.frame
 #' @param var can be an positive or negative integer or a character/string. See dplyr::pull documentation
-pull.disk.frame <- function(.data, var = -1) {
+#' @param name See dplyr::pull documentation
+#' @param ... See dplyr::pull documentation
+pull.disk.frame <- function(.data, var = -1, name = NULL, ...) {
   name = as.character(substitute(var))
   name_num = as.numeric(name)
   
