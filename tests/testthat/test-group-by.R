@@ -52,45 +52,46 @@ test_that("new group_by framework - no group-by just summarise", {
   expect_true(TRUE)
 })
 
-test_that("new group_by framework - nested-group-by", {
-  if(interactive()) {
-    iris.df = iris %>% 
-      as.disk.frame
-    
-    expect_error(grpby <- iris.df %>% 
-      summarize(mean(Petal.Length + max(Petal.Length))) %>% 
-      collect)
-    
-    expect_error(grpby <- iris.df %>% 
-      summarize(mean(Petal.Length) + max(Petal.Length)) %>% 
-      collect)
-    
-    expect_error(grpby <- iris.df %>% 
-      summarize(mean(Petal.Length) + 1) %>% 
-      collect)
-    
-    expect_error(grpby <- iris.df %>% 
-      summarize(list(mean(Petal.Length))) %>% 
-      collect)
-    
-    fn_tmp = function(x) x + 1
-    grpby <- iris.df %>% 
-        summarize(mean(fn_tmp(Petal.Length))) %>% 
-        collect
-    
-    grpby2 <- iris %>% 
-      summarize(mean(fn_tmp(Petal.Length)))
-    
-    for (n in names(grpby)) {
-      expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
-    }
-    delete(iris.df)
-  }
-  expect_true(TRUE)
-})
+# test_that("new group_by framework - nested-group-by", {
+  # if(interactive()) {
+  #   iris.df = iris %>% 
+  #     as.disk.frame
+  #   
+  #   expect_error(grpby <- iris.df %>% 
+  #     summarize(mean(Petal.Length + max(Petal.Length))) %>% 
+  #     collect)
+  #   
+  #   expect_error(grpby <- iris.df %>% 
+  #     summarize(mean(Petal.Length) + max(Petal.Length)) %>% 
+  #     collect)
+  #   
+  #   expect_error(grpby <- iris.df %>% 
+  #     summarize(mean(Petal.Length) + 1) %>% 
+  #     collect)
+  #   
+  #   expect_error(grpby <- iris.df %>% 
+  #     summarize(list(mean(Petal.Length))) %>% 
+  #     collect)
+  #   
+  #   fn_tmp = function(x) x + 1
+  #   grpby <- iris.df %>% 
+  #       summarize(mean(fn_tmp(Petal.Length))) %>% 
+  #       collect
+  #   
+  #   grpby2 <- iris %>% 
+  #     summarize(mean(fn_tmp(Petal.Length)))
+  #   
+  #   for (n in names(grpby)) {
+  #     expect_true(all(grpby2[, n] == grpby[, n]) || all(abs(grpby2[, n] - grpby[, n]) < 0.0001))
+  #   }
+  #   delete(iris.df)
+  # }
+  # expect_true(TRUE)
+# })
 
 test_that("guard against github #241", {
   if(interactive()) {
+    # I suspect there was an issue with number of chunk = 1
     result_from_disk.frame = iris %>%
       as.disk.frame(nchunks = 1) %>%
       group_by(Species) %>%
@@ -126,7 +127,6 @@ test_that("group_by", {
     chunk_summarise(mv1 = mean(v1)) %>% 
     collect
 
-  
   expect_false(nrow(dff1) == nrow(dff_res))
 })
 
@@ -166,6 +166,7 @@ test_that("test hard_group_by on disk.frame (sort)", {
   dff = csv_to_disk.frame(
     file.path(tempdir(), "tmp_pls_delete_gb.csv"), 
     file.path(tempdir(), "tmp_pls_delete_gb.df"))
+  
   dff_res = dff %>% 
     collect %>% 
     group_by(id1, id2) %>% 

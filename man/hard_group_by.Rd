@@ -6,9 +6,9 @@
 \alias{hard_group_by.disk.frame}
 \title{Perform a hard group}
 \usage{
-hard_group_by(df, ..., add = FALSE, .drop = FALSE)
+hard_group_by(df, ..., .add = FALSE, .drop = FALSE)
 
-\method{hard_group_by}{data.frame}(df, ..., add = FALSE, .drop = FALSE)
+\method{hard_group_by}{data.frame}(df, ..., .add = FALSE, .drop = FALSE)
 
 \method{hard_group_by}{disk.frame}(
   df,
@@ -27,7 +27,7 @@ hard_group_by(df, ..., add = FALSE, .drop = FALSE)
 
 \item{...}{grouping variables}
 
-\item{add}{same as dplyr::group_by}
+\item{.add}{same as dplyr::group_by}
 
 \item{.drop}{same as dplyr::group_by}
 

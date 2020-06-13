@@ -4,9 +4,6 @@
 \alias{select.disk.frame}
 \alias{rename.disk.frame}
 \alias{filter.disk.frame}
-\alias{filter_all.disk.frame}
-\alias{filter_if.disk.frame}
-\alias{filter_at.disk.frame}
 \alias{mutate.disk.frame}
 \alias{transmute.disk.frame}
 \alias{arrange.disk.frame}
@@ -16,23 +13,6 @@
 \alias{add_count.disk.frame}
 \alias{add_tally.disk.frame}
 \alias{do.disk.frame}
-\alias{chunk_group_by_all.disk.frame}
-\alias{chunk_group_by_at.disk.frame}
-\alias{chunk_group_by_if.disk.frame}
-\alias{mutate_all.disk.frame}
-\alias{mutate_at.disk.frame}
-\alias{mutate_if.disk.frame}
-\alias{rename_all.disk.frame}
-\alias{rename_at.disk.frame}
-\alias{rename_if.disk.frame}
-\alias{select_all.disk.frame}
-\alias{select_at.disk.frame}
-\alias{select_if.disk.frame}
-\alias{chunk_summarise_all}
-\alias{chunk_summarise_at}
-\alias{chunk_summarize_all}
-\alias{chunk_summarize_at}
-\alias{chunk_summarize_if}
 \alias{distinct.disk.frame}
 \alias{chunk_distinct}
 \alias{glimpse.disk.frame}
@@ -43,12 +23,6 @@
 \method{rename}{disk.frame}(.data, ...)
 
 \method{filter}{disk.frame}(.data, ...)
-
-filter_all.disk.frame(.data, ...)
-
-filter_if.disk.frame(.data, ...)
-
-filter_at.disk.frame(.data, ...)
 
 \method{mutate}{disk.frame}(.data, ...)
 
@@ -67,40 +41,6 @@ add_count.disk.frame(.data, ...)
 add_tally.disk.frame(.data, ...)
 
 \method{do}{disk.frame}(.data, ...)
-
-chunk_group_by_all.disk.frame(.data, ...)
-
-chunk_group_by_at.disk.frame(.data, ...)
-
-chunk_group_by_if.disk.frame(.data, ...)
-
-mutate_all.disk.frame(.data, ...)
-
-mutate_at.disk.frame(.data, ...)
-
-mutate_if.disk.frame(.data, ...)
-
-rename_all.disk.frame(.data, ...)
-
-rename_at.disk.frame(.data, ...)
-
-rename_if.disk.frame(.data, ...)
-
-select_all.disk.frame(.data, ...)
-
-select_at.disk.frame(.data, ...)
-
-select_if.disk.frame(.data, ...)
-
-chunk_summarise_all(.data, ...)
-
-chunk_summarise_at(.data, ...)
-
-chunk_summarize_all(.data, ...)
-
-chunk_summarize_at(.data, ...)
-
-chunk_summarize_if(.data, ...)
 
 \method{distinct}{disk.frame}(...)
 

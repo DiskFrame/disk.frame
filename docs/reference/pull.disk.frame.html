@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pull a column from table similiar to `dplyr::pull`. — pull.disk.frame • disk.frame</title>
+<title>Pull a column from table similar to `dplyr::pull`. — pull.disk.frame • disk.frame</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Pull a column from table similiar to `dplyr::pull`. — pull.disk.frame" />
-<meta property="og:description" content="Pull a column from table similiar to `dplyr::pull`." />
+<meta property="og:title" content="Pull a column from table similar to `dplyr::pull`. — pull.disk.frame" />
+<meta property="og:description" content="Pull a column from table similar to `dplyr::pull`." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -153,17 +153,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pull a column from table similiar to `dplyr::pull`.</h1>
+    <h1>Pull a column from table similar to `dplyr::pull`.</h1>
     <small class="dont-index">Source: <a href='https://github.com/xiaodaigh/disk.frame/blob/master/R/pull.r'><code>R/pull.r</code></a></small>
     <div class="hidden name"><code>pull.disk.frame.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pull a column from table similiar to `dplyr::pull`.</p>
+    <p>Pull a column from table similar to `dplyr::pull`.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>pull</span>(<span class='no'>.data</span>, <span class='kw'>var</span> <span class='kw'>=</span> -<span class='fl'>1</span>)</pre>
+<span class='fu'>pull</span>(<span class='no'>.data</span>, <span class='kw'>var</span> <span class='kw'>=</span> -<span class='fl'>1</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,6 +175,14 @@
     <tr>
       <th>var</th>
       <td><p>can be an positive or negative integer or a character/string. See dplyr::pull documentation</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>See dplyr::pull documentation</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Not sure, kept for compatibility with `dplyr::pull`</p></td>
     </tr>
     </table>
 

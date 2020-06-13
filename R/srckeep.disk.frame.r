@@ -1,5 +1,5 @@
 #' Keep only the variables from the input listed in selections
-#' @param df a disk.frame
+#' @param diskf a disk.frame
 #' @param selections The list of variables to keep from the input source
 #' @param ... not yet used
 #' @export
@@ -11,21 +11,21 @@
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
-srckeep <- function(df, selections, ...) {
-  stopifnot("disk.frame" %in% class(df))
-  attr(df,"keep") = selections
+srckeep <- function(diskf, selections, ...) {
+  stopifnot("disk.frame" %in% class(diskf))
+  attr(diskf,"keep") = selections
   
-  df
+  diskf
 }
 
 #' @param chunks The chunks to load
 #' @rdname srckeep
 #' @export
-srckeepchunks <- function(df, chunks, ...) {
-  stopifnot("disk.frame" %in% class(df))
+srckeepchunks <- function(diskf, chunks, ...) {
+  stopifnot("disk.frame" %in% class(diskf))
   # TODO relax this
   stopifnot(is.integer(chunks))
   
   attr(df,"keep_chunks") = chunks
-  df
+  diskf
 }

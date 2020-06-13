@@ -1,3 +1,9 @@
+# disk.frame 0.3.6
+* General update to dplyr v1
+* Remove all `_all/if/at` functions for dplyr v1
+* Updated `pull` function to conform to dplyr
+
+
 # disk.frame 0.3.5
 * Support for !!! in summarise; github #250
 * Added `dplyr::pull` verb

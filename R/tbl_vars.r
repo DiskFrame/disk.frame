@@ -8,3 +8,11 @@
 tbl_vars.disk.frame <- function(x) {
   names.disk.frame(x)
 }
+
+#' @rdname tbl_vars.disk.frame
+#' @importFrom dplyr group_vars
+#' @export
+group_vars.disk.frame <- function(x) {
+  # this is not applicable for disk.frame
+  NULL
+}

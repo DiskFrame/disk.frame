@@ -4,12 +4,16 @@
 \alias{pull.disk.frame}
 \title{Pull a column from table similar to `dplyr::pull`.}
 \usage{
-\method{pull}{disk.frame}(.data, var = -1)
+\method{pull}{disk.frame}(.data, var = -1, name = NULL, ...)
 }
 \arguments{
 \item{.data}{The disk.frame}
 
 \item{var}{can be an positive or negative integer or a character/string. See dplyr::pull documentation}
+
+\item{name}{See dplyr::pull documentation}
+
+\item{...}{Not sure, kept for compatibility with `dplyr::pull`}
 }
 \description{
 Pull a column from table similar to `dplyr::pull`.

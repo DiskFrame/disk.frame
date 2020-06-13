@@ -78,7 +78,7 @@ progressbar <- function(df) {
 #' @param outdir the output directory
 #' @param nchunks The number of chunks in the output. Defaults = nchunks.disk.frame(df)
 #' @param overwrite overwrite the out put directory
-#' @param add same as dplyr::group_by
+#' @param .add same as dplyr::group_by
 #' @param .drop same as dplyr::group_by
 #' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
 #' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
@@ -97,15 +97,15 @@ progressbar <- function(df) {
 #' # clean up cars.df
 #' delete(iris.df)
 #' delete(iris_hard.df)
-hard_group_by <- function(df, ..., add = FALSE, .drop = FALSE) {
+hard_group_by <- function(df, ..., .add = FALSE, .drop = FALSE) {
   UseMethod("hard_group_by")
 }
 
 #' @rdname hard_group_by
 #' @export
 #' @importFrom dplyr group_by
-hard_group_by.data.frame <- function(df, ..., add = FALSE, .drop = FALSE) {
-  dplyr::group_by(df, ..., add = FALSE, .drop = FALSE)
+hard_group_by.data.frame <- function(df, ..., .add = FALSE, .drop = FALSE) {
+  dplyr::group_by(df, ..., .add = FALSE, .drop = FALSE)
 }
 
 #' @rdname hard_group_by
@@ -192,12 +192,10 @@ hard_group_by.disk.frame <- function(
     
     res1
   }, error = function(e) {
-    #message(e)
+    # message(e)
     # This will return the variable names
     by = rlang::enquos(...) %>% 
       substr(2, nchar(.))
-    
-
     
     # shard and create temporary diskframes
     tmp_df  = cmap(df, function(df1) {

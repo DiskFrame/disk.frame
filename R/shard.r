@@ -39,7 +39,8 @@ shard <- function(df, shardby, outdir = tempfile(fileext = ".df"), ..., nchunks 
         code = glue::glue("df[,.out.disk.frame.id := 0]")
       } else {
         shard_by_rule <- sortablestr2i(sort_splits, desc_vars)
-        message(shard_by_rule)
+        # message(shard_by_rule)
+        setDT(df)
         code = glue::glue("df[,.out.disk.frame.id := {shard_by_rule}]")
       }
     }

@@ -26,8 +26,10 @@ get_chunk <- function(...) {
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   stopifnot("disk.frame" %in% class(df))
-  
   keep_chunks = attr(df, "keep_chunks", exact=TRUE)
+  
+  # print(names(attr(df, "lazyfn")[[1]]$vars_and_pkgs$globals))
+  # stop("ok")
   
   # TODO relax this
   # if(!is.null(keep_chunks)) {
@@ -47,8 +49,9 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   #   # }
   # }
   
-  
   path = attr(df,"path", exact=TRUE)
+  
+  # all the variables to keep in the attr from a previous srckeep
   keep1 = attr(df,"keep", exact=TRUE)
   
   cmds = attr(df,"lazyfn", exact=TRUE)
@@ -57,6 +60,14 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   if (typeof(keep) == "closure") {
     keep = keep1
   } else if(!is.null(keep1) & !is.null(keep)) {
+    if (length(setdiff(keep, keep1)) > 0) {
+      keep1_vars = paste0(keep1, collapse = ", ")
+      keep_no_good_vars = setdiff(keep, keep1) %>% paste0(collapse = ", ")
+      stop(
+        glue::glue(
+          "This disk.frame has a srckeep containing these variables {keep1_vars}. 
+          You are trying to keep {keep_no_good_vars}, which are not available."))
+    }
     keep = intersect(keep1, keep)
     if (!all(keep %in% keep1)) {
       warning("some of the variables specified in keep = {keep} is not available")

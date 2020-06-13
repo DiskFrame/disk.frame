@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -173,12 +173,6 @@
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
-<span class='fu'>filter_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>filter_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>filter_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>mutate</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
@@ -200,40 +194,6 @@
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>do</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_group_by_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_group_by_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_group_by_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>mutate_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>mutate_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>mutate_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>rename_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>rename_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>rename_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>select_all.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>select_at.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>select_if.disk.frame</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarise_all</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarise_at</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarize_all</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarize_at</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_summarize_if</span>(<span class='no'>.data</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for disk.frame</span>
 <span class='fu'>distinct</span>(<span class='no'>...</span>)
@@ -267,7 +227,7 @@
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>speed</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>speed2</span> <span class='kw'>=</span> <span class='no'>speed</span> * <span class='no'>mult</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>speed</span> <span class='kw'>&lt;</span> <span class='fl'>50</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='kw'>speed1</span> <span class='kw'>=</span> <span class='no'>speed</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span>(<span class='kw'>speed1</span> <span class='kw'>=</span> <span class='no'>speed</span>) <span class='kw'>%&gt;%</span>
   <span class='no'>collect</span>
 
 <span class='co'># clean up cars.df</span>
