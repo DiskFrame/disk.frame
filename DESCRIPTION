@@ -34,7 +34,7 @@ Imports:
     benchmarkme
 Depends:
     R (>= 3.4),
-    dplyr (>= 0.8.3),
+    dplyr (>= 1.0.0),
     purrr (>= 0.3.2)
 Suggests:
     testthat (>= 2.1.0),

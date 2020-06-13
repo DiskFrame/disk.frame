@@ -170,7 +170,7 @@ mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 
 The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard_group_by`s.
 
-```{rH}
+```{r}
 # this only sorts within each chunk
 chunk_arrange(flights.df, dplyr::desc(dep_delay)) %>% collect %>% head(2)
 ```
