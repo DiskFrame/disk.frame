@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.3.5
-Date: 2020-05-08
+Version: 0.3.6
+Date: 2020-06-13
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))
@@ -11,8 +11,8 @@ Maintainer: Dai ZJ <zhuojia.dai@gmail.com>
 Description: A disk-based data manipulation tool for working with 
   large-than-RAM datasets. Aims to lower the barrier-to-entry for 
   manipulating large datasets by adhering closely to popular and 
-  familiar data manipulation paradigms like dplyr verbs and 
-  data.table syntax.
+  familiar data manipulation paradigms like 'dplyr' verbs and 
+  'data.table' syntax.
 License: MIT + file LICENSE
 Imports:
     Rcpp (>= 0.12.13),
