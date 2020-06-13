@@ -7,7 +7,7 @@
 \usage{
 srckeep(diskf, selections, ...)
 
-srckeepchunks(df, chunks, ...)
+srckeepchunks(diskf, chunks, ...)
 }
 \arguments{
 \item{diskf}{a disk.frame}
