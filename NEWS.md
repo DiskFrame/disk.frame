@@ -1,4 +1,6 @@
+# disk.frame 0.3.6
 * Remove all `_all/if/at` functions for dplyr v1
+* Updated `pull` function to conform to dplyr
 
 
 # disk.frame 0.3.5

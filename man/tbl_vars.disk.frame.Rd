@@ -2,9 +2,12 @@
 % Please edit documentation in R/tbl_vars.r
 \name{tbl_vars.disk.frame}
 \alias{tbl_vars.disk.frame}
+\alias{group_vars.disk.frame}
 \title{Column names for RStudio auto-complete}
 \usage{
 \method{tbl_vars}{disk.frame}(x)
+
+\method{group_vars}{disk.frame}(x)
 }
 \arguments{
 \item{x}{a disk.frame}
