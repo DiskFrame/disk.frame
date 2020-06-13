@@ -4,7 +4,7 @@
 \alias{pull.disk.frame}
 \title{Pull a column from table similar to `dplyr::pull`.}
 \usage{
-\method{pull}{disk.frame}(.data, var = -1)
+\method{pull}{disk.frame}(.data, var = -1, name = NULL, ...)
 }
 \arguments{
 \item{.data}{The disk.frame}
