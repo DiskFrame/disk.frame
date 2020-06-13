@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -170,11 +170,12 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tbl</th>
-      <td><p>tbl of data.</p></td>
+      <td><p>A data.frame.</p></td>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>For <code>sample_n()</code>, the number of rows to select.
+      <td><p>&lt;<code><a href='https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html'>tidy-select</a></code>&gt;
+For <code>sample_n()</code>, the number of rows to select.
 For <code>sample_frac()</code>, the fraction of rows to select.
 If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p></td>
     </tr>
@@ -184,19 +185,13 @@ If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p></td
     </tr>
     <tr>
       <th>weight</th>
-      <td><p>Sampling weights. This must evaluate to a vector of
-non-negative numbers the same length as the input. Weights are
-automatically standardised to sum to 1.</p>
-<p>This argument is automatically <a href='https://rlang.r-lib.org/reference/nse-defuse.html'>quoted</a> and later
-<a href='https://rlang.r-lib.org/reference/eval_tidy.html'>evaluated</a> in the context of the data
-frame. It supports <a href='https://rlang.r-lib.org/reference/nse-force.html'>unquoting</a>. See
-<code>vignette("programming")</code> for an introduction to these concepts.</p></td>
+      <td><p>&lt;<code><a href='https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html'>tidy-select</a></code>&gt; Sampling weights.
+This must evaluate to a vector of non-negative numbers the same length as
+the input. Weights are automatically standardised to sum to 1.</p></td>
     </tr>
     <tr>
       <th>.env</th>
-      <td><p>This variable is deprecated and no longer has any
-effect. To evaluate <code>weight</code> in a particular context, you can
-now unquote a <a href='https://rlang.r-lib.org/reference/quosure.html'>quosure</a>.</p></td>
+      <td><p>DEPRECATED.</p></td>
     </tr>
     <tr>
       <th>...</th>

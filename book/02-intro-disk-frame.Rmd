@@ -278,7 +278,7 @@ flights.df %>%
 
 ```{r, dependson='airlines_dt'}
 flights.df %>% 
-  left_join(airlines.dt, by = c("carrier", "carrier")) %>% 
+  left_join(airlines.dt, by = c("carrier")) %>% 
   collect %>% 
   tail
 ```

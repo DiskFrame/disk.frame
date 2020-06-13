@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -222,7 +222,6 @@
 
 <span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span>
 <span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()
-<span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co"># this allows large datasets to be transferred between sessions</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">future.globals.maxSize</span> <span class="kw">=</span> <span class="fl">Inf</span>)
 
@@ -241,15 +240,12 @@
   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">year</span> <span class="kw">==</span> <span class="fl">2013</span>) <span class="kw">%&gt;%</span>
   <span class="fu">mutate</span>(<span class="kw">origin_dest</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">origin</span>, <span class="no">dest</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fl">2</span>)
-<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819</span>
-<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830</span>
-<span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
-<span class="co">#&gt; 2        20      UA   1714  N24211    LGA  IAH      227     1416    5     29</span>
-<span class="co">#&gt;             time_hour origin_dest</span>
-<span class="co">#&gt; 1 2013-01-01 05:00:00      EWRIAH</span>
-<span class="co">#&gt; 2 2013-01-01 05:00:00      LGAIAH</span></pre></div>
+<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
+<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819        11      UA   1545  N14228</span>
+<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830        20      UA   1714  N24211</span>
+<span class="co">#&gt;   origin dest air_time distance hour minute           time_hour origin_dest</span>
+<span class="co">#&gt; 1    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
+<span class="co">#&gt; 2    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></pre></div>
 </div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
@@ -395,24 +391,20 @@
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="r"><span class="co"># where is the disk.frame stored</span>
 <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">flights.df</span>, <span class="st">"path"</span>)
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2dayOa\\file3d3077c25356.df"</span></pre></div>
+<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpOg2KJQ\\file39845d601adb.df"</span></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="r"><span class="co"># get first few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
-<span class="co">#&gt;              time_hour</span>
-<span class="co">#&gt; 1: 2013-01-01 05:00:00</span></pre></div>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
+<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228</span>
+<span class="co">#&gt;    origin dest air_time distance hour minute           time_hour</span>
+<span class="co">#&gt; 1:    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00</span></pre></div>
 <div class="sourceCode" id="cb12"><pre class="r"><span class="co"># get last few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40</span>
-<span class="co">#&gt;              time_hour</span>
-<span class="co">#&gt; 1: 2013-09-30 08:00:00</span></pre></div>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
+<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ   3531  N839MQ</span>
+<span class="co">#&gt;    origin dest air_time distance hour minute           time_hour</span>
+<span class="co">#&gt; 1:    LGA  RDU       NA      431    8     40 2013-09-30 08:00:00</span></pre></div>
 <div class="sourceCode" id="cb13"><pre class="r"><span class="co"># number of rows</span>
 <span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span>(<span class="no">flights.df</span>)
 <span class="co">#&gt; [1] 336776</span></pre></div>
