@@ -60,7 +60,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   if (typeof(keep) == "closure") {
     keep = keep1
   } else if(!is.null(keep1) & !is.null(keep)) {
-    if (len(setdiff(keep, keep1)) > 0) {
+    if (length(setdiff(keep, keep1)) > 0) {
       keep1_vars = paste0(keep1, collapse = ", ")
       keep_no_good_vars = setdiff(keep, keep1) %>% paste0(collapse = ", ")
       stop(
