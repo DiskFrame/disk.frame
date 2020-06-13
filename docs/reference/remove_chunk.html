@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -187,21 +187,21 @@
 <span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 
 <span class='co'># removes 3rd chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpWMzfOY\file76045b31e78.df"</span>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4mPCXA\file42b43ac5c.df"</span>
 #&gt; <span class='message'>nchunks: 3</span>
 #&gt; <span class='message'>nrow (at source): 37</span>
 #&gt; <span class='message'>ncol (at source): 2</span>
 #&gt; <span class='message'>nrow (post operations): ???</span>
 #&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 3</div><div class='input'>
 <span class='co'># removes 4th chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='st'>"4.fst"</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpWMzfOY\file76045b31e78.df"</span>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='st'>"4.fst"</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4mPCXA\file42b43ac5c.df"</span>
 #&gt; <span class='message'>nchunks: 2</span>
 #&gt; <span class='message'>nrow (at source): 26</span>
 #&gt; <span class='message'>ncol (at source): 2</span>
 #&gt; <span class='message'>nrow (post operations): ???</span>
 #&gt; <span class='message'>ncol (post operations): ???</span></div><div class='input'><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>cars.df</span>) <span class='co'># 3</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='co'># removes 2nd chunk</span>
-<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>cars.df</span>, <span class='st'>"path"</span>, <span class='kw'>exact</span><span class='kw'>=</span><span class='fl'>TRUE</span>), <span class='st'>"2.fst"</span>), <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpWMzfOY\file76045b31e78.df"</span>
+<span class='fu'>remove_chunk</span>(<span class='no'>cars.df</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>cars.df</span>, <span class='st'>"path"</span>, <span class='kw'>exact</span><span class='kw'>=</span><span class='fl'>TRUE</span>), <span class='st'>"2.fst"</span>), <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp4mPCXA\file42b43ac5c.df"</span>
 #&gt; <span class='message'>nchunks: 1</span>
 #&gt; <span class='message'>nrow (at source): 13</span>
 #&gt; <span class='message'>ncol (at source): 2</span>

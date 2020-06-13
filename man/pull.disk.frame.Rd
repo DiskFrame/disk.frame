@@ -13,7 +13,8 @@
 
 \item{name}{See dplyr::pull documentation}
 
-\item{...}{See dplyr::pull documentation}
+\item{...}{Not sure, kept for compatibility with `dplyr::pull`}
+
 }
 \description{
 Pull a column from table similar to `dplyr::pull`.

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -253,8 +253,17 @@
 <h3 class="hasAnchor">
 <a href="#examples-of-not-fully-supported-dplyr-verbs" class="anchor"></a>Examples of NOT fully supported <code>dplyr</code> verbs</h3>
 <p>The <code>chunk_arrange</code> function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly <code>chunk_summarise</code> creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use <code>summarise</code> in the <code>disk.frame</code> context correctly with <code>hard_group_by</code>s.</p>
-<pre class="rh"><code># this only sorts within each chunk
-chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)</code></pre>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># this only sorts within each chunk</span>
+<span class="fu"><a href="../reference/dplyr_verbs.html">chunk_arrange</a></span>(<span class="no">flights.df</span>, <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(<span class="no">dep_delay</span>)) <span class="kw">%&gt;%</span> <span class="no">collect</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fl">2</span>)
+<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
+<span class="co">#&gt; 1 2013     1   9      641            900      1301     1242           1530</span>
+<span class="co">#&gt; 2 2013     1  10     1121           1635      1126     1239           1810</span>
+<span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1      1272      HA     51  N384HA    JFK  HNL      640     4983    9      0</span>
+<span class="co">#&gt; 2      1109      MQ   3695  N517MQ    EWR  ORD      111      719   16     35</span>
+<span class="co">#&gt;              time_hour</span>
+<span class="co">#&gt; 1 2013-01-09T14:00:00Z</span>
+<span class="co">#&gt; 2 2013-01-10T21:00:00Z</span></pre></body></html></div>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarize</a></span>(<span class="no">flights.df</span>, <span class="kw">mean_dep_delay</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">dep_delay</span>, <span class="kw">na.rm</span> <span class="kw">=</span><span class="no">T</span>)) <span class="kw">%&gt;%</span> <span class="no">collect</span>
 <span class="co">#&gt;   mean_dep_delay</span>
 <span class="co">#&gt; 1       12.32700</span>
@@ -276,13 +285,13 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">carrier</span>)<span class="co"># arrange should occur after `collect`</span>
 
 <span class="no">c4</span>  <span class="kw">%&gt;%</span> <span class="no">head</span>
-<span class="co">#&gt;   carrier dep_delay air_time distance air_time_hours</span>
-<span class="co">#&gt; 1      AA        -7      142     1089       2.366667</span>
-<span class="co">#&gt; 2      AA        -9      186     1389       3.100000</span>
-<span class="co">#&gt; 3      AA        -6      143     1096       2.383333</span>
-<span class="co">#&gt; 4      AA        -4      114      733       1.900000</span>
-<span class="co">#&gt; 5      AA        -2      146     1085       2.433333</span>
-<span class="co">#&gt; 6      AA        -7      119      733       1.983333</span></pre></body></html></div>
+<span class="co">#&gt;    carrier dep_delay air_time distance air_time_hours</span>
+<span class="co">#&gt; 1:      AA        -7      142     1089       2.366667</span>
+<span class="co">#&gt; 2:      AA        -9      186     1389       3.100000</span>
+<span class="co">#&gt; 3:      AA        -6      143     1096       2.383333</span>
+<span class="co">#&gt; 4:      AA        -4      114      733       1.900000</span>
+<span class="co">#&gt; 5:      AA        -2      146     1085       2.433333</span>
+<span class="co">#&gt; 6:      AA        -7      119      733       1.983333</span></pre></body></html></div>
 </div>
 <div id="list-of-supported-dplyr-verbs" class="section level3">
 <h3 class="hasAnchor">
@@ -316,7 +325,7 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
 <p><code>{disk.frame}</code> implements the <code>group_by</code> operation some caveats. In the <code>{disk.frame}</code> framework, only a set functions are supported in <code>summarize</code>. However, the user can create more custom <code>group-by</code> functions can be defined.</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">flights.df</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="no">carrier</span>) <span class="kw">%&gt;%</span> <span class="co"># notice that hard_group_by needs to be set</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">count</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>(), <span class="kw">mean_dep_delay</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">dep_delay</span>, <span class="kw">na.rm</span><span class="kw">=</span><span class="no">T</span>)) <span class="kw">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">count</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span>(), <span class="kw">mean_dep_delay</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">dep_delay</span>, <span class="kw">na.rm</span><span class="kw">=</span><span class="no">T</span>)) <span class="kw">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
   <span class="no">collect</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">carrier</span>)
 <span class="co">#&gt; # A tibble: 16 x 3</span>
@@ -346,7 +355,7 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">flights.df</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"carrier"</span>,<span class="st">"dep_delay"</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="no">carrier</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">count</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>(), <span class="kw">mean_dep_delay</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">dep_delay</span>, <span class="kw">na.rm</span><span class="kw">=</span><span class="no">T</span>)) <span class="kw">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">count</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span>(), <span class="kw">mean_dep_delay</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">dep_delay</span>, <span class="kw">na.rm</span><span class="kw">=</span><span class="no">T</span>)) <span class="kw">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
   <span class="no">collect</span>
 <span class="co">#&gt; # A tibble: 16 x 3</span>
 <span class="co">#&gt;    carrier count mean_dep_delay</span>
@@ -386,7 +395,7 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
 <span class="no">airlines.dt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span>(<span class="no">airlines</span>)
 <span class="co"># flights %&gt;% left_join(airlines, by = "carrier") #</span>
 <span class="no">flights.df</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airlines.dt</span>, <span class="kw">by</span> <span class="kw">=</span><span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airlines.dt</span>, <span class="kw">by</span> <span class="kw">=</span><span class="st">"carrier"</span>) <span class="kw">%&gt;%</span>
   <span class="no">collect</span> <span class="kw">%&gt;%</span>
   <span class="no">head</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
@@ -411,7 +420,7 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
 <span class="co">#&gt; 5: 2013-01-01T11:00:00Z   Delta Air Lines Inc.</span>
 <span class="co">#&gt; 6: 2013-01-01T10:00:00Z  United Air Lines Inc.</span></pre></body></html></div>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">flights.df</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(<span class="no">airlines.dt</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"carrier"</span>, <span class="st">"carrier"</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">airlines.dt</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"carrier"</span>)) <span class="kw">%&gt;%</span>
   <span class="no">collect</span> <span class="kw">%&gt;%</span>
   <span class="no">tail</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
@@ -577,28 +586,28 @@ chunk_arrange(flights.df, dplyr::desc(dep_delay)) %&gt;% collect %&gt;% head(2)<
 <h2 class="hasAnchor">
 <a href="#sampling" class="anchor"></a>Sampling</h2>
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="no">flights.df</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_frac</a></span>(<span class="fl">0.01</span>) <span class="kw">%&gt;%</span> <span class="no">collect</span> <span class="kw">%&gt;%</span> <span class="no">head</span>
+<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="no">flights.df</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_frac</a></span>(<span class="fl">0.01</span>) <span class="kw">%&gt;%</span> <span class="no">collect</span> <span class="kw">%&gt;%</span> <span class="no">head</span>
 <span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1 2013     1   8     1308           1315        -7     1352           1411</span>
-<span class="co">#&gt; 2 2013    12  21      654            655        -1      946            940</span>
-<span class="co">#&gt; 3 2013     1   1     1155           1200        -5     1507           1519</span>
-<span class="co">#&gt; 4 2013     8  22       NA           1600        NA       NA           1747</span>
-<span class="co">#&gt; 5 2013     1  10      651            659        -8      946            938</span>
-<span class="co">#&gt; 6 2013    12  22     1629           1630        -1     1949           1955</span>
+<span class="co">#&gt; 1 2013     1   4     1711           1715        -4     2003           2040</span>
+<span class="co">#&gt; 2 2013     5  10     1245           1245         0     1529           1543</span>
+<span class="co">#&gt; 3 2013    12  27      606            610        -4      910            915</span>
+<span class="co">#&gt; 4 2013     5  24     1654           1600        54     1802           1718</span>
+<span class="co">#&gt; 5 2013     5  16     1529           1535        -6     1804           1800</span>
+<span class="co">#&gt; 6 2013    12  26     2053           2105       -12     2151           2216</span>
 <span class="co">#&gt;   arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1       -19      EV   4368  N12924    EWR  BDL       25      116   13     15</span>
-<span class="co">#&gt; 2         6      AA   1263  N3DPAA    JFK  LAS      314     2248    6     55</span>
-<span class="co">#&gt; 3       -12      DL   1443  N969DL    LGA  FLL      160     1076   12      0</span>
-<span class="co">#&gt; 4        NA      EV   5091  N717EV    LGA  PIT       NA      335   16      0</span>
-<span class="co">#&gt; 5         8      DL   1547  N680DA    LGA  ATL      122      762    6     59</span>
-<span class="co">#&gt; 6        -6      DL    421  N3740C    JFK  AUS      243     1521   16     30</span>
+<span class="co">#&gt; 1       -37      DL    503  N3771K    JFK  SAN      325     2446   17     15</span>
+<span class="co">#&gt; 2       -14      B6    505  N768JB    EWR  FLL      139     1065   12     45</span>
+<span class="co">#&gt; 3        -5      AA   1205  N5CGAA    EWR  MIA      157     1085    6     10</span>
+<span class="co">#&gt; 4        44      US   2134  N949UW    LGA  BOS       43      184   16      0</span>
+<span class="co">#&gt; 5         4      MQ   4525  N713MQ    LGA  XNA      170     1147   15     35</span>
+<span class="co">#&gt; 6       -25      9E   3525  N934XJ    LGA  SYR       36      198   21      5</span>
 <span class="co">#&gt;              time_hour</span>
-<span class="co">#&gt; 1 2013-01-08T18:00:00Z</span>
-<span class="co">#&gt; 2 2013-12-21T11:00:00Z</span>
-<span class="co">#&gt; 3 2013-01-01T17:00:00Z</span>
-<span class="co">#&gt; 4 2013-08-22T20:00:00Z</span>
-<span class="co">#&gt; 5 2013-01-10T11:00:00Z</span>
-<span class="co">#&gt; 6 2013-12-22T21:00:00Z</span></pre></body></html></div>
+<span class="co">#&gt; 1 2013-01-04T22:00:00Z</span>
+<span class="co">#&gt; 2 2013-05-10T16:00:00Z</span>
+<span class="co">#&gt; 3 2013-12-27T11:00:00Z</span>
+<span class="co">#&gt; 4 2013-05-24T20:00:00Z</span>
+<span class="co">#&gt; 5 2013-05-16T19:00:00Z</span>
+<span class="co">#&gt; 6 2013-12-27T02:00:00Z</span></pre></body></html></div>
 </div>
 <div id="writing-data" class="section level2">
 <h2 class="hasAnchor">

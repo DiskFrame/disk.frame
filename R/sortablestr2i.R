@@ -54,6 +54,9 @@ switchcond <- function(name, split_values, desc_vars){
 #    ({name2} < {split_value2} | ({name2} == {split_value2} ...)))) * 1
 # the sum of the split row is the id
 sortablestr2i <- function(split_values, desc_vars){
+  # ZJ: need to force it to be a data.frame, because if it's a data.table then it will
+  # cause issues
+  split_values = data.frame(split_values)
   do.call(
     paste,
     c(
