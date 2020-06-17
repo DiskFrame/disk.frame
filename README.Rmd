@@ -314,7 +314,7 @@ I am available for Machine Learning/Data Science/R/Python/Julia consulting! [Ema
 
 Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute
 
-* Write a blogpost about your `{disk.frame}`. I would love to learn more about how `{disk.frame}` has helped you
+* Write a blogpost about your `{disk.frame}` usage or experience. I would love to learn more about how `{disk.frame}` has helped you
 * Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to help promote it
 * Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by [raising an issue here](https://github.com/xiaodaigh/disk.frame/issues)
 * Star the [`{disk.frame}` Github repo](https://github.com/xiaodaigh/disk.frame)
@@ -324,7 +324,6 @@ Do you wish to give back the open-source community in non-financial ways? Here a
 
 https://github.com/xiaodaigh/disk.frame-fannie-mae-example
 https://github.com/xiaodaigh/disk.frame-vs
-https://github.com/xiaodaigh/disk.frame-fannie-mae-example
 https://github.com/xiaodaigh/disk.frame.ml
 https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame
 
