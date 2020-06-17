@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
 
 The [`disk.frame` package](https://github.com/xiaodaigh/disk.frame) aims to be the answer to the question: how do I manipulate structured tabular data that doesn't fit into Random Access Memory (RAM)? 
 
-In a nutshell, `disk.frame` makes use of two simple ideas
+In a nutshell, `disk.frame` makes use of two simple ideas:
 
 1) split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and 
 2) provide a convenient API to manipulate these chunks
@@ -72,7 +72,7 @@ setup_disk.frame()
 options(future.globals.maxSize = Inf)
 ```
 
-The `setup_disk.frame()` sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.
+The `setup_disk.frame()` function sets up background workers equal to the number of CPU cores available on your machine; please note that, by default, hyper-threaded cores are counted as one not two.
 
 Alternatively, one may specify the number of workers using `setup_disk.frame(workers = n)`.
 
@@ -97,7 +97,7 @@ flights.df <- as.disk.frame(
   overwrite = TRUE)
 flights.df
 ```
-You should now see a folder called `tmp_flights` with some files in it, namely `1.fst`, `2.fst`.... where each `fst` files is one chunk of the `disk.frame`.
+You should now see a folder called `tmp_flights` with some files in it, namely `1.fst`, `2.fst`... where each `fst` files is one chunk of the `disk.frame`.
 
 
 ### Creating a `disk.frame` from CSV
@@ -117,7 +117,7 @@ flights.df <- csv_to_disk.frame(
 flights.df
 ```
 
-If the CSV is too large to read in, then we can also use the `in_chunk_size` option to control how many rows to read in at once. For example to read in the data 100,000 rows at a time.
+If the CSV is too large to read in, then we can also use the `in_chunk_size` option to control how many rows to read in at once. For example, to read in the data 100,000 rows at a time:
 
 ```{r}
 library(nycflights13)
@@ -138,7 +138,7 @@ flights.df <- csv_to_disk.frame(
 flights.df
 ```
 
-`disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to `disk.frame`s.
+`disk.frame` also has a function `zip_to_disk.frame` that can convert every CSV in a zip file to a `disk.frame`.
 
 ### Simple `dplyr` verbs and lazy evaluation
 ```{r dfselect, dependson='asdiskframe', cache=TRUE}
@@ -150,9 +150,9 @@ flights.df1
 class(flights.df1)
 ```
 
-The class of `flights.df1` is also a `disk.frame` after the   `dplyr::select` transformation. Also, `disk.frame` operations are by default (and where possible) **lazy**, meaning it doesn't perform the operations right away. Instead, it waits until you call `collect`. Exceptions to this rule are the `*_join` operations which evaluated *eagerly* under certain conditions see **Joins for disk.frame in-depth** for details.
+The class of `flights.df1` is also a `disk.frame` after the `dplyr::select` transformation. Also, `disk.frame` operations are by default (and where possible) **lazy**, meaning they don't perform the operations right away. Instead, these functions wait until you call `collect`. Exceptions to this rule are the `*_join` operations, which evaluate *eagerly* under certain conditions--see **Joins for disk.frame in-depth** for details.
 
-For lazily constructed `disk.frame`s (e.g. `flights.df1`). The function `collect` can be used to bring the results from disk into R, e.g.
+For lazily constructed `disk.frame`s (e.g. `flights.df1`), the function `collect` can be used to bring the results from disk into R, e.g.
 ```{r, dependson='dfselect'}
 collect(flights.df1) %>% head(2)
 ```
@@ -171,7 +171,7 @@ mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 
 ### Examples of NOT fully supported `dplyr` verbs
 
-The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard_group_by`s.
+The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly, `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the **Group-by** section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard_group_by`s.
 
 ```{r, dependson='asdiskframe'}
 # this only sorts within each chunk
@@ -220,13 +220,13 @@ anit_join
 
 ## Sharding and distribution of chunks
 
-Like other distributed data manipulation frameworks `disk.frame` utilizes the *sharding* concept to distribute the data into chunks. For example "to shard by `cust_id`" means that all rows with the same `cust_id` will be stored in the same chunk. This enables `chunk_group_by` by `cust_id` to produce the same results as non-chunked data.
+Like other distributed data manipulation frameworks, `disk.frame` utilizes the *sharding* concept to distribute the data into chunks. For example, "to shard by `cust_id`" means that all rows with the same `cust_id` will be stored in the same chunk. This enables `chunk_group_by` by `cust_id` to produce the same results as non-chunked data.
 
 The `by` variables that were used to shard the dataset are called the `shardkey`s. The *sharding* is performed by computing a deterministic hash on the shard keys (the `by` variables) for each row. The hash function produces an integer between `1` and `n`, where `n` is the number of chunks. 
 
 ## Group-by
 
-`{disk.frame}` implements the `group_by` operation some caveats. In the `{disk.frame}` framework, only a set functions are supported in `summarize`. However, the user can create more custom `group-by` functions can be defined.
+`{disk.frame}` implements the `group_by` operation with some caveats. In the `{disk.frame}` framework, only a subset of functions are supported in `summarize`. However, the user can create more custom `group-by` functions on the fly.
 
 ```{r, dependson='asdiskframe'}
 flights.df %>%
@@ -265,7 +265,7 @@ In all cases, the left dataset (`x`) must be a `disk.frame`, and the right datas
 
 However, if the right dataset is a `data.frame` then `hard_group_by`s are only performed in the case of `full_join`.
 
-Note `disk.frame` does not support `right_join` the user should use `left_join` instead.
+Note `disk.frame` does not support `right_join`. The user should use `left_join` instead.
 
 The below joins are performed *lazily* because `airlines.dt` is a `data.table` not a `disk.frame`:
 
@@ -303,7 +303,7 @@ bestworst <- flights.df %>%
 bestworst %>% head
 ```
 
-another example
+Another example:
 
 ```{r, dependson='asdiskframe'}
 ranked <- flights.df %>%
@@ -315,10 +315,10 @@ ranked <- flights.df %>%
 ranked %>% head
 ```
 
-one more example
+One more example:
 
 ```{r, dependson='asdiskframe'}
-# Rank each flight within a daily
+# Rank each flight within a daily window
 ranked <- flights.df %>%
   srckeep(c("year","month","day", "dep_delay")) %>%
   chunk_group_by(year, month, day) %>%
@@ -332,13 +332,13 @@ ranked %>% head
 
 ## Arbitrary by-chunk processing
 
-One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `map.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk
+One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `map.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk:
 
 ```{r, dependson='asdiskframe'}
 flights.df1 <- delayed(flights.df, ~nrow(.x))
 collect_list(flights.df1) %>% head # returns number of rows for each data.frame in a list
 ```
-and to do the same with `map.disk.frame`
+and to do the same with `map.disk.frame`:
 
 ```{r, dependson='asdiskframe'}
 map(flights.df, ~nrow(.x), lazy = F) %>% head
