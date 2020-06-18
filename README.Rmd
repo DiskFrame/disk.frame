@@ -150,7 +150,7 @@ flights.df %>%
 
 
 ### Group-by
-Starting from `{disk.frame}` v0.3.0, there is for support `group_by` for a limited set of functions. For example:
+Starting from `{disk.frame}` v0.3.0, there is `group_by` support for a limited set of functions. For example:
 
 ```r
 result_from_disk.frame = iris %>% 
