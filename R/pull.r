@@ -5,7 +5,7 @@
 #' @param .data The disk.frame
 #' @param var can be an positive or negative integer or a character/string. See dplyr::pull documentation
 #' @param name See dplyr::pull documentation
-#' @param ... Not sure, kept for compatibility with `dplyr::pull`
+#' @param ... Not used, kept for compatibility with `dplyr::pull`
 pull.disk.frame <- function(.data, var = -1, name = NULL, ...) {
   ####  get the right name for var
   var_name = paste0(as.character(substitute(var)), collapse = "")
