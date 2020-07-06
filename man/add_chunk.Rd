@@ -4,7 +4,7 @@
 \alias{add_chunk}
 \title{Add a chunk to the disk.frame}
 \usage{
-add_chunk(df, chunk, chunk_id = NULL, full.names = FALSE)
+add_chunk(df, chunk, chunk_id = NULL, full.names = FALSE, ...)
 }
 \arguments{
 \item{df}{the disk.frame to add a chunk to}
@@ -16,6 +16,8 @@ will be set to the largest chunk_id + 1}
 
 \item{full.names}{whether the chunk_id name match should be to the full file
 path not just the file name}
+
+\item{...}{Passed in the write_fst. E.g. compress}
 }
 \value{
 disk.frame
