@@ -222,6 +222,7 @@
 
 <span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span>
 <span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span>()
+<span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co"># this allows large datasets to be transferred between sessions</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">future.globals.maxSize</span> <span class="kw">=</span> <span class="fl">Inf</span>)
 
@@ -240,17 +241,17 @@
   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">year</span> <span class="kw">==</span> <span class="fl">2013</span>) <span class="kw">%&gt;%</span>
   <span class="fu">mutate</span>(<span class="kw">origin_dest</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">origin</span>, <span class="no">dest</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fl">2</span>)
-<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
-<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819        11      UA   1545  N14228</span>
-<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830        20      UA   1714  N24211</span>
-<span class="co">#&gt;   origin dest air_time distance hour minute           time_hour origin_dest</span>
-<span class="co">#&gt; 1    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
-<span class="co">#&gt; 2    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></pre></div>
+<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin</span>
+<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819        11      UA   1545  N14228    EWR</span>
+<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830        20      UA   1714  N24211    LGA</span>
+<span class="co">#&gt;   dest air_time distance hour minute           time_hour origin_dest</span>
+<span class="co">#&gt; 1  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
+<span class="co">#&gt; 2  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></pre></div>
 </div>
 <div id="group-by" class="section level3">
 <h3 class="hasAnchor">
 <a href="#group-by" class="anchor"></a>Group-by</h3>
-<p>Starting from <code>{disk.frame}</code> v0.3.0, there is for support <code>group_by</code> for a limited set of functions. For example:</p>
+<p>Starting from <code>{disk.frame}</code> v0.3.0, there is <code>group_by</code> support for a limited set of functions. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="no">result_from_disk.frame</span> <span class="kw">=</span> <span class="no">iris</span> <span class="kw">%&gt;%</span>
   <span class="no">as.disk.frame</span> <span class="kw">%&gt;%</span>
   <span class="fu">group_by</span>(<span class="no">Species</span>) <span class="kw">%&gt;%</span>
@@ -358,6 +359,15 @@
 <h2 class="hasAnchor">
 <a href="#example-datatable-syntax" class="anchor"></a>Example: data.table syntax</h2>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)
+<span class="co">#&gt; data.table 1.12.8 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'data.table'</span>
+<span class="co">#&gt; The following object is masked from 'package:purrr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     transpose</span>
+<span class="co">#&gt; The following objects are masked from 'package:dplyr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     between, first, last</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span>(
   <span class="no">grp_by_stage1</span> <span class="kw">&lt;-</span>
@@ -391,20 +401,20 @@
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="r"><span class="co"># where is the disk.frame stored</span>
 <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">flights.df</span>, <span class="st">"path"</span>)
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpOg2KJQ\\file39845d601adb.df"</span></pre></div>
+<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpSyWIOI\\file26ac7d293556.df"</span></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="r"><span class="co"># get first few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228</span>
-<span class="co">#&gt;    origin dest air_time distance hour minute           time_hour</span>
-<span class="co">#&gt; 1:    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00</span></pre></div>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin</span>
+<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228    EWR</span>
+<span class="co">#&gt;    dest air_time distance hour minute           time_hour</span>
+<span class="co">#&gt; 1:  IAH      227     1400    5     15 2013-01-01 05:00:00</span></pre></div>
 <div class="sourceCode" id="cb12"><pre class="r"><span class="co"># get last few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(<span class="no">flights.df</span>, <span class="fl">1</span>)
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum</span>
-<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ   3531  N839MQ</span>
-<span class="co">#&gt;    origin dest air_time distance hour minute           time_hour</span>
-<span class="co">#&gt; 1:    LGA  RDU       NA      431    8     40 2013-09-30 08:00:00</span></pre></div>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin</span>
+<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ   3531  N839MQ    LGA</span>
+<span class="co">#&gt;    dest air_time distance hour minute           time_hour</span>
+<span class="co">#&gt; 1:  RDU       NA      431    8     40 2013-09-30 08:00:00</span></pre></div>
 <div class="sourceCode" id="cb13"><pre class="r"><span class="co"># number of rows</span>
 <span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span>(<span class="no">flights.df</span>)
 <span class="co">#&gt; [1] 336776</span></pre></div>
@@ -537,16 +547,14 @@
 <div id="backers" class="section level3">
 <h3 class="hasAnchor">
 <a href="#backers" class="anchor"></a>Backers</h3>
-<p>Thank you to all our backers! <br><span class="math display">$$[Become a
-backer](https://opencollective.com/diskframe#backer)$$</span><br></p>
+<p>Thank you to all our backers!</p>
 <p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
 </div>
 <div id="sponsor-and-back-diskframe" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sponsor-and-back-diskframe" class="anchor"></a>Sponsor and back <code>{disk.frame}</code>
 </h3>
-<p>Support <code>{disk.frame}</code> development by becoming a sponsor. Your logo will show up here with a link to your website. <br><span class="math display">$$[Become a
-sponsor](https://opencollective.com/diskframe#sponsor)$$</span><br></p>
+<p>Support <code>{disk.frame}</code> development by becoming a sponsor. Your logo will show up here with a link to your website.</p>
 <p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
 </div>
 </div>
@@ -560,7 +568,7 @@ sponsor](https://opencollective.com/diskframe#sponsor)$$</span><br></p>
 <a href="#non-financial-ways-to-contribute" class="anchor"></a>Non-financial ways to contribute</h2>
 <p>Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute</p>
 <ul>
-<li>Write a blogpost about your <code>{disk.frame}</code>. I would love to learn more about how <code>{disk.frame}</code> has helped you</li>
+<li>Write a blogpost about your <code>{disk.frame}</code> usage or experience. I would love to learn more about how <code>{disk.frame}</code> has helped you</li>
 <li>Tweet or post on social media (e.g LinkedIn) about <code>{disk.frame}</code> to help promote it</li>
 <li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/xiaodaigh/disk.frame/issues">raising an issue here</a>
 </li>
@@ -573,7 +581,7 @@ sponsor](https://opencollective.com/diskframe#sponsor)$$</span><br></p>
 <div id="related-repos" class="section level2">
 <h2 class="hasAnchor">
 <a href="#related-repos" class="anchor"></a>Related Repos</h2>
-<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
+<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
 </div>
 <div id="download-counts--build-status" class="section level2">
 <h2 class="hasAnchor">
