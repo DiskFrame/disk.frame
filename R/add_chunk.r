@@ -130,7 +130,7 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE, ...) {
     metas_df_summ1[, incompatible_types := {
       coltypes.x %in% c("integer", "double", "Date") & coltypes.y == "character" |
       coltypes.x == "character" & coltypes.y %in% c("integer", "double", "Date") |
-      coltypes.x %in% c("integer", "double") & coltypes.y == "Date" | 
+      coltypes.x == "integer" & coltypes.y == "Date" | 
       coltypes.x == "Date" & coltypes.y %in% c("integer", "double")
     }]
     
