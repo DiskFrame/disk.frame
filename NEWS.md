@@ -1,3 +1,7 @@
+# disk.frame 0.3.7
+* Bugfix - add_chunk with date column not working
+* Minor - added compression and other aprameters to `add_chunk` 
+
 # disk.frame 0.3.6
 * General update to dplyr v1
 * Remove all `_all/if/at` functions for dplyr v1
