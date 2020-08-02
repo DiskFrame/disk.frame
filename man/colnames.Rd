@@ -21,7 +21,8 @@ colnames(x, ...)
 \item{...}{not used}
 }
 \description{
-The returned column names are from the source. So if you have lazy operations then the 
-colnames here does not reflects the results of those operations. To obtain the correct names try
-\code{names(collect(get_chunk(df, 1)))}
+The returned column names are from the source. So if you have lazy operations
+then the \code{colnames} here does not reflects the results of those
+operations. Note: if you have expensive lazy function then this operation
+might take some time.
 }
