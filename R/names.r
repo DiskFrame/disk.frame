@@ -1,8 +1,9 @@
 #' Return the column names of the disk.frame
-#' 
-#' The returned column names are from the source. So if you have lazy operations then the 
-#' colnames here does not reflects the results of those operations. To obtain the correct names try
-#' \code{names(collect(get_chunk(df, 1)))}
+#'
+#' The returned column names are from the source. So if you have lazy operations
+#' then the \code{colnames} here does not reflects the results of those
+#' operations. Note: if you have expensive lazy function then this operation
+#' might take some time.
 #' 
 #' @param x a disk.frame
 #' @param ... not used
@@ -25,10 +26,15 @@ names.disk.frame <- function(x, ...) {
 colnames.disk.frame <- function(x, ...) {
   res = attr(x, "path", exact=TRUE) %>% 
     fs::dir_ls(type="file")
-  if(length(res) == 0) {
-    return(vector("character"))
+  if(is.null(attr(x, "lazyfn"))) {
+    if(length(res) == 0) {
+      return(vector("character"))
+    }
+    return(fst::metadata_fst(res[1])$columnNames)
+  } else {
+    tiny_example_data.frame = get_chunk(x, 1, from=1, to=1)
+    return(colnames(tiny_example_data.frame))
   }
-  fst::metadata_fst(res[1])$columnNames
 }
 
 
