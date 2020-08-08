@@ -83,20 +83,16 @@ tally.disk.frame <- create_chunk_mapper(dplyr::tally)
 #' @rdname dplyr_verbs
 count.disk.frame <- create_chunk_mapper(dplyr::count)
 
-# TODO family is not required is group-by
-# TODO alot of these .disk.frame functions are not generic
-
-
-#' @export
-#' @importFrom dplyr add_count
-#' @rdname dplyr_verbs
-add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
-
-
-#' @export
-#' @importFrom dplyr add_tally
-#' @rdname dplyr_verbs
-add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
+#' #' @export
+#' #' @importFrom dplyr add_count
+#' #' @rdname dplyr_verbs
+#' add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
+#' 
+#' 
+#' #' @export
+#' #' @importFrom dplyr add_tally
+#' #' @rdname dplyr_verbs
+#' add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
 
 
 #' @export
