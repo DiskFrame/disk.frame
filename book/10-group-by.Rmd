@@ -58,22 +58,23 @@ It is important to note that not all functions that can run in `dplyr::summarize
 
 If a function you need/like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues). It is a limitation that function that depend on the order a column can only obtained using estimated methods.
 
-| Function | Exact/Estimate | Notes |
-| -- | -- | -- |
-| `min` | Exact |  |
-| `max` | Exact |  |
-| `mean` | Exact |  |
-| `sum` | Exact |  |
-| `length` | Exact |  |
-| `n` | Exact |  |
-| `n_distinct` | Exact |  |
-| `sd` | Exact |  |
-| `var` | Exact | `var(x)` only `cor, cov` support *planned*  |
-| `any` | Exact |  |
-| `all` | Exact |  |
-| `median` | Estimate |  |
-| `quantile` | Estimate | One quantile only |
-| `IQR` | Estimate |  |
+| Function     | Exact/Estimate | Notes                                      |
+|--------------|----------------|--------------------------------------------|
+| `min`        | Exact          |                                            |
+| `max`        | Exact          |                                            |
+| `mean`       | Exact          |                                            |
+| `sum`        | Exact          |                                            |
+| `length`     | Exact          |                                            |
+| `n`          | Exact          |                                            |
+| `n_distinct` | Exact          |                                            |
+| `sd`         | Exact          |                                            |
+| `var`        | Exact          | `var(x)` only `cor, cov` support *planned* |
+| `any`        | Exact          |                                            |
+| `all`        | Exact          |                                            |
+| `median`     | Estimate       |                                            |
+| `quantile`   | Estimate       | One quantile only                          |
+| `IQR`        | Estimate       |                                            |
+
 
 ### Notes on One-Stage group-by
 

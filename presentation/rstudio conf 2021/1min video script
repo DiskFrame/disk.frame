@@ -1,0 +1,11 @@
+Hi my name is ZedJ and I am a Data Scientist local to Melbourne. I am a keen contributor to open source data science projects, one of which I want to talk about at rstudio:conf 2021. That project is {disk.frame} - a larger-than-RAM data manipulation package.
+
+R needs to load the data in its entirety into RAM. However, RAM is a precious resource and often do run out.
+
+{disk.frame} solves this issue by providing a 100%-R framework to manipulate data on disk. A modern laptop with {disk.frame} can comfortably handle 100GB's of data.
+
+Also, {disk.frame} uses {dplyr} verbs to manipulate data so useRs will find it very easy to pick up.
+
+Finally, because {disk.frame} is 100%-R, you can use any R package with it at no extra cost unlike Spark.
+
+The talk I propose will introduce {disk.frame} to users with the needs to manipulate large amounts of data with minimal setup. They will find {disk.frame} very familiar, as {disk.frame} uses {dplyr} verbs directly;. Some users rely on DBMS (e.g. PostgresSQL), Spark, or SAS to manage their large datasets. They will find lots of benefits in switching to {disk.frame}, which will allow them to keep their workflow in R for as long as possible. Because {disk.frame} can run R functions natively, they will find that {disk.frame} allows them to many R packages directly with {disk.frame}.
