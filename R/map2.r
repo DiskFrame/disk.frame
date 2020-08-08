@@ -26,22 +26,6 @@ cmap2 <- function(.x, .y, .f, ...){
   UseMethod("cmap2")
 }
 
-#' @export
-#' @rdname cmap2
-map2 <- function(.x, .y, .f, ...){
-  UseMethod("map2")
-}
-
-#' @export
-map2.default <- function(.x, .y, .f, ...) {
-  purrr::map2(.x,.y,.f,...)
-}
-
-#' @export
-map2.disk.frame <- function(...) {
-  warning("map2.disk.frame(df, df1, ..) where df is disk.frame is deprecated. Use cmap(df, df1, ...) instead")
-  cmap2.disk.frame(...)
-}
 
 #' @export
 #' @importFrom pryr do_call

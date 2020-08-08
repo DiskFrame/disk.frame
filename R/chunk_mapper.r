@@ -33,57 +33,54 @@
 #' @param as.data.frame force the input chunk of a data.frame; needed for dtplyr
 #' @importFrom rlang enquos quo
 #' @export
-create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = TRUE) {
-  return_func <- function(.data, ...) {
-    if (!is.null(warning_msg)) {
-      warning(warning_msg)
+create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FALSE) {
+  if(as.data.frame) {
+    warning("`as.data.frame` is deprecated in create_chunk_mapper")
+  } 
+  
+  return(function(.data, ...) {
+    if(!is.null(warning_msg)) {
+      print(warning_msg)
     }
     
     
-    quo_dotdotdot = rlang::enquos(...)
+    # you need to use list otherwise the names will be gone
+    sub_dotdotdot = substitute(list(...))
     
-    # this is designed to capture any global stuff
-    vars_and_pkgs = future::getGlobalsAndPackages(quo_dotdotdot)
-    data_for_eval_tidy = force(vars_and_pkgs$globals)
+    code = paste0(deparse(sub_dotdotdot), collapse = "")
+    # code will be in the form of "list(...)"
+    code = substr(code, 6, nchar(code)-1)
     
-    res = cmap(.data, ~{
-      
-      this_env = environment()
-      
-      if(length(data_for_eval_tidy) > 0) {
-        for(i in 1:length(data_for_eval_tidy)) {
-          assign(names(data_for_eval_tidy)[i], data_for_eval_tidy[[i]], pos = this_env)
-        }
+    if (code == "NULL") {
+      globals_and_pkgs = future::getGlobalsAndPackages(str2lang("chunk_fn()"))
+    } else {
+      globals_and_pkgs = future::getGlobalsAndPackages(str2lang(sprintf("chunk_fn(%s)", code)))
+    }
+    
+    
+    global_vars = globals_and_pkgs$globals
+    
+    env = parent.frame()
+    
+    done = identical(env, globalenv())
+    
+    # keep adding global variables
+    
+    while(!done) {
+      tmp_globals_and_pkgs = future::getGlobalsAndPackages(sub_dotdotdot, envir = env)
+      new_global_vars = tmp_globals_and_pkgs$globals
+      for (name in setdiff(names(new_global_vars), names(global_vars))) {
+        global_vars[name] = new_global_vars[[name]]
       }
       
-      lapply(quo_dotdotdot, function(x) {
-        attr(x, ".Environment") = this_env
-      })
-      
-      if(as.data.frame) {
-        if("grouped_df" %in% class(.x)) {
-          code = rlang::quo(chunk_fn(.x, !!!quo_dotdotdot))
-        } else {
-          code = rlang::quo(chunk_fn(as.data.frame(.x), !!!quo_dotdotdot))
-        }
-      } else {
-        code = rlang::quo(chunk_fn(.x, !!!quo_dotdotdot))
-      }
-      
-      # ZJ: we need both approaches. TRUST ME
-      # TODO better NSE at some point need dist
-      tryCatch({
-        return(rlang::eval_tidy(code))
-      }, error = function(e) {
-        as_label_code = rlang::as_label(code)
-        if(as_label_code == "chunk_fn(...)") {
-          stop(glue::glue("disk.frame has detected a syntax error in \n\n`{code}`\n\n. If you believe your syntax is correct, raise an issue at https://github.com/xiaodaigh/disk.frame with a MWE"))
-        } else {
-          # likely to be dealing with data.tables
-          return(eval(parse(text=as_label_code), envir = this_env))
-        }
-      })
-    }, lazy = TRUE)
-  }
-  return_func
+      done = identical(env, globalenv())
+      env = parent.env(env)
+    }
+    
+    globals_and_pkgs$globals = global_vars
+    
+    attr(.data, "recordings") = c(attr(.data, "recordings"), list(globals_and_pkgs))
+    
+    .data
+  })
 }

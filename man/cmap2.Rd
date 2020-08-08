@@ -2,13 +2,10 @@
 % Please edit documentation in R/map2.r, R/map_by_chunk_id.r
 \name{cmap2}
 \alias{cmap2}
-\alias{map2}
 \alias{map_by_chunk_id}
 \title{`cmap2` a function to two disk.frames}
 \usage{
 cmap2(.x, .y, .f, ...)
-
-map2(.x, .y, .f, ...)
 
 map_by_chunk_id(.x, .y, .f, ..., outdir)
 }

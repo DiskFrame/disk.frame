@@ -9,7 +9,6 @@
 #' @import fst 
 #' @importFrom future.apply future_lapply
 #' @importFrom data.table rbindlist 
-#' @importFrom globals findGlobals
 #' @export
 #' @examples 
 #' cars.df = as.disk.frame(cars)
@@ -19,31 +18,30 @@
 #' # clean up
 #' delete(cars.df)
 `[.disk.frame` <- function(df, ..., keep = NULL, rbind = TRUE, use.names = TRUE, fill = FALSE, idcol = NULL) {
-  keep_for_future = keep
-  
-  dotdotdot = substitute(...()) #this is an alist
-  
-  ag = globals::findGlobals(dotdotdot)
-  ag = setdiff(ag, "") # "" can cause issues with future
-  
-  res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
-  #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
-    chunk = get_chunk(df, chunk_id, keep = keep_for_future)
-    data.table::setDT(chunk)
-    expr <- quote(chunk)
-    expr <- c(expr, dotdotdot)
-    res <- do.call(`[`, expr)
-    res
-  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame")
-  )
-  
-  if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
-    rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)
-  } else if(rbind)  {
-    unlist(res)
-  } else {
-    res
-  }
+  # keep_for_future = keep
+  # 
+  # dotdotdot = substitute(...()) #this is an alist
+  # 
+  # ag = globals::findGlobals(dotdotdot)
+  # ag = setdiff(ag, "") # "" can cause issues with future
+  # 
+  # res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
+  #   chunk = get_chunk(df, chunk_id, keep = keep_for_future)
+  #   data.table::setDT(chunk)
+  #   expr <- quote(chunk)
+  #   expr <- c(expr, dotdotdot)
+  #   res <- do.call(`[`, expr)
+  #   res
+  # }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame")
+  # )
+  # 
+  # if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
+  #   rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)
+  # } else if(rbind)  {
+  #   unlist(res)
+  # } else {
+  #   res
+  # }
 }
 
 # Solutions from https://stackoverflow.com/questions/57122960/how-to-use-non-standard-evaluation-nse-to-evaluate-arguments-on-data-table?answertab=active#tab-top

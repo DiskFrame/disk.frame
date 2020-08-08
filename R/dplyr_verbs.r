@@ -23,19 +23,17 @@
 #' 
 #' # clean up cars.df
 #' delete(cars.df)
-select.disk.frame <- function(.data, ...) {
-  quo_dotdotdot = rlang::enquos(...)
-  cmap(.data, ~{
-    code = rlang::quo(dplyr::select(.x, !!!quo_dotdotdot))
-    rlang::eval_tidy(code)
-  }, lazy = TRUE)
-}
+select.disk.frame <- create_chunk_mapper(dplyr::select)
 
-#' Kept for backwards-compatibility to be removed in 0.3
-#' @export
-create_dplyr_mapper = function() {
-  stop("create_dplyr_mapper has been deprecated. Please use create_chunk_mapper instead")
-}
+# comment out code; to be removed when it's no longer needed
+# select.disk.frame <- function(.data, ...) {
+#   quo_dotdotdot = rlang::enquos(...)
+#   cmap(.data, ~{
+#     code = rlang::quo(dplyr::select(.x, !!!quo_dotdotdot))
+#     rlang::eval_tidy(code)
+#   }, lazy = TRUE)
+# }
+
 
 #' @export
 #' @rdname dplyr_verbs
@@ -72,16 +70,16 @@ arrange.disk.frame =create_chunk_mapper(dplyr::arrange, warning_msg="`arrange.di
 chunk_arrange <- create_chunk_mapper(dplyr::arrange)
 
 
-#' @export
-#' @importFrom dplyr tally
-#' @rdname dplyr_verbs
-tally.disk.frame <- create_chunk_mapper(dplyr::tally)
-
-
-#' @export
-#' @importFrom dplyr count
-#' @rdname dplyr_verbs
-count.disk.frame <- create_chunk_mapper(dplyr::count)
+#' #' @export
+#' #' @importFrom dplyr tally
+#' #' @rdname dplyr_verbs
+#' tally.disk.frame <- create_chunk_mapper(dplyr::tally)
+#' 
+#' 
+#' #' @export
+#' #' @importFrom dplyr count
+#' #' @rdname dplyr_verbs
+#' count.disk.frame <- create_chunk_mapper(dplyr::count)
 
 #' #' @export
 #' #' @importFrom dplyr add_count
@@ -107,10 +105,10 @@ chunk_summarize <- create_chunk_mapper(dplyr::summarize)
 chunk_summarise <- create_chunk_mapper(dplyr::summarise)
 
 
-#' @export
-#' @rdname dplyr_verbs
-#' @importFrom dplyr do
-do.disk.frame <- create_chunk_mapper(dplyr::do)
+#' #' @export
+#' #' @rdname dplyr_verbs
+#' #' @importFrom dplyr do
+#' do.disk.frame <- create_chunk_mapper(dplyr::do)
 
 
 #' @export
@@ -160,38 +158,4 @@ chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 #' @rdname dplyr_verbs
 glimpse.disk.frame <- function(.data, ...) {
   glimpse(head(.data, ...), ...)
-}
-
-# Internal methods
-# @param .data the data
-# @param cmd the function to record
-record <- function(.data, cmd){
-  attr(.data,"lazyfn") <- c(attr(.data,"lazyfn"), list(cmd))
-  .data
-}
-
-# Internal methods
-# @param .data the disk.frame
-# @param cmds the list of function to play back
-play <- function(.data, cmds=NULL) {
-  for (cmd in cmds){
-    if (typeof(cmd) == "closure") {
-      .data <- cmd(.data)
-    } else {
-      # create a temporary environment 
-      an_env = new.env(parent = environment())
-      
-      ng = names(cmd$vars_and_pkgs$globals)
-      
-      if(length(ng) > 0) {
-        for(i in 1:length(cmd$vars_and_pkgs$globals)) {
-          g = cmd$vars_and_pkgs$globals[[i]]
-          assign(ng[i], g, pos = an_env)
-        }
-      }
-      
-      .data <- do.call(cmd$func, c(list(.data),cmd$dotdotdot), envir = an_env)
-    }
-  }
-  .data
 }

@@ -11,8 +11,6 @@
 #'   hence parallel = FALSE is a better choice
 #' @param ... not used
 #' @importFrom data.table data.table as.data.table
-#' @importFrom furrr future_map_dfr future_options
-#' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
 #' @return collect return a data.frame/data.table
 #' @examples
@@ -24,18 +22,20 @@
 #' delete(cars.df)
 #' @export
 #' @rdname collect
-collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
-  cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
-  #cids = as.integer(get_chunk_ids(x))
-  if(nchunks(x) > 0) {
-    if(parallel) {
-      furrr::future_map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
-    } else {
-      purrr::map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
-    }
+collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
+  cids = get_chunk_ids(x, full.names = T, strip_extension = F)
+  
+  if (parallel) {
+    list_of_data.table = future.apply::future_lapply(cids, function(cid) {
+      get_chunk(x, cid, full.names = TRUE)
+    })
   } else {
-    data.table()
+    list_of_data.table = lapply(cids, function(cid) {
+      get_chunk(x, cid, full.names = TRUE)
+    })
   }
+  
+  data.table::rbindlist(list_of_data.table)
 }
 
 #' @param simplify Should the result be simplified to array
@@ -51,25 +51,25 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
 #' # clean up
 #' delete(cars.df)
 collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn"))) {
-  cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
-  
-  
-  if(nchunks(x) > 0) {
-    res <- NULL
-    if (parallel) {
-      #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
-      res = future.apply::future_lapply(cids, function(.x) {
-        get_chunk(x, .x, full.names = TRUE)
-      })
-    } else {
-      res = purrr::map(cids, ~get_chunk(x, .x, full.names = TRUE))
-    }
-    if (simplify) {
-      return(simplify2array(res))
-    } else {
-      return(res)
-    }
-  } else {
-    list()
-  }
+  error("do it")
+  # cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
+  # 
+  # 
+  # if(nchunks(x) > 0) {
+  #   res <- NULL
+  #   if (parallel) {
+  #     res = future.apply::future_lapply(cids, function(.x) {
+  #       get_chunk(x, .x, full.names = TRUE)
+  #     })
+  #   } else {
+  #     res = purrr::map(cids, ~get_chunk(x, .x, full.names = TRUE))
+  #   }
+  #   if (simplify) {
+  #     return(simplify2array(res))
+  #   } else {
+  #     return(res)
+  #   }
+  # } else {
+  #   list()
+  # }
 }

@@ -53,69 +53,61 @@ cmap <- function(.x, .f, ...) {
 #' @rdname cmap
 #' @importFrom future getGlobalsAndPackages
 #' @export
-cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()), .progress = TRUE) {
-  .f = purrr::as_mapper(.f)
-  if(lazy) {
-    attr(.x, "lazyfn") = 
-      c(
-        attr(.x, "lazyfn"), 
-        list(
-          list(
-            func = .f, 
-            vars_and_pkgs = vars_and_pkgs, 
-            dotdotdot = list(...)
-          )
+cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, 
+                            keep = NULL, 
+                            chunks = nchunks(.x), 
+                            compress = 50, 
+                            lazy = TRUE, 
+                            overwrite = FALSE, 
+                            .progress = TRUE) {
+  if(typeof(.f) == "language") {
+    if(requireNamespace("purrr")) {
+      .f = purrr::as_mapper(.f)
+    } else {
+      code = paste0(deparse(substitute(.f)), collapse = "")
+      stop(
+        sprintf(
+          "in cmap(.x, %s), it appears you are using {purrr} syntax but do not have {purrr} installed. Try `install.packages('purrr')`",
+          code
         )
       )
-    return(.x)
-  }
-  
-  if(!is.null(outdir)) {
-    overwrite_check(outdir, overwrite)
-  }
-  
-  stopifnot(is_ready(.x))
-  
-  keep1 = attr(.x,"keep", exact=TRUE)
-  
-  if(is.null(keep)) {
-    keep = keep1
-  }
-  
-  path <- attr(.x, "path")
-  files <- list.files(path, full.names = TRUE)
-  files_shortname <- list.files(path)
-  
-  keep_future = keep
-  
-  cid = get_chunk_ids(.x, full.names = TRUE)
-  
-  dotdotdot = list(...)
-  
-  res = future.apply::future_lapply(1:length(files), function(ii, ...) {
-    #res = lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
-    
-    res = .f(ds, ...)
-    
-    #res = do.call(.f, c(ds, dotdotdot))
-    
-    if(!is.null(outdir)) {
-      if(nrow(res) == 0) {
-        warning(glue::glue("The output chunk has 0 row, therefore chunk {ii} NOT written"))
-      } else {
-        fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
-      }
-      return(ii)
-    } else {
-      return(res)
     }
-  }, ...)
+  }
   
-  if(!is.null(outdir)) {
-    return(disk.frame(outdir))
+  if (lazy) {
+    ..f = create_chunk_mapper(.f)
+    return(..f(.x))
   } else {
-    return(res)
+    # not lazy
+    if (is.null(outdir)) {
+      stop("cmap(...) error -- `lazy` = FALSE but `outdir` is not specified") 
+    }
+    
+    overwrite_check(outdir, overwrite)
+    
+    path <- attr(.x, "path")
+    files <- list.files(path, full.names = TRUE)
+    files_shortname <- list.files(path)
+    
+    cids = get_chunk_ids(.x, full.names = T, strip_extension = F)
+    
+    # compute
+    # TODO refactor that into a write_disk.frame()
+    future.apply::future_lapply(1:length(files), function(ii, ...) {
+      ds = get_chunk(.x, cids[ii], full.names = TRUE)
+      
+      res = .f(ds, ...)
+      
+      if(nrow(res) == 0) {
+        warning(sprintf("The output chunk has 0 row, therefore chunk %d NOT written", ii))
+      } else {
+        out_chunk_name = file.path(outdir, files_shortname[ii])
+        fst::write_fst(res, out_chunk_name, compress)
+      }
+      NULL
+    }, ...)
+    
+    return(disk.frame(outdir))
   }
 }
 
