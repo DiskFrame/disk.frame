@@ -2,26 +2,18 @@
 % Please edit documentation in R/compute.r
 \name{compute.disk.frame}
 \alias{compute.disk.frame}
-\title{Compute without writing}
+\title{Force computations. The results are stored in a folder.}
 \usage{
-\method{compute}{disk.frame}(
-  x,
-  name,
-  outdir = tempfile("tmp_df_", fileext = ".df"),
-  overwrite = TRUE,
-  ...
-)
+\method{compute}{disk.frame}(x, name = NULL, outdir = tempfile("tmp_df_", fileext = ".df"), ...)
 }
 \arguments{
 \item{x}{a disk.frame}
 
-\item{name}{Not used. Kept for compatibility with dplyr}
+\item{name}{If not NULL then used as outdir prefix.}
 
 \item{outdir}{the output directory}
 
-\item{overwrite}{whether to overwrite or not}
-
-\item{...}{Not used. Kept for dplyr compatibility}
+\item{...}{Passed to `write_disk.frame`}
 }
 \description{
 Perform the computation; same as calling cmap without .f and lazy = FALSE

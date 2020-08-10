@@ -43,18 +43,13 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
       print(warning_msg)
     }
     
-    
     # you need to use list otherwise the names will be gone
-    sub_dotdotdot = substitute(list(...))
+    code = substitute(chunk_fn(...))
     
-    code = paste0(deparse(sub_dotdotdot), collapse = "")
-    # code will be in the form of "list(...)"
-    code = substr(code, 6, nchar(code)-1)
-    
-    if (code == "NULL") {
-      globals_and_pkgs = future::getGlobalsAndPackages(str2lang("chunk_fn()"))
+    if (deparse(code) == "chunk_fn(NULL)") {
+      globals_and_pkgs = future::getGlobalsAndPackages(expression(chunk_fn()))
     } else {
-      globals_and_pkgs = future::getGlobalsAndPackages(str2lang(sprintf("chunk_fn(%s)", code)))
+      globals_and_pkgs = future::getGlobalsAndPackages(code)
     }
     
     
@@ -67,7 +62,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
     # keep adding global variables
     
     while(!done) {
-      tmp_globals_and_pkgs = future::getGlobalsAndPackages(sub_dotdotdot, envir = env)
+      tmp_globals_and_pkgs = future::getGlobalsAndPackages(code, envir = env)
       new_global_vars = tmp_globals_and_pkgs$globals
       for (name in setdiff(names(new_global_vars), names(global_vars))) {
         global_vars[name] = new_global_vars[[name]]

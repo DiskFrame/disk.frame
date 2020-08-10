@@ -209,8 +209,6 @@ IQR_df.collected_agg.disk.frame <- function(listx, ...) {
 #' @rdname group_by
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
-  
-  
   ca_code = generate_summ_code(...)
   
   if(is.null(names(ca_code))) {
@@ -245,16 +243,16 @@ summarize.grouped_disk.frame = summarise.grouped_disk.frame
 #' reorganizes the chunks by the shard key.
 #' @seealso hard_group_by
 #' @param .data a disk.frame
-#' @param add from dplyr
+#' @param .add from dplyr
 #' @param .drop from dplyr
 #' @param ... same as the dplyr::group_by
 #' @importFrom dplyr group_by_drop_default
 #' @export
 #' @rdname group_by
 # learning from https://docs.dask.org/en/latest/dataframe-groupby.html
-group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
+group_by.disk.frame <- function(.data, ..., .add = FALSE, .drop = stop(".drop not yet supported")) {
   class(.data) <- c("grouped_disk.frame", "disk.frame")
-  attr(.data, "group_by_cols") = substitute(list(...))[-1]
+  attr(.data, "group_by_cols") = substitute(list(...))
   .data
 }
 
@@ -262,6 +260,8 @@ group_by.disk.frame <- function(.data, ..., add = FALSE, .drop = dplyr::group_by
 #' @importFrom dplyr summarize
 #' @rdname group_by
 summarize.disk.frame <- function(.data, ...) {
+  
+  
   ca_code = generate_summ_code(...)
   
   if(is.null(names(ca_code))) {
@@ -280,14 +280,28 @@ summarize.disk.frame <- function(.data, ...) {
     stop("something's wrong")
   } 
 }
-
-#' Helper function to generate summarisation code
+n_df.chunk_agg.disk.frame
+#' Helper function to generate summarization code
+#' It basically takes something like summarize(tot = sum(1)) and turns it into 
+#' chunk_summarize(res1 = sum_df.chunk_agg.disk.frame(1)) %>% collect
+#' summarize(tot = sum_df.collected_agg.disk.frame(1))
 #' @importFrom data.table setDT setkey
 #' @importFrom utils methods
 #' @noRd
 generate_summ_code <- function(...) {
-  # expand the code
-  code_to_expand = glue::glue("quo(summarise({rlang::as_label(substitute(...))}))")
+  browser()
+  code1 = substitute(chunk_summarize(...))
+  code2 = glue::glue("substitute({deparse(code1)}, list(sum = quote(sum_df.chunk_agg.disk.frame)))")
+  chunk_agg_code = paste0(deparse(eval(parse(text=code2))), collapse="")
+  
+  code1 = substitute(summarize(...))
+  code2 = glue::glue("substitute({deparse(code1)}, list(sum = quote(sum_df.collected_agg.disk.frame)))")
+  collected_agg_code = paste0(deparse(eval(parse(text=code2))), collapse="")
+  
+  code = substitute(list(...))
+  
+  getParseData(parse(text = deparse(code), keep.source = TRUE), includeText = TRUE)
+  
   
   summ_code_quosure = eval(parse(text = code_to_expand))
   #print(summ_code_quosure)

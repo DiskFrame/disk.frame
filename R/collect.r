@@ -22,19 +22,8 @@
 #' delete(cars.df)
 #' @export
 #' @rdname collect
-collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
-  cids = get_chunk_ids(x, full.names = T, strip_extension = F)
-  
-  if (parallel) {
-    list_of_data.table = future.apply::future_lapply(cids, function(cid) {
-      get_chunk(x, cid, full.names = TRUE)
-    })
-  } else {
-    list_of_data.table = lapply(cids, function(cid) {
-      get_chunk(x, cid, full.names = TRUE)
-    })
-  }
-  
+collect.disk.frame <- function(x, ...) {
+  list_of_data.table = collect_list(x, ...)
   data.table::rbindlist(list_of_data.table)
 }
 
@@ -50,26 +39,28 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))
 #' 
 #' # clean up
 #' delete(cars.df)
-collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn"))) {
-  error("do it")
-  # cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
-  # 
-  # 
-  # if(nchunks(x) > 0) {
-  #   res <- NULL
-  #   if (parallel) {
-  #     res = future.apply::future_lapply(cids, function(.x) {
-  #       get_chunk(x, .x, full.names = TRUE)
-  #     })
-  #   } else {
-  #     res = purrr::map(cids, ~get_chunk(x, .x, full.names = TRUE))
-  #   }
-  #   if (simplify) {
-  #     return(simplify2array(res))
-  #   } else {
-  #     return(res)
-  #   }
-  # } else {
-  #   list()
-  # }
+collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"recordings")), ...) {
+  # get the chunk ids
+  cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
+  
+  if(length(cids) > 0) {
+    list_of_results = NULL
+    if (parallel) {
+      list_of_results = future.apply::future_lapply(cids, function(cid) {
+        get_chunk(x, cid, full.names = TRUE)
+      })
+    } else {
+      list_of_results = lapply(cids, function(cid) {
+        get_chunk(x, cid, full.names = TRUE)
+      })
+    }
+    
+    if (simplify) {
+      return(simplify2array(list_of_results))
+    } else {
+      return(list_of_results)
+    }
+  } else {
+    list()
+  }
 }

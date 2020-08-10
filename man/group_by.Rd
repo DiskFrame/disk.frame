@@ -12,7 +12,7 @@
 
 \method{summarize}{grouped_disk.frame}(.data, ...)
 
-\method{group_by}{disk.frame}(.data, ..., add = FALSE, .drop = dplyr::group_by_drop_default(.data))
+\method{group_by}{disk.frame}(.data, ..., .add = FALSE, .drop = stop(".drop not yet supported"))
 
 \method{summarize}{disk.frame}(.data, ...)
 
@@ -23,7 +23,7 @@
 
 \item{...}{same as the dplyr::group_by}
 
-\item{add}{from dplyr}
+\item{.add}{from dplyr}
 
 \item{.drop}{from dplyr}
 }

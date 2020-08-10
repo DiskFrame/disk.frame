@@ -24,7 +24,7 @@
 #' delete(cars.df)
 #' @export
 #' @rdname collect
-collect.summarized_disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
+collect.summarized_disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
   code_to_run = glue::glue("x %>% {attr(x, 'summarize_code') %>% as.character}")
   class(x) <- "disk.frame"
   eval(parse(text = code_to_run))

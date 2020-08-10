@@ -2,20 +2,11 @@
 #' @param .x a disk.frame
 #' @param .f a function to apply to each of the chunks
 #' @param outdir the output directory
-#' @param keep the columns to keep from the input
-#' @param chunks The number of chunks to output
 #' @param lazy if TRUE then do this lazily
-#' @param compress 0-100 fst compression ratio
-#' @param overwrite if TRUE removes any existing chunks in the data
 #' @param use.names for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param fill for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param idcol for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
-#' @param vars_and_pkgs variables and packages to send to a background session. This is typically automatically detected
-#' @param .progress A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}
-#' @param ... for compatibility with `purrr::map`
-#' @import fst
-#' @importFrom purrr as_mapper map
-#' @importFrom future.apply future_lapply
+#' @param ... Passed to `collect` and `write_disk.frame`
 #' @export
 #' @examples
 #' cars.df = as.disk.frame(cars)
@@ -54,60 +45,19 @@ cmap <- function(.x, .f, ...) {
 #' @importFrom future getGlobalsAndPackages
 #' @export
 cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, 
-                            keep = NULL, 
-                            chunks = nchunks(.x), 
-                            compress = 50, 
                             lazy = TRUE, 
-                            overwrite = FALSE, 
-                            .progress = TRUE) {
-  if(typeof(.f) == "language") {
-    if(requireNamespace("purrr")) {
-      .f = purrr::as_mapper(.f)
-    } else {
-      code = paste0(deparse(substitute(.f)), collapse = "")
-      stop(
-        sprintf(
-          "in cmap(.x, %s), it appears you are using {purrr} syntax but do not have {purrr} installed. Try `install.packages('purrr')`",
-          code
-        )
-      )
-    }
-  }
+                            overwrite = FALSE) {
+  ..f = create_chunk_mapper(purrr_as_mapper(.f))
   
   if (lazy) {
-    ..f = create_chunk_mapper(.f)
-    return(..f(.x))
-  } else {
-    # not lazy
-    if (is.null(outdir)) {
-      stop("cmap(...) error -- `lazy` = FALSE but `outdir` is not specified") 
+    if (!is.null(outdir)) {
+      stop("In `cmap()`, `lazy` is `TRUE` but `outdir` is not `NULL`. This is not allowed.")
     }
-    
-    overwrite_check(outdir, overwrite)
-    
-    path <- attr(.x, "path")
-    files <- list.files(path, full.names = TRUE)
-    files_shortname <- list.files(path)
-    
-    cids = get_chunk_ids(.x, full.names = T, strip_extension = F)
-    
-    # compute
-    # TODO refactor that into a write_disk.frame()
-    future.apply::future_lapply(1:length(files), function(ii, ...) {
-      ds = get_chunk(.x, cids[ii], full.names = TRUE)
-      
-      res = .f(ds, ...)
-      
-      if(nrow(res) == 0) {
-        warning(sprintf("The output chunk has 0 row, therefore chunk %d NOT written", ii))
-      } else {
-        out_chunk_name = file.path(outdir, files_shortname[ii])
-        fst::write_fst(res, out_chunk_name, compress)
-      }
-      NULL
-    }, ...)
-    
-    return(disk.frame(outdir))
+    return(..f(.x))
+  } else if(is.null(outdir)) {
+    return(collect_list(..f(.x), ...))
+  } else {
+    return(write_disk.frame(outdir, ..f(.x), ...))
   }
 }
 
@@ -140,12 +90,12 @@ cimap <- function(.x, .f, ...) {
 #' @export
 #' @rdname cmap
 cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, ...) {
-  .f = purrr::as_mapper(.f)
+  .f = purrr_as_mapper(.f)
   
   # TODO support lazy for cimap
   if(lazy) {
     stop("cimap.disk.frame: lazy = TRUE is not supported at this stage")
-    attr(.x, "lazyfn") = c(attr(.x, "lazyfn"), .f)
+    attr(.x, "recordings") = c(attr(.x, "recordings"), .f)
     return(.x)
   }
   
@@ -227,7 +177,6 @@ delayed.disk.frame <- function(.x, .f, ...) {
   
 #' @export
 #' @rdname cmap
-chunk_lapply <- function (...) {
-  warning("chunk_lapply is deprecated in favour of cmap.disk.frame")
+clapply <- function (...) {
   cmap.disk.frame(...)
 }

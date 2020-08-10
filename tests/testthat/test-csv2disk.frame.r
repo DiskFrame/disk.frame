@@ -13,8 +13,16 @@ test_that("csv2disk.frame works with no shard", {
     file.path(tempdir(), "tmp_pls_delete_csv2df.df"), 
     overwrite=TRUE, 
     nchunks=max(2, recommend_nchunks(file.size(file.path(tempdir(), "tmp_pls_delete_csv2df.csv")))))
-  dff1 = dff[,sum(v1), id1]
-  dff2 = dff1[,sum(V1), id1]
+  
+  dff1 = dff %>% 
+    group_by(id1) %>% 
+    summarize(sum(V1)) %>% 
+    collect
+  
+  dff2 = dff1 %>% 
+    group_by(id1) %>% 
+    summarize(sum(V1))
+  
   expect_false(nrow(dff1) == nrow(dff2))
   expect_equal(nrow(dff), 1e3+11)
   expect_equal(ncol(dff), 10)

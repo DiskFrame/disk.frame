@@ -12,23 +12,12 @@
 \alias{lazy}
 \alias{lazy.disk.frame}
 \alias{delayed}
-\alias{chunk_lapply}
+\alias{clapply}
 \title{Apply the same function to all chunks}
 \usage{
 cmap(.x, .f, ...)
 
-\method{cmap}{disk.frame}(
-  .x,
-  .f,
-  ...,
-  outdir = NULL,
-  keep = NULL,
-  chunks = nchunks(.x),
-  compress = 50,
-  lazy = TRUE,
-  overwrite = FALSE,
-  .progress = TRUE
-)
+\method{cmap}{disk.frame}(.x, .f, ..., outdir = NULL, lazy = TRUE, overwrite = FALSE)
 
 cmap_dfr(.x, .f, ..., .id = NULL)
 
@@ -66,36 +55,24 @@ lazy(.x, .f, ...)
 
 delayed(.x, .f, ...)
 
-chunk_lapply(...)
+clapply(...)
 }
 \arguments{
 \item{.x}{a disk.frame}
 
 \item{.f}{a function to apply to each of the chunks}
 
-\item{...}{for compatibility with `purrr::map`}
+\item{...}{Passed to `collect` and `write_disk.frame`}
 
 \item{outdir}{the output directory}
 
-\item{keep}{the columns to keep from the input}
-
-\item{chunks}{The number of chunks to output}
-
-\item{compress}{0-100 fst compression ratio}
-
 \item{lazy}{if TRUE then do this lazily}
-
-\item{overwrite}{if TRUE removes any existing chunks in the data}
-
-\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
 
 \item{use.names}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 
 \item{fill}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 
 \item{idcol}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
-
-\item{vars_and_pkgs}{variables and packages to send to a background session. This is typically automatically detected}
 }
 \description{
 Apply the same function to all chunks

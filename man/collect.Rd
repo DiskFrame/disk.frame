@@ -6,16 +6,23 @@
 \alias{collect.summarized_disk.frame}
 \title{Bring the disk.frame into R}
 \usage{
-\method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x, "recordings")))
+\method{collect}{disk.frame}(x, ...)
 
-collect_list(x, simplify = FALSE, parallel = !is.null(attr(x, "lazyfn")))
+collect_list(
+  x,
+  simplify = FALSE,
+  parallel = !is.null(attr(x, "recordings")),
+  ...
+)
 
-\method{collect}{summarized_disk.frame}(x, ..., parallel = !is.null(attr(x, "lazyfn")))
+\method{collect}{summarized_disk.frame}(x, ..., parallel = !is.null(attr(x, "recordings")))
 }
 \arguments{
 \item{x}{a disk.frame}
 
 \item{...}{not used}
+
+\item{simplify}{Should the result be simplified to array}
 
 \item{parallel}{if TRUE the collection is performed in parallel. By default
 if there are delayed/lazy steps then it will be parallel, otherwise it will
@@ -23,8 +30,6 @@ not be in parallel. This is because parallel requires transferring data
 from background R session to the current R session and if there is no
 computation then it's better to avoid transferring data between session,
 hence parallel = FALSE is a better choice}
-
-\item{simplify}{Should the result be simplified to array}
 }
 \value{
 collect return a data.frame/data.table

@@ -26,7 +26,7 @@ names.disk.frame <- function(x, ...) {
 colnames.disk.frame <- function(x, ...) {
   res = attr(x, "path", exact=TRUE) %>% 
     fs::dir_ls(type="file")
-  if(is.null(attr(x, "lazyfn"))) {
+  if(is.null(attr(x, "recordings"))) {
     if(length(res) == 0) {
       return(vector("character"))
     }
