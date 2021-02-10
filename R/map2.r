@@ -69,9 +69,8 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
     ddd = list(...)
     # apply the functions
     
-    #future.apply::future_mapply(function(xid, yid, outid) {
+    future.apply::future_mapply(function(xid, yid, outid) {
     #mapply(function(xid, yid, outid) {
-    furrr::future_pmap(list(xyc$xid, xyc$yid, xyc$cid), function(xid, yid, outid) {
       xch = disk.frame::get_chunk(.x, xid, full.names = TRUE)
       ych = disk.frame::get_chunk(.y, yid, full.names = TRUE)
       xych = .f(xch, ych)
@@ -82,8 +81,8 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
       }
       NULL
     }
-    #,xyc$xid, xyc$yid, xyc$cid # together with mapply
-    , .progress = .progress
+    ,xyc$xid, xyc$yid, xyc$cid # together with mapply
+    , future.seed=NULL
     )
     
     return(disk.frame(outdir))

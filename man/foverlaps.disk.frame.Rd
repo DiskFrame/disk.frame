@@ -45,11 +45,10 @@ library(data.table)
 ## simple example:
 x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
 y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))
-byxy = c("val1", "start", "end")
+byxy = c("start", "end")
 xy.df = foverlaps.disk.frame(
-  x, y, by.x = byxy, by.y = byxy, 
+   x, y, by.x = byxy, by.y = byxy,
   merge_by_chunk_id = TRUE, overwrite = TRUE)
-
 # clean up
 delete(x)
 delete(y)

@@ -54,7 +54,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
     
     #csv_to_disk.frame(, outdfpath, overwrite = overwrite, ...)
     cl(ok)
-  })
+  }, future.seed=TRUE)
 
   dfs  
 }

@@ -23,8 +23,13 @@
   
   dotdotdot = substitute(...()) #this is an alist
   
-  ag = globals::findGlobals(dotdotdot)
-  ag = setdiff(ag, "") # "" can cause issues with future
+  # sometimes the arguments could be empty
+  # in a recent version of globals that would cause a fail
+  # to avoid the fail remove them from the test
+  dotdotdot_for_find_global = dotdotdot[!sapply(sapply(dotdotdot, as.character), function(x) all(unlist(x) == ""))]
+  
+  ag = globals::findGlobals(dotdotdot_for_find_global)
+  #ag = setdiff(ag, "") # "" can cause issues with future # this line no longer needed
   
   res = future.apply::future_lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
   #lapply(get_chunk_ids(df, strip_extension = FALSE), function(chunk_id) {
@@ -34,7 +39,8 @@
     expr <- c(expr, dotdotdot)
     res <- do.call(`[`, expr)
     res
-  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame")
+  }, future.globals = c("df", "keep_for_future", "dotdotdot", ag), future.packages = c("data.table","disk.frame"),
+  future.seed=TRUE
   )
   
   if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {

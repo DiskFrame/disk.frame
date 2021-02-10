@@ -31,12 +31,6 @@ select.disk.frame <- function(.data, ...) {
   }, lazy = TRUE)
 }
 
-#' Kept for backwards-compatibility to be removed in 0.3
-#' @export
-create_dplyr_mapper = function() {
-  stop("create_dplyr_mapper has been deprecated. Please use create_chunk_mapper instead")
-}
-
 #' @export
 #' @rdname dplyr_verbs
 rename.disk.frame <- create_chunk_mapper(dplyr::rename)
@@ -71,17 +65,6 @@ arrange.disk.frame =create_chunk_mapper(dplyr::arrange, warning_msg="`arrange.di
 #' @rdname dplyr_verbs
 chunk_arrange <- create_chunk_mapper(dplyr::arrange)
 
-
-#' @export
-#' @importFrom dplyr tally
-#' @rdname dplyr_verbs
-tally.disk.frame <- create_chunk_mapper(dplyr::tally)
-
-
-#' @export
-#' @importFrom dplyr count
-#' @rdname dplyr_verbs
-count.disk.frame <- create_chunk_mapper(dplyr::count)
 
 # TODO family is not required is group-by
 # TODO alot of these .disk.frame functions are not generic

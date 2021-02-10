@@ -21,23 +21,30 @@
 #' ## simple example:
 #' x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
 #' y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))
-#' byxy = c("val1", "start", "end")
+#' byxy = c("start", "end")
 #' xy.df = foverlaps.disk.frame(
-#'   x, y, by.x = byxy, by.y = byxy, 
+#'    x, y, by.x = byxy, by.y = byxy,
 #'   merge_by_chunk_id = TRUE, overwrite = TRUE)
-#' 
 #' # clean up
 #' delete(x)
 #' delete(y)
 #' delete(xy.df)
-foverlaps.disk.frame <- function(df1, df2, by.x = if (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else shardkey(df2)$shardkey, by.y = shardkey(df2)$shardkey, ...,outdir = tempfile("df_foverlaps_tmp", fileext = ".df"), merge_by_chunk_id = FALSE, compress=50, overwrite = TRUE) {
+foverlaps.disk.frame <- function(
+                          df1, 
+                          df2, 
+                          by.x = if (identical(shardkey(df1)$shardkey, "")) shardkey(df1)$shardkey else shardkey(df2)$shardkey, 
+                          by.y = shardkey(df2)$shardkey, 
+                          ..., 
+                          outdir = tempfile("df_foverlaps_tmp", fileext = ".df"), 
+                          merge_by_chunk_id = FALSE, 
+                          compress=50, overwrite = TRUE) {
 
   stopifnot("disk.frame" %in% class(df1))
   
   overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(df2)) {
-    cmap.disk.frame(df1, ~foverlaps(.x, df2, ...), ..., lazy = FALSE, compress = compress, overwrite = overwrite)
+    cmap.disk.frame(df1, ~foverlaps(.x, df2, by.x=by.x, by.y= by.y, ...), ..., lazy = FALSE, compress = compress, overwrite = overwrite)
   } else if (merge_by_chunk_id | (identical(shardkey(df1), shardkey(df2)))) {
     # if the shardkeys are the same then only need to match by segment id
     # as account with the same shardkey must end up in the same segment
@@ -60,8 +67,10 @@ foverlaps.disk.frame <- function(df1, df2, by.x = if (identical(shardkey(df1)$sh
     
     dotdotdot = list(...)
     
-    furrr::future_map(1:nrow(df3), function(row) {
-    #future.apply::future_lapply(1:nrow(df3), function(row) {
+    dotdotdot$by.x = by.x
+    dotdotdot$by.y = by.y
+  
+    future.apply::future_lapply(1:nrow(df3), function(row) {
     #lapply(1:nrow(df3), function(row) {
       chunk_id = df3[row, chunk_id]
       
@@ -70,18 +79,18 @@ foverlaps.disk.frame <- function(df1, df2, by.x = if (identical(shardkey(df1)$sh
       
       setDT(data1)
       setDT(data2)
-      
-      setkeyv(data2, by.y[(length(by.y)-2+1):length(by.y)])
-      
+      setkeyv(data2, by.y)
+    
       dotdotdot$x = data1
       dotdotdot$y = data2
+      
       data3 = pryr::do_call(foverlaps, dotdotdot)
       rm(data1); rm(data2); gc()
       outdir
       fst::write_fst(data3, glue::glue("{outdir}/{chunk_id}"), compress = compress)
       rm(data3); gc()
       NULL
-    })
+    }, future.seed=TRUE)
     return(disk.frame(outdir))
   } else {
     stop("foverlaps.disk.frame: only merge_by_chunk_id = TRUE is implemented")
