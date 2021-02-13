@@ -273,13 +273,13 @@ The work priorities at this stage are
 | Title                                                        | Language | Author          | Date       | Description                                                  |
 | ------------------------------------------------------------ | -------- | --------------- | ---------- | ------------------------------------------------------------ |
 | [25 days of disk.frame](https://twitter.com/evalparse/status/1200963268270886912) | English  | ZJ              | 2019-12-01 | 25 tweets about `{disk.frame}`                               |
-| https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining | English  | Knut Jägersberg | 2019-11-11 | Great answer on using disk.frame                             |
+| https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining | English  | Knut Jägersberg | 2019-11-11 | Great answer on using disk.frame                             |
 | [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/) | English  | Bruno Rodriguez | 2019-09-03 | It's about loading a 30G file into `{disk.frame}`            |
 | [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/) | English  | Jacky Poon      | 2019-09-03 | `{disk.frame}` was number 3                                  |
 | [useR! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4) | English  | Dai ZJ          | 2019-08-03 |                                                              |
 | [useR! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY) | English  | Dai ZJ          | 2019-08-03 |                                                              |
 | [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | English  | Bruno Rodriguez | 2019-10-06 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
-| [Emma goes to useR! 2019](https://emmavestesson.netlify.com/2019/07/user2019/) | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post           |
+| [Emma goes to useR! 2019](https://emmavestesson.netlify.app/2019/07/user2019/) | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post           |
 | [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567) | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                          |
 
 
