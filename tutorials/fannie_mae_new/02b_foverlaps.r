@@ -1,5 +1,5 @@
 # 2_exploratory.r
-source("inst/fannie_mae/0_setup.r")
+source("tutorials/fannie_mae/00_setup.r")
 
 fmdf = disk.frame(file.path(outpath, "fm.df"))
 tmp2 = disk.frame(file.path(outpath, "defaults.df"))

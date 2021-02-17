@@ -9,7 +9,7 @@ setup({
 test_that("data.table .N", {
   library(data.table)
   df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
-  expect_warning(res <- sum(unlist(df[,.N])))
+  res <- sum(unlist(df[,.N]))
   expect_equal(res , 1e5+11)
 })
 
@@ -18,8 +18,8 @@ test_that("data.table .N+y V1", {
   if(interactive()) {
     y = 2
     
-    expect_warning({y = 3; a <- df[,.(n_plus_y = .N + y), v1]})
-    expect_warning(b <- df[,.N, v1])
+    {y = 3; a <- df[,.(n_plus_y = .N + y), v1]}
+    b <- df[,.N, v1]
     
     expect_equal(a$n_plus_y, b$N + y)
   } else {
@@ -31,7 +31,7 @@ test_that("data.table .N+y V1", {
 test_that("data.table do not return a data.table", {
   library(data.table)
   df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
-  expect_warning(res <- df[,.(.N), rbind=FALSE])
+  res <- df[,.(.N), rbind=FALSE]
   expect_equal(typeof(res), "list")
   expect_equal(length(res), 8)
 })
