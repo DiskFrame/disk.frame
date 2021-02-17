@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.3.7
-Date: 2020-07-07
+Version: 0.4.0
+Date: 2021-02-11
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))
@@ -18,7 +18,6 @@ Imports:
     Rcpp (>= 0.12.13),
     glue (>= 1.3.1),
     rlang (>= 0.4.0),
-    furrr (>= 0.1.0),
     future.apply (>= 1.3.0),
     fs (>= 1.3.1),
     jsonlite (>= 1.6),
@@ -30,6 +29,7 @@ Imports:
     data.table (>= 1.12.2),
     crayon (>= 1.3.4),
     bigreadr (>= 0.2.0),
+    furrr (>= 0.2.2),
     bit64,
     benchmarkme
 Depends:

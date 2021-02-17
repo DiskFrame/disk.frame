@@ -11,7 +11,6 @@
 #'   hence parallel = FALSE is a better choice
 #' @param ... not used
 #' @importFrom data.table data.table as.data.table
-#' @importFrom furrr future_map_dfr future_options
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
 #' @return collect return a data.frame/data.table
@@ -29,7 +28,10 @@ collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
   #cids = as.integer(get_chunk_ids(x))
   if(nchunks(x) > 0) {
     if(parallel) {
-      furrr::future_map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
+      future.apply::future_lapply(cids, function(.x) {
+                              get_chunk(x, .x, full.names = TRUE)
+      }, future.seed = TRUE) %>% 
+        rbindlist()
     } else {
       purrr::map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
     }
@@ -60,7 +62,7 @@ collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"lazyfn
       #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
       res = future.apply::future_lapply(cids, function(.x) {
         get_chunk(x, .x, full.names = TRUE)
-      })
+      }, future.seed=TRUE)
     } else {
       res = purrr::map(cids, ~get_chunk(x, .x, full.names = TRUE))
     }

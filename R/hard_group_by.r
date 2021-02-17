@@ -122,7 +122,6 @@ hard_group_by.disk.frame <- function(
     desc_vars=NULL, 
     sort_split_sample_size=100
   ) {
-  
   overwrite_check(outdir, overwrite)
   
   ff = list.files(attr(df, "path"))

@@ -11,7 +11,6 @@
 #'   hence parallel = FALSE is a better choice
 #' @param ... not used
 #' @importFrom data.table data.table as.data.table
-#' @importFrom furrr future_map_dfr future_options
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
 #' @return collect return a data.frame/data.table

@@ -1,3 +1,7 @@
+# disk.frame 0.4.0
+* Removed `count` and `tally`
+* Fixed package compatibility
+
 # disk.frame 0.3.7
 * Bugfix - add_chunk with date column not working
 * Minor - added compression and other aprameters to `add_chunk` 

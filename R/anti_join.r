@@ -24,7 +24,6 @@
 #' delete(df2.df)
 #' delete(anti_joined.df)
 anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_anti_join"), merge_by_chunk_id = FALSE, overwrite = TRUE, .progress = FALSE) {
-
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)

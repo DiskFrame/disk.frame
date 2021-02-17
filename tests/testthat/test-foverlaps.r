@@ -5,23 +5,18 @@ setup({
 })
 
 # TODO currently it's not possible to do 
-# test_that("test foverlap with data.frame", {
-#   x = data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10)
-#   y = data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3)
-#   setkey(y, start, end)
-#   
-#   dx = as.disk.frame(x, "tmp_fo.df", overwrite = T)
-#   
-#   xy = foverlaps(x,y, type="any", which = T)
-#   plan(transparent)
-#   collect(
-#     foverlaps.disk.frame(
-#       dx, 
-#       y, 
-#       type="any", 
-#       which=TRUE, 
-#       outdir="tmp_fo_out1.df")) ## return overlap indices
-# })
+test_that("test foverlap with data.frame", {
+  x = as.disk.frame(data.table(start=c(5,31,22,16), end=c(8,50,25,18), val2 = 7:10))
+  y = as.disk.frame(data.table(start=c(10, 20, 30), end=c(15, 35, 45), val1 = 1:3))
+  byxy = c("start", "end")
+  xy.df = foverlaps.disk.frame(
+    x, y, by.x = byxy, by.y = byxy,
+    merge_by_chunk_id = TRUE, overwrite = TRUE)
+  
+  collect(xy.df)
+  
+  testthat::expect_equal(nrow(xy.df), 3)
+})
   
 
 # TODO this is also not a good test case

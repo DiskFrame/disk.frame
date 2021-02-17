@@ -21,7 +21,7 @@ test_that("glm", {
     broom::tidy(m)
   }
   
-  expect_warning({m <- dfglm(dist~speed, cars.df, glm_backend = "speedglm")})
+  m <- dfglm(dist~speed, cars.df, glm_backend = "speedglm")
   summary(m)
 })
 

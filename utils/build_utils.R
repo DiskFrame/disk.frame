@@ -75,6 +75,7 @@ df_test <- function() {
   # rename tests
   if(fs::dir_exists("tests_manual")) {
     fs::dir_copy("tests_manual", "tests")
+    Sys.sleep(3) # allow enough time for it to happen
     fs::dir_delete("tests_manual")
   }
   
@@ -82,6 +83,7 @@ df_test <- function() {
   
   if(fs::dir_exists("tests")) {
     fs::dir_copy("tests", "tests_manual")
+    Sys.sleep(8) # allow enough time for it to happen
     fs::dir_delete("tests")
   }
 }
