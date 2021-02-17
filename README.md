@@ -8,13 +8,13 @@
 How do I manipulate tabular data that doesn’t fit into Random Access
 Memory (RAM)?
 
-Use `{disk.frame}`\!
+Use `{disk.frame}`!
 
 In a nutshell, `{disk.frame}` makes use of two simple ideas
 
-1)  split up a larger-than-RAM dataset into chunks and store each chunk
+1.  split up a larger-than-RAM dataset into chunks and store each chunk
     in a separate file inside a folder and
-2)  provide a convenient API to manipulate these chunks
+2.  provide a convenient API to manipulate these chunks
 
 `{disk.frame}` performs a similar role to distributed systems such as
 Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for *medium data*
@@ -48,28 +48,28 @@ install.packages("disk.frame", repo="https://cran.rstudio.com")
 
 Please see these vignettes and articles about `{disk.frame}`
 
-  - [Quick start:
+-   [Quick start:
     `{disk.frame}`](https://diskframe.com/articles/intro-disk-frame.html)
     which replicates the `sparklyr` vignette for manipulating the
     `nycflights13` flights data.
-  - [Ingesting data into
+-   [Ingesting data into
     `{disk.frame}`](https://diskframe.com/articles/ingesting-data.html)
     which lists some commons way of creating disk.frames
-  - [`{disk.frame}` can be more
-    epic\!](https://diskframe.com/articles/more-epic.html) shows some
+-   [`{disk.frame}` can be more
+    epic!](https://diskframe.com/articles/more-epic.html) shows some
     ways of loading large CSVs and the importance of `srckeep`
-  - [Group-by](https://diskframe.com/articles/group-by.html) the various
+-   [Group-by](https://diskframe.com/articles/group-by.html) the various
     types of group-bys
-  - [Custom one-stage group-by
+-   [Custom one-stage group-by
     functions](https://diskframe.com/articles/custom-group-by.html) how
     to define custom one-stage group-by functions
-  - [Fitting GLMs (including logistic
+-   [Fitting GLMs (including logistic
     regression)](https://diskframe.com/articles/glm.html) introduces the
     `dfglm` function for fitting generalized linear models
-  - [Using data.table syntax with
+-   [Using data.table syntax with
     disk.frame](https://diskframe.com/articles/data-table-syntax.html)
-  - [disk.frame concepts](https://diskframe.com/articles/concepts.html)
-  - [Benchmark 1: disk.frame vs Dask vs
+-   [disk.frame concepts](https://diskframe.com/articles/concepts.html)
+-   [Benchmark 1: disk.frame vs Dask vs
     JuliaDB](https://diskframe.com/articles/vs-dask-juliadb.html)
 
 ## Common questions
@@ -256,7 +256,7 @@ limitation that function that depend on the order a column can only be
 obtained using estimated methods.
 
 | Function     | Exact/Estimate | Notes                                      |
-| ------------ | -------------- | ------------------------------------------ |
+|--------------|----------------|--------------------------------------------|
 | `min`        | Exact          |                                            |
 | `max`        | Exact          |                                            |
 | `mean`       | Exact          |                                            |
@@ -324,7 +324,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpsnJlFJ\\file3d3ce978e3.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpMpwOj2\\file4bb025d75c63.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -387,16 +387,16 @@ The work priorities at this stage are
 ## Blogs and other resources
 
 | Title                                                                                                                                 | Language | Author          | Date       | Description                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+|---------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------|------------|----------------------------------------------------------------------------------------------------|
 | [25 days of disk.frame](https://twitter.com/evalparse/status/1200963268270886912)                                                     | English  | ZJ              | 2019-12-01 | 25 tweets about `{disk.frame}`                                                                     |
-| <https://www.researchgate.net/post/What_is_the_Maximum_size_of_data_that_is_supported_by_R-datamining>                                | English  | Knut Jägersberg | 2019-11-11 | Great answer on using disk.frame                                                                   |
+| <https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining>                                | English  | Knut Jägersberg | 2019-11-11 | Great answer on using disk.frame                                                                   |
 | [`{disk.frame}` is epic](https://www.brodrigues.co/blog/2019-09-03-disk_frame/)                                                       | English  | Bruno Rodriguez | 2019-09-03 | It’s about loading a 30G file into `{disk.frame}`                                                  |
 | [My top 10 R packages for data analytics](https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/)          | English  | Jacky Poon      | 2019-09-03 | `{disk.frame}` was number 3                                                                        |
-| [useR\! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                         | English  | Dai ZJ          | 2019-08-03 |                                                                                                    |
-| [useR\! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                               | English  | Dai ZJ          | 2019-08-03 |                                                                                                    |
+| [useR! 2019 presentation video](https://www.youtube.com/watch?v=3XMTyi_H4q4)                                                          | English  | Dai ZJ          | 2019-08-03 |                                                                                                    |
+| [useR! 2019 presentation slides](https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY)                                                | English  | Dai ZJ          | 2019-08-03 |                                                                                                    |
 | [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | English  | Bruno Rodriguez | 2019-10-06 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
-| [Emma goes to useR\! 2019](https://emmavestesson.netlify.com/2019/07/user2019/)                                                       | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post                                                 |
-| [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567)                                                      | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                                                                |
+| [Emma goes to useR! 2019](https://emmavestesson.netlify.app/2019/07/user2019/)                                                        | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post                                                 |
+| [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567)                                      | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                                                                |
 
 ### Interested in learning `{disk.frame}` in a structured course?
 
@@ -412,7 +412,7 @@ perhaps you have a feature request? Please consider sponsoring
 
 ### Backers
 
-Thank you to all our backers\!
+Thank you to all our backers!
 
 <a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a>
 
@@ -427,7 +427,7 @@ show up here with a link to your website.
 
 **Do you need help with machine learning and data science in R, Python,
 or Julia?** I am available for Machine Learning/Data
-Science/R/Python/Julia consulting\! [Email
+Science/R/Python/Julia consulting! [Email
 me](mailto:dzj@analytixware.com)
 
 ## Non-financial ways to contribute
@@ -435,16 +435,16 @@ me](mailto:dzj@analytixware.com)
 Do you wish to give back the open-source community in non-financial
 ways? Here are some ways you can contribute
 
-  - Write a blogpost about your `{disk.frame}`. I would love to learn
-    more about how `{disk.frame}` has helped you
-  - Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to
+-   Write a blogpost about your `{disk.frame}` usage or experience. I
+    would love to learn more about how `{disk.frame}` has helped you
+-   Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to
     help promote it
-  - Bring attention to typos and grammatical errors by correcting and
+-   Bring attention to typos and grammatical errors by correcting and
     making a PR. Or simply by [raising an issue
     here](https://github.com/xiaodaigh/disk.frame/issues)
-  - Star the [`{disk.frame}` Github
+-   Star the [`{disk.frame}` Github
     repo](https://github.com/xiaodaigh/disk.frame)
-  - Star any repo that `{disk.frame}` depends on
+-   Star any repo that `{disk.frame}` depends on
     e.g. [`{fst}`](https://github.com/fstpackage/fst) and
     [`{future}`](https://github.com/HenrikBengtsson/future)
 
@@ -452,7 +452,6 @@ ways? Here are some ways you can contribute
 
 <https://github.com/xiaodaigh/disk.frame-fannie-mae-example>
 <https://github.com/xiaodaigh/disk.frame-vs>
-<https://github.com/xiaodaigh/disk.frame-fannie-mae-example>
 <https://github.com/xiaodaigh/disk.frame.ml>
 <https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame>
 
@@ -467,4 +466,4 @@ status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?
 
 ## Live Stream of `{disk.frame}` development
 
-  - <https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe>
+-   <https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe>
