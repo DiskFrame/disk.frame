@@ -12,8 +12,6 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
-  
-  
   if("data.frame" %in% class(y)) {
     # full join cannot be support for y in data.frame
     ncx = nchunks(x)

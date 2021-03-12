@@ -311,7 +311,8 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
       
       pryr::do_call(csv_to_disk.frame_data.table_backend, dotdotdotorigarg1)
-    }, .progress = .progress)
+    }, 
+      .progress = .progress)
     
     if(.progress) {
       message(paste("-- Converting CSVs to disk.frame -- Stage 1 or 2 took:", data.table::timetaken(pt)))

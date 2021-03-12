@@ -34,7 +34,6 @@ select.disk.frame <- create_chunk_mapper(dplyr::select)
 #   }, lazy = TRUE)
 # }
 
-
 #' @export
 #' @rdname dplyr_verbs
 rename.disk.frame <- create_chunk_mapper(dplyr::rename)
@@ -69,28 +68,20 @@ arrange.disk.frame =create_chunk_mapper(dplyr::arrange, warning_msg="`arrange.di
 #' @rdname dplyr_verbs
 chunk_arrange <- create_chunk_mapper(dplyr::arrange)
 
+# TODO family is not required is group-by
+# TODO alot of these .disk.frame functions are not generic
 
-#' #' @export
-#' #' @importFrom dplyr tally
-#' #' @rdname dplyr_verbs
-#' tally.disk.frame <- create_chunk_mapper(dplyr::tally)
-#' 
-#' 
-#' #' @export
-#' #' @importFrom dplyr count
-#' #' @rdname dplyr_verbs
-#' count.disk.frame <- create_chunk_mapper(dplyr::count)
 
-#' #' @export
-#' #' @importFrom dplyr add_count
-#' #' @rdname dplyr_verbs
-#' add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
-#' 
-#' 
-#' #' @export
-#' #' @importFrom dplyr add_tally
-#' #' @rdname dplyr_verbs
-#' add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
+#' @export
+#' @importFrom dplyr add_count
+#' @rdname dplyr_verbs
+add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
+
+
+#' @export
+#' @importFrom dplyr add_tally
+#' @rdname dplyr_verbs
+add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
 
 
 #' @export

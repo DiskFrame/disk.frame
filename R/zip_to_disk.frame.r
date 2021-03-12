@@ -43,9 +43,17 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
     outdfpath = file.path(outdir, fn)
     overwrite_check(outdfpath, TRUE)
     unzip(zipfile, files = fn, exdir = tmpdir)
-    csv_to_disk.frame(infile = file.path(tmpdir, fn), outdir = outdfpath, overwrite = overwrite, ...)
-  }, ...)
 
+    # lift the domain of csv_to_disk.frame so it accepts a list
+    cl = purrr::lift(csv_to_disk.frame)
+    
+    ok = c(
+      list(infile = file.path(tmpdir, fn), outdir = outdfpath, overwrite = overwrite),
+      dotdotdots)
+    
+    #csv_to_disk.frame(, outdfpath, overwrite = overwrite, ...)
+    cl(ok)
+  }, future.seed=TRUE)
   dfs  
 }
 

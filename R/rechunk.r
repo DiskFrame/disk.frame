@@ -132,7 +132,7 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby 
     bad_boys = future.apply::future_lapply(nts, function(chunk_id) {
       df1 = disk.frame::get_chunk(df, chunk_id)
       disk.frame::shard(df1, shardby, nchunks = nchunks, overwrite = TRUE)
-    })
+    }, future.seed=TRUE)
     
     # for those that don't need to be resharded
     tmp_fdlr = tempfile("rechunk_shard")

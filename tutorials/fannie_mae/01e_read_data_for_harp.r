@@ -1,5 +1,5 @@
 #1c2
-source("inst/fannie_mae/00_setup.r")
+source("tutorials/fannie_mae/00_setup.r")
 
 pt <- proc.time()
 

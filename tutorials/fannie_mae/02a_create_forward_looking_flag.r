@@ -40,7 +40,7 @@ cat(glue::glue("sharding HARP defaults took {timetaken(pt)}"))
 # took about 503 seconds
 # took about 11:52
 pt <- proc.time()
-defaults <- map.disk.frame(fmdf, function(df) {
+defaults <- cmap(fmdf, function(df) {
   # create the default flag
   df[,date:=as.Date(monthly.rpt.prd,"%m/%d/%Y")]
   setkey(df,loan_id, date)

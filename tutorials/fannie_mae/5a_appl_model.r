@@ -1,4 +1,4 @@
-source("inst/fannie_mae/0_setup.r")
+source("tutorials/fannie_mae/00_setup.r")
 library(disk.frame)
 
 defaults = disk.frame(file.path(outpath,"defaults.df")) %>%

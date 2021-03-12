@@ -44,18 +44,78 @@ cmap <- function(.x, .f, ...) {
 #' @rdname cmap
 #' @importFrom future getGlobalsAndPackages
 #' @export
-cmap.disk.frame <- function(.x, .f, ..., outdir = NULL, 
-                            lazy = TRUE, 
-                            overwrite = FALSE) {
-  ..f = create_chunk_mapper(purrr_as_mapper(.f))
+cmap.disk.frame <- function(
+                    .x, 
+                    .f, 
+                    ..., 
+                    outdir = NULL, 
+                    keep = NULL, 
+                    chunks = nchunks(.x), 
+                    compress = 50, 
+                    lazy = TRUE, 
+                    overwrite = FALSE, 
+                    vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()), .progress = TRUE) {
+  .f = purrr::as_mapper(.f)
+  if(lazy) {
+    attr(.x, "lazyfn") = 
+      c(
+        attr(.x, "lazyfn"), 
+        list(
+          list(
+            func = .f, 
+            vars_and_pkgs = vars_and_pkgs, 
+            dotdotdot = list(...)
+          )
+        )
+      )
+    return(.x)
+  }
   
-  if (lazy) {
-    if (!is.null(outdir)) {
-      stop("In `cmap()`, `lazy` is `TRUE` but `outdir` is not `NULL`. This is not allowed.")
+  if(!is.null(outdir)) {
+    overwrite_check(outdir, overwrite)
+  }
+  
+  stopifnot(is_ready(.x))
+  
+  keep1 = attr(.x,"keep", exact=TRUE)
+  
+  if(is.null(keep)) {
+    keep = keep1
+  }
+  
+  path <- attr(.x, "path")
+  files <- list.files(path, full.names = TRUE)
+  files_shortname <- list.files(path)
+  
+  keep_future = keep
+  
+  cid = get_chunk_ids(.x, full.names = TRUE)
+  
+  dotdotdot = list(...)
+  
+  res = future.apply::future_lapply(1:length(files), function(ii, ...) {
+  #res = lapply(1:length(files), function(ii) {
+    ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
+    
+    res = .f(ds, ...)
+    # res = do.call(.f, c(ds, dotdotdot))
+    
+    if(!is.null(outdir)) {
+      if(nrow(res) == 0) {
+        warning(glue::glue("The output chunk has 0 row, therefore chunk {ii} NOT written"))
+      } else {
+        fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
+      }
+      return(ii)
+    } else {
+      return(res)
     }
-    return(..f(.x))
-  } else if(is.null(outdir)) {
-    return(collect_list(..f(.x), ...))
+  }, ..., 
+  future.seed=TRUE # to get rid of the error TODO investigate making this better
+  )
+  
+  if(!is.null(outdir)) {
+    return(disk.frame(outdir))
   } else {
     return(write_disk.frame(outdir, ..f(.x), ...))
   }
@@ -125,7 +185,7 @@ cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunk
     } else {
       return(res)
     }
-  })
+  }, future.seed = TRUE)
   
   if(!is.null(outdir)) {
     return(disk.frame(outdir))
