@@ -5,10 +5,7 @@
 \alias{chunk_summarise}
 \alias{chunk_group_by}
 \alias{chunk_ungroup}
-\title{#' @export
-#' @importFrom dplyr tally
-#' @rdname dplyr_verbs
-tally.disk.frame <- create_chunk_mapper(dplyr::tally)}
+\title{Group by within each disk.frame}
 \usage{
 chunk_summarize(.data, ...)
 
@@ -24,25 +21,10 @@ chunk_ungroup(.data, ...)
 \item{...}{passed to dplyr::group_by}
 }
 \description{
-#' @export
-#' @importFrom dplyr count
-#' @rdname dplyr_verbs
-count.disk.frame <- create_chunk_mapper(dplyr::count)
-#' @export
-#' @importFrom dplyr add_count
-#' @rdname dplyr_verbs
-add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
-
 The disk.frame group by operation perform group WITHIN each chunk. This is
 often used for performance reasons. If the user wishes to perform group-by,
 they may choose to use the `hard_group_by` function which is expensive as it
 reorganizes the chunks by the shard key.
-}
-\details{
-#' @export
-#' @importFrom dplyr add_tally
-#' @rdname dplyr_verbs
-add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)
 }
 \seealso{
 hard_group_by group_by

@@ -17,7 +17,19 @@
 \usage{
 cmap(.x, .f, ...)
 
-\method{cmap}{disk.frame}(.x, .f, ..., outdir = NULL, lazy = TRUE, overwrite = FALSE)
+\method{cmap}{disk.frame}(
+  .x,
+  .f,
+  ...,
+  outdir = NULL,
+  keep = NULL,
+  chunks = nchunks(.x),
+  compress = 50,
+  lazy = TRUE,
+  overwrite = FALSE,
+  vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()),
+  .progress = TRUE
+)
 
 cmap_dfr(.x, .f, ..., .id = NULL)
 
