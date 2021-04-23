@@ -83,7 +83,7 @@ that it allows arbitrarily large datasets to be processed by R. In other
 words, we go from “R can only deal with data that fits in RAM” to “R can
 deal with any data that fits on disk”. See the next section.
 
-### b) How is it different to `data.frame` and `data.table`?
+### b) How is it different to `data.frame` and `{disk.frame}`?
 
 A `data.frame` in R is an in-memory data structure, which means that R
 must load the data in its entirety into RAM. A corollary of this is that
