@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,6 +128,9 @@
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -137,7 +140,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,19 +167,19 @@
 <p>`distribute` is an alias for `shard`</p>
     </div>
 
-    <pre class="usage"><span class='fu'>shard</span>(
-  <span class='no'>df</span>,
-  <span class='no'>shardby</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".df"</span>),
-  <span class='no'>...</span>,
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span>(<span class='no'>df</span>),
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
-  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+    <pre class="usage"><span class='fu'>shard</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  <span class='va'>shardby</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".df"</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  nchunks <span class='op'>=</span> <span class='fu'><a href='recommend_nchunks.html'>recommend_nchunks</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  shardby_function <span class='op'>=</span> <span class='st'>"hash"</span>,
+  sort_splits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  desc_vars <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>distribute</span>(<span class='no'>...</span>)</pre>
+<span class='fu'>distribute</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,9 +226,11 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># shard the cars data.frame by speed so that rows with the same speed are in the same chunk</span>
-<span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'>shard</span>(<span class='no'>iris</span>, <span class='st'>"Species"</span>)</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='input'>
+<span class='va'>iris.df</span> <span class='op'>=</span> <span class='fu'>shard</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Species"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>iris.df</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -241,7 +246,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -91,16 +91,18 @@ df_ram_size <- function() {
         }
       } 
     } else {
-      os = R.version$os
-      if (length(grep("^darwin", os))) {
-        a = substring(system("sysctl hw.memsize", intern = TRUE), 13)
-      } #else {
+      #os = R.version$os
+      #if (length(grep("^darwin", os))) {
+        #a = substring(system("sysctl hw.memsize", intern = TRUE), 13)
+        # the above is not allowed by CRAN
+      #} #else {
         # This would work but is not allowed by CRAN
         #a = system('grep MemTotal /proc/meminfo', intern = TRUE)
       #}
-      l = strsplit(a, " ")[[1]]
-      l = as.numeric(l[length(l)-1])
-      ram_size = l/1024^2
+      #l = strsplit(a, " ")[[1]]
+      #l = as.numeric(l[length(l)-1])
+      #ram_size = l/1024^2
+      ram_size = 16 # to be conservative
     } 
     
     if(is.null(ram_size)) {

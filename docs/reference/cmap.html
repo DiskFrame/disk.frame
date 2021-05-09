@@ -76,7 +76,7 @@ second is the chunk ID
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ second is the chunk ID
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -131,6 +131,9 @@ second is the chunk ID
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -140,7 +143,7 @@ second is the chunk ID
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -170,91 +173,91 @@ second is the chunk ID</p>
 <p>`delayed` is an alias for lazy and is consistent with the naming in Dask and Dagger.jl</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>cmap</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>cmap</span>(
-  <span class='no'>.x</span>,
-  <span class='no'>.f</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>),
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>vars_and_pkgs</span> <span class='kw'>=</span> <span class='kw pkg'>future</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/getGlobalsAndPackages.html'>getGlobalsAndPackages</a></span>(<span class='no'>.f</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()),
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>cmap</span><span class='op'>(</span>
+  <span class='va'>.x</span>,
+  <span class='va'>.f</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  chunks <span class='op'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span>,
+  compress <span class='op'>=</span> <span class='fl'>50</span>,
+  lazy <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  vars_and_pkgs <span class='op'>=</span> <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/getGlobalsAndPackages.html'>getGlobalsAndPackages</a></span><span class='op'>(</span><span class='va'>.f</span>, envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  .progress <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>cmap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>cmap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='no'>fill</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>idcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>cimap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>cmap_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>cimap</span>(
-  <span class='no'>.x</span>,
-  <span class='no'>.f</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chunks</span> <span class='kw'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>.x</span>),
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>cmap_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span>, use.names <span class='op'>=</span> <span class='va'>fill</span>, fill <span class='op'>=</span> <span class='cn'>FALSE</span>, idcol <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>cimap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>cimap</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>cimap_dfr</span>(
-  <span class='no'>.x</span>,
-  <span class='no'>.f</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='no'>fill</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>idcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
+<span class='fu'>cimap</span><span class='op'>(</span>
+  <span class='va'>.x</span>,
+  <span class='va'>.f</span>,
+  outdir <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  chunks <span class='op'>=</span> <span class='fu'><a href='nchunks.html'>nchunks</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span>,
+  compress <span class='op'>=</span> <span class='fl'>50</span>,
+  lazy <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>lazy</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>lazy</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
-
-<span class='fu'>delayed</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
-
-<span class='fu'>chunk_lapply</span>(<span class='no'>...</span>)
-
-<span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>cimap_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>map</span>(<span class='no'>...</span>)
+<span class='fu'>cimap_dfr</span><span class='op'>(</span>
+  <span class='va'>.x</span>,
+  <span class='va'>.f</span>,
+  <span class='va'>...</span>,
+  .id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use.names <span class='op'>=</span> <span class='va'>fill</span>,
+  fill <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  idcol <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
+
+<span class='fu'>lazy</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>lazy</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>delayed</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>chunk_lapply</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>map</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>map</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>map</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>map</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>imap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='co'># S3 method for disk.frame</span>
-<span class='fu'>imap_dfr</span>(<span class='no'>...</span>)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>imap_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>imap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>imap</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>imap_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>map_dfr</span>(<span class='no'>...</span>)
+<span class='fu'>imap_dfr</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>map_dfr</span>(<span class='no'>.x</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='kw'>.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>imap_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>imap</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>imap</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for disk.frame</span>
+<span class='fu'>map_dfr</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>map_dfr</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.f</span>, <span class='va'>...</span>, .id <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -323,15 +326,16 @@ second is the chunk ID</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
 <span class='co'># return the first row of each chunk lazily</span>
 <span class='co'># </span>
-<span class='no'>cars2</span> <span class='kw'>=</span> <span class='fu'>cmap</span>(<span class='no'>cars.df</span>, <span class='kw'>function</span>(<span class='no'>chunk</span>) {
- <span class='no'>chunk</span>[,<span class='fl'>1</span>]
-})
+<span class='va'>cars2</span> <span class='op'>=</span> <span class='fu'>cmap</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>chunk</span><span class='op'>)</span> <span class='op'>{</span>
+ <span class='va'>chunk</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span>
+<span class='op'>}</span><span class='op'>)</span>
 
-<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt;     speed
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     speed
 #&gt;  1:     4
 #&gt;  2:     4
 #&gt;  3:     7
@@ -384,9 +388,10 @@ second is the chunk ID</p>
 #&gt; 50:    25
 #&gt;     speed</div><div class='input'>
 <span class='co'># same as above but using purrr </span>
-<span class='no'>cars2</span> <span class='kw'>=</span> <span class='fu'>cmap</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])
+<span class='va'>cars2</span> <span class='op'>=</span> <span class='fu'>cmap</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span><span class='op'>)</span>
 
-<span class='fu'>collect</span>(<span class='no'>cars2</span>)</div><div class='output co'>#&gt;    speed dist
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:    11   17
 #&gt; 3:    13   46
@@ -394,7 +399,8 @@ second is the chunk ID</p>
 #&gt; 5:    19   46
 #&gt; 6:    24   70</div><div class='input'>
 <span class='co'># return the first row of each chunk eagerly as list</span>
-<span class='fu'>cmap</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>cmap</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>, lazy <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 
@@ -419,7 +425,8 @@ second is the chunk ID</p>
 #&gt; 1:    24   70
 #&gt; </div><div class='input'>
 <span class='co'># return the first row of each chunk eagerly as data.table/data.frame by row-binding</span>
-<span class='fu'>cmap_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,])</div><div class='output co'>#&gt;    speed dist
+<span class='fu'>cmap_dfr</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:    11   17
 #&gt; 3:    13   46
@@ -427,13 +434,15 @@ second is the chunk ID</p>
 #&gt; 5:    19   46
 #&gt; 6:    24   70</div><div class='input'>
 <span class='co'># lazy and delayed are just an aliases for cmap(..., lazy = TRUE)</span>
-<span class='fu'>collect</span>(<span class='fu'>lazy</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]))</div><div class='output co'>#&gt;    speed dist
+<span class='fu'>collect</span><span class='op'>(</span><span class='fu'>lazy</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:    11   17
 #&gt; 3:    13   46
 #&gt; 4:    16   40
 #&gt; 5:    19   46
-#&gt; 6:    24   70</div><div class='input'><span class='fu'>collect</span>(<span class='fu'>delayed</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[<span class='fl'>1</span>,]))</div><div class='output co'>#&gt;    speed dist
+#&gt; 6:    24   70</div><div class='input'><span class='fu'>collect</span><span class='op'>(</span><span class='fu'>delayed</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    speed dist
 #&gt; 1:     4    2
 #&gt; 2:    11   17
 #&gt; 3:    13   46
@@ -441,13 +450,14 @@ second is the chunk ID</p>
 #&gt; 5:    19   46
 #&gt; 6:    24   70</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
 <span class='co'># .x is the chunk and .y is the ID as an integer</span>
 
 <span class='co'># lazy = TRUE support is not available at the moment</span>
-<span class='fu'>cimap</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>], <span class='kw'>lazy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>cimap</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span>, <span class='va'>id</span> <span class='op'>:=</span> <span class='va'>.y</span><span class='op'>]</span>, lazy <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt;    speed dist id
 #&gt; 1:     4    2  1
 #&gt; 2:     4   10  1
@@ -515,7 +525,8 @@ second is the chunk ID</p>
 #&gt; 4:    24  120  6
 #&gt; 5:    25   85  6
 #&gt; </div><div class='input'>
-<span class='fu'>cimap_dfr</span>(<span class='no'>cars.df</span>, ~<span class='no'>.x</span>[, <span class='no'>id</span> <span class='kw'>:=</span> <span class='no'>.y</span>])</div><div class='output co'>#&gt;     speed dist id
+<span class='fu'>cimap_dfr</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='va'>.x</span><span class='op'>[</span>, <span class='va'>id</span> <span class='op'>:=</span> <span class='va'>.y</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     speed dist id
 #&gt;  1:     4    2  1
 #&gt;  2:     4   10  1
 #&gt;  3:     7    4  1
@@ -568,7 +579,8 @@ second is the chunk ID</p>
 #&gt; 50:    25   85  6
 #&gt;     speed dist id</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -584,7 +596,7 @@ second is the chunk ID</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

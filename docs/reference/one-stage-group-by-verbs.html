@@ -74,7 +74,7 @@ mean collected_agg" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ mean collected_agg" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -129,6 +129,9 @@ mean collected_agg" />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -138,7 +141,7 @@ mean collected_agg" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -166,61 +169,61 @@ mean collected_agg" />
 <p>mean collected_agg</p>
     </div>
 
-    <pre class="usage"><span class='fu'>var_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>var_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>var_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>)
+<span class='fu'>var_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span><span class='op'>)</span>
 
-<span class='fu'>sd_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>sd_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>sd_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>)
+<span class='fu'>sd_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span><span class='op'>)</span>
 
-<span class='fu'>mean_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>mean_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>mean_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>)
+<span class='fu'>mean_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span><span class='op'>)</span>
 
-<span class='fu'>sum_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>sum_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>sum_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>sum_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>min_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>min_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>min_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>min_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>max_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>max_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>max_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>max_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>median_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>median_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>median_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>median_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>n_df.chunk_agg.disk.frame</span>(<span class='no'>...</span>)
+<span class='fu'>n_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>n_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>n_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>length_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>length_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>length_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>length_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>any_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>any_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>any_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>any_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>all_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>all_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>all_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>all_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>n_distinct_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>n_distinct_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>n_distinct_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>n_distinct_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>quantile_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>quantile_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>quantile_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)
+<span class='fu'>quantile_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>IQR_df.chunk_agg.disk.frame</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>IQR_df.chunk_agg.disk.frame</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>IQR_df.collected_agg.disk.frame</span>(<span class='no'>listx</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>IQR_df.collected_agg.disk.frame</span><span class='op'>(</span><span class='va'>listx</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -259,7 +262,7 @@ mean collected_agg" />
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -74,7 +74,7 @@ row that share the same `by` value will end up in the same chunk." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ row that share the same `by` value will end up in the same chunk." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -129,6 +129,9 @@ row that share the same `by` value will end up in the same chunk." />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -138,7 +141,7 @@ row that share the same `by` value will end up in the same chunk." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -166,23 +169,23 @@ every unique grouping of `by`` is in the same chunk. Or in other words, every
 row that share the same `by` value will end up in the same chunk.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>.add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>hard_group_by</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>...</span>, .add <span class='op'>=</span> <span class='cn'>FALSE</span>, .drop <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>hard_group_by</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>.add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>hard_group_by</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>...</span>, .add <span class='op'>=</span> <span class='cn'>FALSE</span>, .drop <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>hard_group_by</span>(
-  <span class='no'>df</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_hard_group_by"</span>),
-  <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='kw pkg'>disk.frame</span><span class='kw ns'>::</span><span class='fu'><a href='nchunks.html'>nchunks</a></span>(<span class='no'>df</span>),
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>shardby_function</span> <span class='kw'>=</span> <span class='st'>"hash"</span>,
-  <span class='kw'>sort_splits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>desc_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sort_split_sample_size</span> <span class='kw'>=</span> <span class='fl'>100</span>
-)</pre>
+<span class='fu'>hard_group_by</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_hard_group_by"</span><span class='op'>)</span>,
+  nchunks <span class='op'>=</span> <span class='fu'>disk.frame</span><span class='fu'>::</span><span class='fu'><a href='nchunks.html'>nchunks</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  shardby_function <span class='op'>=</span> <span class='st'>"hash"</span>,
+  sort_splits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  desc_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sort_split_sample_size <span class='op'>=</span> <span class='fl'>100</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -235,11 +238,13 @@ row that share the same `by` value will end up in the same chunk.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>iris.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>iris</span>, <span class='kw'>nchunks</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+    <pre class="examples"><div class='input'><span class='va'>iris.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>iris</span>, nchunks <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'># group_by iris.df by specifies and ensure rows with the same specifies are in the same chunk</span>
-<span class='no'>iris_hard.df</span> <span class='kw'>=</span> <span class='fu'>hard_group_by</span>(<span class='no'>iris.df</span>, <span class='no'>Species</span>)</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
-<span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 150 x 5</span><span>
+<span class='va'>iris_hard.df</span> <span class='op'>=</span> <span class='fu'>hard_group_by</span><span class='op'>(</span><span class='va'>iris.df</span>, <span class='va'>Species</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
+<span class='fu'><a href='get_chunk.html'>get_chunk</a></span><span class='op'>(</span><span class='va'>iris_hard.df</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 150 x 5</span><span>
 #&gt; </span><span style='color: #949494;'># Groups:   Species [3]</span><span>
 #&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>  
@@ -253,10 +258,12 @@ row that share the same `by` value will end up in the same chunk.</p>
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span>          5           3.4          1.5         0.2 setosa 
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span>          4.4         2.9          1.4         0.2 setosa 
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span>          4.9         3.1          1.5         0.1 setosa 
-#&gt; </span><span style='color: #949494;'># ... with 140 more rows</span><span></div><div class='input'><span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>iris_hard.df</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The chunk NA does not exist; returning an empty data.table</span></div><div class='output co'>#&gt; Null data.table (0 rows and 0 cols)</div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 140 more rows</span><span></div><div class='input'><span class='fu'><a href='get_chunk.html'>get_chunk</a></span><span class='op'>(</span><span class='va'>iris_hard.df</span>, <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: The chunk NA does not exist; returning an empty data.table</span></div><div class='output co'>#&gt; Null data.table (0 rows and 0 cols)</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>iris_hard.df</span>)</div></span></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>iris.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>iris_hard.df</span><span class='op'>)</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -272,7 +279,7 @@ row that share the same `by` value will end up in the same chunk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

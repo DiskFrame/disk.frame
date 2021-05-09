@@ -73,7 +73,7 @@ gets run by .f(x.chunk, y.chunk)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ gets run by .f(x.chunk, y.chunk)" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,6 +128,9 @@ gets run by .f(x.chunk, y.chunk)" />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -137,7 +140,7 @@ gets run by .f(x.chunk, y.chunk)" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,11 +167,11 @@ gets run by .f(x.chunk, y.chunk)" />
 gets run by .f(x.chunk, y.chunk)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap2</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>cmap2</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>map2</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>)
+<span class='fu'>map2</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span>, <span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>map_by_chunk_id</span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='no'>.f</span>, <span class='no'>...</span>, <span class='no'>outdir</span>)</pre>
+<span class='fu'>map_by_chunk_id</span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span>, <span class='va'>.f</span>, <span class='va'>...</span>, <span class='va'>outdir</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -198,10 +201,11 @@ chunk_id</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
-<span class='no'>cars2.df</span> <span class='kw'>=</span> <span class='fu'>cmap2</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, ~<span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html'>rbindlist</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)))
-<span class='fu'>collect</span>(<span class='no'>cars2.df</span>)</div><div class='output co'>#&gt;      speed dist
+<span class='va'>cars2.df</span> <span class='op'>=</span> <span class='fu'>cmap2</span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='va'>cars.df</span>, <span class='op'>~</span><span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html'>rbindlist</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars2.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      speed dist
 #&gt;   1:     4    2
 #&gt;   2:     4   10
 #&gt;   3:     7    4
@@ -304,8 +308,9 @@ chunk_id</p></td>
 #&gt; 100:    25   85
 #&gt;      speed dist</div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars2.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars2.df</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -321,7 +326,7 @@ chunk_id</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

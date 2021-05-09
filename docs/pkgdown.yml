@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 1.5.1
+pandoc: 2.11.2
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   01-intro: 01-intro.html
@@ -13,5 +13,6 @@ articles:
   09-convenience-features: 09-convenience-features.html
   10-group-by: 10-group-by.html
   11-custom-group-by: 11-custom-group-by.html
-last_built: 2020-06-18T00:21Z
+  88-trouble-shooting: 88-trouble-shooting.html
+last_built: 2021-05-09T09:55Z
 

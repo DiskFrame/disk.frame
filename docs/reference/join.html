@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -127,6 +127,9 @@
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -136,7 +139,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -163,69 +166,69 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>anti_join</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_anti_join"</span>),
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>anti_join</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_anti_join"</span><span class='op'>)</span>,
+  merge_by_chunk_id <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>full_join</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_full_join"</span>),
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>merge_by_chunk_id</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_full_join"</span><span class='op'>)</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>merge_by_chunk_id</span>,
+  .progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>inner_join</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_inner_join"</span>),
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_inner_join"</span><span class='op'>)</span>,
+  merge_by_chunk_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>left_join</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_left_join"</span>),
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_left_join"</span><span class='op'>)</span>,
+  merge_by_chunk_id <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>semi_join</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>copy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"tmp_disk_frame_semi_join"</span>),
-  <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>semi_join</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  copy <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>,
+  outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='st'>"tmp_disk_frame_semi_join"</span><span class='op'>)</span>,
+  merge_by_chunk_id <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -273,43 +276,49 @@
     <p>disk.frame or data.frame/data.table</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>4</span>:<span class='fl'>6</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df2.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>z</span> <span class='kw'>=</span> <span class='fl'>10</span>:<span class='fl'>11</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='va'>df.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, y <span class='op'>=</span> <span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>df2.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, z <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>11</span><span class='op'>)</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='no'>anti_joined.df</span> <span class='kw'>=</span> <span class='fu'>anti_join</span>(<span class='no'>df.df</span>, <span class='no'>df2.df</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
-<span class='no'>anti_joined.df</span> <span class='kw'>%&gt;%</span> <span class='no'>collect</span></div><div class='output co'>#&gt;    x y
+<span class='va'>anti_joined.df</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>anti_join</a></span><span class='op'>(</span><span class='va'>df.df</span>, <span class='va'>df2.df</span><span class='op'>)</span> 
+</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
+<span class='va'>anti_joined.df</span> <span class='op'>%&gt;%</span> <span class='va'>collect</span>
+</div><div class='output co'>#&gt;    x y
 #&gt; 1: 3 6</div><div class='input'>
-<span class='no'>anti_joined.data.frame</span> <span class='kw'>=</span> <span class='fu'>anti_join</span>(<span class='no'>df.df</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>z</span> <span class='kw'>=</span> <span class='fl'>10</span>:<span class='fl'>11</span>))</div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='input'>
+<span class='va'>anti_joined.data.frame</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>anti_join</a></span><span class='op'>(</span><span class='va'>df.df</span>, <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, z <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>11</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "x"</span></div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>df.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>df2.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>anti_joined.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>df.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>df2.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>anti_joined.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
-<span class='no'>join.df</span> <span class='kw'>=</span> <span class='fu'>full_join</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>join.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
-
-<span class='no'>join.df</span> <span class='kw'>=</span> <span class='fu'>inner_join</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>, <span class='kw'>merge_by_chunk_id</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='va'>join.df</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='va'>cars.df</span>, merge_by_chunk_id <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>join.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>join.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
-<span class='no'>join.df</span> <span class='kw'>=</span> <span class='fu'>left_join</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
-<span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>join.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='va'>join.df</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='va'>cars.df</span>, merge_by_chunk_id <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='no'>join.df</span> <span class='kw'>=</span> <span class='fu'>semi_join</span>(<span class='no'>cars.df</span>, <span class='no'>cars.df</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
 <span class='co'># clean up cars.df</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>join.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>join.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
+
+<span class='va'>join.df</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='va'>cars.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>join.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
+
+<span class='va'>join.df</span> <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter-joins.html'>semi_join</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='va'>cars.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Hashing...</span></div><div class='output co'>#&gt; <span class='message'>Appending disk.frames: </span></div><div class='input'>
+<span class='co'># clean up cars.df</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>join.df</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -325,7 +334,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

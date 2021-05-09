@@ -75,7 +75,7 @@ operations as data.table/data.frame or as a list" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ operations as data.table/data.frame or as a list" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,6 +130,9 @@ operations as data.table/data.frame or as a list" />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -139,7 +142,7 @@ operations as data.table/data.frame or as a list" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -169,12 +172,12 @@ operations as data.table/data.frame or as a list</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for disk.frame</span>
-<span class='fu'>collect</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>x</span>, <span class='st'>"lazyfn"</span>)))
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, parallel <span class='op'>=</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"lazyfn"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>collect_list</span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>x</span>, <span class='st'>"lazyfn"</span>)))
+<span class='fu'>collect_list</span><span class='op'>(</span><span class='va'>x</span>, simplify <span class='op'>=</span> <span class='cn'>FALSE</span>, parallel <span class='op'>=</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"lazyfn"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S3 method for summarized_disk.frame</span>
-<span class='fu'>collect</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> !<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>x</span>, <span class='st'>"lazyfn"</span>)))</pre>
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, parallel <span class='op'>=</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"lazyfn"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,9 +212,10 @@ hence parallel = FALSE is a better choice</p></td>
 <p>collect return a data.frame/data.table</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+    <pre class="examples"><div class='input'><span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 <span class='co'># use collect to bring the data into RAM as a data.table/data.frame</span>
-<span class='fu'>collect</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt;     speed dist
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     speed dist
 #&gt;  1:     4    2
 #&gt;  2:     4   10
 #&gt;  3:     7    4
@@ -264,11 +268,12 @@ hence parallel = FALSE is a better choice</p></td>
 #&gt; 50:    25   85
 #&gt;     speed dist</div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 
 <span class='co'># returns the result as a list</span>
-<span class='fu'>collect_list</span>(<span class='fu'><a href='cmap.html'>cmap</a></span>(<span class='no'>cars.df</span>, ~<span class='fl'>1</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>collect_list</span><span class='op'>(</span><span class='fu'><a href='cmap.html'>cmap</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='op'>~</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]
@@ -287,10 +292,11 @@ hence parallel = FALSE is a better choice</p></td>
 #&gt; [1] 1
 #&gt; </div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)
-<span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+<span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
 <span class='co'># use collect to bring the data into RAM as a data.table/data.frame</span>
-<span class='fu'>collect</span>(<span class='no'>cars.df</span>)</div><div class='output co'>#&gt;     speed dist
+<span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     speed dist
 #&gt;  1:     4    2
 #&gt;  2:     4   10
 #&gt;  3:     7    4
@@ -343,7 +349,8 @@ hence parallel = FALSE is a better choice</p></td>
 #&gt; 50:    25   85
 #&gt;     speed dist</div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -359,7 +366,7 @@ hence parallel = FALSE is a better choice</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

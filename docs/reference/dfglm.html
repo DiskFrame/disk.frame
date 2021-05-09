@@ -73,7 +73,7 @@ those return by those functions. This is a convenience wrapper" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ those return by those functions. This is a convenience wrapper" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -128,6 +128,9 @@ those return by those functions. This is a convenience wrapper" />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -137,7 +140,7 @@ those return by those functions. This is a convenience wrapper" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,7 +167,7 @@ those return by those functions. This is a convenience wrapper" />
 those return by those functions. This is a convenience wrapper</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfglm</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>glm_backend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"biglm"</span>, <span class='st'>"speedglm"</span>, <span class='st'>"biglmm"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfglm</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>data</span>, <span class='va'>...</span>, glm_backend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"biglm"</span>, <span class='st'>"speedglm"</span>, <span class='st'>"biglmm"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,25 +227,28 @@ No. 2</p>
 <code><a href='make_glm_streaming_fn.html'>make_glm_streaming_fn</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cars.df</span> <span class='kw'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span>(<span class='no'>cars</span>)
-<span class='no'>m</span> <span class='kw'>=</span> <span class='fu'>dfglm</span>(<span class='no'>dist</span> ~ <span class='no'>speed</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>cars.df</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: biglm</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>cars.df</span> <span class='op'>=</span> <span class='fu'><a href='as.disk.frame.html'>as.disk.frame</a></span><span class='op'>(</span><span class='va'>cars</span><span class='op'>)</span>
+<span class='va'>m</span> <span class='op'>=</span> <span class='fu'>dfglm</span><span class='op'>(</span><span class='va'>dist</span> <span class='op'>~</span> <span class='va'>speed</span>, data <span class='op'>=</span> <span class='va'>cars.df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: biglm</span></div><div class='input'>
 <span class='co'># can use normal R functions</span>
 <span class='co'># Only works in version &gt; R 3.6</span>
-<span class='no'>majorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='no'>version</span>$<span class='no'>major</span>)
-<span class='no'>minorv</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='no'>version</span>$<span class='no'>minor</span>, <span class='st'>"."</span>, <span class='kw'>fixed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)<span class='kw'>[[</span><span class='fl'>1</span>]][<span class='fl'>1</span>])
-<span class='kw'>if</span>(((<span class='no'>majorv</span> <span class='kw'>==</span> <span class='fl'>3</span>) <span class='kw'>&amp;</span> (<span class='no'>minorv</span> <span class='kw'>&gt;=</span> <span class='fl'>6</span>)) <span class='kw'>|</span> (<span class='no'>majorv</span> <span class='kw'>&gt;</span> <span class='fl'>3</span>)) {
-  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>m</span>)
-  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span>(<span class='no'>cars.df</span>, <span class='fl'>1</span>))
-  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>m</span>, <span class='fu'>collect</span>(<span class='no'>cars.df</span>))
+<span class='va'>majorv</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>version</span><span class='op'>$</span><span class='va'>major</span><span class='op'>)</span>
+<span class='va'>minorv</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/tstrsplit.html'>strsplit</a></span><span class='op'>(</span><span class='va'>version</span><span class='op'>$</span><span class='va'>minor</span>, <span class='st'>"."</span>, fixed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+<span class='kw'>if</span><span class='op'>(</span><span class='op'>(</span><span class='op'>(</span><span class='va'>majorv</span> <span class='op'>==</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>minorv</span> <span class='op'>&gt;=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>majorv</span> <span class='op'>&gt;</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='fu'><a href='get_chunk.html'>get_chunk</a></span><span class='op'>(</span><span class='va'>cars.df</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='fu'>collect</span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span><span class='op'>)</span>
   <span class='co'># can use broom to tidy up the returned info</span>
-  <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/broom/man/reexports.html'>tidy</a></span>(<span class='no'>m</span>)
-}</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 4</span><span>
+  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 4</span><span>
 #&gt;   term        estimate std.error  p.value
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> (Intercept)   -</span><span style='color: #BB0000;'>17.6</span><span>      6.76  9.29</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 3</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span> speed           3.93     0.416 2.96</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-21</span><span></div><div class='input'>
 <span class='co'># clean up</span>
-<span class='fu'><a href='delete.html'>delete</a></span>(<span class='no'>cars.df</span>)</div></span></pre>
+<span class='fu'><a href='delete.html'>delete</a></span><span class='op'>(</span><span class='va'>cars.df</span><span class='op'>)</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -258,7 +264,7 @@ No. 2</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

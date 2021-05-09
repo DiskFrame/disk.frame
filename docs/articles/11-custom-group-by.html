@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -86,6 +86,9 @@
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -95,7 +98,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +112,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="11-custom-group-by_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Custom One-Stage Group-by functions</h1>
@@ -127,27 +130,28 @@
 <h1 class="hasAnchor">
 <a href="#custom-one-stage-group-by" class="anchor"></a>Custom one-stage group-by</h1>
 <p>Group-by is one the most useful and commonly used operations in data manipulation. The most common to perform group with dplyr syntax would be something similar to the below</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">dataf</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">grpA</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarize</span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">X</span>))</pre></body></html></div>
-<p>However, the above nice and concise group-by syntax creates a challenge in <code>{disk.frame}</code>, because <code>{disk.frame}</code> organises the data in chunks and these chunks are often manipulated independently to each other which makes it difficult to compute the <code>mean</code> of any column if the group-by column is stored in different chunks. In this chapter, I will explain how <code>{disk.frame}</code> achieve the one-stage group-by syntax that you see, and how you can define custom one-stage group-by functions for use with <code>{disk.frame}</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dataf</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">grpA</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>However, the above nice and concise group-by syntax creates a challenge in <a href="https://diskframe.com">disk.frame</a>, because <a href="https://diskframe.com">disk.frame</a> organises the data in chunks and these chunks are often manipulated independently to each other which makes it difficult to compute the <code>mean</code> of any column if the group-by column is stored in different chunks. In this chapter, I will explain how <a href="https://diskframe.com">disk.frame</a> achieve the one-stage group-by syntax that you see, and how you can define custom one-stage group-by functions for use with <a href="https://diskframe.com">disk.frame</a>.</p>
 <div id="at-a-glance" class="section level2">
 <h2 class="hasAnchor">
 <a href="#at-a-glance" class="anchor"></a>At a glance</h2>
-<p><code>{disk.frame}</code> allows the user to create custom one-stage group-by functions. To make a function <code>fn</code> one stage, one needs to define two functions:</p>
+<p><a href="https://diskframe.com">disk.frame</a> allows the user to create custom one-stage group-by functions. To make a function <code>fn</code> one stage, one needs to define two functions:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code>fn_df.chunk_agg.disk.frame</code> which applies itself to each chunk</li>
 <li>
 <code>fn_df.collected_agg.disk.frame</code> which accepts a <code>list</code> of returns from <code>fn_df.chunk_agg.disk.frame</code> and finalize the computation</li>
 </ol>
-<p>For example, to make <code>mean</code> a one-stage group-by function, <code>{disk.frame}</code> has defined <code>mean_df.chunk_agg.disk.frame</code> and <code>mean_df.collected_agg.disk.frame</code>, which we will illustrate with examples below.</p>
-<p>But first, we shall explain some theory behind <code>{disk.frame}</code> to help you better understand “why does <code>{disk.frame}</code> do it like that?”.</p>
+<p>For example, to make <code>mean</code> a one-stage group-by function, <a href="https://diskframe.com">disk.frame</a> has defined <code>mean_df.chunk_agg.disk.frame</code> and <code>mean_df.collected_agg.disk.frame</code>, which we will illustrate with examples below.</p>
+<p>But first, we shall explain some theory behind <a href="https://diskframe.com">disk.frame</a> to help you better understand “why does <a href="https://diskframe.com">disk.frame</a> do it like that?”.</p>
 </div>
 <div id="how-does-disk-frame-work" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-does-disk-frame-work" class="anchor"></a>How does <code>{disk.frame}</code> work</h2>
-<p>One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like <code>median</code> only produce estimates instead of producing the exact figure? To answer these questions, we need to have an understanding of how <code>{disk.frame}</code> works.</p>
+<p>One may ask, how come only a few functions are supported for one-stage group-by? And why are some functions like <code>median</code> only produce estimates instead of producing the exact figure? To answer these questions, we need to have an understanding of how <a href="https://diskframe.com">disk.frame</a> works.</p>
 <p>A <code>disk.frame</code> is organized as chunks stored on disk. Each chunk is a file stored in <a href="https://www.fstpackage.org/">fst format</a>. The <a href="https://CRAN.R-project.org/package=future"><code>{future}</code> package</a> is used to apply the same function to each chunk, each of these operations are carried out in a separate R session. These R sessions cannot communicate with each other during the execution of the operations.</p>
 <p>Once the operations have been performed on all chunks, the results will be bought back to the session from which the operations were called. This is the only point of inter-process communication.</p>
 <p>To summarize, the two phases of a <code>df %&gt;% some_fn %&gt;% collect</code> operation are</p>
@@ -160,60 +164,65 @@
 <div id="how-group-by-works" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-group-by-works" class="anchor"></a>How group-by works</h2>
-<p>Except for passing the result back to the main session, communication between worker sessions are not allowed. This limits how group-by operations can be performed, hence why group-by was done in two stages prior to <code>{disk.frame}</code> v0.3.0. However, R’s meta-programming abilities allow us to rewrite code to perform the two-stage group-bys using one-stage group-by code. For example, consider:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">df</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">grp1</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarize</span>(<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>)) <span class="kw">%&gt;%</span>
-  <span class="no">collect</span></pre></body></html></div>
+<p>Except for passing the result back to the main session, communication between worker sessions are not allowed. This limits how group-by operations can be performed, hence why group-by was done in two stages prior to <a href="https://diskframe.com">disk.frame</a> v0.3.0. However, R’s meta-programming abilities allow us to rewrite code to perform the two-stage group-bys using one-stage group-by code. For example, consider:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">grp1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="va">collect</span></code></pre></div>
 <p>we can use meta-programming to transform that to</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">df %&gt;% 
-  chunk_group_by(grp1) %&gt;% 
-  chunk_summarize(__tmp1__= sum(x)) %&gt;% 
-  collect() %&gt;% 
-  group_by(grp1) %&gt;% 
-  summarize(x = sum(__tmp1__))</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_summarize</span>(<span class="at">__tmp1__=</span> <span class="fu">sum</span>(x)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">x =</span> <span class="fu">sum</span>(__tmp1__))</span></code></pre></div>
 <p>Basically, we are “compiling” one-stage group-by code to two-stage group-by code, and then executing it.</p>
 <p>For <code>mean</code>, it’s trickier, as one needs to keep track on the numerator and the denominator separately in computing <code>mean(x) = sum(x)/length(x)</code>.</p>
-<p>Therefore, <code>{disk.frame}</code> compiles</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">df</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">grp1</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarize</span>(<span class="kw">meanx</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">x</span>)) <span class="kw">%&gt;%</span>
-  <span class="no">collect</span></pre></body></html></div>
+<p>Therefore, <a href="https://diskframe.com">disk.frame</a> compiles</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">grp1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>meanx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="va">collect</span></code></pre></div>
 <p>to</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r">df %&gt;% 
-  chunk_group_by(grp1) %&gt;% 
-  chunk_summarize(__tmp1__ = list(mean_df.chunk_agg.disk.frame(x))) %&gt;% 
-  collect %&gt;% 
-  group_by(grp1) %&gt;% 
-  chunk_summarize(meanx = mean_df.chunk_agg.disk.frame(__tmp1__))</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_summarize</span>(<span class="at">__tmp1__ =</span> <span class="fu">list</span>(<span class="fu">mean_df.chunk_agg.disk.frame</span>(x))) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  collect <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_summarize</span>(<span class="at">meanx =</span> <span class="fu">mean_df.chunk_agg.disk.frame</span>(__tmp1__))</span></code></pre></div>
 <p>where <code>mean_df.chunk_agg.disk.frame</code> defines what needs to be done to each chunk, as you can see, the return value is a vector where the elements are named <code>sumx</code> and <code>lengthx</code>. Also note because the return value is not a scalar, we need to write it in a <code>list</code> (line 3).</p>
 <p>Here is an example implementation of <code>mean.chunk_agg.disk.frame</code></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">mean_df.chunk_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">na.rm</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="no">...</span>) {
-  <span class="no">sumx</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>, <span class="kw">na.rm</span> <span class="kw">=</span> <span class="no">na.rm</span>)
-  <span class="no">lengthx</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">x</span>) - <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">na.rm</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">x</span>)), <span class="fl">0</span>)
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">sumx</span> <span class="kw">=</span> <span class="no">sumx</span>, <span class="kw">lengthx</span> <span class="kw">=</span> <span class="no">lengthx</span>)
-}</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mean_df.chunk_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">sumx</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span><span class="op">)</span>
+  <span class="va">lengthx</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="va">na.rm</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>sumx <span class="op">=</span> <span class="va">sumx</span>, lengthx <span class="op">=</span> <span class="va">lengthx</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>The <code>mean_df.collected_agg.disk.frame</code> receives a list of outputs from <code>mean_df.chunk_agg.disk.frame</code>. Recall that <code>mean.chunk_agg.disk.frame</code> returns a vector for each chunk, so the input to <code>mean_df.collected_agg.disk.frame</code> is a <em>list of vectors</em></p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">mean_df.collected_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">listx</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">listx</span>, <span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>[<span class="st">"sumx"</span>]))/<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">listx</span>, <span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>[<span class="st">"lengthx"</span>]))
-}</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mean_df.collected_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">listx</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="st">"sumx"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">listx</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="st">"lengthx"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="how-to-define-custom-one-stage-group-by-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-define-custom-one-stage-group-by-functions" class="anchor"></a>How to define custom one-stage group-by functions</h2>
 <p>Now that we have seen two examples, namely <code>sum</code> and <code>mean</code>, we are ready to summarize how group-by functions are implemented.</p>
 <p>Given the below</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">df</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">grp1</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarize</span>(<span class="kw">namex</span> <span class="kw">=</span> <span class="fu">fn</span>(<span class="no">x</span>)) <span class="kw">%&gt;%</span>
-  <span class="no">collect</span></pre></body></html></div>
-<p><code>{disk.frame}</code> compiles it to</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r">df %&gt;% 
-  chunk_group_by(grp1) %&gt;% 
-  chunk_summarize(__tmp1__ = list(fn_df.chunk_agg.disk.frame(x))) %&gt;% 
-  collect %&gt;% 
-  group_by(grp1) %&gt;% 
-  chunk_summarize(namex = fn_df.collected_agg.disk.frame(__tmp1__))</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">grp1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>namex <span class="op">=</span> <span class="fu">fn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="va">collect</span></code></pre></div>
+<p><a href="https://diskframe.com">disk.frame</a> compiles it to</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_summarize</span>(<span class="at">__tmp1__ =</span> <span class="fu">list</span>(<span class="fu">fn_df.chunk_agg.disk.frame</span>(x))) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  collect <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(grp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chunk_summarize</span>(<span class="at">namex =</span> <span class="fu">fn_df.collected_agg.disk.frame</span>(__tmp1__))</span></code></pre></div>
 <p>Based on the above information, to make <code>fn</code> a one-stage group-by function, the user has to</p>
 <ol style="list-style-type: decimal">
 <li>Define <code>fn_df.chunk_agg.disk.frame</code> which is a function to be applied to each chunk</li>
@@ -225,38 +234,42 @@
 <li>Define <code>sum_df.chunk_agg.disk.frame</code>
 </li>
 </ol>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">sum_df.chunk_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">na.rm</span> <span class="kw">=</span> <span class="fl">FALSE</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>, <span class="kw">na.rm</span><span class="kw">=</span><span class="no">na.rm</span>)
-}</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sum_df.chunk_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="va">na.rm</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Define <code>sum_df.collected_agg.disk.frame</code>, which needs to accept a list of <code><a href="https://rdrr.io/r/base/sum.html">sum(x, na.rm)</a></code>, but <code><a href="https://rdrr.io/r/base/sum.html">sum(x, na.rm)</a></code> is just a numeric, so</li>
 </ol>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">sum_df.collected_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">list_sum</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">list_sum</span>))
-}</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sum_df.collected_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">list_sum</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">list_sum</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p><strong>Example of implementing <code>n_distinct</code></strong>:</p>
 <p>The <code><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">dplyr::n_distinct</a></code> function counts the number of distint values from a vector <code>x</code></p>
 <ol style="list-style-type: decimal">
 <li>Define <code>n_distinct_df.chunk_agg.disk.frame</code>, to return a list of unique values. Because the same value can appear in multiple chunks, to ensure that we don’t double count, we simply return all the unique values from each chunk which is then de-duplicated in the next phase</li>
 </ol>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">n_distinct_df.chunk_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">na.rm</span> <span class="kw">=</span> <span class="fl">FALSE</span>) {
-  <span class="kw">if</span>(<span class="no">na.rm</span>) {
-    <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">x</span>), <span class="fl">NA</span>)
-  } <span class="kw">else</span> {
-    <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">x</span>)
-  }
-}</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n_distinct_df.chunk_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">na.rm</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Define <code>n_distinct_df.collected_agg.disk.frame</code>, which de-duplicates the unique values</li>
 </ol>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">n_distinct_df.collected_agg.disk.frame</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">list_of_chunkwise_uniques</span>) {
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">n_distinct</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">list_of_chunkwise_uniques</span>))
-}</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n_distinct_df.collected_agg.disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">list_of_chunkwise_uniques</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">n_distinct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">list_of_chunkwise_uniques</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="limitations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#limitations" class="anchor"></a>Limitations</h2>
-<p>We have seen that <code>{disk.frame}</code> performs operations in two phases</p>
+<p>We have seen that <a href="https://diskframe.com">disk.frame</a> performs operations in two phases</p>
 <ol style="list-style-type: decimal">
 <li>apply the same function to each chunk</li>
 <li>row-bind the results</li>
@@ -283,7 +296,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

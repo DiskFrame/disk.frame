@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Return the column names of the disk.frame — colnames" />
-<meta property="og:description" content="The returned column names are from the source. So if you have lazy operations then the 
-colnames here does not reflects the results of those operations. To obtain the correct names try
-names(collect(get_chunk(df, 1)))" />
+<meta property="og:description" content="The returned column names are from the source. So if you have lazy operations
+then the colnames here does not reflects the results of those
+operations. Note: if you have expensive lazy function then this operation
+might take some time." />
 
 
 
@@ -74,7 +75,7 @@ names(collect(get_chunk(df, 1)))" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -82,7 +83,7 @@ names(collect(get_chunk(df, 1)))" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -129,6 +130,9 @@ names(collect(get_chunk(df, 1)))" />
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -138,7 +142,7 @@ names(collect(get_chunk(df, 1)))" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -161,21 +165,22 @@ names(collect(get_chunk(df, 1)))" />
     </div>
 
     <div class="ref-description">
-    <p>The returned column names are from the source. So if you have lazy operations then the 
-colnames here does not reflects the results of those operations. To obtain the correct names try
-<code><a href='https://rdrr.io/r/base/names.html'>names(collect(get_chunk(df, 1)))</a></code></p>
+    <p>The returned column names are from the source. So if you have lazy operations
+then the <code>colnames</code> here does not reflects the results of those
+operations. Note: if you have expensive lazy function then this operation
+might take some time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>colnames</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for disk.frame</span>
-<span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>colnames</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>colnames</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>colnames</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,7 +211,7 @@ colnames here does not reflects the results of those operations. To obtain the c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -86,6 +86,9 @@
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -95,7 +98,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +112,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="06-vs-dask-juliadb_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benchmarks 1: disk.frame beats Dask! disk.frame beats JuliaDB! Anyone else wanna challenge?</h1>
@@ -137,29 +140,31 @@
 <h4 class="hasAnchor">
 <a href="#timings" class="anchor"></a>Timings</h4>
 <p>Please note I have not tried to record the precise times over many runs, but I aim illustrate the magnitude of speed of the different packages</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="no">df</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  <span class="kw">tool</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span>),
-  <span class="kw">timing</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">17.9</span>, <span class="fl">50</span>, <span class="fl">76</span>)
-)
+<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+  tool <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span><span class="op">)</span>,
+  timing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">17.9</span>, <span class="fl">50</span>, <span class="fl">76</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">df</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">tool</span>, <span class="kw">weight</span> <span class="kw">=</span> <span class="no">timing</span>), <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"count"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"seconds"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Convert to desired format timing"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tool</span>, weight <span class="op">=</span> <span class="va">timing</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"seconds"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Convert to desired format timing"</span><span class="op">)</span></code></pre></div>
 <p><img src="06-vs-dask-juliadb_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>Next up is timings for the simple aggregation</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">df</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  <span class="kw">tool</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span>),
-  <span class="kw">timing</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1.2</span>, <span class="fl">6</span>)
-)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+  tool <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, <span class="st">"Dask"</span>, <span class="st">"JuliaDB.jl"</span><span class="op">)</span>,
+  timing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.2</span>, <span class="fl">6</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">df</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">tool</span>, <span class="kw">weight</span> <span class="kw">=</span> <span class="no">timing</span>), <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"count"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"seconds"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Count(*) group-by timings"</span>)</pre></body></html></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tool</span>, weight <span class="op">=</span> <span class="va">timing</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"seconds"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Count(*) group-by timings"</span><span class="op">)</span></code></pre></div>
 <p><img src="06-vs-dask-juliadb_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div id="data" class="section level2">
@@ -168,11 +173,11 @@
 <p>The data can be obtained from <a href="https://docs.rapids.ai/datasets/mortgage-data">Rapids.ai’s Fannie Mae Data distribution page</a>. I have downloaded the <a href="http://rapidsai-data.s3-website.us-east-2.amazonaws.com/notebook-mortgage-data/mortgage_2000-2016.tgz">17 Years data</a> which contains dat on 37 million loans with over 1.89 billions rows in Performance datasets.</p>
 <p>To download and the data, here are some examples</p>
 <p>For <em>Linux</em> users</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">wget</span> http://rapidsai-data.s3-website.us-east-2.amazonaws.com/notebook-mortgage-data/mortgage_2000-2016.tgz</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">tar</span> xzvg mortgage_2000-2016.tgz</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> http://rapidsai-data.s3-website.us-east-2.amazonaws.com/notebook-mortgage-data/mortgage_2000-2016.tgz</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> xzvg mortgage_2000-2016.tgz</span></code></pre></div>
 <p>For <em>Mac</em> users</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">curl</span> http://rapidsai-data.s3-website.us-east-2.amazonaws.com/notebook-mortgage-data/mortgage_2000-2016.tgz -o mortgage_2000-2016.tgz</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">tar</span> xzvg mortgage_2000-2016.tgz</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://rapidsai-data.s3-website.us-east-2.amazonaws.com/notebook-mortgage-data/mortgage_2000-2016.tgz -o mortgage_2000-2016.tgz</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> xzvg mortgage_2000-2016.tgz</span></code></pre></div>
 <p>For <em>Windows</em> users, just download the file and extract the tgz file.</p>
 </div>
 <div id="benchmark-exercise-converting-csv-to-desired-format-and-simple-aggregation" class="section level2">
@@ -183,25 +188,29 @@
 <h4 class="hasAnchor">
 <a href="#disk-frame" class="anchor"></a>disk.frame</h4>
 <p>First up is disk.frame</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">disk.frame</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()) <span class="co"># ~4s</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># ~4s</span>
 <span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.04    0.05    4.64</span></pre></body></html></div>
+<span class="co">#&gt;    0.17    0.12    5.55</span></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.2GB in size</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">time_to_convert_disk.frame</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">df1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span>(<span class="st">"c:/data/Performance_2004Q3.txt"</span>, <span class="kw">header</span> <span class="kw">=</span> <span class="fl">FALSE</span>))[<span class="fl">3</span>]
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">time_to_convert_disk.frame</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="st">"c:/data/Performance_2004Q3.txt"</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>
 
-<span class="no">time_to_convert_disk.frame</span>
+<span class="va">time_to_convert_disk.frame</span>
 <span class="co">#&gt; elapsed </span>
-<span class="co">#&gt;   20.27</span></pre></body></html></div>
+<span class="co">#&gt;    41.8</span></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">time_to_agg_disk.frame</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">summ</span> <span class="kw">&lt;-</span> <span class="no">df1</span>[,<span class="no">.N</span>, <span class="no">V1</span>, <span class="kw">keep</span> <span class="kw">=</span> <span class="st">"V1"</span>][, <span class="fu">.</span>(<span class="kw">N</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">N</span>)), <span class="no">V1</span>])
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">time_to_agg_disk.frame</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="va">df1</span><span class="op">[</span>,<span class="va">.N</span>, <span class="va">V1</span>, keep <span class="op">=</span> <span class="st">"V1"</span><span class="op">]</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span><span class="op">)</span>, <span class="va">V1</span><span class="op">]</span><span class="op">)</span>
 
-<span class="no">time_to_agg_disk.frame</span>
+<span class="va">time_to_agg_disk.frame</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.14    0.03    7.39</span></pre></body></html></div>
+<span class="co">#&gt;    0.07    0.11   14.30</span></code></pre></div>
 <p>We can inspect the result as well.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">summ</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">summ</span>
 <span class="co">#&gt;                   V1   N</span>
 <span class="co">#&gt;      1: 100001458647 111</span>
 <span class="co">#&gt;      2: 100004788186  95</span>
@@ -212,51 +221,52 @@
 <span class="co">#&gt; 389486: 999981910757  17</span>
 <span class="co">#&gt; 389487: 999982397951 104</span>
 <span class="co">#&gt; 389488: 999986952752  97</span>
-<span class="co">#&gt; 389489: 999990008973 156</span>
-<span class="co">#&gt; 389490: 999994125744  15</span></pre></body></html></div>
+<span class="co">#&gt; 389489: 999990008973 162</span>
+<span class="co">#&gt; 389490: 999994125744  15</span></code></pre></div>
 <p>Another way to perform the analysis is to use <code>dplyr</code> syntax to perform group-by in <em>one-stage</em> which is:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">df1</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span>(<span class="st">"V1"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">V1</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">summarise</span>(<span class="kw">N</span> <span class="kw">=</span> <span class="fu">n</span>()) <span class="kw">%&gt;%</span>
-  <span class="no">collect</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">df1</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="st">"V1"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">V1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="va">collect</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    1.82    0.25    6.61</span></pre></body></html></div>
+<span class="co">#&gt;    2.00    1.41    6.74</span></code></pre></div>
 <p>However, the <code>dplyr</code> syntax tends to be slightly slower than using data.table syntax. This may be improved as much of the overhead is due to inefficient use of NSE.</p>
 </div>
 <div id="dask" class="section level4">
 <h4 class="hasAnchor">
 <a href="#dask" class="anchor"></a>Dask</h4>
 <p>To test Dask</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="im">import</span> dask.dataframe <span class="im">as</span> dd</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
-<span id="cb10-3"><a href="#cb10-3"></a></span>
-<span id="cb10-4"><a href="#cb10-4"></a>a <span class="op">=</span> dd.read_csv(<span class="st">"c:/data/Performance_2004Q3.txt"</span>, sep<span class="op">=</span><span class="st">"|"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5"></a>                dtype<span class="op">=</span>{<span class="dv">7</span>: <span class="st">'double'</span>, <span class="dv">14</span>: <span class="st">'str'</span>, <span class="dv">15</span>: <span class="st">'str'</span>, <span class="dv">16</span>:<span class="st">'str'</span>}, header <span class="op">=</span> <span class="va">None</span>)</span>
-<span id="cb10-6"><a href="#cb10-6"></a>a.columns <span class="op">=</span> [<span class="st">"var"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">31</span>)]</span>
-<span id="cb10-7"><a href="#cb10-7"></a>a.head()</span>
-<span id="cb10-8"><a href="#cb10-8"></a></span>
-<span id="cb10-9"><a href="#cb10-9"></a>startTime <span class="op">=</span> datetime.now()</span>
-<span id="cb10-10"><a href="#cb10-10"></a>a.to_parquet(<span class="st">"c:/data/p03.parquet"</span>)</span>
-<span id="cb10-11"><a href="#cb10-11"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 50 seconds</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dask.dataframe <span class="im">as</span> dd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> dd.read_csv(<span class="st">"c:/data/Performance_2004Q3.txt"</span>, sep<span class="op">=</span><span class="st">"|"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                dtype<span class="op">=</span>{<span class="dv">7</span>: <span class="st">'double'</span>, <span class="dv">14</span>: <span class="st">'str'</span>, <span class="dv">15</span>: <span class="st">'str'</span>, <span class="dv">16</span>:<span class="st">'str'</span>}, header <span class="op">=</span> <span class="va">None</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>a.columns <span class="op">=</span> [<span class="st">"var"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">31</span>)]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>a.head()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>startTime <span class="op">=</span> datetime.now()</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>a.to_parquet(<span class="st">"c:/data/p03.parquet"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 50 seconds</span></span></code></pre></div>
 <p>and we can see that converting to Parquet takes more time than <code>csv_to_disk.frame</code>. Now to test Dask’s ability to aggregate a simple use-case, we can also load only column into RAM to speed up the analysis.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>startTime <span class="op">=</span> datetime.now()</span>
-<span id="cb11-2"><a href="#cb11-2"></a>a <span class="op">=</span> dd.read_parquet(<span class="st">"c:/data/p03.parquet"</span>, columns<span class="op">=</span><span class="st">"var0"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a>aa <span class="op">=</span> a.value_counts().compute()</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 1.2</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>startTime <span class="op">=</span> datetime.now()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> dd.read_parquet(<span class="st">"c:/data/p03.parquet"</span>, columns<span class="op">=</span><span class="st">"var0"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>aa <span class="op">=</span> a.value_counts().compute()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 1.2</span></span></code></pre></div>
 <p>The aggregation time is also longer, although in practice 1.2s. vs around 0.5s isn’t that big of a difference. We shall see how the differential changes when dealing with larger datasets in a future session.</p>
 <div id="dask-is-good" class="section level5">
 <h5 class="hasAnchor">
 <a href="#dask-is-good" class="anchor"></a>Dask is good</h5>
 <p>A good feature of Dask is that you need not convert the data to parquet before doing the aggregation. This is a very convenient feature that is not available in disk.frame yet. For example:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>startTime <span class="op">=</span> datetime.now()</span>
-<span id="cb12-2"><a href="#cb12-2"></a>a <span class="op">=</span> dd.read_csv(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, sep<span class="op">=</span><span class="st">"|"</span>,</span>
-<span id="cb12-3"><a href="#cb12-3"></a>                dtype<span class="op">=</span>{<span class="dv">7</span>: <span class="st">'double'</span>, <span class="dv">14</span>: <span class="st">'str'</span>, <span class="dv">15</span>: <span class="st">'str'</span>, <span class="dv">16</span>:<span class="st">'str'</span>}, header <span class="op">=</span> <span class="va">None</span>)</span>
-<span id="cb12-4"><a href="#cb12-4"></a>a.columns <span class="op">=</span> [<span class="st">"var"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">31</span>)]</span>
-<span id="cb12-5"><a href="#cb12-5"></a></span>
-<span id="cb12-6"><a href="#cb12-6"></a>startTime <span class="op">=</span> datetime.now()</span>
-<span id="cb12-7"><a href="#cb12-7"></a>a.var0.value_counts().compute()</span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 50 seconds</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>startTime <span class="op">=</span> datetime.now()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> dd.read_csv(<span class="st">"c:/data/perf/Performance_2004Q3.txt"</span>, sep<span class="op">=</span><span class="st">"|"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                dtype<span class="op">=</span>{<span class="dv">7</span>: <span class="st">'double'</span>, <span class="dv">14</span>: <span class="st">'str'</span>, <span class="dv">15</span>: <span class="st">'str'</span>, <span class="dv">16</span>:<span class="st">'str'</span>}, header <span class="op">=</span> <span class="va">None</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>a.columns <span class="op">=</span> [<span class="st">"var"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">31</span>)]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>startTime <span class="op">=</span> datetime.now()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>a.var0.value_counts().compute()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(datetime.now() <span class="op">-</span> startTime)  <span class="co"># 50 seconds</span></span></code></pre></div>
 <p>However this strategy is not particularly fast. In practice, you are almost always better off spending some time to convert your data to a efficient format before performing analysis. This may have a time cost, but the effort will pay off very quickly.</p>
 </div>
 </div>
@@ -264,22 +274,22 @@
 <h4 class="hasAnchor">
 <a href="#juliadb" class="anchor"></a>JuliaDB</h4>
 <p>I really like Julia but it’s a shame that JuliaDB is no where near as mature as either disk.frame nor Dask for inputting data. I have not been able to load the CSV using JuliaDB’s native methods and have resorted to using CSV.jl to read the data and convert it to JuliaDB.jl. Also, it’s difficult to figure out how to run JuliaDB from disk, and the memory usage is enormous compared to the disk.frame’s and Dask’s.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>using JuliaDB, CSV, OnlineStats</span>
-<span id="cb13-2"><a href="#cb13-2"></a>path = <span class="st">"c:/data/perf"</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># read data using CSV.jl and convert to JuliaDB</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a>@time df = CSV.File(joinpath(path, <span class="st">"Performance_2004Q3.txt"</span>), delim = <span class="ch">'|'</span>, header = false) |&gt; JuliaDB.table <span class="co"># 48</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> JuliaDB<span class="op">,</span> CSV<span class="op">,</span> OnlineStats</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"c:/data/perf"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read data using CSV.jl and convert to JuliaDB</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> df <span class="op">=</span> CSV.File(joinpath(path<span class="op">,</span> <span class="st">"Performance_2004Q3.txt"</span>)<span class="op">,</span> delim <span class="op">=</span> <span class="ch">'|'</span><span class="op">,</span> header <span class="op">=</span> <span class="ex">false</span>) <span class="op">|&gt;</span> JuliaDB.table <span class="co"># 48</span></span></code></pre></div>
 <p>Once the data has been loaded, I can aggregate as follows</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>using LambdaFn</span>
-<span id="cb14-2"><a href="#cb14-2"></a>@time groupby(@λ(size(_,<span class="fl">1</span>)), a, :Column1) <span class="co"># 6</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> LambdaFn</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> groupby(<span class="op">@</span>λ(size(_<span class="op">,</span><span class="fl">1</span>))<span class="op">,</span> a<span class="op">,</span> <span class="op">:</span>Column1) <span class="co"># 6</span></span></code></pre></div>
 <p>Unfortunately, it’s much slower than both disk.frame and Dask.</p>
 <p>As a side note, I can use OnlineStats.jl to do aggregation (relatively) efficiently. I think OnlineStats is one of the bright spots for JuliaDB, as it has powerful online-algorithms that allows you to combine statistics by computing those statistics in chunks and combining the results from each chunk. It’s a shame that JuliaDB is not mature enough to make it shine more brightly. For an example of what it can do, see the example to compute the mean of <code>Column6</code> grouped by <code>Column1</code></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>@time groupreduce(Mean(), a, :Column1, select = :Column6)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> groupreduce(Mean()<span class="op">,</span> a<span class="op">,</span> <span class="op">:</span>Column1<span class="op">,</span> select <span class="op">=</span> <span class="op">:</span>Column6)</span></code></pre></div>
 <p>You may have noticed that we have not converted JuliaDB.jl to disk. Here we will try that</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>@time JuliaDB.save(a, <span class="st">"c:/data/.jldb"</span>) <span class="co"># 26s</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> JuliaDB.save(a<span class="op">,</span> <span class="st">"c:/data/.jldb"</span>) <span class="co"># 26s</span></span></code></pre></div>
 <p>Together with the time taken to read the data in (48s), we can say that the time to read and convert to the JuliaDB format is 48s + 28s = 76s. The issue with this conversion is that we are still not able to load only the column we need for the analysis. Random access to columns are possible with disk.frame and Dask.</p>
 <p>Also, it’s astounding that the output file is 17GB in size and the original CSV was only 2.5GB! Loading the data takes about 9s, but uses up a lot of RAM. I think it will take time for JuliaDB to mature.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>@time a = JuliaDB.load(<span class="st">"c:/data/.jldb"</span>) <span class="co"># 0s</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> a <span class="op">=</span> JuliaDB.load(<span class="st">"c:/data/.jldb"</span>) <span class="co"># 0s</span></span></code></pre></div>
 </div>
 </div>
 <div id="conclusion" class="section level2">
@@ -306,7 +316,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
