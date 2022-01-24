@@ -1,0 +1,53 @@
+---
+title: "Trouble shooting"
+author: "ZJ"
+output: pdf_document
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval=TRUE,
+  include=TRUE
+)
+```
+
+### Steps to trouble shoot
+
+1. I suggest updating {future} and your R version if you have not already done so.
+
+2. Are you able to share the data?
+
+3. Do a good MWE
+```
+library(disk.frame)
+setup_disk.frame()
+
+df<-as.disk.frame(a)
+
+
+df1 = mutate(df, date = as.Date(as.character(datadate), format="%Y%m%d"))
+
+head(df1)
+```
+
+
+3. Check if your virus scanner is blocking interprocess communication
+
+4. Try to apply the function to just one chunk, perhaps there is a syntax error or column error? If one chunk works then you can rule out coding error
+
+```
+get_chunk(df, 1) %>%
+  mutate(date = as.Date(as.character(datadate), format="%Y%m%d"))
+```
+
+5. Set the number of workers to 1, so there is no more inter-process communication. Does it work now? If it does, then it's the inter process communication. You might need to contact your admin for help
+
+```
+setup_disk.frame(workers=1)
+mutate(df, date = as.Date(as.character(datadate), format="%Y%m%d"))
+As an MWE this works for me.
+
+a = data.frame(datadate = rep("20201007", 3e6))
+```

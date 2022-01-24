@@ -3,7 +3,7 @@ title: "Preface - The birth of `disk.frame`"
 author: "ZJ"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{preface}
+  %\VignetteIndexEntry{Preface - The birth of `disk.frame`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

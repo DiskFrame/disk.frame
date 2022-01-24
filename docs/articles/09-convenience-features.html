@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -86,6 +82,9 @@
     <li>
       <a href="../articles/11-custom-group-by.html">Custom One-Stage Group-by functions</a>
     </li>
+    <li>
+      <a href="../articles/88-trouble-shooting.html">Trouble shooting</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -94,8 +93,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -113,46 +112,49 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Convenience features</h1>
-                        <h4 class="author">ZJ</h4>
+                        <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/master/vignettes/09-convenience-features.Rmd"><code>vignettes/09-convenience-features.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/09-convenience-features.Rmd" class="external-link"><code>vignettes/09-convenience-features.Rmd</code></a></small>
       <div class="hidden name"><code>09-convenience-features.Rmd</code></div>
 
     </div>
 
     
     
-<div id="convenience-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#convenience-features" class="anchor"></a>Convenience Features</h2>
-<div id="graphical-user-interface-gui-for-setting-options" class="section level3">
-<h3 class="hasAnchor">
-<a href="#graphical-user-interface-gui-for-setting-options" class="anchor"></a>Graphical User Interface (GUI) for setting options</h3>
-<p>I wanted to make <code>{disk.frame}</code> as easy to use as possible. I often forget what options are available to me. So I’ve made a graphical user interface (GUI) which can invoked with</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>(<span class="kw">gui</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p>The above opens up a Shiny app where the user can adjust the <code>{disk.frame}</code> options in a .</p>
+<div class="section level2">
+<h2 id="convenience-features">Convenience Features<a class="anchor" aria-label="anchor" href="#convenience-features"></a>
+</h2>
+<div class="section level3">
+<h3 id="graphical-user-interface-gui-for-setting-options">Graphical User Interface (GUI) for setting options<a class="anchor" aria-label="anchor" href="#graphical-user-interface-gui-for-setting-options"></a>
+</h3>
+<p>I wanted to make <a href="https://diskframe.com" class="external-link">disk.frame</a> as easy to use as possible. I often forget what options are available to me. So I’ve made a graphical user interface (GUI) which can invoked with</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span>gui <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>The above opens up a Shiny app where the user can adjust the <a href="https://diskframe.com" class="external-link">disk.frame</a> options in a .</p>
 </div>
-<div id="rstudio-column-name-completion" class="section level3">
-<h3 class="hasAnchor">
-<a href="#rstudio-column-name-completion" class="anchor"></a>RStudio column name completion</h3>
-<div class="sourceCode" id="cb2"><html><body><pre class="r">library(disk.frame)
-mtcars.df = as.disk.frame(mtcars)
-
-mtcars.df %&gt;% 
-  filter(&lt;press tab&gt;)</pre></body></html></div>
+<div class="section level3">
+<h3 id="rstudio-column-name-completion">RStudio column name completion<a class="anchor" aria-label="anchor" href="#rstudio-column-name-completion"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(disk.frame)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mtcars.df <span class="ot">=</span> <span class="fu">as.disk.frame</span>(mtcars)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mtcars.df <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">&lt;</span>press tab<span class="sc">&gt;</span>)</span></code></pre></div>
 <p>you can press tab in RStudio and it will show all columns available.</p>
 </div>
-<div id="insert-ceremonyboilerplate-into-code-in-rstudio" class="section level3">
-<h3 class="hasAnchor">
-<a href="#insert-ceremonyboilerplate-into-code-in-rstudio" class="anchor"></a>Insert ceremony/boilerplate into code in RStudio</h3>
+<div class="section level3">
+<h3 id="insert-ceremonyboilerplate-into-code-in-rstudio">Insert ceremony/boilerplate into code in RStudio<a class="anchor" aria-label="anchor" href="#insert-ceremonyboilerplate-into-code-in-rstudio"></a>
+</h3>
 <p>The below will insert the recommended ceremony code into your editor</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">disk.frame</span><span class="kw ns">::</span><span class="fu"><a href="../reference/show_ceremony.html">insert_ceremony</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">disk.frame</span><span class="fu">::</span><span class="fu"><a href="../reference/show_ceremony.html">insert_ceremony</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
 <p>should insert</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># this willl set disk.frame with multiple workers</span>
-<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span>()
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># this willl set disk.frame with multiple workers</span>
+<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">future.globals.maxSize</span> <span class="kw">=</span> <span class="fl">Inf</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -168,11 +170,13 @@ mtcars.df %&gt;%
 
 
       <footer><div class="copyright">
-  <p>Developed by Dai ZJ.</p>
+  <p></p>
+<p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -180,6 +184,8 @@ mtcars.df %&gt;%
 
   
 
+
+  
 
   </body>
 </html>

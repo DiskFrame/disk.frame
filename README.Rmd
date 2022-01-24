@@ -250,7 +250,7 @@ ncol(flights.df)
 
 ## Hex logo
 
-![disk.frame logo](inst/figures/logo.png?raw=true)
+![disk.frame logo](inst/figures/logo.png)
 
 ## Contributors
 
@@ -281,6 +281,7 @@ The work priorities at this stage are
 | [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | English  | Bruno Rodriguez | 2019-10-06 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
 | [Emma goes to useR! 2019](https://emmavestesson.netlify.app/2019/07/user2019/) | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post           |
 | [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567) | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                          |
+
 
 
 ### Interested in learning `{disk.frame}` in a structured course?
@@ -331,9 +332,3 @@ https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Travis build status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
-
-## Live Stream of `{disk.frame}` development
-
-* https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe
