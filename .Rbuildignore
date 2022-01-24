@@ -65,3 +65,4 @@ vignettes.Rnw.template
 ^codecov\.yml$
 new-nse-dev.r
 test-poorman.R
+*.parquet

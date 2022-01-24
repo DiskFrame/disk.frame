@@ -8,7 +8,6 @@
 \alias{transmute.disk.frame}
 \alias{arrange.disk.frame}
 \alias{chunk_arrange}
-\alias{add_count.disk.frame}
 \alias{add_tally.disk.frame}
 \alias{do.disk.frame}
 \alias{distinct.disk.frame}
@@ -29,8 +28,6 @@
 \method{arrange}{disk.frame}(.data, ...)
 
 chunk_arrange(.data, ...)
-
-add_count.disk.frame(.data, ...)
 
 add_tally.disk.frame(.data, ...)
 

@@ -250,7 +250,7 @@ ncol(flights.df)
 
 ## Hex logo
 
-![disk.frame logo](inst/figures/logo.png?raw=true)
+![disk.frame logo](inst/figures/logo.png)
 
 ## Contributors
 
@@ -281,6 +281,7 @@ The work priorities at this stage are
 | [Split-apply-combine for Maximum Likelihood Estimation of a linear model](https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/) | English  | Bruno Rodriguez | 2019-10-06 | `{disk.frame}` used in helping to create a maximum likelihood estimation program for linear models |
 | [Emma goes to useR! 2019](https://emmavestesson.netlify.app/2019/07/user2019/) | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post           |
 | [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567) | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                          |
+
 
 
 ### Interested in learning `{disk.frame}` in a structured course?

@@ -73,19 +73,19 @@ df_setup_vignette <- function(excl = "", strip_number = FALSE) {
 
 df_test <- function() {
   # rename tests
-  if(fs::dir_exists("tests_manual")) {
-    fs::dir_copy("tests_manual", "tests")
-    Sys.sleep(3) # allow enough time for it to happen
-    fs::dir_delete("tests_manual")
-  }
+  # if(fs::dir_exists("tests_manual")) {
+  #   fs::dir_copy("tests_manual", "tests")
+  #   Sys.sleep(3) # allow enough time for it to happen
+  #   fs::dir_delete("tests_manual")
+  # }
   
   devtools::test()
   
-  if(fs::dir_exists("tests")) {
-    fs::dir_copy("tests", "tests_manual")
-    Sys.sleep(8) # allow enough time for it to happen
-    fs::dir_delete("tests")
-  }
+  # if(fs::dir_exists("tests")) {
+  #   fs::dir_copy("tests", "tests_manual")
+  #   Sys.sleep(8) # allow enough time for it to happen
+  #   fs::dir_delete("tests")
+  # }
 }
 
 df_build_vignettes_for_cran <- function() {

@@ -70,10 +70,10 @@ chunk_arrange <- create_chunk_mapper(dplyr::arrange)
 # TODO alot of these .disk.frame functions are not generic
 
 
-#' @export
-#' @importFrom dplyr add_count
-#' @rdname dplyr_verbs
-add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
+#' #' @export
+#' #' @importFrom dplyr add_count
+#' #' @rdname dplyr_verbs
+#' add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
 
 
 #' @export
