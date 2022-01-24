@@ -250,7 +250,7 @@ ncol(flights.df)
 
 ## Hex logo
 
-![disk.frame logo](inst/figures/logo.png?raw=true)
+![disk.frame logo](inst/figures/logo.png)
 
 ## Contributors
 

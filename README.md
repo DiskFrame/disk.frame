@@ -211,12 +211,12 @@ flights.df %>%
   filter(year == 2013) %>% 
   mutate(origin_dest = paste0(origin, dest)) %>% 
   head(2)
-#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight
-#> 1 2013     1   1      517            515         2      830            819        11      UA   1545
-#> 2 2013     1   1      533            529         4      850            830        20      UA   1714
-#>   tailnum origin dest air_time distance hour minute           time_hour origin_dest
-#> 1  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH
-#> 2  N24211    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH
+#>   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier
+#> 1 2013     1   1      517            515         2      830            819        11      UA
+#> 2 2013     1   1      533            529         4      850            830        20      UA
+#>   flight tailnum origin dest air_time distance hour minute           time_hour origin_dest
+#> 1   1545  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH
+#> 2   1714  N24211    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH
 ```
 
 ### Group-by
@@ -313,7 +313,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpEdhlRv\\file33ec67c31d9c.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpIlXNzn\\file568813b835a7.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -350,7 +350,7 @@ ncol(flights.df)
 
 ## Hex logo
 
-![disk.frame logo](inst/figures/logo.png?raw=true)
+![disk.frame logo](inst/figures/logo.png)
 
 ## Contributors
 
@@ -444,11 +444,3 @@ ways? Here are some ways you can contribute
 
 [![](https://cranlogs.r-pkg.org/badges/disk.frame)](https://cran.r-project.org/package=disk.frame)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/disk.frame)](https://cran.r-project.org/package=disk.frame)
-[![Travis build
-status](https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master)](https://travis-ci.org/xiaodaigh/disk.frame)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&svg=true)](https://ci.appveyor.com/project/xiaodaigh/disk.frame)
-
-## Live Stream of `{disk.frame}` development
-
--   <https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe>

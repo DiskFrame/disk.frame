@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/">
+  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -112,44 +108,45 @@
 
       
 
-      </header><script src="05-data-table-syntax_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using data.table syntax with disk.frame</h1>
-                        <h4 class="author">ZJ</h4>
+                        <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/master/vignettes/05-data-table-syntax.Rmd"><code>vignettes/05-data-table-syntax.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/05-data-table-syntax.Rmd" class="external-link"><code>vignettes/05-data-table-syntax.Rmd</code></a></small>
       <div class="hidden name"><code>05-data-table-syntax.Rmd</code></div>
 
     </div>
 
     
     
-<div id="disk-frame-supports-data-table-syntax" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disk-frame-supports-data-table-syntax" class="anchor"></a><code>disk.frame</code> supports <code>data.table</code> syntax</h2>
+<div class="section level2">
+<h2 id="disk-frame-supports-data-table-syntax">
+<code>disk.frame</code> supports <code>data.table</code> syntax<a class="anchor" aria-label="anchor" href="#disk-frame-supports-data-table-syntax"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
 
 <span class="co"># set-up disk.frame to use multiple workers</span>
-<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
   <span class="co"># highly recommended, however it is pun into interactive() for CRAN because</span>
   <span class="co"># change user options are not allowed on CRAN</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>  
+  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>  
 <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="op">}</span>
 
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="co"># create a disk.frame</span>
-<span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"flights13"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"flights13"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>In the following example, I will use the <code>.N</code> from the <code>data.table</code> package to count the unique combinations <code>year</code> and <code>month</code> within each chunk.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'data.table'</span>
 <span class="co">#&gt; The following object is masked from 'package:purrr':</span>
@@ -158,18 +155,18 @@
 <span class="co">#&gt; The following objects are masked from 'package:dplyr':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     between, first, last</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
 
-<span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"flights13"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"flights13"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "year"           "month"          "day"            "dep_time"      </span>
 <span class="co">#&gt;  [5] "sched_dep_time" "dep_delay"      "arr_time"       "sched_arr_time"</span>
 <span class="co">#&gt;  [9] "arr_delay"      "carrier"        "flight"         "tailnum"       </span>
 <span class="co">#&gt; [13] "origin"         "dest"           "air_time"       "distance"      </span>
 <span class="co">#&gt; [17] "hour"           "minute"         "time_hour"</span>
 
-<span class="va">flights.df</span><span class="op">[</span>,<span class="va">.N</span>, <span class="fu">.</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span>, keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">]</span>
+<span class="va">flights.df</span><span class="op">[</span>,<span class="va">.N</span>, <span class="fu">.</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span>, keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;     year month     N</span>
 <span class="co">#&gt;  1: 2013     1 27004</span>
 <span class="co">#&gt;  2: 2013    10 28889</span>
@@ -191,10 +188,10 @@
 <p>All <code>data.table</code> syntax are supported. However, <code>disk.frame</code> adds the ability to load only those columns required for the analysis using the <code>keep =</code> option. In the above analysis, only the <code>year</code> and <code>month</code> variables are required and hence <code>keep = c("year", "month")</code> was used.</p>
 <p>Alternatively, we can use the <code>srckeep</code> function to achieve the same, e.g.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="va">.N</span>, <span class="fu">.</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<div id="external-variables-are-captured" class="section level3">
-<h3 class="hasAnchor">
-<a href="#external-variables-are-captured" class="anchor"></a>External variables are captured</h3>
+<code class="sourceCode R"><span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="va">.N</span>, <span class="fu">.</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<div class="section level3">
+<h3 id="external-variables-are-captured">External variables are captured<a class="anchor" aria-label="anchor" href="#external-variables-are-captured"></a>
+</h3>
 <p><code>disk.frame</code> sends the computation to background workers which are essentially distinct and separate R sessions. Typically, the variables that you have available in your current R session aren’t visible in the other R sessions, but <code>disk.frame</code> uses the <code>future</code> package’s variable detection abilities to figure out which variables are in use and then send them to the background workers so they have access to the variables as well. E.g.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fl">42</span> 
@@ -219,11 +216,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Dai ZJ.</p>
+  <p></p>
+<p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -231,6 +230,8 @@
 
   
 
+
+  
 
   </body>
 </html>

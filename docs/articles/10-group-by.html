@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/">
+  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -112,60 +108,59 @@
 
       
 
-      </header><script src="10-group-by_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Group-by</h1>
-                        <h4 class="author">ZJ</h4>
+                        <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/master/vignettes/10-group-by.Rmd"><code>vignettes/10-group-by.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/10-group-by.Rmd" class="external-link"><code>vignettes/10-group-by.Rmd</code></a></small>
       <div class="hidden name"><code>10-group-by.Rmd</code></div>
 
     </div>
 
     
     
-<div id="group-by-in-disk-frame" class="section level1">
-<h1 class="hasAnchor">
-<a href="#group-by-in-disk-frame" class="anchor"></a>Group-by in <code>{disk.frame}</code>
-</h1>
-<p>The group-by framework of <a href="https://diskframe.com"><code>{disk.frame}</code></a> has been overhauled in v0.3.0. It is now able to perform some group-by-summarize operations in one stage. In this chapter we will cover</p>
+<div class="section level2">
+<h2 id="group-by-in-disk-frame">Group-by in <code>{disk.frame}</code><a class="anchor" aria-label="anchor" href="#group-by-in-disk-frame"></a>
+</h2>
+<p>The group-by framework of <a href="https://diskframe.com" class="external-link"><code>{disk.frame}</code></a> has been overhauled in v0.3.0. It is now able to perform some group-by-summarize operations in one stage. In this chapter we will cover</p>
 <ol style="list-style-type: decimal">
 <li>How to use one-stage group-by</li>
 <li>Manual two-stage group and hard group-by</li>
 </ol>
-<p>In the custom <a href="https://diskframe.com/articles/custom-group-by.html">one-stage group-by chapter</a>, we will cover</p>
+<p>In the custom <a href="https://diskframe.com/articles/custom-group-by.html" class="external-link">one-stage group-by chapter</a>, we will cover</p>
 <ul>
-<li>The architecture of <a href="https://diskframe.com">disk.frame</a> and its implications for group-by</li>
+<li>The architecture of <a href="https://diskframe.com" class="external-link">disk.frame</a> and its implications for group-by</li>
 <li>How to define custom one-stage group-by functions and its limitations</li>
 </ul>
-<div id="one-stage-group-by" class="section level2">
-<h2 class="hasAnchor">
-<a href="#one-stage-group-by" class="anchor"></a>One-stage Group-by</h2>
-<p>A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitations imposed by the disk-based nature of <a href="https://diskframe.com">disk.frame</a>. Before v0.3.0 of <a href="https://diskframe.com">disk.frame</a>, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like <code>mean</code>.</p>
+<div class="section level3">
+<h3 id="one-stage-group-by">One-stage Group-by<a class="anchor" aria-label="anchor" href="#one-stage-group-by"></a>
+</h3>
+<p>A one-stage group-by is the same as group-by for data.frames. This would be unremarkable, if not for the limitations imposed by the disk-based nature of <a href="https://diskframe.com" class="external-link">disk.frame</a>. Before v0.3.0 of <a href="https://diskframe.com" class="external-link">disk.frame</a>, one-stage group-by was not possible, and the user had to rely on two-stage group-by even for simple operations like <code>mean</code>.</p>
 <p>However, now that one-stage group-by is possible, there are still limitations and not all functions are supported out-of-the-box. Hence, in the next chapter we will describe how to define custom one-stage group-by functions.</p>
 <p>An example of one-stage group-by:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="va">as.disk.frame</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, 
-    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, 
-    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="va">as.disk.frame</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, 
+    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, 
+    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">collect</span></code></pre></div>
-<p>It is important to note that not all functions that can run in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> would work automatically. This is because of how <a href="https://diskframe.com">disk.frame</a> works. Please see the next chapter on defining custom one-stage group-by functions to learn more.</p>
-<div id="list-of-supported-group-by-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#list-of-supported-group-by-functions" class="anchor"></a>List of supported group-by functions</h3>
-<p>If a function you need/like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues">here</a>. It is a limitation that function that depend on the order a column can only obtained using estimated methods.</p>
+<p>It is important to note that not all functions that can run in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarize</a></code> would work automatically. This is because of how <a href="https://diskframe.com" class="external-link">disk.frame</a> works. Please see the next chapter on defining custom one-stage group-by functions to learn more.</p>
+<div class="section level4">
+<h4 id="list-of-supported-group-by-functions">List of supported group-by functions<a class="anchor" aria-label="anchor" href="#list-of-supported-group-by-functions"></a>
+</h4>
+<p>If a function you need/like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">here</a>. It is a limitation that function that depend on the order a column can only obtained using estimated methods.</p>
 <table class="table">
 <thead><tr class="header">
 <th>Function</th>
@@ -217,7 +212,7 @@
 <td><code>var</code></td>
 <td>Exact</td>
 <td>
-<code><a href="https://rdrr.io/r/stats/cor.html">var(x)</a></code> only <code>cor, cov</code> support <em>planned</em>
+<code>var(x)</code> only <code>cor, cov</code> support <em>planned</em>
 </td>
 </tr>
 <tr class="even">
@@ -248,128 +243,128 @@
 </tbody>
 </table>
 </div>
-<div id="notes-on-one-stage-group-by" class="section level3">
-<h3 class="hasAnchor">
-<a href="#notes-on-one-stage-group-by" class="anchor"></a>Notes on One-Stage group-by</h3>
-<p>The results should be exactly the same as if applying the same group-by operations on a <code>data.frame</code>. If not then please <a href="https://github.com/xiaodaigh/disk.frame/issues">report a bug</a>.</p>
+<div class="section level4">
+<h4 id="notes-on-one-stage-group-by">Notes on One-Stage group-by<a class="anchor" aria-label="anchor" href="#notes-on-one-stage-group-by"></a>
+</h4>
+<p>The results should be exactly the same as if applying the same group-by operations on a <code>data.frame</code>. If not then please <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">report a bug</a>.</p>
 </div>
 </div>
-<div id="group-by-notes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#group-by-notes" class="anchor"></a>Group-by notes</h2>
+<div class="section level3">
+<h3 id="group-by-notes">Group-by notes<a class="anchor" aria-label="anchor" href="#group-by-notes"></a>
+</h3>
 <p>The <code>disk.frame</code> implements the <code>chunk_group_by</code> operation with a significant caveat. In the <code>disk.frame</code> framework, group-by happens WITHIN each chunk and not ACROSS chunks. To achieve group by across chunk we need to put <strong>all rows with the same group keys into the same file chunk</strong>; this can be achieved with <code>hard_group_by</code>. However, the <code>hard_group_by</code> operation can be <strong>VERY TIME CONSUMING</strong> computationally and should be <strong>avoided</strong> if possible.</p>
 <p>The <code>hard_group_by</code> operation is best illustrated with an example, suppose a <code>disk.frame</code> has three chunks</p>
-<pre><code># chunk1 = 1.fst
-#  id n
-#1  a 1
-#2  a 2
-#3  b 3
-#4  d 4
+<pre><code><span class="co"># chunk1 = 1.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  a 1</span>
+<span class="co">#2  a 2</span>
+<span class="co">#3  b 3</span>
+<span class="co">#4  d 4</span>
 
-# chunk2 = 2.fst
-#  id n
-#1  a 4
-#2  a 5
-#3  b 6
-#4  d 7
+<span class="co"># chunk2 = 2.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  a 4</span>
+<span class="co">#2  a 5</span>
+<span class="co">#3  b 6</span>
+<span class="co">#4  d 7</span>
 
-# chunk3 = 3.fst
-#  id n
-#1  a 4
-#2  b 5
-#3  c 6</code></pre>
-<p>and notice that the <code>id</code> column contains 3 distinct values <code>"a"</code>,<code>"b"</code>, and <code>"c"</code>. To perform <code><a href="../reference/hard_group_by.html">hard_group_by(df, by = id)</a></code> MAY give you the following <code>disk.frame</code> where all the <code>id</code>s with the same values end up in the same chunks.</p>
-<pre><code># chunk1 = 1.fst
-#  id n
-#1  b 3
-#2  b 6
+<span class="co"># chunk3 = 3.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  a 4</span>
+<span class="co">#2  b 5</span>
+<span class="co">#3  c 6</span></code></pre>
+<p>and notice that the <code>id</code> column contains 3 distinct values <code>"a"</code>,<code>"b"</code>, and <code>"c"</code>. To perform <code>hard_group_by(df, by = id)</code> MAY give you the following <code>disk.frame</code> where all the <code>id</code>s with the same values end up in the same chunks.</p>
+<pre><code><span class="co"># chunk1 = 1.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  b 3</span>
+<span class="co">#2  b 6</span>
 
-# chunk2 = 2.fst
-#  id n
-#1  c 6
-#2  d 4
-#3  d 7
+<span class="co"># chunk2 = 2.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  c 6</span>
+<span class="co">#2  d 4</span>
+<span class="co">#3  d 7</span>
 
-# chunk3 = 3.fst
-#  id n
-#1  a 1
-#2  a 2
-#3  a 4
-#4  a 5
-#5  a 4</code></pre>
+<span class="co"># chunk3 = 3.fst</span>
+<span class="co">#  id n</span>
+<span class="co">#1  a 1</span>
+<span class="co">#2  a 2</span>
+<span class="co">#3  a 4</span>
+<span class="co">#4  a 5</span>
+<span class="co">#5  a 4</span></code></pre>
 <p>Also, notice that there is no guaranteed order for the distribution of the <code>id</code>s to the chunks. The order is random, but each chunk is likely to have a similar number of rows, provided that <code>id</code> does not follow a skewed distribution i.e. where a few distinct values make up the majority of the rows.</p>
 <p>Typically, <code>chunk_group_by</code> is performed WITHIN each chunk. This is not an issue if the chunks have already been sharded on the <code>by</code> variables beforehand; however, if this is not the case then one may need a second stage aggregation to obtain the correct result, see <em>Two-stage group by</em>.</p>
 <p>By forcing the user to choose <code>chunk_group_by</code> (within each chunk) and <code>hard_group_by</code> (across all chunks), this ensures that the user is conscious of the choice they are making. In <code>sparklyr</code> the equivalent of a <code>hard_group_by</code> is performed, which we should avoid, where possible, as it is time-consuming and expensive. Hence, <code>disk.frame</code> has chosen to explain the theory and allow the user to make a conscious choice when performing <code>group_by</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
-<span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># notice that hard_group_by needs to be set</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
-  <span class="va">collect</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
+<span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># notice that hard_group_by needs to be set</span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># mean follows normal R rules</span>
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="two-stage-group-by" class="section level2">
-<h2 class="hasAnchor">
-<a href="#two-stage-group-by" class="anchor"></a>Two-Stage Group-by</h2>
-<p>Prior to <a href="https://diskframe.com">disk.frame</a> v0.3.0, there is no general support for one-stage group-by. Hence a two-stage style group-by is needed. The key is understand is the <code>chunk_group_by</code> which performs <code>group-by</code> within each chunk.</p>
+<div class="section level3">
+<h3 id="two-stage-group-by">Two-Stage Group-by<a class="anchor" aria-label="anchor" href="#two-stage-group-by"></a>
+</h3>
+<p>Prior to <a href="https://diskframe.com" class="external-link">disk.frame</a> v0.3.0, there is no general support for one-stage group-by. Hence a two-stage style group-by is needed. The key is understand is the <code>chunk_group_by</code> which performs <code>group-by</code> within each chunk.</p>
 <p>For most group-by tasks, the user can achieve the desired result WITHOUT using <code>hard = TRUE</code> by performing the group by in two stages. For example, suppose you aim to count the number of rows group by <code>carrier</code>, you can set <code>hard = F</code> to find the count within each chunk and then use a second group-by to summaries each chunk’s results into the desired result. For example,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># `chunk_group_by` aggregates within each chunk</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
-  <span class="va">collect</span> <span class="op">%&gt;%</span>  <span class="co"># collect each individul chunks results and row-bind into a data.table</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># `chunk_group_by` aggregates within each chunk</span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># mean follows normal R rules</span>
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># collect each individul chunks results and row-bind into a data.table</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span></code></pre></div>
 <p>Because this two-stage approach avoids the expensive <code>hard group_by</code> operation, it is often significantly faster. However, it can be tedious to write; and this is a con of the <code>disk.frame</code> chunking mechanism.</p>
 <p><em>Note</em>: this two-stage approach is similar to a map-reduce operation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span>
 
-<span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"distance"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># keep only carrier and distance columns</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># this does a count per chunk</span>
+<span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"distance"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># keep only carrier and distance columns</span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># this does a count per chunk</span>
   <span class="va">collect</span></code></pre></div>
 <p>This is two-stage group-by in action</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># need a 2nd stage to finalise summing</span>
-<span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"distance"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># keep only carrier and distance columns</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># this does a count per chunk</span>
-  <span class="va">collect</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">sum_dist</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"distance"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># keep only carrier and distance columns</span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># this does a count per chunk</span>
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sum_dist</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>You can mix group-by with other dplyr verbs as below, here is an example of using <code>filter</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># filter</span>
-<span class="va">pt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">pt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">df_filtered</span> <span class="op">&lt;-</span>
-  <span class="va">flights.df</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"filtering a &lt; 0.1 took: "</span>, <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/timetaken.html">timetaken</a></span><span class="op">(</span><span class="va">pt</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df_filtered</span><span class="op">)</span></code></pre></div>
+  <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"filtering a &lt; 0.1 took: "</span>, <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">pt</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">df_filtered</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="hard-group-by" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hard-group-by" class="anchor"></a>Hard group-by</h2>
+<div class="section level3">
+<h3 id="hard-group-by">Hard group-by<a class="anchor" aria-label="anchor" href="#hard-group-by"></a>
+</h3>
 <p>Another way to perform a one-stage <code>group_by</code> is to perform a <code>hard_group_by</code> on a <code>disk.frame</code>. This will rechunk the <code>disk.frame</code> by the by-columns. This is <strong>not</strong> recommended for performance reasons, as it can be quite slow to rechunk the file chunks on disk.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">res1</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"month"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="va">qtr</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarise</a></span><span class="op">(</span>avg_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">pt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">res1</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"month"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="va">qtr</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># hard group_by is MUCH SLOWER but avoid a 2nd stage aggregation</span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarise</a></span><span class="op">(</span>avg_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">collect</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"group-by took: "</span>, <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/timetaken.html">timetaken</a></span><span class="op">(</span><span class="va">pt</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"group-by took: "</span>, <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">pt</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -385,11 +380,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Dai ZJ.</p>
+  <p></p>
+<p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -397,6 +394,8 @@
 
   
 
+
+  
 
   </body>
 </html>

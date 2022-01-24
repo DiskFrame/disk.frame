@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/">
+  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -112,90 +108,87 @@
 
       
 
-      </header><script src="02-intro-disk-frame_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Quick Start: Basic Operations with nycflights13</h1>
-                        <h4 class="author">ZJ</h4>
+                        <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/master/vignettes/02-intro-disk-frame.Rmd"><code>vignettes/02-intro-disk-frame.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/02-intro-disk-frame.Rmd" class="external-link"><code>vignettes/02-intro-disk-frame.Rmd</code></a></small>
       <div class="hidden name"><code>02-intro-disk-frame.Rmd</code></div>
 
     </div>
 
     
     
-<div id="quick-start---replicating-dplyrs-tutorial-on-nycflight13" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quick-start---replicating-dplyrs-tutorial-on-nycflight13" class="anchor"></a>Quick Start - replicating dplyr’s tutorial on nycflight13</h1>
-<p>The <a href="https://github.com/xiaodaigh/disk.frame"><code>disk.frame</code> package</a> aims to be the answer to the question: how do I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
+<div class="section level2">
+<h2 id="quick-start---replicating-dplyrs-tutorial-on-nycflight13">Quick Start - replicating dplyr’s tutorial on nycflight13<a class="anchor" aria-label="anchor" href="#quick-start---replicating-dplyrs-tutorial-on-nycflight13"></a>
+</h2>
+<p>The <a href="https://github.com/xiaodaigh/disk.frame" class="external-link"><code>disk.frame</code> package</a> aims to be the answer to the question: how do I manipulate structured tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
 <p>In a nutshell, <code>disk.frame</code> makes use of two simple ideas</p>
 <ol style="list-style-type: decimal">
 <li>split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and</li>
 <li>provide a convenient API to manipulate these chunks</li>
 </ol>
 <p><code>disk.frame</code> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em>.</p>
-<p>In this tutorial, we introduce <code>disk.frame</code>, address some common questions, and replicate the <a href="https://spark.rstudio.com/dplyr/">sparklyr data manipulation tutorial</a> using <code>disk.frame</code> constructs.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p>In this tutorial, we introduce <code>disk.frame</code>, address some common questions, and replicate the <a href="https://spark.rstudio.com/dplyr/" class="external-link">sparklyr data manipulation tutorial</a> using <code>disk.frame</code> constructs.</p>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <p>Simply run</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span> <span class="co"># when CRAN ready</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span> <span class="co"># when CRAN ready</span></code></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"xiaodaigh/disk.frame"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"xiaodaigh/disk.frame"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="set-up-disk-frame" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-up-disk-frame" class="anchor"></a>Set-up <code>disk.frame</code>
-</h2>
+<div class="section level3">
+<h3 id="set-up-disk-frame">Set-up <code>disk.frame</code><a class="anchor" aria-label="anchor" href="#set-up-disk-frame"></a>
+</h3>
 <p><code>disk.frame</code> works best if it can process multiple data chunks in parallel. The best way to set-up <code>disk.frame</code> so that each CPU core runs a background worker is by using</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
 <p>The <code><a href="../reference/setup_disk.frame.html">setup_disk.frame()</a></code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
-<p>Alternatively, one may specify the number of workers using <code><a href="../reference/setup_disk.frame.html">setup_disk.frame(workers = n)</a></code>.</p>
+<p>Alternatively, one may specify the number of workers using <code>setup_disk.frame(workers = n)</code>.</p>
 </div>
-<div id="basic-data-operations-with-disk-frame" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-data-operations-with-disk-frame" class="anchor"></a>Basic Data Operations with <code>disk.frame</code>
-</h2>
-<p>The <code>disk.frame</code> package provides convenient functions to convert <code>data.frame</code>s and CSVs to <code>disk.frame</code>s.</p>
-<div id="creating-a-disk-frame-from-data-frame" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creating-a-disk-frame-from-data-frame" class="anchor"></a>Creating a <code>disk.frame</code> from <code>data.frame</code>
+<div class="section level3">
+<h3 id="basic-data-operations-with-disk-frame">Basic Data Operations with <code>disk.frame</code><a class="anchor" aria-label="anchor" href="#basic-data-operations-with-disk-frame"></a>
 </h3>
+<p>The <code>disk.frame</code> package provides convenient functions to convert <code>data.frame</code>s and CSVs to <code>disk.frame</code>s.</p>
+<div class="section level4">
+<h4 id="creating-a-disk-frame-from-data-frame">Creating a <code>disk.frame</code> from <code>data.frame</code><a class="anchor" aria-label="anchor" href="#creating-a-disk-frame-from-data-frame"></a>
+</h4>
 <p>We convert a <code>data.frame</code> to <code>disk.frame</code> using the <code>as.data.frame</code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
 
 <span class="co"># convert the flights data to a disk.frame and store the disk.frame in the folder</span>
 <span class="co"># "tmp_flights" and overwrite any content if needed</span>
 <span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span>
   <span class="va">flights</span>, 
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>,
+  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>,
   overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">flights.df</span></code></pre></div>
 <p>You should now see a folder called <code>tmp_flights</code> with some files in it, namely <code>1.fst</code>, <code>2.fst</code>…. where each <code>fst</code> files is one chunk of the <code>disk.frame</code>.</p>
 </div>
-<div id="creating-a-disk-frame-from-csv" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creating-a-disk-frame-from-csv" class="anchor"></a>Creating a <code>disk.frame</code> from CSV</h3>
+<div class="section level4">
+<h4 id="creating-a-disk-frame-from-csv">Creating a <code>disk.frame</code> from CSV<a class="anchor" aria-label="anchor" href="#creating-a-disk-frame-from-csv"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 <span class="co"># write a csv</span>
-<span class="va">csv_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.csv"</span><span class="op">)</span>
-<span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html">fwrite</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">csv_path</span><span class="op">)</span>
+<span class="va">csv_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.csv"</span><span class="op">)</span>
+<span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">csv_path</span><span class="op">)</span>
 
 <span class="co"># load the csv into a disk.frame</span>
-<span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>
+<span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>
 <span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span>
   <span class="va">csv_path</span>, 
   outdir <span class="op">=</span> <span class="va">df_path</span>,
@@ -204,15 +197,15 @@
 <span class="va">flights.df</span></code></pre></div>
 <p>If the CSV is too large to read in, then we can also use the <code>in_chunk_size</code> option to control how many rows to read in at once. For example to read in the data 100,000 rows at a time.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
 
 <span class="co"># write a csv</span>
-<span class="va">csv_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.csv"</span><span class="op">)</span>
+<span class="va">csv_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.csv"</span><span class="op">)</span>
 
-<span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html">fwrite</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">csv_path</span><span class="op">)</span>
+<span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">flights</span>, <span class="va">csv_path</span><span class="op">)</span>
 
-<span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>
+<span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_flights.df"</span><span class="op">)</span>
 
 <span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span>
   <span class="va">csv_path</span>, 
@@ -228,26 +221,26 @@
 <span class="va">flights.df</span></code></pre></div>
 <p><code>disk.frame</code> also has a function <code>zip_to_disk.frame</code> that can convert every CSV in a zip file to <code>disk.frame</code>s.</p>
 </div>
-<div id="simple-dplyr-verbs-and-lazy-evaluation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#simple-dplyr-verbs-and-lazy-evaluation" class="anchor"></a>Simple <code>dplyr</code> verbs and lazy evaluation</h3>
+<div class="section level4">
+<h4 id="simple-dplyr-verbs-and-lazy-evaluation">Simple <code>dplyr</code> verbs and lazy evaluation<a class="anchor" aria-label="anchor" href="#simple-dplyr-verbs-and-lazy-evaluation"></a>
+</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="va">year</span><span class="op">:</span><span class="va">day</span>, <span class="va">arr_delay</span>, <span class="va">dep_delay</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">flights.df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="va">year</span><span class="op">:</span><span class="va">day</span>, <span class="va">arr_delay</span>, <span class="va">dep_delay</span><span class="op">)</span>
 <span class="va">flights.df1</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "disk.frame"        "disk.frame.folder"</span></code></pre></div>
-<p>The class of <code>flights.df1</code> is also a <code>disk.frame</code> after the <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select</a></code> transformation. Also, <code>disk.frame</code> operations are by default (and where possible) <strong>lazy</strong>, meaning it doesn’t perform the operations right away. Instead, it waits until you call <code>collect</code>. Exceptions to this rule are the <code>*_join</code> operations which evaluated <em>eagerly</em> under certain conditions see <strong>Joins for disk.frame in-depth</strong> for details.</p>
+<p>The class of <code>flights.df1</code> is also a <code>disk.frame</code> after the <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code> transformation. Also, <code>disk.frame</code> operations are by default (and where possible) <strong>lazy</strong>, meaning it doesn’t perform the operations right away. Instead, it waits until you call <code>collect</code>. Exceptions to this rule are the <code>*_join</code> operations which evaluated <em>eagerly</em> under certain conditions see <strong>Joins for disk.frame in-depth</strong> for details.</p>
 <p>For lazily constructed <code>disk.frame</code>s (e.g. <code>flights.df1</code>). The function <code>collect</code> can be used to bring the results from disk into R, e.g.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    year month day arr_delay dep_delay</span>
 <span class="co">#&gt; 1: 2013     1   1        11         2</span>
 <span class="co">#&gt; 2: 2013     1   1        20         4</span></code></pre></div>
 <p>Of course, for larger-than-RAM datasets, one wouldn’t call <code>collect</code> on the whole <code>disk.frame</code> (because why would you need <code>disk.frame</code> otherwise). More likely, one would call <code>collect</code> on a <code>filter</code>ed dataset or one summarized with <code>group_by</code>.</p>
 <p>Some examples of other dplyr verbs applied:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="va">dep_delay</span> <span class="op">&gt;</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">collect</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="va">dep_delay</span> <span class="op">&gt;</span> <span class="fl">1000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   9      641            900      1301     1242           1530</span>
 <span class="co">#&gt; 2: 2013     1  10     1121           1635      1126     1239           1810</span>
@@ -258,7 +251,7 @@
 <span class="co">#&gt; 1: 2013-01-09 14:00:00</span>
 <span class="co">#&gt; 2: 2013-01-10 21:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">flights.df</span>, speed <span class="op">=</span> <span class="va">distance</span> <span class="op">/</span> <span class="va">air_time</span> <span class="op">*</span> <span class="fl">60</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">collect</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">flights.df</span>, speed <span class="op">=</span> <span class="va">distance</span> <span class="op">/</span> <span class="va">air_time</span> <span class="op">*</span> <span class="fl">60</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
 <span class="co">#&gt; 2: 2013     1   1      533            529         4      850            830</span>
@@ -269,13 +262,13 @@
 <span class="co">#&gt; 1: 2013-01-01 10:00:00 370.0441</span>
 <span class="co">#&gt; 2: 2013-01-01 10:00:00 374.2731</span></code></pre></div>
 </div>
-<div id="examples-of-not-fully-supported-dplyr-verbs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#examples-of-not-fully-supported-dplyr-verbs" class="anchor"></a>Examples of NOT fully supported <code>dplyr</code> verbs</h3>
+<div class="section level4">
+<h4 id="examples-of-not-fully-supported-dplyr-verbs">Examples of NOT fully supported <code>dplyr</code> verbs<a class="anchor" aria-label="anchor" href="#examples-of-not-fully-supported-dplyr-verbs"></a>
+</h4>
 <p>The <code>chunk_arrange</code> function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly <code>chunk_summarise</code> creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use <code>summarise</code> in the <code>disk.frame</code> context correctly with <code>hard_group_by</code>s.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># this only sorts within each chunk</span>
-<span class="fu"><a href="../reference/select.disk.frame.html">chunk_arrange</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">collect</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dplyr_verbs.html">chunk_arrange</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   9      641            900      1301     1242           1530</span>
 <span class="co">#&gt; 2: 2013     1  10     1121           1635      1126     1239           1810</span>
@@ -286,7 +279,7 @@
 <span class="co">#&gt; 1: 2013-01-09 14:00:00</span>
 <span class="co">#&gt; 2: 2013-01-10 21:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/chunk_summarize.html">chunk_summarize</a></span><span class="op">(</span><span class="va">flights.df</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">collect</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/chunk_group_by.html">chunk_summarize</a></span><span class="op">(</span><span class="va">flights.df</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span>
 <span class="co">#&gt;    mean_dep_delay</span>
 <span class="co">#&gt; 1:       12.32700</span>
 <span class="co">#&gt; 2:       12.01291</span>
@@ -295,19 +288,19 @@
 <span class="co">#&gt; 5:       12.67813</span>
 <span class="co">#&gt; 6:       12.05854</span></code></pre></div>
 </div>
-<div id="piping" class="section level3">
-<h3 class="hasAnchor">
-<a href="#piping" class="anchor"></a>Piping</h3>
+<div class="section level4">
+<h4 id="piping">Piping<a class="anchor" aria-label="anchor" href="#piping"></a>
+</h4>
 <p>One can chain <code>dplyr</code> verbs together like with a <code>data.frame</code></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">c4</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span>, <span class="va">day</span> <span class="op">==</span> <span class="fl">17</span>, <span class="va">carrier</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'UA'</span>, <span class="st">'WN'</span>, <span class="st">'AA'</span>, <span class="st">'DL'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carrier</span>, <span class="va">dep_delay</span>, <span class="va">air_time</span>, <span class="va">distance</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>air_time_hours <span class="op">=</span> <span class="va">air_time</span> <span class="op">/</span> <span class="fl">60</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="va">collect</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span><span class="co"># arrange should occur after `collect`</span>
+<code class="sourceCode R"><span class="va">c4</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">5</span>, <span class="va">day</span> <span class="op">==</span> <span class="fl">17</span>, <span class="va">carrier</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'UA'</span>, <span class="st">'WN'</span>, <span class="st">'AA'</span>, <span class="st">'DL'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">carrier</span>, <span class="va">dep_delay</span>, <span class="va">air_time</span>, <span class="va">distance</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>air_time_hours <span class="op">=</span> <span class="va">air_time</span> <span class="op">/</span> <span class="fl">60</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span><span class="co"># arrange should occur after `collect`</span>
 
-<span class="va">c4</span>  <span class="op">%&gt;%</span> <span class="va">head</span>
+<span class="va">c4</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    carrier dep_delay air_time distance air_time_hours</span>
 <span class="co">#&gt; 1:      AA        -7      142     1089       2.366667</span>
 <span class="co">#&gt; 2:      AA        -9      186     1389       3.100000</span>
@@ -316,9 +309,9 @@
 <span class="co">#&gt; 5:      AA        -2      146     1085       2.433333</span>
 <span class="co">#&gt; 6:      AA        -7      119      733       1.983333</span></code></pre></div>
 </div>
-<div id="list-of-supported-dplyr-verbs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#list-of-supported-dplyr-verbs" class="anchor"></a>List of supported <code>dplyr</code> verbs</h3>
+<div class="section level4">
+<h4 id="list-of-supported-dplyr-verbs">List of supported <code>dplyr</code> verbs<a class="anchor" aria-label="anchor" href="#list-of-supported-dplyr-verbs"></a>
+</h4>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">select</span>
 <span class="va">rename</span>
@@ -337,76 +330,76 @@
 <span class="va">anit_join</span></code></pre></div>
 </div>
 </div>
-<div id="sharding-and-distribution-of-chunks" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sharding-and-distribution-of-chunks" class="anchor"></a>Sharding and distribution of chunks</h2>
+<div class="section level3">
+<h3 id="sharding-and-distribution-of-chunks">Sharding and distribution of chunks<a class="anchor" aria-label="anchor" href="#sharding-and-distribution-of-chunks"></a>
+</h3>
 <p>Like other distributed data manipulation frameworks <code>disk.frame</code> utilizes the <em>sharding</em> concept to distribute the data into chunks. For example “to shard by <code>cust_id</code>” means that all rows with the same <code>cust_id</code> will be stored in the same chunk. This enables <code>chunk_group_by</code> by <code>cust_id</code> to produce the same results as non-chunked data.</p>
 <p>The <code>by</code> variables that were used to shard the dataset are called the <code>shardkey</code>s. The <em>sharding</em> is performed by computing a deterministic hash on the shard keys (the <code>by</code> variables) for each row. The hash function produces an integer between <code>1</code> and <code>n</code>, where <code>n</code> is the number of chunks.</p>
 </div>
-<div id="group-by" class="section level2">
-<h2 class="hasAnchor">
-<a href="#group-by" class="anchor"></a>Group-by</h2>
-<p><a href="https://diskframe.com">disk.frame</a> implements the <code>group_by</code> operation some caveats. In the <a href="https://diskframe.com">disk.frame</a> framework, only a set functions are supported in <code>summarize</code>. However, the user can create more custom <code>group-by</code> functions can be defined.</p>
+<div class="section level3">
+<h3 id="group-by">Group-by<a class="anchor" aria-label="anchor" href="#group-by"></a>
+</h3>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> implements the <code>group_by</code> operation some caveats. In the <a href="https://diskframe.com" class="external-link">disk.frame</a> framework, only a set functions are supported in <code>summarize</code>. However, the user can create more custom <code>group-by</code> functions can be defined.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># notice that hard_group_by needs to be set</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
-  <span class="va">collect</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 16 x 3</span>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># notice that hard_group_by needs to be set</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># mean follows normal R rules</span>
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 16 x 3</span></span>
 <span class="co">#&gt;    carrier count mean_dep_delay</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 9E      18460          16.7 </span>
-<span class="co">#&gt;  2 AA      32729           8.59</span>
-<span class="co">#&gt;  3 AS        714           5.80</span>
-<span class="co">#&gt;  4 B6      54635          13.0 </span>
-<span class="co">#&gt;  5 DL      48110           9.26</span>
-<span class="co">#&gt;  6 EV      54173          20.0 </span>
-<span class="co">#&gt;  7 F9        685          20.2 </span>
-<span class="co">#&gt;  8 FL       3260          18.7 </span>
-<span class="co">#&gt;  9 HA        342           4.90</span>
-<span class="co">#&gt; 10 MQ      26397          10.6 </span>
-<span class="co">#&gt; 11 OO         32          12.6 </span>
-<span class="co">#&gt; 12 UA      58665          12.1 </span>
-<span class="co">#&gt; 13 US      20536           3.78</span>
-<span class="co">#&gt; 14 VX       5162          12.9 </span>
-<span class="co">#&gt; 15 WN      12275          17.7 </span>
-<span class="co">#&gt; 16 YV        601          19.0</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 9E      <span style="text-decoration: underline;">18</span>460          16.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AA      <span style="text-decoration: underline;">32</span>729           8.59</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AS        714           5.80</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> B6      <span style="text-decoration: underline;">54</span>635          13.0 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> DL      <span style="text-decoration: underline;">48</span>110           9.26</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> EV      <span style="text-decoration: underline;">54</span>173          20.0 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> F9        685          20.2 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> FL       <span style="text-decoration: underline;">3</span>260          18.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> HA        342           4.90</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> MQ      <span style="text-decoration: underline;">26</span>397          10.6 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> OO         32          12.6 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> UA      <span style="text-decoration: underline;">58</span>665          12.1 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> US      <span style="text-decoration: underline;">20</span>536           3.78</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> VX       <span style="text-decoration: underline;">5</span>162          12.9 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> WN      <span style="text-decoration: underline;">12</span>275          17.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">16</span> YV        601          19.0</span></code></pre></div>
 </div>
-<div id="restrict-input-columns-for-faster-processing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#restrict-input-columns-for-faster-processing" class="anchor"></a>Restrict input columns for faster processing</h2>
+<div class="section level3">
+<h3 id="restrict-input-columns-for-faster-processing">Restrict input columns for faster processing<a class="anchor" aria-label="anchor" href="#restrict-input-columns-for-faster-processing"></a>
+</h3>
 <p>One can restrict which input columns to load into memory for each chunk; this can significantly increase the speed of data processing. To restrict the input columns, use the <code>srckeep</code> function which only accepts column names as a string vector.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"carrier"</span>,<span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># mean follows normal R rules</span>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carrier"</span>,<span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, mean_dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># mean follows normal R rules</span>
   <span class="va">collect</span>
-<span class="co">#&gt; # A tibble: 16 x 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 16 x 3</span></span>
 <span class="co">#&gt;    carrier count mean_dep_delay</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 9E      18460          16.7 </span>
-<span class="co">#&gt;  2 AA      32729           8.59</span>
-<span class="co">#&gt;  3 AS        714           5.80</span>
-<span class="co">#&gt;  4 B6      54635          13.0 </span>
-<span class="co">#&gt;  5 DL      48110           9.26</span>
-<span class="co">#&gt;  6 EV      54173          20.0 </span>
-<span class="co">#&gt;  7 F9        685          20.2 </span>
-<span class="co">#&gt;  8 FL       3260          18.7 </span>
-<span class="co">#&gt;  9 HA        342           4.90</span>
-<span class="co">#&gt; 10 MQ      26397          10.6 </span>
-<span class="co">#&gt; 11 OO         32          12.6 </span>
-<span class="co">#&gt; 12 UA      58665          12.1 </span>
-<span class="co">#&gt; 13 US      20536           3.78</span>
-<span class="co">#&gt; 14 VX       5162          12.9 </span>
-<span class="co">#&gt; 15 WN      12275          17.7 </span>
-<span class="co">#&gt; 16 YV        601          19.0</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 9E      <span style="text-decoration: underline;">18</span>460          16.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AA      <span style="text-decoration: underline;">32</span>729           8.59</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AS        714           5.80</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> B6      <span style="text-decoration: underline;">54</span>635          13.0 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> DL      <span style="text-decoration: underline;">48</span>110           9.26</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> EV      <span style="text-decoration: underline;">54</span>173          20.0 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> F9        685          20.2 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> FL       <span style="text-decoration: underline;">3</span>260          18.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> HA        342           4.90</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> MQ      <span style="text-decoration: underline;">26</span>397          10.6 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> OO         32          12.6 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> UA      <span style="text-decoration: underline;">58</span>665          12.1 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> US      <span style="text-decoration: underline;">20</span>536           3.78</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> VX       <span style="text-decoration: underline;">5</span>162          12.9 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> WN      <span style="text-decoration: underline;">12</span>275          17.7 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">16</span> YV        601          19.0</span></code></pre></div>
 <p>Input column restriction is one of the most critical efficiencies provided by <code>disk.frame</code>. Because the underlying format allows random access to columns (i.e. retrieve only the columns used for processing), hence one can drastically reduce the amount of data loaded into RAM for processing by keeping only those columns that are directly used to produce the results.</p>
 </div>
-<div id="joins" class="section level2">
-<h2 class="hasAnchor">
-<a href="#joins" class="anchor"></a>Joins</h2>
+<div class="section level3">
+<h3 id="joins">Joins<a class="anchor" aria-label="anchor" href="#joins"></a>
+</h3>
 <p><code>disk.frame</code> supports many dplyr joins including:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">left_join</span>
@@ -420,11 +413,11 @@
 <p>The below joins are performed <em>lazily</em> because <code>airlines.dt</code> is a <code>data.table</code> not a <code>disk.frame</code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># make airlines a data.table</span>
-<span class="va">airlines.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span>
+<span class="va">airlines.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span>
 <span class="co"># flights %&gt;% left_join(airlines, by = "carrier") #</span>
-<span class="va">flights.df</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airlines.dt</span>, by <span class="op">=</span><span class="st">"carrier"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="va">collect</span> <span class="op">%&gt;%</span> 
+<span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines.dt</span>, by <span class="op">=</span><span class="st">"carrier"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
@@ -448,9 +441,9 @@
 <span class="co">#&gt; 5: 2013-01-01 11:00:00   Delta Air Lines Inc.</span>
 <span class="co">#&gt; 6: 2013-01-01 10:00:00  United Air Lines Inc.</span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airlines.dt</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"carrier"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="va">collect</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">airlines.dt</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carrier"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">tail</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     9  30       NA           1842        NA       NA           2019</span>
@@ -474,20 +467,20 @@
 <span class="co">#&gt; 5: 2013-09-30 15:00:00                Envoy Air</span>
 <span class="co">#&gt; 6: 2013-09-30 12:00:00                Envoy Air</span></code></pre></div>
 </div>
-<div id="window-functions-and-arbitrary-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#window-functions-and-arbitrary-functions" class="anchor"></a>Window functions and arbitrary functions</h2>
-<p><a href="https://diskframe.com">disk.frame</a> supports all <code>data.frame</code> operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like <code>min_rank</code> and <code>rank</code> are supported out of the box.</p>
+<div class="section level3">
+<h3 id="window-functions-and-arbitrary-functions">Window functions and arbitrary functions<a class="anchor" aria-label="anchor" href="#window-functions-and-arbitrary-functions"></a>
+</h3>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> supports all <code>data.frame</code> operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like <code>min_rank</code> and <code>rank</code> are supported out of the box.</p>
 <p>For the following example, we will use the <code>hard_group_by</code> which performs a group-by and also reorganises the chunks so that all records with the same <code>year</code>, <code>month</code>, and <code>day</code> end up in the same chunk. This is typically not advised, as <code>hard_group_by</code> can be slow for large datasets.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Find the most and least delayed flight each day</span>
-<span class="va">bestworst</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dep_delay</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">||</span> <span class="va">dep_delay</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">bestworst</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dep_delay</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">||</span> <span class="va">dep_delay</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
    <span class="va">collect</span>
    
-<span class="va">bestworst</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<span class="va">bestworst</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_delay</span>
 <span class="co">#&gt; 1: 2013     2  21       301</span>
 <span class="co">#&gt; 2: 2013     2  21        -9</span>
@@ -497,13 +490,13 @@
 <span class="co">#&gt; 6: 2013     2  21        10</span></code></pre></div>
 <p>another example</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ranked</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">2</span> <span class="op">&amp;</span> <span class="va">dep_delay</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">ranked</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hard_group_by.html">hard_group_by</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html" class="external-link">min_rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">2</span> <span class="op">&amp;</span> <span class="va">dep_delay</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="va">collect</span>
 
-<span class="va">ranked</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<span class="va">ranked</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_delay</span>
 <span class="co">#&gt; 1: 2013     1   9      1301</span>
 <span class="co">#&gt; 2: 2013     1   9       253</span>
@@ -514,14 +507,14 @@
 <p>one more example</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Rank each flight within a daily</span>
-<span class="va">ranked</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/chunk_summarize.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/frank.html">rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">ranked</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>, <span class="st">"dep_delay"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/chunk_group_by.html">chunk_group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/frank.html" class="external-link">rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="va">collect</span>
 
-<span class="va">ranked</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<span class="va">ranked</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_delay rank</span>
 <span class="co">#&gt; 1: 2013     1   1         2  313</span>
 <span class="co">#&gt; 2: 2013     1   1         4  276</span>
@@ -530,13 +523,13 @@
 <span class="co">#&gt; 5: 2013     1   1        -6  742</span>
 <span class="co">#&gt; 6: 2013     1   1        -4  633</span></code></pre></div>
 </div>
-<div id="arbitrary-by-chunk-processing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#arbitrary-by-chunk-processing" class="anchor"></a>Arbitrary by-chunk processing</h2>
-<p>One can apply arbitrary transformations to each chunk of the <code>disk.frame</code> by using the <code>delayed</code> function which evaluates lazily or the <code><a href="../reference/cmap.html">map.disk.frame(lazy = F)</a></code> function which evaluates eagerly. For example to return the number of rows in each chunk</p>
+<div class="section level3">
+<h3 id="arbitrary-by-chunk-processing">Arbitrary by-chunk processing<a class="anchor" aria-label="anchor" href="#arbitrary-by-chunk-processing"></a>
+</h3>
+<p>One can apply arbitrary transformations to each chunk of the <code>disk.frame</code> by using the <code>delayed</code> function which evaluates lazily or the <code>map.disk.frame(lazy = F)</code> function which evaluates eagerly. For example to return the number of rows in each chunk</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cmap.html">delayed</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="fu"><a href="../reference/nrow.html">nrow</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/collect.disk.frame.html">collect_list</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">head</span> <span class="co"># returns number of rows for each data.frame in a list</span>
+<code class="sourceCode R"><span class="va">flights.df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cmap.html">delayed</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="fu"><a href="../reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/collect.html">collect_list</a></span><span class="op">(</span><span class="va">flights.df1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span> <span class="co"># returns number of rows for each data.frame in a list</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] 56131</span>
 <span class="co">#&gt; </span>
@@ -556,7 +549,7 @@
 <span class="co">#&gt; [1] 56121</span></code></pre></div>
 <p>and to do the same with <code>map.disk.frame</code></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/cmap.html">map</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="fu"><a href="../reference/nrow.html">nrow</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>, lazy <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/cmap.html">map</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="fu"><a href="../reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>, lazy <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt; Warning in map.disk.frame(flights.df, ~nrow(.x), lazy = F): map(df, ...) where</span>
 <span class="co">#&gt; df is a disk.frame has been deprecated. Please use cmap(df,...) instead</span>
 <span class="co">#&gt; [[1]]</span>
@@ -579,12 +572,12 @@
 <p>The <code>map</code> function can also output the results to another disk.frame folder, e.g.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># return the first 10 rows of each chunk</span>
-<span class="va">flights.df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cmap.html">map</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">F</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp2"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="va">flights.df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cmap.html">map</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">F</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp2"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="co">#&gt; Warning in map.disk.frame(flights.df, ~.x[1:10, ], lazy = F, outdir =</span>
 <span class="co">#&gt; file.path(tempdir(), : map(df, ...) where df is a disk.frame has been</span>
 <span class="co">#&gt; deprecated. Please use cmap(df,...) instead</span>
 
-<span class="va">flights.df2</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<span class="va">flights.df2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
 <span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
 <span class="co">#&gt; 2: 2013     1   1      533            529         4      850            830</span>
@@ -606,39 +599,39 @@
 <span class="co">#&gt; 4: 2013-01-01 10:00:00</span>
 <span class="co">#&gt; 5: 2013-01-01 11:00:00</span>
 <span class="co">#&gt; 6: 2013-01-01 10:00:00</span></code></pre></div>
-<p>Notice <a href="https://diskframe.com">disk.frame</a> supports the <code>purrr</code> syntax for defining a function using <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code>.</p>
+<p>Notice <a href="https://diskframe.com" class="external-link">disk.frame</a> supports the <code>purrr</code> syntax for defining a function using <code>~</code>.</p>
 </div>
-<div id="sampling" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sampling" class="anchor"></a>Sampling</h2>
+<div class="section level3">
+<h3 id="sampling">Sampling<a class="anchor" aria-label="anchor" href="#sampling"></a>
+</h3>
 <p>In the <code>disk.frame</code> framework, sampling a proportion of rows within each chunk can be performed using <code>sample_frac</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_frac</a></span><span class="op">(</span><span class="fl">0.01</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">collect</span> <span class="op">%&gt;%</span> <span class="va">head</span>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     1  16     1700           1708        -8     2018           2023</span>
-<span class="co">#&gt; 2: 2013     1  13     1115           1115         0     1407           1425</span>
-<span class="co">#&gt; 3: 2013     2   5     2005           1935        30       NA           2220</span>
-<span class="co">#&gt; 4: 2013     1   3     1425           1429        -4     1711           1754</span>
-<span class="co">#&gt; 5: 2013     5  19     1453           1455        -2     1638           1638</span>
-<span class="co">#&gt; 6: 2013    12  20     1618           1600        18     1745           1719</span>
+<span class="co">#&gt; 1: 2013     5  10      554            600        -6      645            659</span>
+<span class="co">#&gt; 2: 2013     8  28      752            800        -8     1015           1022</span>
+<span class="co">#&gt; 3: 2013     1   3      955            958        -3     1120           1137</span>
+<span class="co">#&gt; 4: 2013     8  22     2157           2100        57        7           2323</span>
+<span class="co">#&gt; 5: 2013     5  14     1853           1900        -7     2003           2048</span>
+<span class="co">#&gt; 6: 2013     8  25     1550           1540        10     1747           1747</span>
 <span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        -5      B6     15  N334JB    JFK  FLL      175     1069   17      8</span>
-<span class="co">#&gt; 2:       -18      AA   2099  N3AWAA    LGA  MIA      150     1096   11     15</span>
-<span class="co">#&gt; 3:        NA      EV   4204  N17196    EWR  OKC       NA     1325   19     35</span>
-<span class="co">#&gt; 4:       -43      UA    257  N508UA    JFK  SFO      326     2586   14     29</span>
-<span class="co">#&gt; 5:         0      9E   3318  N908XJ    JFK  BUF       50      301   14     55</span>
-<span class="co">#&gt; 6:        26      US   2187  N946UW    LGA  DCA       46      214   16      0</span>
+<span class="co">#&gt; 1:       -14      US   2161  N747UW    LGA  DCA       38      214    6      0</span>
+<span class="co">#&gt; 2:        -7      UA    561  N513UA    LGA  DEN      218     1620    8      0</span>
+<span class="co">#&gt; 3:       -17      UA    258  N831UA    LGA  ORD      124      733    9     58</span>
+<span class="co">#&gt; 4:        44      DL   1247  N914DE    LGA  ATL      102      762   21      0</span>
+<span class="co">#&gt; 5:       -45      EV   5038  N741EV    LGA  BHM      111      866   19      0</span>
+<span class="co">#&gt; 6:         0      9E   3648  N8940E    JFK  CMH       69      483   15     40</span>
 <span class="co">#&gt;              time_hour</span>
-<span class="co">#&gt; 1: 2013-01-16 22:00:00</span>
-<span class="co">#&gt; 2: 2013-01-13 16:00:00</span>
-<span class="co">#&gt; 3: 2013-02-06 00:00:00</span>
-<span class="co">#&gt; 4: 2013-01-03 19:00:00</span>
-<span class="co">#&gt; 5: 2013-05-19 18:00:00</span>
-<span class="co">#&gt; 6: 2013-12-20 21:00:00</span></code></pre></div>
+<span class="co">#&gt; 1: 2013-05-10 10:00:00</span>
+<span class="co">#&gt; 2: 2013-08-28 12:00:00</span>
+<span class="co">#&gt; 3: 2013-01-03 14:00:00</span>
+<span class="co">#&gt; 4: 2013-08-23 01:00:00</span>
+<span class="co">#&gt; 5: 2013-05-14 23:00:00</span>
+<span class="co">#&gt; 6: 2013-08-25 19:00:00</span></code></pre></div>
 </div>
-<div id="writing-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#writing-data" class="anchor"></a>Writing Data</h2>
+<div class="section level3">
+<h3 id="writing-data">Writing Data<a class="anchor" aria-label="anchor" href="#writing-data"></a>
+</h3>
 <p>One can output a <code>disk.frame</code> by using the <code>write_disk.frame</code> function. E.g.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_disk.frame.html">write_disk.frame</a></span><span class="op">(</span><span class="va">flights.df</span>, outdir<span class="op">=</span><span class="st">"out"</span><span class="op">)</span></code></pre></div>
@@ -658,11 +651,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Dai ZJ.</p>
+  <p></p>
+<p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -670,6 +665,8 @@
 
   
 
+
+  
 
   </body>
 </html>

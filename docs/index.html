@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -35,18 +37,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -101,7 +97,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/">
+  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -119,171 +115,170 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="diskframe-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#diskframe-" class="anchor"></a>disk.frame <img src="inst/figures/disk.frame.png" align="right">
+<div class="section level1">
+<div class="page-header"><h1 id="diskframe-">disk.frame <img src="inst/figures/disk.frame.png" align="right"><a class="anchor" aria-label="anchor" href="#diskframe-"></a>
 </h1></div>
 </div>
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p>How do I manipulate tabular data that doesn’t fit into Random Access Memory (RAM)?</p>
-<p>Use <a href="https://diskframe.com">disk.frame</a>!</p>
-<p>In a nutshell, <a href="https://diskframe.com">disk.frame</a> makes use of two simple ideas</p>
-<ol>
+<p>Use <a href="https://diskframe.com" class="external-link">disk.frame</a>!</p>
+<p>In a nutshell, <a href="https://diskframe.com" class="external-link">disk.frame</a> makes use of two simple ideas</p>
+<ol style="list-style-type: decimal">
 <li>split up a larger-than-RAM dataset into chunks and store each chunk in a separate file inside a folder and</li>
 <li>provide a convenient API to manipulate these chunks</li>
 </ol>
-<p><a href="https://diskframe.com">disk.frame</a> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of <a href="https://diskframe.com">disk.frame</a> from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> performs a similar role to distributed systems such as Apache Spark, Python’s Dask, and Julia’s JuliaDB.jl for <em>medium data</em> which are datasets that are too large for RAM but not quite large enough to qualify as <em>big data</em>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of <a href="https://diskframe.com" class="external-link">disk.frame</a> from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span></code></pre></div>
+<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"xiaodaigh/disk.frame"</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"xiaodaigh/disk.frame"</span><span class="op">)</span></code></pre></div>
 <p>On some platforms, such as SageMaker, you may need to explicitly specify a repo like this</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, repo<span class="op">=</span><span class="st">"https://cran.rstudio.com"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, repo<span class="op">=</span><span class="st">"https://cran.rstudio.com"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="vignettes-and-articles" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vignettes-and-articles" class="anchor"></a>Vignettes and articles</h2>
-<p>Please see these vignettes and articles about <a href="https://diskframe.com">disk.frame</a></p>
+<div class="section level2">
+<h2 id="vignettes-and-articles">Vignettes and articles<a class="anchor" aria-label="anchor" href="#vignettes-and-articles"></a>
+</h2>
+<p>Please see these vignettes and articles about <a href="https://diskframe.com" class="external-link">disk.frame</a></p>
 <ul>
 <li>
-<a href="https://diskframe.com/articles/intro-disk-frame.html">Quick start: <code>{disk.frame}</code></a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</li>
+<a href="https://diskframe.com/articles/intro-disk-frame.html" class="external-link">Quick start: <code>{disk.frame}</code></a> which replicates the <code>sparklyr</code> vignette for manipulating the <code>nycflights13</code> flights data.</li>
 <li>
-<a href="https://diskframe.com/articles/ingesting-data.html">Ingesting data into <code>{disk.frame}</code></a> which lists some commons way of creating disk.frames</li>
+<a href="https://diskframe.com/articles/ingesting-data.html" class="external-link">Ingesting data into <code>{disk.frame}</code></a> which lists some commons way of creating disk.frames</li>
 <li>
-<a href="https://diskframe.com/articles/more-epic.html"><code>{disk.frame}</code> can be more epic!</a> shows some ways of loading large CSVs and the importance of <code>srckeep</code>
+<a href="https://diskframe.com/articles/more-epic.html" class="external-link"><code>{disk.frame}</code> can be more epic!</a> shows some ways of loading large CSVs and the importance of <code>srckeep</code>
 </li>
 <li>
-<a href="https://diskframe.com/articles/group-by.html">Group-by</a> the various types of group-bys</li>
+<a href="https://diskframe.com/articles/group-by.html" class="external-link">Group-by</a> the various types of group-bys</li>
 <li>
-<a href="https://diskframe.com/articles/custom-group-by.html">Custom one-stage group-by functions</a> how to define custom one-stage group-by functions</li>
+<a href="https://diskframe.com/articles/custom-group-by.html" class="external-link">Custom one-stage group-by functions</a> how to define custom one-stage group-by functions</li>
 <li>
-<a href="https://diskframe.com/articles/glm.html">Fitting GLMs (including logistic regression)</a> introduces the <code>dfglm</code> function for fitting generalized linear models</li>
-<li><a href="https://diskframe.com/articles/data-table-syntax.html">Using data.table syntax with disk.frame</a></li>
-<li><a href="https://diskframe.com/articles/concepts.html">disk.frame concepts</a></li>
-<li><a href="https://diskframe.com/articles/vs-dask-juliadb.html">Benchmark 1: disk.frame vs Dask vs JuliaDB</a></li>
+<a href="https://diskframe.com/articles/glm.html" class="external-link">Fitting GLMs (including logistic regression)</a> introduces the <code>dfglm</code> function for fitting generalized linear models</li>
+<li><a href="https://diskframe.com/articles/data-table-syntax.html" class="external-link">Using data.table syntax with disk.frame</a></li>
+<li><a href="https://diskframe.com/articles/concepts.html" class="external-link">disk.frame concepts</a></li>
+<li><a href="https://diskframe.com/articles/vs-dask-juliadb.html" class="external-link">Benchmark 1: disk.frame vs Dask vs JuliaDB</a></li>
 </ul>
 </div>
-<div id="common-questions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#common-questions" class="anchor"></a>Common questions</h2>
-<div id="a-what-is-diskframe-and-why-create-it" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-what-is-diskframe-and-why-create-it" class="anchor"></a>a) What is <code>{disk.frame}</code> and why create it?</h3>
-<p><a href="https://diskframe.com">disk.frame</a> is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R. In other words, we go from “R can only deal with data that fits in RAM” to “R can deal with any data that fits on disk”. See the next section.</p>
-</div>
-<div id="b-how-is-it-different-to-dataframe-and-datatable" class="section level3">
-<h3 class="hasAnchor">
-<a href="#b-how-is-it-different-to-dataframe-and-datatable" class="anchor"></a>b) How is it different to <code>data.frame</code> and <code>data.table</code>?</h3>
-<p>A <code>data.frame</code> in R is an in-memory data structure, which means that R must load the data in its entirety into RAM. A corollary of this is that only data that can fit into RAM can be processed using <code>data.frame</code>s. This places significant restrictions on what R can process with minimal hassle.</p>
-<p>In contrast, <a href="https://diskframe.com">disk.frame</a> provides a framework to store and manipulate data on the hard drive. It does this by loading only a small part of the data, called a chunk, into RAM; process the chunk, write out the results and repeat with the next chunk. This chunking strategy is widely applied in other packages to enable processing large amounts of data in R, for example, see <a href="https://github.com/edwindj/chunked"><code>chunkded</code></a> <a href="https://github.com/ropensci/arkdb"><code>arkdb</code></a>, and <a href="https://github.com/s-u/iotools"><code>iotools</code></a>.</p>
-<p>Furthermore, there is a row-limit of 2^31 for <code>data.frame</code>s in R; hence an alternate approach is needed to apply R to these large datasets. The chunking mechanism in <a href="https://diskframe.com">disk.frame</a> provides such an avenue to enable data manipulation beyond the 2^31 row limit.</p>
-</div>
-<div id="c-how-is-diskframe-different-to-previous-big-data-solutions-for-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#c-how-is-diskframe-different-to-previous-big-data-solutions-for-r" class="anchor"></a>c) How is <code>{disk.frame}</code> different to previous “big” data solutions for R?</h3>
-<p>R has many packages that can deal with larger-than-RAM datasets, including <code>ff</code> and <code>bigmemory</code>. However, <code>ff</code> and <code>bigmemory</code> restrict the user to primitive data types such as double, which means they do not support character (string) and factor types. In contrast, <a href="https://diskframe.com">disk.frame</a> makes use of <code><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table::data.table</a></code> and <code>data.frame</code> directly, so all data types are supported. Also, <a href="https://diskframe.com">disk.frame</a> strives to provide an API that is as similar to <code>data.frame</code>’s where possible. <a href="https://diskframe.com">disk.frame</a> supports many <code>dplyr</code> verbs for manipulating <code>disk.frame</code>s.</p>
-<p>Additionally, <a href="https://diskframe.com">disk.frame</a> supports parallel data operations using infrastructures provided by the excellent <a href="https://CRAN.R-project.org/package=future"><code>future</code> package</a> to take advantage of multi-core CPUs. Further, <a href="https://diskframe.com">disk.frame</a> uses state-of-the-art data storage techniques such as fast data compression, and random access to rows and columns provided by the <a href="http://www.fstpackage.org/"><code>fst</code> package</a> to provide superior data manipulation speeds.</p>
-</div>
-<div id="d-how-does-diskframe-work" class="section level3">
-<h3 class="hasAnchor">
-<a href="#d-how-does-diskframe-work" class="anchor"></a>d) How does <code>{disk.frame}</code> work?</h3>
-<p><a href="https://diskframe.com">disk.frame</a> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
-<p><a href="https://diskframe.com">disk.frame</a> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code><a href="reference/cmap.html">cmap(a.disk.frame, fn, lazy = F)</a></code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <a href="https://diskframe.com">disk.frame</a> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
-</div>
-<div id="e-how-is-diskframe-different-from-spark-dask-and-juliadbjl" class="section level3">
-<h3 class="hasAnchor">
-<a href="#e-how-is-diskframe-different-from-spark-dask-and-juliadbjl" class="anchor"></a>e) How is <code>{disk.frame}</code> different from Spark, Dask, and JuliaDB.jl?</h3>
-<p>Spark is primarily a distributed system that also works on a single machine. Dask is a Python package that is most similar to <a href="https://diskframe.com">disk.frame</a>, and JuliaDB.jl is a Julia package. All three can distribute work over a cluster of computers. However, <a href="https://diskframe.com">disk.frame</a> currently cannot distribute data processes over many computers, and is, therefore, single machine focused.</p>
-<p>In R, one can access Spark via <code>sparklyr</code>, but that requires a Spark cluster to be set up. On the other hand <a href="https://diskframe.com">disk.frame</a> requires zero-setup apart from running <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("disk.frame")</a></code> or <code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("xiaodaigh/disk.frame")</a></code>.</p>
-<p>Finally, Spark can only apply functions that are implemented for Spark, whereas <a href="https://diskframe.com">disk.frame</a> can use any function in R including user-defined functions.</p>
-</div>
-</div>
-</div>
-<div id="example-usage" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-usage" class="anchor"></a>Example usage</h1>
-<div id="set-up-diskframe" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-up-diskframe" class="anchor"></a>Set-up <code>{disk.frame}</code>
+<div class="section level2">
+<h2 id="common-questions">Common questions<a class="anchor" aria-label="anchor" href="#common-questions"></a>
 </h2>
-<p><a href="https://diskframe.com">disk.frame</a> works best if it can process multiple data chunks in parallel. The best way to set-up <a href="https://diskframe.com">disk.frame</a> so that each CPU core runs a background worker is by using</p>
+<div class="section level3">
+<h3 id="a-what-is-diskframe-and-why-create-it">a) What is <code>{disk.frame}</code> and why create it?<a class="anchor" aria-label="anchor" href="#a-what-is-diskframe-and-why-create-it"></a>
+</h3>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> is an R package that provides a framework for manipulating larger-than-RAM structured tabular data on disk efficiently. The reason one would want to manipulate data on disk is that it allows arbitrarily large datasets to be processed by R. In other words, we go from “R can only deal with data that fits in RAM” to “R can deal with any data that fits on disk”. See the next section.</p>
+</div>
+<div class="section level3">
+<h3 id="b-how-is-it-different-to-dataframe-and-datatable">b) How is it different to <code>data.frame</code> and <code>data.table</code>?<a class="anchor" aria-label="anchor" href="#b-how-is-it-different-to-dataframe-and-datatable"></a>
+</h3>
+<p>A <code>data.frame</code> in R is an in-memory data structure, which means that R must load the data in its entirety into RAM. A corollary of this is that only data that can fit into RAM can be processed using <code>data.frame</code>s. This places significant restrictions on what R can process with minimal hassle.</p>
+<p>In contrast, <a href="https://diskframe.com" class="external-link">disk.frame</a> provides a framework to store and manipulate data on the hard drive. It does this by loading only a small part of the data, called a chunk, into RAM; process the chunk, write out the results and repeat with the next chunk. This chunking strategy is widely applied in other packages to enable processing large amounts of data in R, for example, see <a href="https://github.com/edwindj/chunked" class="external-link"><code>chunkded</code></a> <a href="https://github.com/ropensci/arkdb" class="external-link"><code>arkdb</code></a>, and <a href="https://github.com/s-u/iotools" class="external-link"><code>iotools</code></a>.</p>
+<p>Furthermore, there is a row-limit of 2^31 for <code>data.frame</code>s in R; hence an alternate approach is needed to apply R to these large datasets. The chunking mechanism in <a href="https://diskframe.com" class="external-link">disk.frame</a> provides such an avenue to enable data manipulation beyond the 2^31 row limit.</p>
+</div>
+<div class="section level3">
+<h3 id="c-how-is-diskframe-different-to-previous-big-data-solutions-for-r">c) How is <code>{disk.frame}</code> different to previous “big” data solutions for R?<a class="anchor" aria-label="anchor" href="#c-how-is-diskframe-different-to-previous-big-data-solutions-for-r"></a>
+</h3>
+<p>R has many packages that can deal with larger-than-RAM datasets, including <code>ff</code> and <code>bigmemory</code>. However, <code>ff</code> and <code>bigmemory</code> restrict the user to primitive data types such as double, which means they do not support character (string) and factor types. In contrast, <a href="https://diskframe.com" class="external-link">disk.frame</a> makes use of <code><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table</a></code> and <code>data.frame</code> directly, so all data types are supported. Also, <a href="https://diskframe.com" class="external-link">disk.frame</a> strives to provide an API that is as similar to <code>data.frame</code>’s where possible. <a href="https://diskframe.com" class="external-link">disk.frame</a> supports many <code>dplyr</code> verbs for manipulating <code>disk.frame</code>s.</p>
+<p>Additionally, <a href="https://diskframe.com" class="external-link">disk.frame</a> supports parallel data operations using infrastructures provided by the excellent <a href="https://CRAN.R-project.org/package=future" class="external-link"><code>future</code> package</a> to take advantage of multi-core CPUs. Further, <a href="https://diskframe.com" class="external-link">disk.frame</a> uses state-of-the-art data storage techniques such as fast data compression, and random access to rows and columns provided by the <a href="http://www.fstpackage.org/" class="external-link"><code>fst</code> package</a> to provide superior data manipulation speeds.</p>
+</div>
+<div class="section level3">
+<h3 id="d-how-does-diskframe-work">d) How does <code>{disk.frame}</code> work?<a class="anchor" aria-label="anchor" href="#d-how-does-diskframe-work"></a>
+</h3>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> works by breaking large datasets into smaller individual chunks and storing the chunks in <code>fst</code> files inside a folder. Each chunk is a <code>fst</code> file containing a <code>data.frame/data.table</code>. One can construct the original large dataset by loading all the chunks into RAM and row-bind all the chunks into one large <code>data.frame</code>. Of course, in practice this isn’t always possible; hence why we store them as smaller individual chunks.</p>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> makes it easy to manipulate the underlying chunks by implementing <code>dplyr</code> functions/verbs and other convenient functions (e.g. the <code>cmap(a.disk.frame, fn, lazy = F)</code> function which applies the function <code>fn</code> to each chunk of <code>a.disk.frame</code> in parallel). So that <a href="https://diskframe.com" class="external-link">disk.frame</a> can be manipulated in a similar fashion to in-memory <code>data.frame</code>s.</p>
+</div>
+<div class="section level3">
+<h3 id="e-how-is-diskframe-different-from-spark-dask-and-juliadbjl">e) How is <code>{disk.frame}</code> different from Spark, Dask, and JuliaDB.jl?<a class="anchor" aria-label="anchor" href="#e-how-is-diskframe-different-from-spark-dask-and-juliadbjl"></a>
+</h3>
+<p>Spark is primarily a distributed system that also works on a single machine. Dask is a Python package that is most similar to <a href="https://diskframe.com" class="external-link">disk.frame</a>, and JuliaDB.jl is a Julia package. All three can distribute work over a cluster of computers. However, <a href="https://diskframe.com" class="external-link">disk.frame</a> currently cannot distribute data processes over many computers, and is, therefore, single machine focused.</p>
+<p>In R, one can access Spark via <code>sparklyr</code>, but that requires a Spark cluster to be set up. On the other hand <a href="https://diskframe.com" class="external-link">disk.frame</a> requires zero-setup apart from running <code>install.packages("disk.frame")</code> or <code>devtools::install_github("xiaodaigh/disk.frame")</code>.</p>
+<p>Finally, Spark can only apply functions that are implemented for Spark, whereas <a href="https://diskframe.com" class="external-link">disk.frame</a> can use any function in R including user-defined functions.</p>
+</div>
+</div>
+</div>
+<div class="section level1">
+<h1 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
+</h1>
+<div class="section level2">
+<h2 id="set-up-diskframe">Set-up <code>{disk.frame}</code>
+<a class="anchor" aria-label="anchor" href="#set-up-diskframe"></a>
+</h2>
+<p><a href="https://diskframe.com" class="external-link">disk.frame</a> works best if it can process multiple data chunks in parallel. The best way to set-up <a href="https://diskframe.com" class="external-link">disk.frame</a> so that each CPU core runs a background worker is by using</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># this allows large datasets to be transferred between sessions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
 <p>The <code><a href="reference/setup_disk.frame.html">setup_disk.frame()</a></code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
-<p>Alternatively, one may specify the number of workers using <code><a href="reference/setup_disk.frame.html">setup_disk.frame(workers = n)</a></code>.</p>
+<p>Alternatively, one may specify the number of workers using <code>setup_disk.frame(workers = n)</code>.</p>
 </div>
-<div id="quick-start" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quick-start" class="anchor"></a>Quick-start</h2>
+<div class="section level2">
+<h2 id="quick-start">Quick-start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
 
 <span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span>
 <span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co"># this allows large datasets to be transferred between sessions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>
 
 <span class="co"># convert the flights data.frame to a disk.frame</span>
 <span class="co"># optionally, you may specify an outdir, otherwise, the </span>
-<span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span><span class="op">)</span></code></pre></div>
+<span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example-dplyr-verbs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-dplyr-verbs" class="anchor"></a>Example: dplyr verbs</h2>
-<div id="dplyr-verbs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dplyr-verbs" class="anchor"></a>dplyr verbs</h3>
+<div class="section level2">
+<h2 id="example-dplyr-verbs">Example: dplyr verbs<a class="anchor" aria-label="anchor" href="#example-dplyr-verbs"></a>
+</h2>
+<div class="section level3">
+<h3 id="dplyr-verbs">dplyr verbs<a class="anchor" aria-label="anchor" href="#dplyr-verbs"></a>
+</h3>
 <p>{disk.frame} aims to support as many dplyr verbs as possible. For example</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">mutate</span><span class="op">(</span>origin_dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight</span>
-<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819        11      UA   1545</span>
-<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830        20      UA   1714</span>
-<span class="co">#&gt;   tailnum origin dest air_time distance hour minute           time_hour origin_dest</span>
-<span class="co">#&gt; 1  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
-<span class="co">#&gt; 2  N24211    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></code></pre></div>
+<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>origin_dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="co">#&gt;   year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier</span>
+<span class="co">#&gt; 1 2013     1   1      517            515         2      830            819        11      UA</span>
+<span class="co">#&gt; 2 2013     1   1      533            529         4      850            830        20      UA</span>
+<span class="co">#&gt;   flight tailnum origin dest air_time distance hour minute           time_hour origin_dest</span>
+<span class="co">#&gt; 1   1545  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
+<span class="co">#&gt; 2   1714  N24211    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></code></pre></div>
 </div>
-<div id="group-by" class="section level3">
-<h3 class="hasAnchor">
-<a href="#group-by" class="anchor"></a>Group-by</h3>
-<p>Starting from <a href="https://diskframe.com">disk.frame</a> v0.3.0, there is <code>group_by</code> support for a limited set of functions. For example:</p>
+<div class="section level3">
+<h3 id="group-by">Group-by<a class="anchor" aria-label="anchor" href="#group-by"></a>
+</h3>
+<p>Starting from <a href="https://diskframe.com" class="external-link">disk.frame</a> v0.3.0, there is <code>group_by</code> support for a limited set of functions. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="va">as.disk.frame</span> <span class="op">%&gt;%</span> 
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">summarize</span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, 
-    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, 
-    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="va">as.disk.frame</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, 
+    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, 
+    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">collect</span></code></pre></div>
-<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please <a href="https://github.com/xiaodaigh/disk.frame/issues">report a bug</a>.</p>
-<div id="list-of-supported-group-by-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#list-of-supported-group-by-functions" class="anchor"></a>List of supported group-by functions</h4>
-<p>If a function you like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues">here</a>. It is a limitation that function that depend on the order a column can only be obtained using estimated methods.</p>
+<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">report a bug</a>.</p>
+<div class="section level4">
+<h4 id="list-of-supported-group-by-functions">List of supported group-by functions<a class="anchor" aria-label="anchor" href="#list-of-supported-group-by-functions"></a>
+</h4>
+<p>If a function you like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">here</a>. It is a limitation that function that depend on the order a column can only be obtained using estimated methods.</p>
 <table class="table">
 <thead><tr class="header">
 <th>Function</th>
@@ -335,7 +330,7 @@
 <td><code>var</code></td>
 <td>Exact</td>
 <td>
-<code><a href="https://rdrr.io/r/stats/cor.html">var(x)</a></code> only <code>cor, cov</code> support <em>planned</em>
+<code>var(x)</code> only <code>cor, cov</code> support <em>planned</em>
 </td>
 </tr>
 <tr class="even">
@@ -368,19 +363,19 @@
 </div>
 </div>
 </div>
-<div id="example-datatable-syntax" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-datatable-syntax" class="anchor"></a>Example: data.table syntax</h2>
+<div class="section level2">
+<h2 id="example-datatable-syntax">Example: data.table syntax<a class="anchor" aria-label="anchor" href="#example-datatable-syntax"></a>
+</h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span>
   <span class="va">grp_by_stage1</span> <span class="op">&lt;-</span> 
     <span class="va">flights.df</span><span class="op">[</span>
-      keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"month"</span>, <span class="st">"distance"</span><span class="op">)</span>, <span class="co"># this analysis only required "month" and "dist" so only load those</span>
+      keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"month"</span>, <span class="st">"distance"</span><span class="op">)</span>, <span class="co"># this analysis only required "month" and "dist" so only load those</span>
       <span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span>, 
-      <span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span>, 
-      <span class="fu">.</span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span>
+      <span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span>, 
+      <span class="fu">.</span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span>
       <span class="op">]</span>
 <span class="op">)</span>
 
@@ -394,60 +389,62 @@
 <span class="co">#&gt; 6:  Q2 27397926</span></code></pre></div>
 <p>The result <code>grp_by_stage1</code> is a <code>data.table</code> so we can finish off the two-stage aggregation using data.table syntax</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">grp_by_stage2</span> <span class="op">=</span> <span class="va">grp_by_stage1</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">sum_dist</span><span class="op">)</span><span class="op">)</span>, <span class="va">qtr</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">grp_by_stage2</span> <span class="op">=</span> <span class="va">grp_by_stage1</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sum_dist</span><span class="op">)</span><span class="op">)</span>, <span class="va">qtr</span><span class="op">]</span>
 
 <span class="va">grp_by_stage2</span>
 <span class="co">#&gt;    qtr sum_dist</span>
 <span class="co">#&gt; 1:  Q1 81343950</span>
 <span class="co">#&gt; 2:  Q2 89257810</span></code></pre></div>
 </div>
-<div id="basic-info" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-info" class="anchor"></a>Basic info</h2>
+<div class="section level2">
+<h2 id="basic-info">Basic info<a class="anchor" aria-label="anchor" href="#basic-info"></a>
+</h2>
 <p>To find out where the disk.frame is stored on disk:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># where is the disk.frame stored</span>
-<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpEdhlRv\\file33ec607f12cc.df"</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpIlXNzn\\file568813b835a7.df"</span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get first few rows</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier</span>
 <span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA</span>
 <span class="co">#&gt;    flight tailnum origin dest air_time distance hour minute           time_hour</span>
 <span class="co">#&gt; 1:   1545  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get last few rows</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier</span>
 <span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ</span>
 <span class="co">#&gt;    flight tailnum origin dest air_time distance hour minute           time_hour</span>
 <span class="co">#&gt; 1:   3531  N839MQ    LGA  RDU       NA      431    8     40 2013-09-30 08:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># number of rows</span>
-<span class="fu"><a href="reference/nrow.html">nrow</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
+<span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
 <span class="co">#&gt; [1] 336776</span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># number of columns</span>
-<span class="fu"><a href="reference/nrow.html">ncol</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
+<span class="fu"><a href="reference/ncol_nrow.html">ncol</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
 <span class="co">#&gt; [1] 19</span></code></pre></div>
 </div>
-<div id="hex-logo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hex-logo" class="anchor"></a>Hex logo</h2>
-<p><img src="inst/figures/logo.png?raw=true" alt="disk.frame logo"></p>
+<div class="section level2">
+<h2 id="hex-logo">Hex logo<a class="anchor" aria-label="anchor" href="#hex-logo"></a>
+</h2>
+<div class="figure">
+<img src="inst/figures/logo.png" alt=""><p class="caption">disk.frame logo</p>
 </div>
-<div id="contributors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributors" class="anchor"></a>Contributors</h2>
-<p>This project exists thanks to all the people who contribute. <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&amp;button=false"></a></p>
 </div>
-<div id="current-priorities" class="section level2">
-<h2 class="hasAnchor">
-<a href="#current-priorities" class="anchor"></a>Current Priorities</h2>
+<div class="section level2">
+<h2 id="contributors">Contributors<a class="anchor" aria-label="anchor" href="#contributors"></a>
+</h2>
+<p>This project exists thanks to all the people who contribute. <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors" class="external-link"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&amp;button=false"></a></p>
+</div>
+<div class="section level2">
+<h2 id="current-priorities">Current Priorities<a class="anchor" aria-label="anchor" href="#current-priorities"></a>
+</h2>
 <p>The work priorities at this stage are</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Bugs</li>
 <li>Urgent feature implementations that can improve an awful user-experience</li>
 <li>More vignettes covering every aspect of disk.frame</li>
@@ -456,9 +453,9 @@
 <li>More features</li>
 </ol>
 </div>
-<div id="blogs-and-other-resources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#blogs-and-other-resources" class="anchor"></a>Blogs and other resources</h2>
+<div class="section level2">
+<h2 id="blogs-and-other-resources">Blogs and other resources<a class="anchor" aria-label="anchor" href="#blogs-and-other-resources"></a>
+</h2>
 <table class="table">
 <colgroup>
 <col width="49%">
@@ -476,67 +473,67 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://twitter.com/evalparse/status/1200963268270886912">25 days of disk.frame</a></td>
+<td><a href="https://twitter.com/evalparse/status/1200963268270886912" class="external-link">25 days of disk.frame</a></td>
 <td>English</td>
 <td>ZJ</td>
 <td>2019-12-01</td>
-<td>25 tweets about <a href="https://diskframe.com">disk.frame</a>
+<td>25 tweets about <a href="https://diskframe.com" class="external-link">disk.frame</a>
 </td>
 </tr>
 <tr class="even">
-<td><a href="https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining" class="uri">https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining</a></td>
+<td><a href="https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining" class="external-link uri">https://www.researchgate.net/post/What-is-the-Maximum-size-of-data-that-is-supported-by-R-datamining</a></td>
 <td>English</td>
 <td>Knut Jägersberg</td>
 <td>2019-11-11</td>
 <td>Great answer on using disk.frame</td>
 </tr>
 <tr class="odd">
-<td><a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/"><code>{disk.frame}</code> is epic</a></td>
+<td><a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/" class="external-link"><code>{disk.frame}</code> is epic</a></td>
 <td>English</td>
 <td>Bruno Rodriguez</td>
 <td>2019-09-03</td>
-<td>It’s about loading a 30G file into <a href="https://diskframe.com">disk.frame</a>
+<td>It’s about loading a 30G file into <a href="https://diskframe.com" class="external-link">disk.frame</a>
 </td>
 </tr>
 <tr class="even">
-<td><a href="https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/">My top 10 R packages for data analytics</a></td>
+<td><a href="https://www.actuaries.digital/2019/09/26/my-top-10-r-packages-for-data-analytics/" class="external-link">My top 10 R packages for data analytics</a></td>
 <td>English</td>
 <td>Jacky Poon</td>
 <td>2019-09-03</td>
 <td>
-<a href="https://diskframe.com">disk.frame</a> was number 3</td>
+<a href="https://diskframe.com" class="external-link">disk.frame</a> was number 3</td>
 </tr>
 <tr class="odd">
-<td><a href="https://www.youtube.com/watch?v=3XMTyi_H4q4">useR! 2019 presentation video</a></td>
+<td><a href="https://www.youtube.com/watch?v=3XMTyi_H4q4" class="external-link">useR! 2019 presentation video</a></td>
 <td>English</td>
 <td>Dai ZJ</td>
 <td>2019-08-03</td>
 <td></td>
 </tr>
 <tr class="even">
-<td><a href="https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY">useR! 2019 presentation slides</a></td>
+<td><a href="https://www.beautiful.ai/player/-LphQ0YaJwRektb8nZoY" class="external-link">useR! 2019 presentation slides</a></td>
 <td>English</td>
 <td>Dai ZJ</td>
 <td>2019-08-03</td>
 <td></td>
 </tr>
 <tr class="odd">
-<td><a href="https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/">Split-apply-combine for Maximum Likelihood Estimation of a linear model</a></td>
+<td><a href="https://www.brodrigues.co/blog/2019-10-05-parallel_maxlik/" class="external-link">Split-apply-combine for Maximum Likelihood Estimation of a linear model</a></td>
 <td>English</td>
 <td>Bruno Rodriguez</td>
 <td>2019-10-06</td>
 <td>
-<a href="https://diskframe.com">disk.frame</a> used in helping to create a maximum likelihood estimation program for linear models</td>
+<a href="https://diskframe.com" class="external-link">disk.frame</a> used in helping to create a maximum likelihood estimation program for linear models</td>
 </tr>
 <tr class="even">
-<td><a href="https://emmavestesson.netlify.app/2019/07/user2019/">Emma goes to useR! 2019</a></td>
+<td><a href="https://emmavestesson.netlify.app/2019/07/user2019/" class="external-link">Emma goes to useR! 2019</a></td>
 <td>English</td>
 <td>Emma Vestesson</td>
 <td>2019-07-16</td>
-<td>The first mention of <a href="https://diskframe.com">disk.frame</a> in a blog post</td>
+<td>The first mention of <a href="https://diskframe.com" class="external-link">disk.frame</a> in a blog post</td>
 </tr>
 <tr class="odd">
-<td><a href="https://segmentfault.com/a/1190000021653567">深入对比数据科学工具箱：Python3 和 R 之争(2020版)</a></td>
+<td><a href="https://segmentfault.com/a/1190000021653567" class="external-link">深入对比数据科学工具箱：Python3 和 R 之争(2020版)</a></td>
 <td>Chinese</td>
 <td>Harry Zhu</td>
 <td>2020-02-16</td>
@@ -544,67 +541,60 @@
 </tr>
 </tbody>
 </table>
-<div id="interested-in-learning-diskframe-in-a-structured-course" class="section level3">
-<h3 class="hasAnchor">
-<a href="#interested-in-learning-diskframe-in-a-structured-course" class="anchor"></a>Interested in learning <code>{disk.frame}</code> in a structured course?</h3>
-<p>Please register your interest at:</p>
-<p><a href="https://leanpub.com/c/taminglarger-than-ramwithdiskframe" class="uri">https://leanpub.com/c/taminglarger-than-ramwithdiskframe</a></p>
-</div>
-</div>
-<div id="open-collective" class="section level2">
-<h2 class="hasAnchor">
-<a href="#open-collective" class="anchor"></a>Open Collective</h2>
-<p>If you like <a href="https://diskframe.com">disk.frame</a> and want to speed up its development or perhaps you have a feature request? Please consider sponsoring <a href="https://diskframe.com">disk.frame</a> on Open Collective</p>
-<div id="backers" class="section level3">
-<h3 class="hasAnchor">
-<a href="#backers" class="anchor"></a>Backers</h3>
-<p>Thank you to all our backers!</p>
-<p><a href="https://opencollective.com/diskframe#backers" target="_blank"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
-</div>
-<div id="sponsor-and-back-diskframe" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sponsor-and-back-diskframe" class="anchor"></a>Sponsor and back <code>{disk.frame}</code>
+<div class="section level3">
+<h3 id="interested-in-learning-diskframe-in-a-structured-course">Interested in learning <code>{disk.frame}</code> in a structured course?<a class="anchor" aria-label="anchor" href="#interested-in-learning-diskframe-in-a-structured-course"></a>
 </h3>
-<p>Support <a href="https://diskframe.com">disk.frame</a> development by becoming a sponsor. Your logo will show up here with a link to your website.</p>
-<p><a href="https://opencollective.com/diskframe#sponsors" target="_blank"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
+<p>Please register your interest at:</p>
+<p><a href="https://leanpub.com/c/taminglarger-than-ramwithdiskframe" class="external-link uri">https://leanpub.com/c/taminglarger-than-ramwithdiskframe</a></p>
 </div>
 </div>
-<div id="contact-me-for-consulting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contact-me-for-consulting" class="anchor"></a>Contact me for consulting</h2>
+<div class="section level2">
+<h2 id="open-collective">Open Collective<a class="anchor" aria-label="anchor" href="#open-collective"></a>
+</h2>
+<p>If you like <a href="https://diskframe.com" class="external-link">disk.frame</a> and want to speed up its development or perhaps you have a feature request? Please consider sponsoring <a href="https://diskframe.com" class="external-link">disk.frame</a> on Open Collective</p>
+<div class="section level3">
+<h3 id="backers">Backers<a class="anchor" aria-label="anchor" href="#backers"></a>
+</h3>
+<p>Thank you to all our backers!</p>
+<p><a href="https://opencollective.com/diskframe#backers" target="_blank" class="external-link"><img src="https://opencollective.com/diskframe/backers.svg?width=890"></a></p>
+</div>
+<div class="section level3">
+<h3 id="sponsor-and-back-diskframe">Sponsor and back <code>{disk.frame}</code>
+<a class="anchor" aria-label="anchor" href="#sponsor-and-back-diskframe"></a>
+</h3>
+<p>Support <a href="https://diskframe.com" class="external-link">disk.frame</a> development by becoming a sponsor. Your logo will show up here with a link to your website.</p>
+<p><a href="https://opencollective.com/diskframe#sponsors" target="_blank" class="external-link"><img src="https://opencollective.com/diskframe/sponsors.svg?width=890"></a></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="contact-me-for-consulting">Contact me for consulting<a class="anchor" aria-label="anchor" href="#contact-me-for-consulting"></a>
+</h2>
 <p><strong>Do you need help with machine learning and data science in R, Python, or Julia?</strong> I am available for Machine Learning/Data Science/R/Python/Julia consulting! <a href="mailto:dzj@analytixware.com">Email me</a></p>
 </div>
-<div id="non-financial-ways-to-contribute" class="section level2">
-<h2 class="hasAnchor">
-<a href="#non-financial-ways-to-contribute" class="anchor"></a>Non-financial ways to contribute</h2>
+<div class="section level2">
+<h2 id="non-financial-ways-to-contribute">Non-financial ways to contribute<a class="anchor" aria-label="anchor" href="#non-financial-ways-to-contribute"></a>
+</h2>
 <p>Do you wish to give back the open-source community in non-financial ways? Here are some ways you can contribute</p>
 <ul>
-<li>Write a blogpost about your <a href="https://diskframe.com">disk.frame</a> usage or experience. I would love to learn more about how <a href="https://diskframe.com">disk.frame</a> has helped you</li>
-<li>Tweet or post on social media (e.g LinkedIn) about <a href="https://diskframe.com">disk.frame</a> to help promote it</li>
-<li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/xiaodaigh/disk.frame/issues">raising an issue here</a>
+<li>Write a blogpost about your <a href="https://diskframe.com" class="external-link">disk.frame</a> usage or experience. I would love to learn more about how <a href="https://diskframe.com" class="external-link">disk.frame</a> has helped you</li>
+<li>Tweet or post on social media (e.g LinkedIn) about <a href="https://diskframe.com" class="external-link">disk.frame</a> to help promote it</li>
+<li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">raising an issue here</a>
 </li>
-<li>Star the <a href="https://github.com/xiaodaigh/disk.frame"><code>{disk.frame}</code> Github repo</a>
+<li>Star the <a href="https://github.com/xiaodaigh/disk.frame" class="external-link"><code>{disk.frame}</code> Github repo</a>
 </li>
-<li>Star any repo that <a href="https://diskframe.com">disk.frame</a> depends on e.g. <a href="https://github.com/fstpackage/fst"><code>{fst}</code></a> and <a href="https://github.com/HenrikBengtsson/future"><code>{future}</code></a>
+<li>Star any repo that <a href="https://diskframe.com" class="external-link">disk.frame</a> depends on e.g. <a href="https://github.com/fstpackage/fst" class="external-link"><code>{fst}</code></a> and <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>{future}</code></a>
 </li>
 </ul>
 </div>
-<div id="related-repos" class="section level2">
-<h2 class="hasAnchor">
-<a href="#related-repos" class="anchor"></a>Related Repos</h2>
-<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
+<div class="section level2">
+<h2 id="related-repos">Related Repos<a class="anchor" aria-label="anchor" href="#related-repos"></a>
+</h2>
+<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="external-link uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="external-link uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="external-link uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="external-link uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
 </div>
-<div id="download-counts--build-status" class="section level2">
-<h2 class="hasAnchor">
-<a href="#download-counts--build-status" class="anchor"></a>Download Counts &amp; Build Status</h2>
-<p><a href="https://cran.r-project.org/package=disk.frame"><embed src="https://cranlogs.r-pkg.org/badges/disk.frame"></embed></a> <a href="https://cran.r-project.org/package=disk.frame"><embed src="http://cranlogs.r-pkg.org/badges/grand-total/disk.frame"></embed></a> <a href="https://travis-ci.org/xiaodaigh/disk.frame"><img src="https://travis-ci.org/xiaodaigh/disk.frame.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/xiaodaigh/disk.frame"><embed src="https://ci.appveyor.com/api/projects/status/github/xiaodaigh/disk.frame?branch=master&amp;svg=true"></embed></a></p>
-</div>
-<div id="live-stream-of-diskframe-development" class="section level2">
-<h2 class="hasAnchor">
-<a href="#live-stream-of-diskframe-development" class="anchor"></a>Live Stream of <code>{disk.frame}</code> development</h2>
-<ul>
-<li><a href="https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe" class="uri">https://www.youtube.com/playlist?list=PL3DVdT3kym4fIU5CO-pxKtWhdjMVn4XGe</a></li>
-</ul>
+<div class="section level2">
+<h2 id="download-counts--build-status">Download Counts &amp; Build Status<a class="anchor" aria-label="anchor" href="#download-counts--build-status"></a>
+</h2>
+<p><a href="https://cran.r-project.org/package=disk.frame" class="external-link"><embed src="https://cranlogs.r-pkg.org/badges/disk.frame"></embed></a> <a href="https://cran.r-project.org/package=disk.frame" class="external-link"><embed src="http://cranlogs.r-pkg.org/badges/grand-total/disk.frame"></embed></a></p>
 </div>
 </div>
 
@@ -612,42 +602,53 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=disk.frame">https://​cloud.r-project.org/​package=disk.frame</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/xiaodaigh/disk.frame/">https://​github.com/​xiaodaigh/​disk.frame/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/xiaodaigh/disk.frame/issues">https://​github.com/​xiaodaigh/​disk.frame/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=disk.frame" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Dai ZJ <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing disk.frame</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Dai ZJ <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Dai ZJ.</p>
+  <p></p>
+<p>Developed by Dai ZJ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -655,6 +656,8 @@
 
   
 
+
+  
 
   </body>
 </html>
