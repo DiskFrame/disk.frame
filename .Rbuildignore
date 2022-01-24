@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.github$
 ^manuscript$
@@ -65,4 +67,4 @@ vignettes.Rnw.template
 ^codecov\.yml$
 new-nse-dev.r
 test-poorman.R
-*.parquet
+.parquet$

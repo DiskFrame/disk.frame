@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // hashstr2i
 NumericVector hashstr2i(std::vector< std::string > x, int ngrps, int prime1, int prime2, int prime3);
 RcppExport SEXP _disk_frame_hashstr2i(SEXP xSEXP, SEXP ngrpsSEXP, SEXP prime1SEXP, SEXP prime2SEXP, SEXP prime3SEXP) {

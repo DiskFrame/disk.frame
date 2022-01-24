@@ -52,7 +52,7 @@ Suggests:
     covr
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues

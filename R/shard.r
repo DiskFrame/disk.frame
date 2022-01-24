@@ -26,7 +26,7 @@ shard <- function(df, shardby, outdir = tempfile(fileext = ".df"), ..., nchunks 
   if("data.frame" %in% class(df)) {
     data.table::setDT(df)
     if(shardby_function == "hash"){
-      message("Hashing...")
+      # message("Hashing...")
       if(length(shardby) == 1) {
         code = glue::glue("df[,.out.disk.frame.id := hashstr2i(as.character({shardby}), nchunks)]")
       } else {
