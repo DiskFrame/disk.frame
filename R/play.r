@@ -4,8 +4,11 @@
 play <- function(dataframe, recordings) {
   for(recording in recordings) {
     tmp_env = list2env(recording$globals)
-    one_recording_as_string = paste0(deparse(recording$expr), collapse = "")
-    code = str2lang(sprintf("dataframe %%>%% %s", one_recording_as_string))
+    
+    # replace .disk.frame.chunk with dataframe in the function
+    code = eval(bquote(substitute(.(recording$expr), list(.disk.frame.chunk=quote(dataframe)))))
+    
+    # execute the delayed function
     dataframe = eval(code, envir = tmp_env)
   }
   dataframe

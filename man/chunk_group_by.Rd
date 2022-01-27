@@ -5,7 +5,14 @@
 \alias{chunk_summarise}
 \alias{chunk_group_by}
 \alias{chunk_ungroup}
-\title{Group by within each disk.frame}
+\title{#' @export
+#' @importFrom dplyr add_count
+#' @rdname dplyr_verbs
+add_count.disk.frame <- create_chunk_mapper(dplyr::add_count)
+#' @export
+#' @importFrom dplyr add_tally
+#' @rdname dplyr_verbs
+add_tally.disk.frame <- create_chunk_mapper(dplyr::add_tally)}
 \usage{
 chunk_summarize(.data, ...)
 

@@ -23,7 +23,7 @@
 #' delete(cars.df)
 #' @export
 #' @rdname collect
-collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
+collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
   cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
   #cids = as.integer(get_chunk_ids(x))
   if(nchunks(x) > 0) {
@@ -59,8 +59,7 @@ collect_list <- function(x, simplify = FALSE, parallel = !is.null(attr(x,"record
   if(length(cids) > 0) {
     list_of_results = NULL
     if (parallel) {
-      #res = furrr::future_map(1:nchunks(x), ~get_chunk(x, .x))
-      res = future.apply::future_lapply(cids, function(.x) {
+      list_of_results = future.apply::future_lapply(cids, function(.x) {
         get_chunk(x, .x, full.names = TRUE)
       }, future.seed=TRUE)
     } else {

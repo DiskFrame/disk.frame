@@ -25,7 +25,8 @@ names.disk.frame <- function(x, ...) {
 #' @export
 colnames.disk.frame <- function(x, ...) {
   res = attr(x, "path", exact=TRUE) %>% 
-    fs::dir_ls(type="file")
+    list.files(full.names = TRUE)
+  
   if(is.null(attr(x, "recordings"))) {
     if(length(res) == 0) {
       return(vector("character"))

@@ -47,78 +47,11 @@ cmap <- function(.x, .f, ...) {
 cmap.disk.frame <- function(
                     .x, 
                     .f, 
-                    ..., 
-                    outdir = NULL, 
-                    keep = NULL, 
-                    chunks = nchunks(.x), 
-                    compress = 50, 
-                    lazy = TRUE, 
-                    overwrite = FALSE, 
-                    vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()), .progress = TRUE) {
+                    ...) {
   .f = purrr::as_mapper(.f)
-  if(lazy) {
-    attr(.x, "lazyfn") = 
-      c(
-        attr(.x, "lazyfn"), 
-        list(
-          list(
-            func = .f, 
-            vars_and_pkgs = vars_and_pkgs, 
-            dotdotdot = list(...)
-          )
-        )
-      )
-    return(.x)
-  }
   
-  if(!is.null(outdir)) {
-    overwrite_check(outdir, overwrite)
-  }
-  
-  stopifnot(is_ready(.x))
-  
-  keep1 = attr(.x,"keep", exact=TRUE)
-  
-  if(is.null(keep)) {
-    keep = keep1
-  }
-  
-  path <- attr(.x, "path")
-  files <- list.files(path, full.names = TRUE)
-  files_shortname <- list.files(path)
-  
-  keep_future = keep
-  
-  cid = get_chunk_ids(.x, full.names = TRUE)
-  
-  dotdotdot = list(...)
-  
-  res = future.apply::future_lapply(1:length(files), function(ii, ...) {
-  #res = lapply(1:length(files), function(ii) {
-    ds = disk.frame::get_chunk(.x, cid[ii], keep=keep_future, full.names = TRUE)
-    
-    res = .f(ds, ...)
-    # res = do.call(.f, c(ds, dotdotdot))
-    
-    if(!is.null(outdir)) {
-      if(nrow(res) == 0) {
-        warning(glue::glue("The output chunk has 0 row, therefore chunk {ii} NOT written"))
-      } else {
-        fst::write_fst(res, file.path(outdir, files_shortname[ii]), compress)
-      }
-      return(ii)
-    } else {
-      return(res)
-    }
-  }, ..., 
-  future.seed=TRUE # to get rid of the error TODO investigate making this better
-  )
-  
-  if(!is.null(outdir)) {
-    return(disk.frame(outdir))
-  } else {
-    return(write_disk.frame(outdir, ..f(.x), ...))
-  }
+  result = create_chunk_mapper(.f)(.x, ...)
+  return(result)
 }
 
 #' @export
@@ -134,8 +67,8 @@ cmap_dfr.disk.frame <- function(.x, .f, ..., .id = NULL, use.names = fill, fill 
     warning(".id is not NULL, but the parameter is not used with cmap_dfr.disk.frame")
   }
   
-  # TODO warn the user if outdir is cmap_dfr
-  data.table::rbindlist(cmap.disk.frame(.x, .f, ..., outdir = NULL, lazy = FALSE), use.names = use.names, fill = fill, idcol = idcol)
+  list_df = collect_list(cmap.disk.frame(.x, .f, ...))
+  data.table::rbindlist(list_df, use.names = use.names, fill = fill, idcol = idcol)
 }
 
 
