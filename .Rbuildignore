@@ -68,3 +68,4 @@ vignettes.Rnw.template
 new-nse-dev.r
 test-poorman.R
 .parquet$
+maditr-devs.r

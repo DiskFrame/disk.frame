@@ -1,7 +1,7 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.5.0
+Version: 0.6.0
 Date: 2021-05-09
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
@@ -37,7 +37,6 @@ Depends:
     dplyr (>= 1.0.0),
     purrr (>= 0.3.2)
 Suggests:
-    testthat (>= 2.1.0),
     nycflights13,
     magrittr,
     shiny,
@@ -48,8 +47,7 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2,
-    covr
+    ggplot2
 LinkingTo: 
     Rcpp
 RoxygenNote: 7.1.2
