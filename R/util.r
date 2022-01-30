@@ -26,7 +26,7 @@ gen_datatable_synthetic <- function(N=2e8, K=100) {
   )
 }
 
-#' Used to convert a function to from purrr syntax if needed
+#' Used to convert a function to purrr syntax if needed
 #' @param .f a normal function or purrr syntax function i.e. `~{ ...code...}`
 #' @importFrom purrr as_mapper 
 purrr_as_mapper <- function(.f) {

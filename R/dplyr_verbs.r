@@ -25,14 +25,6 @@
 #' delete(cars.df)
 select.disk.frame <- create_chunk_mapper(dplyr::select)
 
-# comment out code; to be removed when it's no longer needed
-# select.disk.frame <- function(.data, ...) {
-#   quo_dotdotdot = rlang::enquos(...)
-#   cmap(.data, ~{
-#     code = rlang::quo(dplyr::select(.x, !!!quo_dotdotdot))
-#     rlang::eval_tidy(code)
-#   }, lazy = TRUE)
-# }
 
 #' @export
 #' @rdname dplyr_verbs
@@ -46,7 +38,6 @@ filter.disk.frame <- create_chunk_mapper(dplyr::filter)
 #' @export
 #' @rdname dplyr_verbs
 #' @importFrom future getGlobalsAndPackages
-#' @importFrom rlang eval_tidy quo enquos
 #' @importFrom dplyr mutate
 mutate.disk.frame <- create_chunk_mapper(dplyr::mutate)
 

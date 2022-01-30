@@ -15,17 +15,10 @@ test_that("data.table .N", {
 
 test_that("data.table .N+y V1", {
   df = disk.frame(file.path(tempdir(), "tmp_col_delete"))
-  if(interactive()) {
-    y = 2
-    
-    {y = 3; a <- df[,.(n_plus_y = .N + y), v1]}
-    b <- df[,.N, v1]
-    
-    expect_equal(a$n_plus_y, b$N + y)
-  } else {
-    # TODO figure out why the above fails
-    expect_equal(2L, 2L)
-  }
+  y = 2
+  {y = 3; a <- df[,.(n_plus_y = .N + y), v1]}
+  b <- df[,.N, v1]
+  expect_equal(a$n_plus_y, b$N + y)
 })
 
 test_that("data.table do not return a data.table", {
@@ -34,6 +27,28 @@ test_that("data.table do not return a data.table", {
   res <- df[,.(.N), rbind=FALSE]
   expect_equal(typeof(res), "list")
   expect_equal(length(res), 8)
+})
+
+test_that("data.table global vars",  {
+  # Load packages
+  library(data.table)
+
+  # Create data table and diskframe object of storm data
+  storms_df <- as.disk.frame(storms)
+  storms_dt <- as.data.table(storms)
+  
+  # Create search function
+  grep_storm_name <- function(dfr, storm_name){
+    
+    dfr[name %like% storm_name]
+    
+  }
+  
+  # Check function with data.table object
+  grep_storm_name(storms_dt, "^A")
+  
+  # Check function with diskframe object
+  grep_storm_name(storms_df, "^A")
 })
 
 teardown({

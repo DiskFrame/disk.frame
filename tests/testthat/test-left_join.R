@@ -1,6 +1,7 @@
 context("test-left_join")
 
 setup({
+  setup_disk.frame(2)
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)

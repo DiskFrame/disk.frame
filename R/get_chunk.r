@@ -69,6 +69,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
     }
   }
   
+  
   # if the file you are looking for doesn't exist
   if (!fs::file_exists(filename)) {
     warning(glue("The chunk {filename} does not exist; returning an empty data.table"))
@@ -77,6 +78,7 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
     return(notbl)
   }
 
+  
   if (is.null(recordings)) {
     if(typeof(keep)=="closure") {
       fst::read_fst(filename, as.data.table = TRUE,...)

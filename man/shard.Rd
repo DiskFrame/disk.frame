@@ -11,10 +11,7 @@ shard(
   outdir = tempfile(fileext = ".df"),
   ...,
   nchunks = recommend_nchunks(df),
-  overwrite = FALSE,
-  shardby_function = "hash",
-  sort_splits = NULL,
-  desc_vars = NULL
+  overwrite = FALSE
 )
 
 distribute(...)

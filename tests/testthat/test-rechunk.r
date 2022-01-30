@@ -71,8 +71,19 @@ test_that("testing rechunk 5 to 7", {
   expect_equal(res$a, 51:150)
 })
 
-# TODO do shardby; it's kinda of mitigated by thorough testing on Fannie Mae
-
+test_that("testing reshard", {
+  b = data.frame(a = 51:150, b = 1:100)
+  b = as.disk.frame(b, file.path(tempdir(), "tmp_rechunks5.df"), overwrite = T)
+  
+  b = rechunk(b, shardby = "b")
+  expect_equal(nrow(b), 100)
+  expect_equal(ncol(b), 2)
+  
+  res = collect(b)[order(b)]
+  
+  expect_equal(res$b, 1:100)
+  expect_equal(res$a, 51:150)
+})
 
 teardown({
   fs::dir_delete(file.path(tempdir(), "tmp_rechunks.df"))

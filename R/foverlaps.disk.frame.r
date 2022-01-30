@@ -84,7 +84,7 @@ foverlaps.disk.frame <- function(
       dotdotdot$x = data1
       dotdotdot$y = data2
       
-      data3 = pryr::do_call(foverlaps, dotdotdot)
+      data3 = do.call(foverlaps, dotdotdot)
       rm(data1); rm(data2); gc()
       outdir
       fst::write_fst(data3, glue::glue("{outdir}/{chunk_id}"), compress = compress)

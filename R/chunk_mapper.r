@@ -31,7 +31,6 @@
 #' @param chunk_fn The dplyr function to create a mapper for
 #' @param warning_msg The warning message to display when invoking the mapper
 #' @param as.data.frame force the input chunk of a data.frame; needed for dtplyr
-#' @importFrom rlang enquos quo
 #' @export
 create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FALSE) {
   if(as.data.frame) {
@@ -40,7 +39,7 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
   
   return(function(.data, ...) {
     if(!is.null(warning_msg)) {
-      print(warning_msg)
+      warning(warning_msg)
     }
     
     # you need to use list otherwise the names will be gone

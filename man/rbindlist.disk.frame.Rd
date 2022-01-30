@@ -27,7 +27,7 @@ rbindlist.disk.frame(
 
 \item{overwrite}{overwrite the output directory}
 
-\item{.progress}{A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}}
+\item{.progress}{A logical, for whether or not to show progress.}
 }
 \description{
 rbindlist disk.frames together

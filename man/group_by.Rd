@@ -12,7 +12,12 @@
 
 \method{summarize}{grouped_disk.frame}(.data, ...)
 
-\method{group_by}{disk.frame}(.data, ..., .add = FALSE, .drop = stop(".drop not yet supported"))
+\method{group_by}{disk.frame}(
+  .data,
+  ...,
+  .add = FALSE,
+  .drop = stop("disk.frame does not support `.drop` in `group_by` at this stage")
+)
 
 \method{summarize}{disk.frame}(.data, ...)
 

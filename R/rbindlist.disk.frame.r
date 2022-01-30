@@ -5,7 +5,7 @@
 #' @param parallel if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE
 #' @param compress 0-100, 100 being the highest compression rate.
 #' @param overwrite overwrite the output directory
-#' @param .progress A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From {furrr}
+#' @param .progress A logical, for whether or not to show progress.
 #' @import fs
 #' @importFrom data.table data.table setDT
 #' @importFrom future.apply future_lapply

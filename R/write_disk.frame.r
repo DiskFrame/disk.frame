@@ -58,8 +58,8 @@ write_disk.frame <- function(
           fst::write_fst(chunk, out_chunk_name, compress)
           return(files_shortname)
         }
-        NULL # return NULL
-      }, ...)
+        return(NULL)
+      }, ..., future.seed = TRUE)
       return(disk.frame(outdir))
     } else {
       # TODO really inefficient

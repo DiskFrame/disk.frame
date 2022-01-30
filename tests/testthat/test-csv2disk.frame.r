@@ -16,14 +16,14 @@ test_that("csv2disk.frame works with no shard", {
   
   dff1 = dff %>% 
     group_by(id1) %>% 
-    summarize(sum(V1)) %>% 
+    summarize(v1=sum(v1)) %>% 
     collect
   
   dff2 = dff1 %>% 
     group_by(id1) %>% 
-    summarize(sum(V1))
+    summarize(sum(v1))
   
-  expect_false(nrow(dff1) == nrow(dff2))
+  expect_true(nrow(dff1) == nrow(dff2))
   expect_equal(nrow(dff), 1e3+11)
   expect_equal(ncol(dff), 10)
 })
@@ -78,7 +78,7 @@ test_that("csv2disk.frame tests readr", {
   #   csv_path,
   #   outdir = df_path,
   #   shardby = "minute",
-  #   overwrite = T,
+    # overwrite = T,
   #   backend = "readr")
 })
 

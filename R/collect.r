@@ -25,13 +25,12 @@
 #' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
   cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
-  #cids = as.integer(get_chunk_ids(x))
   if(nchunks(x) > 0) {
     if(parallel) {
-      future.apply::future_lapply(cids, function(.x) {
-                              get_chunk(x, .x, full.names = TRUE)
-      }, future.seed = TRUE) %>% 
-        rbindlist()
+      tmp = future.apply::future_lapply(cids, function(.x) {
+          get_chunk(x, .x, full.names = TRUE)
+      }, future.seed = TRUE)
+      return(rbindlist(tmp))
     } else {
       purrr::map_dfr(cids, ~get_chunk(x, .x, full.names = TRUE))
     }

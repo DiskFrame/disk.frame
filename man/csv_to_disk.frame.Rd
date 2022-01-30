@@ -47,8 +47,7 @@ the highest compression ratio.}
 
 \item{header}{Whether the files have header. Defaults to TRUE}
 
-\item{.progress}{A logical, for whether or not to print a progress bar for
-multiprocess, multisession, and multicore plans. From {furrr}}
+\item{.progress}{A logical, for whether or not to show progress}
 
 \item{backend}{The CSV reader backend to choose: "data.table" or "readr". 
 disk.frame does not have its own CSV reader. It uses either

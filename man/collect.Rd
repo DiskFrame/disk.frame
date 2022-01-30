@@ -6,7 +6,7 @@
 \alias{collect.summarized_disk.frame}
 \title{Bring the disk.frame into R}
 \usage{
-\method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x, "lazyfn")))
+\method{collect}{disk.frame}(x, ..., parallel = !is.null(attr(x, "recordings")))
 
 collect_list(
   x,

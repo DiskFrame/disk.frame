@@ -2,7 +2,7 @@
 % Please edit documentation in R/util.r
 \name{purrr_as_mapper}
 \alias{purrr_as_mapper}
-\title{Used to convert a function to from purrr syntax if needed}
+\title{Used to convert a function to purrr syntax if needed}
 \usage{
 purrr_as_mapper(.f)
 }
@@ -10,5 +10,5 @@ purrr_as_mapper(.f)
 \item{.f}{a normal function or purrr syntax function i.e. `~{ ...code...}`}
 }
 \description{
-Used to convert a function to from purrr syntax if needed
+Used to convert a function to purrr syntax if needed
 }

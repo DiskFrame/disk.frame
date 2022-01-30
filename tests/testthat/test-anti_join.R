@@ -24,8 +24,10 @@ test_that("testing anti_join where right is data.frame", {
   bc = collect(b)
   dc = collect(d)
   
-  abc = anti_join(a, bc, by = "a") %>% collect
-  expect_equal(nrow(abc), 50)
+  abc_pre = anti_join(a, bc, by = "a")
+  abc = collect(abc_pre)
+  abc_true = anti_join(collect(a), bc, by = "a")
+  expect_equal(nrow(abc), nrow(abc_true))
   
   abc0 = anti_join(a, bc, by = c("a","b")) %>% collect
   expect_equal(nrow(abc0), 100)

@@ -17,19 +17,7 @@
 \usage{
 cmap(.x, .f, ...)
 
-\method{cmap}{disk.frame}(
-  .x,
-  .f,
-  ...,
-  outdir = NULL,
-  keep = NULL,
-  chunks = nchunks(.x),
-  compress = 50,
-  lazy = TRUE,
-  overwrite = FALSE,
-  vars_and_pkgs = future::getGlobalsAndPackages(.f, envir = parent.frame()),
-  .progress = TRUE
-)
+\method{cmap}{disk.frame}(.x, .f, ...)
 
 cmap_dfr(.x, .f, ..., .id = NULL)
 
@@ -76,15 +64,15 @@ clapply(...)
 
 \item{...}{Passed to `collect` and `write_disk.frame`}
 
-\item{outdir}{the output directory}
-
-\item{lazy}{if TRUE then do this lazily}
-
 \item{use.names}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 
 \item{fill}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 
 \item{idcol}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
+
+\item{outdir}{the output directory}
+
+\item{lazy}{if TRUE then do this lazily}
 }
 \description{
 Apply the same function to all chunks

@@ -1,4 +1,4 @@
-context("test-keep")
+context("test-srckeep")
 
 setup({
   b = data.frame(a = 51:150, b = 1:100)
