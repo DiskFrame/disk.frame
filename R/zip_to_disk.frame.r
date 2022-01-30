@@ -39,6 +39,7 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
   
   tmpdir = tempfile(pattern = "tmp_zip2csv")
 
+  dotdotdots = list(...)
   dfs = future.apply::future_lapply(files$Name, function(fn, ...) {
     outdfpath = file.path(outdir, fn)
     overwrite_check(outdfpath, TRUE)

@@ -7,7 +7,7 @@
 bind_rows.disk.frame(...)
 }
 \arguments{
-\item{...}{}
+\item{...}{disk.frame to be row bound}
 }
 \description{
 Bind rows

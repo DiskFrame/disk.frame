@@ -21,7 +21,7 @@ second is the chunk ID
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ second is the chunk ID
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Apply the same function to all chunks</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/cmap.r" class="external-link"><code>R/cmap.r</code></a>, <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/map-deprecated.r" class="external-link"><code>R/map-deprecated.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/cmap.r" class="external-link"><code>R/cmap.r</code></a></small>
     <div class="hidden name"><code>cmap.Rd</code></div>
     </div>
 
@@ -107,19 +107,7 @@ second is the chunk ID</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for disk.frame</span>
-<span class="fu">cmap</span><span class="op">(</span>
-  <span class="va">.x</span>,
-  <span class="va">.f</span>,
-  <span class="va">...</span>,
-  outdir <span class="op">=</span> <span class="cn">NULL</span>,
-  keep <span class="op">=</span> <span class="cn">NULL</span>,
-  chunks <span class="op">=</span> <span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  lazy <span class="op">=</span> <span class="cn">TRUE</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  vars_and_pkgs <span class="op">=</span> <span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/getGlobalsAndPackages.html" class="external-link">getGlobalsAndPackages</a></span><span class="op">(</span><span class="va">.f</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
-  .progress <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
+<span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
@@ -134,10 +122,9 @@ second is the chunk ID</p>
   <span class="va">.f</span>,
   outdir <span class="op">=</span> <span class="cn">NULL</span>,
   keep <span class="op">=</span> <span class="cn">NULL</span>,
-  chunks <span class="op">=</span> <span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
   lazy <span class="op">=</span> <span class="cn">TRUE</span>,
   overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
+  compress <span class="op">=</span> <span class="fl">50</span>,
   <span class="va">...</span>
 <span class="op">)</span>
 
@@ -161,34 +148,7 @@ second is the chunk ID</p>
 
 <span class="fu">delayed</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
 
-<span class="fu">chunk_lapply</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">map</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">map</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">map</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">imap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">imap_dfr</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">imap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">imap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">imap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dfr</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dfr</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu">clapply</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -198,31 +158,25 @@ second is the chunk ID</p>
 <dt>.f</dt>
 <dd><p>a function to apply to each of the chunks</p></dd>
 <dt>...</dt>
-<dd><p>for compatibility with `purrr::map`</p></dd>
-<dt>outdir</dt>
-<dd><p>the output directory</p></dd>
-<dt>keep</dt>
-<dd><p>the columns to keep from the input</p></dd>
-<dt>chunks</dt>
-<dd><p>The number of chunks to output</p></dd>
-<dt>compress</dt>
-<dd><p>0-100 fst compression ratio</p></dd>
-<dt>lazy</dt>
-<dd><p>if TRUE then do this lazily</p></dd>
-<dt>overwrite</dt>
-<dd><p>if TRUE removes any existing chunks in the data</p></dd>
-<dt>vars_and_pkgs</dt>
-<dd><p>variables and packages to send to a background session. This is typically automatically detected</p></dd>
-<dt>.progress</dt>
-<dd><p>A logical, for whether or not to print a progress bar for multiprocess, multisession, and multicore plans. From furrr</p></dd>
+<dd><p>Passed to `collect` and `write_disk.frame`</p></dd>
 <dt>.id</dt>
-<dd><p>not used</p></dd>
+<dd><p>ignored</p></dd>
 <dt>use.names</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
 <dt>fill</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
 <dt>idcol</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
+<dt>outdir</dt>
+<dd><p>the output directory</p></dd>
+<dt>keep</dt>
+<dd><p>The columns to keep at source</p></dd>
+<dt>lazy</dt>
+<dd><p>if TRUE then do this lazily</p></dd>
+<dt>overwrite</dt>
+<dd><p>Whether to overwrite any files in the output directory</p></dd>
+<dt>compress</dt>
+<dd><p>The compression setting. 0-100</p></dd>
 </dl></div>
 
     <div id="ref-examples">
@@ -303,30 +257,12 @@ second is the chunk ID</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># return the first row of each chunk eagerly as list</span></span>
 <span class="r-in"><span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    11   17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    13   46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    16   40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    19   46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    24   70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpyknGIm\file4718220342f7.df"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (post operations): ???</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (post operations): ???</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># return the first row of each chunk eagerly as data.table/data.frame by row-binding</span></span>
 <span class="r-in"><span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
@@ -355,137 +291,6 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    16   40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    19   46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    24   70</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># .x is the chunk and .y is the ID as an integer</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># lazy = TRUE support is not available at the moment</span></span>
-<span class="r-in"><span class="fu">cimap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span>, <span class="va">id</span> <span class="op">:=</span> <span class="va">.y</span><span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     4   10  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     7    4  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     7   22  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     8   16  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:     9   10  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:    10   18  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:    10   26  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9:    10   34  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    11   17  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    11   28  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    12   14  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    12   20  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    12   24  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    12   28  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:    13   26  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:    13   34  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9:    13   34  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    13   46  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    14   26  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    14   36  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    14   60  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    14   80  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    15   20  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:    15   26  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:    15   54  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9:    16   32  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    16   40  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    17   32  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    17   40  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    17   50  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    18   42  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    18   56  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:    18   76  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:    18   84  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9:    19   36  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    19   46  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    19   68  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    20   32  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    20   48  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    20   52  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    20   56  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:    20   64  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:    22   66  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9:    23   54  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    24   70  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    24   92  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    24   93  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    24  120  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    25   85  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cimap_dfr</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span>, <span class="va">id</span> <span class="op">:=</span> <span class="va">.y</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     4    2  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     4   10  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     7    4  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     7   22  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     8   16  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     9   10  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    10   18  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    10   26  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    10   34  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    11   17  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    11   28  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    12   14  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:    12   20  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:    12   24  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:    12   28  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:    13   26  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:    13   34  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:    13   34  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:    13   46  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:    14   26  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:    14   36  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:    14   60  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:    14   80  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:    15   20  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:    15   26  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:    15   54  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:    16   32  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:    16   40  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:    17   32  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:    17   40  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:    17   50  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:    18   42  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:    18   56  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:    18   76  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:    18   84  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:    19   36  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:    19   46  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:    19   68  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:    20   32  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:    20   48  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:    20   52  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:    20   56  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:    20   64  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:    22   66  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:    23   54  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:    24   70  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:    24   92  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:    24   93  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:    24  120  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:    25   85  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist id</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up cars.df</span></span>
 <span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>

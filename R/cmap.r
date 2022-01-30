@@ -6,6 +6,10 @@
 #' @param use.names for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param fill for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
 #' @param idcol for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist
+#' @param .id ignored
+#' @param keep The columns to keep at source
+#' @param compress The compression setting. 0-100
+#' @param overwrite Whether to overwrite any files in the output directory
 #' @param ... Passed to `collect` and `write_disk.frame`
 #' @export
 #' @examples
@@ -82,7 +86,7 @@ cimap <- function(.x, .f, ...) {
 #' second is the chunk ID
 #' @export
 #' @rdname cmap
-cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, chunks = nchunks(.x), compress = 50, lazy = TRUE, overwrite = FALSE, ...) {
+cimap.disk.frame <- function(.x, .f, outdir = NULL, keep = NULL, lazy = TRUE, overwrite = FALSE, compress=50, ...) {
   .f = purrr_as_mapper(.f)
   
   # TODO support lazy for cimap

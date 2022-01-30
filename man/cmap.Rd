@@ -30,10 +30,9 @@ cimap(.x, .f, ...)
   .f,
   outdir = NULL,
   keep = NULL,
-  chunks = nchunks(.x),
-  compress = 50,
   lazy = TRUE,
   overwrite = FALSE,
+  compress = 50,
   ...
 )
 
@@ -64,6 +63,8 @@ clapply(...)
 
 \item{...}{Passed to `collect` and `write_disk.frame`}
 
+\item{.id}{ignored}
+
 \item{use.names}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
 
 \item{fill}{for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist}
@@ -72,7 +73,13 @@ clapply(...)
 
 \item{outdir}{the output directory}
 
+\item{keep}{The columns to keep at source}
+
 \item{lazy}{if TRUE then do this lazily}
+
+\item{overwrite}{Whether to overwrite any files in the output directory}
+
+\item{compress}{The compression setting. 0-100}
 }
 \description{
 Apply the same function to all chunks

@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -104,10 +104,7 @@
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
   <span class="va">...</span>,
   nchunks <span class="op">=</span> <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  shardby_function <span class="op">=</span> <span class="st">"hash"</span>,
-  sort_splits <span class="op">=</span> <span class="cn">NULL</span>,
-  desc_vars <span class="op">=</span> <span class="cn">NULL</span>
+  overwrite <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span>
 
 <span class="fu">distribute</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
@@ -127,12 +124,6 @@
 <dd><p>The number of chunks</p></dd>
 <dt>overwrite</dt>
 <dd><p>If TRUE then the chunks are overwritten</p></dd>
-<dt>shardby_function</dt>
-<dd><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></dd>
-<dt>sort_splits</dt>
-<dd><p>If shardby_function is "sort", the split values for sharding</p></dd>
-<dt>desc_vars</dt>
-<dd><p>for the "sort" shardby function, the variables to sort descending.</p></dd>
 </dl></div>
 
     <div id="ref-examples">
@@ -140,7 +131,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="co"># shard the cars data.frame by speed so that rows with the same speed are in the same chunk</span></span>
 <span class="r-in"><span class="va">iris.df</span> <span class="op">=</span> <span class="fu">shard</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"Species"</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up cars.df</span></span>
 <span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">iris.df</span><span class="op">)</span></span>

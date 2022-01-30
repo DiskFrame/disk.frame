@@ -306,7 +306,7 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
       message("")
     }
     
-    outdf_tmp = future.apply::future_imap(1:length(infile), function(i) {
+    outdf_tmp = future.apply::future_lapply(1:length(infile), function(i) {
       dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), i), infile=infile[i]))
       do.call(csv_to_disk.frame_data.table_backend, dotdotdotorigarg1)
     })

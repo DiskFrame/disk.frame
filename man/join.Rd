@@ -91,6 +91,10 @@
 \item{overwrite}{overwrite output directory}
 
 \item{.progress}{Show progress or not. Defaults to FALSE}
+
+\item{suffix}{see dplyr::XXX_join}
+
+\item{keep}{see dplyr::XXX_join}
 }
 \value{
 disk.frame or data.frame/data.table

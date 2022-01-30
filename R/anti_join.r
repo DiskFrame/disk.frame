@@ -3,6 +3,8 @@
 #' @param merge_by_chunk_id the merge is performed by chunk id
 #' @param overwrite overwrite output directory
 #' @param .progress Show progress or not. Defaults to FALSE
+#' @param suffix see dplyr::XXX_join
+#' @param keep see dplyr::XXX_join
 #' @param ... same as dplyr's joins
 #' @rdname join
 #' @importFrom dplyr anti_join left_join full_join semi_join inner_join

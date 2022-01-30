@@ -22,12 +22,6 @@ rechunk(
 \item{shardby}{the shardkeys}
 
 \item{overwrite}{overwrite the output directory}
-
-\item{shardby_function}{splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks}
-
-\item{sort_splits}{for the "sort" shardby function, a dataframe with the split values.}
-
-\item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
 }
 \description{
 Increase or decrease the number of chunks in the disk.frame

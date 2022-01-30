@@ -4,9 +4,6 @@
 #' @param shardby the shardkeys
 #' @param outdir the output directory
 #' @param overwrite overwrite the output directory
-#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
-#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
-#' @param desc_vars for the "sort" shardby function, the variables to sort descending.
 #' @export
 #' @examples
 #' # create a disk.frame with 2 chunks in tempdir()
