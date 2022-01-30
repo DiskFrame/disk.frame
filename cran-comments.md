@@ -1,11 +1,14 @@
-## Submission for v0.5.0
-*  Fixed issue in CRAN check but needed to update version to follow semver conventions
+## Resubmission 1 for v0.6.0
+* removed the vignette builder which should remove the 1 NOTE
+
+## Submission for v0.6.0
+*  Updated the API for many functions leading to semver update of functions
 
 ## Test environments
-* local Windows 10 Pro install, R 4.0.5
-* local Windows 10 Pro install, R devel (as of 2021-05-09)
-* local Linux/Ubuntu install, R 4.0.5
-* local Linux/Ubuntu install, R devel (as of 2021-05-09)
+* local Windows 11 Pro install, R 4.1.2
+* local Windows 11 Pro install, R devel (as of 2022-01-31)
+* local Linux/Ubuntu install, R 4.1.2
+* local Linux/Ubuntu install, R devel (as of 2022-01-31)
 
 ## R CMD check results
 There were no ERRORs nor WARNINGs nor NOTE when run locally.
