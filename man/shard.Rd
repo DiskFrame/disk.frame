@@ -11,10 +11,7 @@ shard(
   outdir = tempfile(fileext = ".df"),
   ...,
   nchunks = recommend_nchunks(df),
-  overwrite = FALSE,
-  shardby_function = "hash",
-  sort_splits = NULL,
-  desc_vars = NULL
+  overwrite = FALSE
 )
 
 distribute(...)
@@ -31,12 +28,6 @@ distribute(...)
 \item{nchunks}{The number of chunks}
 
 \item{overwrite}{If TRUE then the chunks are overwritten}
-
-\item{shardby_function}{splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks}
-
-\item{sort_splits}{If shardby_function is "sort", the split values for sharding}
-
-\item{desc_vars}{for the "sort" shardby function, the variables to sort descending.}
 }
 \description{
 Shard a data.frame/data.table or disk.frame into chunk and saves it into a disk.frame

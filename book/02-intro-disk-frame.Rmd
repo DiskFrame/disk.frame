@@ -168,7 +168,7 @@ mutate(flights.df, speed = distance / air_time * 60) %>% collect %>% head(2)
 
 ### Examples of NOT fully supported `dplyr` verbs
 
-The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution. In the Group By section, we demonstrate how to use `summarise` in the `disk.frame` context correctly with `hard_group_by`s.
+The `chunk_arrange` function arranges (sorts) each chunk but not the whole dataset. So use with caution. Similarly `chunk_summarise` creates summary variables within each chunk and hence also needs to be used with caution.
 
 ```{r}
 # this only sorts within each chunk
@@ -227,7 +227,7 @@ The `by` variables that were used to shard the dataset are called the `shardkey`
 
 ```{r}
 flights.df %>%
-  group_by(carrier) %>% # notice that hard_group_by needs to be set
+  group_by(carrier) %>% 
   summarize(count = n(), mean_dep_delay = mean(dep_delay, na.rm=T)) %>%  # mean follows normal R rules
   collect %>% 
   arrange(carrier)
@@ -256,11 +256,11 @@ left_join
 inner_join
 semi_join
 inner_join
-full_join # requires hard_group_by on both left and right
+full_join # requires rechunk on both left and right
 ```
-In all cases, the left dataset (`x`) must be a `disk.frame`, and the right dataset (`y`) can be either a `disk.frame` or a `data.frame`. If the right dataset is a `disk.frame` and the `shardkey`s are different between the two `disk.frame`s then two expensive `hard` `group_by` operations are performed *eagerly*, one on the left `disk.frame` and one on the right `disk.frame` to perform the joins correctly. 
+In all cases, the left dataset (`x`) must be a `disk.frame`, and the right dataset (`y`) can be either a `disk.frame` or a `data.frame`. If the right dataset is a `disk.frame` and the `shardkey`s are different between the two `disk.frame`s then two expensive `hard` `rechunk` operations are performed *eagerly*, one on the left `disk.frame` and one on the right `disk.frame` to perform the joins correctly. 
 
-However, if the right dataset is a `data.frame` then `hard_group_by`s are only performed in the case of `full_join`.
+However, if the right dataset is a `data.frame` then `rechunk``s are only performed in the case of `full_join`.
 
 Note `disk.frame` does not support `right_join` the user should use `left_join` instead.
 
@@ -287,33 +287,7 @@ flights.df %>%
 
 `{disk.frame}` supports all `data.frame` operations, unlike Spark which can only perform those operations that Spark has implemented. Hence windowing functions like `min_rank` and `rank` are supported out of the box. 
 
-For the following example, we will use the `hard_group_by` which performs a group-by and also reorganises the chunks so that all records with the same `year`, `month`, and `day` end up in the same chunk. This is typically not advised, as `hard_group_by` can be slow for large datasets.
-
-```{r}
-# Find the most and least delayed flight each day
-bestworst <- flights.df %>%
-   srckeep(c("year","month","day", "dep_delay")) %>%
-   hard_group_by(c("year", "month", "day")) %>%
-   filter(dep_delay == min(dep_delay, na.rm = T) || dep_delay == max(dep_delay, na.rm = T)) %>%
-   collect
-   
-bestworst %>% head
-```
-
-another example
-
-```{r}
-ranked <- flights.df %>%
-  srckeep(c("year","month","day", "dep_delay")) %>%
-  hard_group_by(c("year", "month", "day")) %>%
-  filter(min_rank(desc(dep_delay)) <= 2 & dep_delay > 0) %>%
-  collect
-
-ranked %>% head
-```
-
-one more example
-
+For example
 ```{r}
 # Rank each flight within a daily
 ranked <- flights.df %>%
@@ -329,22 +303,22 @@ ranked %>% head
 
 ## Arbitrary by-chunk processing
 
-One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `map.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk
+One can apply arbitrary transformations to each chunk of the `disk.frame` by using the `delayed` function which evaluates lazily or the `cmap.disk.frame(lazy = F)` function which evaluates eagerly. For example to return the number of rows in each chunk
 
 ```{r}
 flights.df1 <- delayed(flights.df, ~nrow(.x))
 collect_list(flights.df1) %>% head # returns number of rows for each data.frame in a list
 ```
-and to do the same with `map.disk.frame`
+and to do the same with `cmap.disk.frame`
 
 ```{r}
-map(flights.df, ~nrow(.x), lazy = F) %>% head
+cmap(flights.df, ~nrow(.x), lazy = F) %>% head
 ```
-The `map` function can also output the results to another disk.frame folder, e.g.
+The `cmap` function can also output the results to another disk.frame folder, e.g.
 
 ```{r}
 # return the first 10 rows of each chunk
-flights.df2 <- map(flights.df, ~.x[1:10,], lazy = F, outdir = file.path(tempdir(), "tmp2"), overwrite = T)
+flights.df2 <- cmap(flights.df, ~.x[1:10,], lazy = F, outdir = file.path(tempdir(), "tmp2"), overwrite = T)
 
 flights.df2 %>% head
 ```
@@ -369,7 +343,7 @@ write_disk.frame(flights.df, outdir="out")
 this will output a disk.frame to the folder "out"
 
 ```{r cleanup, include=FALSE}
-fs::dir_delete(file.path(tempdir(), "tmp_flights.df"))
-fs::dir_delete(file.path(tempdir(), "tmp2"))
-fs::file_delete(file.path(tempdir(), "tmp_flights.csv"))
+# fs::dir_delete(file.path(tempdir(), "tmp_flights.df"))
+# fs::dir_delete(file.path(tempdir(), "tmp2"))
+# fs::file_delete(file.path(tempdir(), "tmp_flights.csv"))
 ```

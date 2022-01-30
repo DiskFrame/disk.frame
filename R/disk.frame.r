@@ -213,7 +213,7 @@ is.dir.disk.frame <- function(df, check.consistency = TRUE) {
 head.disk.frame <- function(x, n = 6L, ...) {
   stopifnot(is_ready(x))
   path1 <- attr(x,"path")
-  cmds <- attr(x, "lazyfn")
+  cmds <- attr(x, "recordings")
   if(fs::dir_exists(path1)) {
     path2 <- list.files(path1,full.names = TRUE)[1]
     head(play(fst::read_fst(path2, from = 1, to = n, as.data.table = TRUE), cmds), n = n, ...)
@@ -229,7 +229,7 @@ head.disk.frame <- function(x, n = 6L, ...) {
 tail.disk.frame <- function(x, n = 6L, ...) {
   stopifnot(is_ready(x))
   path1 <- attr(x,"path")
-  cmds <- attr(x, "lazyfn")
+  cmds <- attr(x, "recordings")
   if(dir.exists(path1)) {
     path2 <- list.files(path1,full.names = TRUE)
     path2 <- path2[length(path2)]

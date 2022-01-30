@@ -116,9 +116,10 @@ add_chunk <- function(df, chunk, chunk_id = NULL, full.names = FALSE, ...) {
     
     data.table::setDT(check_vars)
     if(nrow(check_vars[is.na(new_chunk)]) > 0) {
+      vars_strings = paste0(check_vars[is.na(new_chunk), colnames], collapse=',\n  ')
       warning(
-        glue::glue(
-          "these variables are in the disk.frame but not in the new chunk:  \n {paste0(check_vars[is.na(new_chunk), colnames], collapse=',\n  ')}"))
+        sprintf(
+          "these variables are in the disk.frame but not in the new chunk:  \n %s", vars_strings))
     }
     if(nrow(check_vars[is.na(existing_df)]) > 0){
       warning(glue::glue("these variables are in the new chunk but not in the existing disk.frame: {paste0(check_vars[is.na(existing_df), colnames], collapse=', ')}"))

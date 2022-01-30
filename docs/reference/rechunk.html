@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -98,13 +98,10 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rechunk</span><span class="op">(</span>
   <span class="va">df</span>,
-  <span class="va">nchunks</span>,
+  nchunks <span class="op">=</span> <span class="fu">disk.frame</span><span class="fu">::</span><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"path"</span>, exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
   shardby <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
-  shardby_function <span class="op">=</span> <span class="st">"hash"</span>,
-  sort_splits <span class="op">=</span> <span class="cn">NULL</span>,
-  desc_vars <span class="op">=</span> <span class="cn">NULL</span>
+  overwrite <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -120,12 +117,6 @@
 <dd><p>the shardkeys</p></dd>
 <dt>overwrite</dt>
 <dd><p>overwrite the output directory</p></dd>
-<dt>shardby_function</dt>
-<dd><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></dd>
-<dt>sort_splits</dt>
-<dd><p>for the "sort" shardby function, a dataframe with the split values.</p></dd>
-<dt>desc_vars</dt>
-<dd><p>for the "sort" shardby function, the variables to sort descending.</p></dd>
 </dl></div>
 
     <div id="ref-examples">
@@ -135,20 +126,15 @@
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span></span>
 <span class="r-in"><span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\Rtmp2rQjw5\back_up_tmp_dir56f4356b56cb. You can recover there files until you restart your R session</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2rQjw5\file56f4c8a34c9.df"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpyknGIm\back_up_tmp_dir471815f02658. You can recover there files until you restart your R session</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpyknGIm\file471862cf5821.df"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (post operations): ???</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (post operations): ???</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">new_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># re-chunking cars.df to 4 chunks, shard by speed, and done "out-of-place" to a new directory</span></span>
 <span class="r-in"><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">4</span>, outdir<span class="op">=</span><span class="va">new_path</span>, shardby <span class="op">=</span> <span class="st">"speed"</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up cars.df</span></span>

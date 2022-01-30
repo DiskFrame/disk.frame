@@ -121,6 +121,9 @@
     <loc>/reference/as.disk.frame.html</loc>
   </url>
   <url>
+    <loc>/reference/bind_rows.disk.frame.html</loc>
+  </url>
+  <url>
     <loc>/reference/bloomfilter.html</loc>
   </url>
   <url>
@@ -238,10 +241,16 @@
     <loc>/reference/overwrite_check.html</loc>
   </url>
   <url>
+    <loc>/reference/play.html</loc>
+  </url>
+  <url>
     <loc>/reference/print.disk.frame.html</loc>
   </url>
   <url>
     <loc>/reference/pull.disk.frame.html</loc>
+  </url>
+  <url>
+    <loc>/reference/purrr_as_mapper.html</loc>
   </url>
   <url>
     <loc>/reference/rbindlist.disk.frame.html</loc>

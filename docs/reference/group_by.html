@@ -20,7 +20,7 @@ reorganizes the chunks by the shard key."><!-- mathjax --><script src="https://c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -109,7 +109,12 @@ reorganizes the chunks by the shard key.</p>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, add <span class="op">=</span> <span class="cn">FALSE</span>, .drop <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_drop_default.html" class="external-link">group_by_drop_default</a></span><span class="op">(</span><span class="va">.data</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span>
+  <span class="va">.data</span>,
+  <span class="va">...</span>,
+  .add <span class="op">=</span> <span class="cn">FALSE</span>,
+  .drop <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"disk.frame does not support `.drop` in `group_by` at this stage"</span><span class="op">)</span>
+<span class="op">)</span>
 
 <span class="co"># S3 method for disk.frame</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
@@ -124,7 +129,7 @@ reorganizes the chunks by the shard key.</p>
 <dd><p>a disk.frame</p></dd>
 <dt>...</dt>
 <dd><p>same as the dplyr::group_by</p></dd>
-<dt>add</dt>
+<dt>.add</dt>
 <dd><p>from dplyr</p></dd>
 <dt>.drop</dt>
 <dd><p>from dplyr</p></dd>

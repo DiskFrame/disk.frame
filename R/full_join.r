@@ -15,8 +15,8 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   if("data.frame" %in% class(y)) {
     # full join cannot be support for y in data.frame
     ncx = nchunks(x)
-    dy = shard(y, shardby = by, nchunks = ncx, overwrite = TRUE)
-    dx = hard_group_by(x, by = by, overwrite = TRUE)
+    dy = shard(y, shardby = by, nchunks = ncx, overwrite = FALSE)
+    dx = rechunk(x, shardby = by, outdir=tempfile(fileext = ".jdf"), overwrite = FALSE)
     return(full_join.disk.frame(dx, dy, by, copy=copy, outdir=outdir, merge_by_chunk_id = TRUE))
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
@@ -30,8 +30,8 @@ full_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     ncy = nchunks(y)
     if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      x = rechunk(x, by, nchunks = max(ncy,ncx), outdir=tempfile(fileext = ".jdf"), overwrite = FALSE)
+      y = rechunk(y, by, nchunks = max(ncy,ncx), outdir=tempfile(fileext = ".jdf"), overwrite = FALSE)
       return(full_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = cmap2(x, y, ~{

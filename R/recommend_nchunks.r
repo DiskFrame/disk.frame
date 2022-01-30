@@ -85,8 +85,6 @@ df_ram_size <- function() {
           message(system("wmic MemoryChip get Capacity", intern=TRUE))
           message("")
           message("")
-          #message("The option disk.frame.ram_size is not set. 
-          #message("To set the ram_size, do options(disk.frame_ram_size = your_ram_size_in_gigabytes)")
           ram_size = 16
         }
       } 

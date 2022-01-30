@@ -8,7 +8,7 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(join.df)
-inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE, .progress = FALSE) {
+inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, suffix=c(".x", ".y"), ..., keep=FALSE, outdir = tempfile("tmp_disk_frame_inner_join"), merge_by_chunk_id = NULL, overwrite = TRUE, .progress = FALSE) {
   stopifnot("disk.frame" %in% class(x))
   
   overwrite_check(outdir, overwrite)
@@ -24,10 +24,8 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
   }
   
   if("data.frame" %in% class(y)) {
-    quo_dotdotdot = enquos(...)
     res = cmap_dfr(x, ~{
-      code = quo(inner_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
-      rlang::eval_tidy(code)
+      inner_join(.x, y, by = by, copy = copy, suffix=suffix, ..., keep=keep)
     }, .progress = .progress)
     return(res)
   } else if("disk.frame" %in% class(y)) {
@@ -41,22 +39,18 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempf
     ncx = nchunks(x)
     ncy = nchunks(y)
     if (merge_by_chunk_id == FALSE) {
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      return(inner_join.disk.frame(x, y, by, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
+      x = rechunk(x, shardby=by, nchunks = max(ncy,ncx), outdir = tempfile(fileext = ".df"), overwrite = FALSE)
+      y = rechunk(y, shardby=by, nchunks = max(ncy,ncx), outdir = tempfile(fileext = ".df"), overwrite = FALSE)
+      return(inner_join.disk.frame(x, y, by, copy=copy, suffix = suffix, ..., keep=keep, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
-      dotdotdot <- list(...)
-      
       res = cmap2.disk.frame(x, y, ~{
         if(is.null(.y)) {
           return(data.table())
         } else if (is.null(.x)) {
           return(data.table())
         }
-        #inner_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
-        lij = purrr::lift(dplyr::inner_join)
-        lij(c(list(x = .x, y = .y, by = by, copy = copy), dotdotdot))
-      }, outdir = outdir, .progress = .progress)
+        inner_join(.x, .y, by = by, copy = copy, suffix = suffix, ..., keep=keep)
+      }, outdir = outdir, .progress = .progress, overwrite = overwrite)
       return(res)
     } else {
       # TODO if the shardkey are the same and only the shardchunks are different then just shard again on one of them is fine

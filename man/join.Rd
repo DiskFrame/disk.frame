@@ -38,7 +38,9 @@
   y,
   by = NULL,
   copy = FALSE,
+  suffix = c(".x", ".y"),
   ...,
+  keep = FALSE,
   outdir = tempfile("tmp_disk_frame_inner_join"),
   merge_by_chunk_id = NULL,
   overwrite = TRUE,
@@ -50,7 +52,9 @@
   y,
   by = NULL,
   copy = FALSE,
+  suffix = c(".x", ".y"),
   ...,
+  keep = FALSE,
   outdir = tempfile("tmp_disk_frame_left_join"),
   merge_by_chunk_id = FALSE,
   overwrite = TRUE,
@@ -87,6 +91,10 @@
 \item{overwrite}{overwrite output directory}
 
 \item{.progress}{Show progress or not. Defaults to FALSE}
+
+\item{suffix}{see dplyr::XXX_join}
+
+\item{keep}{see dplyr::XXX_join}
 }
 \value{
 disk.frame or data.frame/data.table

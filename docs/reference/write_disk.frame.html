@@ -18,7 +18,7 @@ then using the as.disk.frame function is recommended for most cases"><!-- mathja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -99,10 +99,10 @@ then using the as.disk.frame function is recommended for most cases</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">write_disk.frame</span><span class="op">(</span>
-  <span class="va">df</span>,
+  <span class="va">diskf</span>,
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
-  nchunks <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="st">"disk.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="fu"><a href="nchunks.html">nchunks.disk.frame</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
-    <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,
+  nchunks <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="st">"disk.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span>, <span class="fu"><a href="nchunks.html">nchunks.disk.frame</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span>,
+    <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span><span class="op">)</span>,
   overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
   shardby <span class="op">=</span> <span class="cn">NULL</span>,
   compress <span class="op">=</span> <span class="fl">50</span>,
@@ -117,7 +117,7 @@ then using the as.disk.frame function is recommended for most cases</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>df</dt>
+    <dl><dt>diskf</dt>
 <dd><p>a disk.frame</p></dd>
 <dt>outdir</dt>
 <dd><p>output directory for the disk.frame</p></dd>

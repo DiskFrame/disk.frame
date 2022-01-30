@@ -1,3 +1,8 @@
+# disk.frame 0.6
+* Much better NSE support in disk.frame!
+* removed `hard_arrange` and `hard_group_by`
+* various API updates
+
 # disk.frame 0.5
 * removed `add_count` method
 

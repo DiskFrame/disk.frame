@@ -21,11 +21,11 @@ srckeep <- function(diskf, selections, ...) {
 #' @param chunks The chunks to load
 #' @rdname srckeep
 #' @export
-srckeepchunks <- function(diskf, chunks, ...) {
-  stopifnot("disk.frame" %in% class(diskf))
-  # TODO relax this
-  stopifnot(is.integer(chunks))
-  
-  attr(df,"keep_chunks") = chunks
-  diskf
-}
+# srckeepchunks <- function(diskf, chunks, ...) {
+#   stopifnot("disk.frame" %in% class(diskf))
+#   # TODO relax this
+#   stopifnot(is.integer(chunks))
+#   
+#   attr(df,"keep_chunks") = chunks
+#   diskf
+# }

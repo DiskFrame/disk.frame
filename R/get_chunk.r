@@ -26,38 +26,18 @@ get_chunk <- function(...) {
 #' @export
 get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
   stopifnot("disk.frame" %in% class(df))
-  keep_chunks = attr(df, "keep_chunks", exact=TRUE)
-  
-  # print(names(attr(df, "lazyfn")[[1]]$vars_and_pkgs$globals))
-  # stop("ok")
-  
-  # TODO relax this
-  # if(!is.null(keep_chunks)) {
-  #   # browser()
-  #   # n_int = as.integer(n)
-  #   # 
-  #   # if(is.na(n_int)) {
-  #   #   if(as.character(n) %in% get_chunk_ids(df)[keep_chunks]) {
-  #   #     return(NULL)
-  #   #   } else if(normalizePath(as.character(n)) %in% sapply(get_chunk_ids(df, full.names = TRUE)[keep_chunks],normalizePath)) {
-  #   #     return(NULL)
-  #   #   }
-  #   # } else {
-  #   #   if(!n %in% keep_chunk) {
-  #   #     return(NULL)
-  #   #   }
-  #   # }
-  # }
+  # keep_chunks = attr(df, "keep_chunks", exact=TRUE)
   
   path = attr(df,"path", exact=TRUE)
   
   # all the variables to keep in the attr from a previous srckeep
-  keep1 = attr(df,"keep", exact=TRUE)
+  keep1 = attr(df, "keep", exact=TRUE)
   
-  cmds = attr(df,"lazyfn", exact=TRUE)
+  recordings = attr(df, "recordings", exact=TRUE)
   filename = ""
   
   if (typeof(keep) == "closure") {
+    # sometimes purrr::keep is picked up
     keep = keep1
   } else if(!is.null(keep1) & !is.null(keep)) {
     if (length(setdiff(keep, keep1)) > 0) {
@@ -89,7 +69,8 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
     }
   }
   
-  # if the file you are looking for don't exist
+  
+  # if the file you are looking for doesn't exist
   if (!fs::file_exists(filename)) {
     warning(glue("The chunk {filename} does not exist; returning an empty data.table"))
     notbl <- data.table()
@@ -97,17 +78,19 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
     return(notbl)
   }
 
-  if (is.null(cmds)) {
-    if(typeof(keep)!="closure") {
-      fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
-    } else {
+  
+  if (is.null(recordings)) {
+    if(typeof(keep)=="closure") {
       fst::read_fst(filename, as.data.table = TRUE,...)
+    } else {
+      fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
     }
   } else {
     if(typeof(keep)!="closure") {
-      play(fst::read_fst(filename, columns = keep, as.data.table = TRUE,...), cmds)
+      play(fst::read_fst(filename, as.data.table = TRUE,...), recordings)
     } else {
-      play(fst::read_fst(filename, as.data.table = TRUE,...), cmds)
+      play(fst::read_fst(filename, columns = keep, as.data.table = TRUE,...), recordings)
+      
     }
   }
 }

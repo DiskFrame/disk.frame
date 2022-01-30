@@ -4,7 +4,7 @@
 \alias{create_chunk_mapper}
 \title{Create function that applies to each chunk if disk.frame}
 \usage{
-create_chunk_mapper(chunk_fn, warning_msg = NULL, as.data.frame = TRUE)
+create_chunk_mapper(chunk_fn, warning_msg = NULL, as.data.frame = FALSE)
 }
 \arguments{
 \item{chunk_fn}{The dplyr function to create a mapper for}

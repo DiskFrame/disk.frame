@@ -5,7 +5,7 @@
 #' @param ... passed to fread
 #' @param validation.check should the function perform a check at the end to check for validity of output. It can detect issues with conversion
 #' @param overwrite overwrite output directory
-#' @import fst fs
+#' @import fst
 #' @importFrom glue glue
 #' @importFrom future.apply future_lapply
 #' @importFrom utils unzip
@@ -33,18 +33,18 @@
 zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, overwrite = TRUE) {
   files = unzip(zipfile, list=TRUE)
   
-  fs::dir_create(outdir)
+  if(!dir.exists(outdir)) {
+    dir.create(outdir)
+  }
   
   tmpdir = tempfile(pattern = "tmp_zip2csv")
-  
+
   dotdotdots = list(...)
-  
-  dfs = future.apply::future_lapply(files$Name, function(fn) {
-  #dfs = lapply(files$Name, function(fn) {
+  dfs = future.apply::future_lapply(files$Name, function(fn, ...) {
     outdfpath = file.path(outdir, fn)
     overwrite_check(outdfpath, TRUE)
     unzip(zipfile, files = fn, exdir = tmpdir)
-    
+
     # lift the domain of csv_to_disk.frame so it accepts a list
     cl = purrr::lift(csv_to_disk.frame)
     
@@ -55,15 +55,14 @@ zip_to_disk.frame = function(zipfile, outdir, ..., validation.check = FALSE, ove
     #csv_to_disk.frame(, outdfpath, overwrite = overwrite, ...)
     cl(ok)
   }, future.seed=TRUE)
-
   dfs  
 }
 
-#' `validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to df format
+#' `validate_zip_to_disk.frame` is used to validate and auto-correct read and convert every single file within the zip file to disk.frame format
 #' @importFrom glue glue
 #' @importFrom utils unzip
 #' @importFrom data.table timetaken fread
-#' @import fst
+#' @importFrom fst read_fst
 #' @rdname zip_to_disk.frame
 #' @noRd
 validate_zip_to_disk.frame = function(zipfile, outdir) {
@@ -86,14 +85,14 @@ validate_zip_to_disk.frame = function(zipfile, outdir) {
         # read it and if it errors then the file might be corrupted, so 
         # read it again and write again
         pt = proc.time()
-        read_fst(out_fst_file, as.data.table = TRUE)
+        fst::read_fst(out_fst_file, as.data.table = TRUE)
         message(paste0("checking(read): ", timetaken(pt))); pt = proc.time()
       }, error = function(e) {
         message(e)
         pt = proc.time()
         unzip(zipfile, files = fn, exdir = tmpdir)
         message(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-        write_fst(fread(file.path(tmpdir, fn)), out_fst_file,100)
+        fst::write_fst(data.table::fread(file.path(tmpdir, fn)), out_fst_file,100)
         message(paste0("read: ", timetaken(pt)))
         unlink(file.path(tmpdir, fn))
         gc()
@@ -106,7 +105,7 @@ validate_zip_to_disk.frame = function(zipfile, outdir) {
       pt = proc.time()
       unzip(zipfile, files = fn, exdir = tmpdir)
       message(paste0("unzip: ", timetaken(pt))); pt = proc.time()
-      write_fst(fread(file.path(tmpdir, fn)), out_fst_file,100)
+      fst::write_fst(data.table::fread(file.path(tmpdir, fn)), out_fst_file,100)
       message(paste0("read: ", timetaken(pt)))
       unlink(file.path(tmpdir, fn))
       gc()

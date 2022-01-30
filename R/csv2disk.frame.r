@@ -19,8 +19,7 @@
 #'   the highest compression ratio.
 #' @param overwrite Whether to overwrite the existing directory
 #' @param header Whether the files have header. Defaults to TRUE
-#' @param .progress A logical, for whether or not to print a progress bar for
-#'   multiprocess, multisession, and multicore plans. From {furrr}
+#' @param .progress A logical, for whether or not to show progress
 #' @param backend The CSV reader backend to choose: "data.table" or "readr". 
 #'   disk.frame does not have its own CSV reader. It uses either
 #'   data.table::fread or readr::read_delimited. It is worth noting that
@@ -66,20 +65,20 @@ csv_to_disk.frame <- function(infile, outdir = tempfile(fileext = ".df"), inmapf
   
   overwrite_check(outdir, overwrite)
   
-  # we need multiple backend because data.table has poor support for when the file is larger than RAM
+  # we need multiple backends because data.table has poor support for when the file is larger than RAM
   # https://github.com/Rdatatable/data.table/issues/3526
   # TODO detect these cases
   
   # user has requested chunk-wise reading but wants me to do it
   
   #if(is.null(in_chunk_size)) {
-    
+  
   #} else if(is.character(in_chunk_size) && in_chunk_size == "guess") {
-    
-    #library(bigreadr)
-    # system.time(wc_l <- R.utils::countLines(infile))
-    # system.time(infos_split <- split_file(infile, every_nlines = 1e7))
-    # file_parts <- get_split_files(infos_split)
+  
+  #library(bigreadr)
+  # system.time(wc_l <- R.utils::countLines(infile))
+  # system.time(infos_split <- split_file(infile, every_nlines = 1e7))
+  # file_parts <- get_split_files(infos_split)
    
   #} else
   if(is.numeric(in_chunk_size)) {
@@ -307,12 +306,10 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
       message("")
     }
     
-    outdf_tmp = furrr::future_imap(infile, ~{
-      dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), .y), infile=.x))
-      
-      pryr::do_call(csv_to_disk.frame_data.table_backend, dotdotdotorigarg1)
-    }, 
-      .progress = .progress)
+    outdf_tmp = future.apply::future_lapply(1:length(infile), function(i) {
+      dotdotdotorigarg1 = c(dotdotdotorigarg, list(outdir = file.path(tempdir(), i), infile=infile[i]))
+      do.call(csv_to_disk.frame_data.table_backend, dotdotdotorigarg1)
+    })
     
     if(.progress) {
       message(paste("-- Converting CSVs to disk.frame -- Stage 1 or 2 took:", data.table::timetaken(pt)))
@@ -330,7 +327,6 @@ csv_to_disk.frame_data.table_backend <- function(infile, outdir = tempfile(filee
     outdf = rbindlist.disk.frame(outdf_tmp, outdir = outdir, by_chunk_id = TRUE, compress = compress, overwrite = overwrite, .progress = .progress)
     
     if(.progress) {
-      
       message(paste("Stage 2 of 2 took:", data.table::timetaken(pt2)))
       message(" ----------------------------------------------------- ")
       message(paste("Stage 1 & 2 in total took:", data.table::timetaken(pt)))

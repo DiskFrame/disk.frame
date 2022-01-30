@@ -4,9 +4,6 @@
 #' @param shardby the shardkeys
 #' @param outdir the output directory
 #' @param overwrite overwrite the output directory
-#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
-#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
-#' @param desc_vars for the "sort" shardby function, the variables to sort descending.
 #' @export
 #' @examples
 #' # create a disk.frame with 2 chunks in tempdir()
@@ -22,9 +19,8 @@
 #' # clean up cars.df
 #' delete(cars.df)
 #' delete(cars2.df)
-rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby = NULL, overwrite = TRUE, shardby_function="hash", sort_splits=NULL, desc_vars=NULL) {
-  
-  # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
+rechunk <- function(df, nchunks = disk.frame::nchunks(df), outdir = attr(df, "path", exact=TRUE), shardby = NULL, overwrite = TRUE) {
+    # we need to force the chunks to be computed first as it's common to make nchunks a multiple of chunks(df)
   # but if we do it too late then the folder could be empty
   force(nchunks) 
   
@@ -52,9 +48,9 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby 
     short_files = dir(outdir)
     
     # move all files to the back up folder
-    purrr::map(full_files, ~{
-      fs::file_move(.x, back_up_tmp_dir)
-    })
+    for(file in full_files) {
+      fs::file_move(file, back_up_tmp_dir)
+    }
     
     if(fs::dir_exists(file.path(outdir, ".metadata"))) {
       fs::dir_delete(file.path(outdir, ".metadata"))
@@ -76,9 +72,14 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby 
     shardby = existing_shardkey[[1]]
   }
 
-
   if(user_had_set_shard_by) {
-    return(hard_group_by(df, shardby, nchunks = nchunks, outdir = outdir, overwrite = TRUE, shardby_function=shardby_function, sort_splits=sort_splits, desc_vars=desc_vars))
+    tmp = cmap(df, ~{
+      shard(.x, shardby, nchunks=nchunks, overwrite=FALSE)
+    }) %>% collect_list
+    
+    return(
+      rbindlist.disk.frame(tmp)
+    )
   } else if (identical(shardby, "") | is.null(shardby)) {
     # if no existing shardby 
     nr = nrow(df)
@@ -138,9 +139,9 @@ rechunk <- function(df, nchunks, outdir = attr(df, "path", exact=TRUE), shardby 
     tmp_fdlr = tempfile("rechunk_shard")
     fs::dir_create(tmp_fdlr)
 
-    oks = furrr::future_map(which(lp == 1), function(i) {
-      file_chunk = file.path(attr(df, "path", exact=TRUE), i %>% paste0(".fst"))
-      fs::file_move(file_chunk, file.path(tmp_fdlr, possibles_new_chunk_id[[i]] %>% paste0(".fst")))
+    oks = future.apply::future_lapply(which(lp == 1), function(i) {
+      file_chunk = file.path(attr(df, "path", exact=TRUE), paste0(i, ".fst"))
+      fs::file_move(file_chunk, file.path(tmp_fdlr, paste0(possibles_new_chunk_id[[i]], ".fst")))
       disk.frame(tmp_fdlr)
     })
     

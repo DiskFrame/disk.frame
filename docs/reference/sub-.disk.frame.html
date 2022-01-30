@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -131,7 +131,39 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">speed_limit</span> <span class="op">=</span> <span class="fl">50</span></span>
 <span class="r-in"><span class="va">cars.df</span><span class="op">[</span><span class="va">speed</span> <span class="op">&lt;</span> <span class="va">speed_limit</span> ,<span class="va">.N</span>, <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">dist</span>, <span class="fu"><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in .checkTypos(e, names_x):</span> Object 'speed_limit' not found amongst speed, dist</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> data.table syntax for disk.frame may be moved to a separate package in the future</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cut N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     (0,5] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    (5,10] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   (20,25] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   (15,20] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   (25,30] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   (30,35] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   (15,20] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   (25,30] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   (10,15] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   (20,25] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   (30,35] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   (40,50] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   (20,30] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   (30,40] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   (50,60] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   (70,80] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      &lt;NA&gt; 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:   (30,40] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:   (40,50] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:   (50,60] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:   (70,80] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:   (80,90] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:   (40,50] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:   (60,70] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:   (30,40] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:   (50,60] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:      &lt;NA&gt; 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:  (90,100] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29: (110,120] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:   (80,90] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cut N</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up</span></span>
 <span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>

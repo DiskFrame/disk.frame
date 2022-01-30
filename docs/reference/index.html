@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -110,15 +110,26 @@
         </td>
         <td><p>Make a data.frame into a disk.frame</p></td>
       </tr><tr><td>
+          <p><code><a href="bind_rows.disk.frame.html">bind_rows.disk.frame()</a></code> </p>
+        </td>
+        <td><p>Bind rows</p></td>
+      </tr><tr><td>
           <p><code><a href="chunk_group_by.html">chunk_summarize()</a></code> <code><a href="chunk_group_by.html">chunk_summarise()</a></code> <code><a href="chunk_group_by.html">chunk_group_by()</a></code> <code><a href="chunk_group_by.html">chunk_ungroup()</a></code> </p>
         </td>
-        <td><p>Group by within each disk.frame</p></td>
+        <td><p>#' @export
+#' @importFrom dplyr add_count
+#' @rdname dplyr_verbs
+add_count.disk.frame &lt;- create_chunk_mapper(dplyr::add_count)
+#' @export
+#' @importFrom dplyr add_tally
+#' @rdname dplyr_verbs
+add_tally.disk.frame &lt;- create_chunk_mapper(dplyr::add_tally)</p></td>
       </tr><tr><td>
-          <p><code><a href="cmap.html">cmap()</a></code> <code><a href="cmap.html">cmap_dfr()</a></code> <code><a href="cmap.html">cimap()</a></code> <code><a href="cmap.html">cimap_dfr()</a></code> <code><a href="cmap.html">lazy()</a></code> <code><a href="cmap.html">delayed()</a></code> <code><a href="cmap.html">chunk_lapply()</a></code> <code><a href="cmap.html">map()</a></code> <code><a href="cmap.html">imap_dfr()</a></code> <code><a href="cmap.html">imap()</a></code> <code><a href="cmap.html">map_dfr(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="cmap.html">map_dfr(<i>&lt;default&gt;</i>)</a></code> </p>
+          <p><code><a href="cmap.html">cmap()</a></code> <code><a href="cmap.html">cmap_dfr()</a></code> <code><a href="cmap.html">cimap()</a></code> <code><a href="cmap.html">cimap_dfr()</a></code> <code><a href="cmap.html">lazy()</a></code> <code><a href="cmap.html">delayed()</a></code> <code><a href="cmap.html">clapply()</a></code> </p>
         </td>
         <td><p>Apply the same function to all chunks</p></td>
       </tr><tr><td>
-          <p><code><a href="cmap2.html">cmap2()</a></code> <code><a href="cmap2.html">map2()</a></code> <code><a href="cmap2.html">map_by_chunk_id()</a></code> </p>
+          <p><code><a href="cmap2.html">cmap2()</a></code> <code><a href="cmap2.html">map_by_chunk_id()</a></code> </p>
         </td>
         <td><p>`cmap2` a function to two disk.frames</p></td>
       </tr><tr><td>
@@ -132,7 +143,7 @@
       </tr><tr><td>
           <p><code><a href="compute.disk.frame.html">compute(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Compute without writing</p></td>
+        <td><p>Force computations. The results are stored in a folder.</p></td>
       </tr><tr><td>
           <p><code><a href="create_chunk_mapper.html">create_chunk_mapper()</a></code> </p>
         </td>
@@ -158,7 +169,7 @@
         </td>
         <td><p>Create a disk.frame from a folder</p></td>
       </tr><tr><td>
-          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">add_tally.disk.frame()</a></code> <code><a href="dplyr_verbs.html">do(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
+          <p><code><a href="dplyr_verbs.html">select(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">rename(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">filter(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">mutate(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">transmute(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">arrange(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_arrange()</a></code> <code><a href="dplyr_verbs.html">distinct(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="dplyr_verbs.html">chunk_distinct()</a></code> <code><a href="dplyr_verbs.html">glimpse(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>The dplyr verbs implemented for disk.frame</p></td>
       </tr><tr><td>
@@ -189,14 +200,6 @@
           <p><code><a href="group_by.html">summarise(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;grouped_disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">group_by(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarize(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="group_by.html">summarise(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>A function to parse the summarize function</p></td>
-      </tr><tr><td>
-          <p><code><a href="hard_arrange.html">hard_arrange()</a></code> </p>
-        </td>
-        <td><p>Perform a hard arrange</p></td>
-      </tr><tr><td>
-          <p><code><a href="hard_group_by.html">hard_group_by()</a></code> </p>
-        </td>
-        <td><p>Perform a hard group</p></td>
       </tr><tr><td>
           <p><code><a href="head_tail.html">head(<i>&lt;disk.frame&gt;</i>)</a></code> <code><a href="head_tail.html">tail(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
@@ -238,6 +241,10 @@
         </td>
         <td><p>Check if the outdir exists or not</p></td>
       </tr><tr><td>
+          <p><code><a href="play.html">play()</a></code> </p>
+        </td>
+        <td><p>Play the recorded lazy operations</p></td>
+      </tr><tr><td>
           <p><code><a href="print.disk.frame.html">print(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Print disk.frame</p></td>
@@ -245,6 +252,10 @@
           <p><code><a href="pull.disk.frame.html">pull(<i>&lt;disk.frame&gt;</i>)</a></code> </p>
         </td>
         <td><p>Pull a column from table similar to `dplyr::pull`.</p></td>
+      </tr><tr><td>
+          <p><code><a href="purrr_as_mapper.html">purrr_as_mapper()</a></code> </p>
+        </td>
+        <td><p>Used to convert a function to purrr syntax if needed</p></td>
       </tr><tr><td>
           <p><code><a href="rbindlist.disk.frame.html">rbindlist.disk.frame()</a></code> </p>
         </td>
@@ -286,7 +297,7 @@
         </td>
         <td><p>Show the code to setup disk.frame</p></td>
       </tr><tr><td>
-          <p><code><a href="srckeep.html">srckeep()</a></code> <code><a href="srckeep.html">srckeepchunks()</a></code> </p>
+          <p><code><a href="srckeep.html">srckeep()</a></code> </p>
         </td>
         <td><p>Keep only the variables from the input listed in selections</p></td>
       </tr><tr><td>

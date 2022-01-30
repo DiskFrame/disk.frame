@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -128,7 +128,9 @@
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
+  suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".x"</span>, <span class="st">".y"</span><span class="op">)</span>,
   <span class="va">...</span>,
+  keep <span class="op">=</span> <span class="cn">FALSE</span>,
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"tmp_disk_frame_inner_join"</span><span class="op">)</span>,
   merge_by_chunk_id <span class="op">=</span> <span class="cn">NULL</span>,
   overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -141,7 +143,9 @@
   <span class="va">y</span>,
   by <span class="op">=</span> <span class="cn">NULL</span>,
   copy <span class="op">=</span> <span class="cn">FALSE</span>,
+  suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".x"</span>, <span class="st">".y"</span><span class="op">)</span>,
   <span class="va">...</span>,
+  keep <span class="op">=</span> <span class="cn">FALSE</span>,
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"tmp_disk_frame_left_join"</span><span class="op">)</span>,
   merge_by_chunk_id <span class="op">=</span> <span class="cn">FALSE</span>,
   overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -182,6 +186,10 @@
 <dd><p>overwrite output directory</p></dd>
 <dt>.progress</dt>
 <dd><p>Show progress or not. Defaults to FALSE</p></dd>
+<dt>suffix</dt>
+<dd><p>see dplyr::XXX_join</p></dd>
+<dt>keep</dt>
+<dd><p>see dplyr::XXX_join</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -195,12 +203,7 @@
 <span class="r-in"></span>
 <span class="r-in"><span class="va">anti_joined.df</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">df.df</span>, <span class="va">df2.df</span><span class="op">)</span> </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">anti_joined.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span></span>
@@ -208,9 +211,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3 6</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">anti_joined.data.frame</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">df.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, z <span class="op">=</span> <span class="fl">10</span><span class="op">:</span><span class="fl">11</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "x"</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "x"</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "x"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up</span></span>
 <span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">df.df</span><span class="op">)</span></span>
@@ -233,20 +233,8 @@
 <span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">join.df</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`merge_by_chunk_id = FALSE`. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making `y` a data.frame or set merge_by_chunk_id = TRUE for better performance.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up cars.df</span></span>
@@ -256,19 +244,7 @@
 <span class="r-in"></span>
 <span class="r-in"><span class="va">join.df</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Hashing...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># clean up cars.df</span></span>
