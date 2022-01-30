@@ -2,7 +2,7 @@
 #' @description
 #' Write a data.frame/disk.frame to a disk.frame location. If df is a data.frame
 #' then using the as.disk.frame function is recommended for most cases
-#' @param df a disk.frame
+#' @param diskf a disk.frame
 #' @param outdir output directory for the disk.frame
 #' @param nchunks number of chunks
 #' @param overwrite overwrite output directory
@@ -26,12 +26,12 @@
 #' delete(cars.df)
 #' delete(cars2.df)
 write_disk.frame <- function(
-  df,
+  diskf,
   outdir = tempfile(fileext = ".df"),
   nchunks = ifelse(
-    "disk.frame"%in% class(df),
-    nchunks.disk.frame(df),
-    recommend_nchunks(df)),
+    "disk.frame"%in% class(diskf),
+    nchunks.disk.frame(diskf),
+    recommend_nchunks(diskf)),
   overwrite = FALSE,
   shardby=NULL, compress = 50, shardby_function="hash", sort_splits=NULL, desc_vars=NULL, ...) {
 
@@ -40,16 +40,30 @@ write_disk.frame <- function(
 
 
   if(is.null(outdir)) {
-    stop("outdir must not be NULL")
+    stop("write_disk.frame error: outdir must not be NULL")
   }
 
-  if(is_disk.frame(df)) {
+  if(is_disk.frame(diskf)) {
     if(is.null(shardby)) {
-      cmap.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
+      path = attr(diskf, "path")
+      files_shortname <- list.files(path)
+      cids = get_chunk_ids(diskf, full.names = T, strip_extension = F)
+      
+      future.apply::future_lapply(1:length(cids), function(ii, ...) {
+        chunk = get_chunk(diskf, cids[ii], full.names = TRUE)
+        if(nrow(chunk) == 0) {
+          warning(sprintf("The output chunk has 0 row, therefore chunk %d NOT written", ii))
+        } else {
+          out_chunk_name = file.path(outdir, files_shortname[ii])
+          fst::write_fst(chunk, out_chunk_name, compress)
+          return(files_shortname)
+        }
+        return(NULL)
+      }, ..., future.seed = TRUE)
+      return(disk.frame(outdir))
     } else {
       # TODO really inefficient
-      #df2 = cmap.disk.frame(df, ~.x, outdir = outdir, lazy = FALSE, ..., compress = compress, overwrite = TRUE)
-      shard(df,
+      shard(diskf,
             outdir = outdir,
             nchunks = nchunks,
             overwrite = TRUE,
@@ -60,9 +74,9 @@ write_disk.frame <- function(
             ...
             )
     }
-  } else if ("data.frame" %in% class(df)) {
-    if(".out.disk.frame.id" %in% names(df)) {
-      df[,{
+  } else if ("data.frame" %in% class(diskf)) {
+    if(".out.disk.frame.id" %in% names(diskf)) {
+      diskf[,{
         if (base::nrow(.SD) > 0) {
           list_columns = purrr::map_lgl(.SD, is.list)
           if(any(list_columns)){
@@ -70,17 +84,17 @@ write_disk.frame <- function(
           } else {
             fst::write_fst(.SD, file.path(outdir, paste0(.BY, ".fst")), compress = compress)
             NULL
-            }
           }
+        }
         NULL
       }, .out.disk.frame.id]
       res = disk.frame(outdir)
       add_meta(res, shardkey = shardby, shardchunks = nchunks, compress = compress)
     } else {
-      as.disk.frame(df, outdir = outdir, nchunks = nchunks, overwrite = TRUE, shardby = shardby, compress = compress, ...)
+      as.disk.frame(diskf, outdir = outdir, nchunks = nchunks, overwrite = TRUE, shardby = shardby, compress = compress, ...)
     }
   } else {
-    stop("write_disk.frame error: df must be a disk.frame or data.frame")
+    stop("write_disk.frame error: diskf must be a disk.frame or data.frame")
   }
 }
 

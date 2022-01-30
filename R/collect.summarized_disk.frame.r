@@ -23,8 +23,128 @@
 #' delete(cars.df)
 #' @export
 #' @rdname collect
-collect.summarized_disk.frame <- function(x, ..., parallel = !is.null(attr(x,"lazyfn"))) {
-  code_to_run = glue::glue("x %>% {attr(x, 'summarize_code') %>% as.character}")
-  class(x) <- "disk.frame"
-  eval(parse(text = code_to_run))
-}
+collect.summarized_disk.frame <-
+  function(x, ..., parallel = !is.null(attr(x, "recordings"))) {
+    dotdotdot <- attr(x, 'summarize_code')
+    
+    # make a copy
+    dotdotdot_chunk_agg <- dotdotdot
+    dotdotdot_collected_agg <- dotdotdot
+    
+    i = 1
+    for (a_call in dotdotdot) {
+      # obtain the function call name
+      func_call_str = paste0(deparse(a_call[[1]]), collapse = "")
+      
+      # parse(...) returns an expression, but I just want the sole symbol which
+      # can be extracted with [[1]]
+      func_call_chunk_agg = parse(text = paste0(func_call_str, "_df.chunk_agg.disk.frame"))[[1]]
+      # replace the function call with the chunk_agg_function
+      dotdotdot_chunk_agg[[i]][[1]] = func_call_chunk_agg
+      
+      func_call_collected_agg = paste0(func_call_str, "_df.collected_agg.disk.frame")
+      # replace the function call with the chunk_agg_function
+      dotdotdot_collected_agg[[i]] = parse(text = sprintf(
+        "%s(%s)",
+        func_call_collected_agg,
+        paste0(".disk.frame.tmp", i)
+      ))[[1]]
+      i = i + 1
+      # TODO extract global variables from here and store them in the global
+    }
+    
+    group_by_vars = attr(x, "group_by_cols")
+    
+    # figure out how many group by arguments there are
+    n_grp_args = length(group_by_vars)
+    
+    # generate a function call with as many arguments
+    x_as.disk.frame = x
+    class(x_as.disk.frame) = "disk.frame"
+    first_stage_code = eval(parse(
+      text = sprintf(
+        "quote(chunk_group_by(x_as.disk.frame, %s))",
+        paste0(rep_len("NULL", n_grp_args), collapse = ", ")
+      )
+    ))
+    
+    if (n_grp_args >= 1) {
+      for (i in 1:n_grp_args) {
+        first_stage_code[[i + 2]] = group_by_vars[[i]]
+      }
+    }
+    
+    # TODO add appropriate environment
+    tmp_df = eval(first_stage_code)
+    
+    n_summ_args = length(dotdotdot_chunk_agg)
+    
+    chunk_summ_code =
+      eval(parse(text = sprintf(
+        "quote(chunk_summarise(tmp_df, %s))",
+        paste0("NULL", 1:n_summ_args, collapse = ", ")
+      )))
+    
+    
+    chunk_summ_code_str = chunk_summ_code %>%
+      deparse %>%
+      paste0(collapse = "")
+    
+    for (i in 1:n_summ_args) {
+      lhs = sprintf(".disk.frame.tmp%d", i)
+      rhs = paste0(deparse(dotdotdot_chunk_agg[[i]]), collapse = "")
+      
+      tmp_code = paste0("NULL", i)
+      chunk_summ_code_str = gsub(
+        pattern = tmp_code,
+        sprintf("%s=list(%s)", lhs, rhs),
+        chunk_summ_code_str,
+        fixed = TRUE
+      )
+    }
+    
+    tmp2 = collect(eval(parse(text = chunk_summ_code_str)))
+    
+    second_stage_code = eval(parse(text = sprintf(
+      "quote(group_by(tmp2, %s))", paste0(rep_len("NULL", n_grp_args), collapse = ", ")
+    )))
+    
+    if (n_grp_args >= 1) {
+      for (i in 1:n_grp_args) {
+        second_stage_code[[i + 2]] = group_by_vars[[i]]
+      }
+    }
+    
+    tmp3 = eval(second_stage_code)
+    
+    n_summ2_args = length(dotdotdot_collected_agg)
+    # final stage of summary
+    chunk_summ2_code =
+      eval(parse(text = sprintf(
+        "quote(summarise(tmp3, %s))",
+        paste0(rep_len("NULL", n_summ2_args), collapse = ", ")
+      )))
+    
+    names_chunk_summ_code = names(dotdotdot_chunk_agg)
+    for (i in 1:n_summ_args) {
+      chunk_summ2_code[[i + 2]] = dotdotdot_collected_agg[[i]]
+    }
+    
+    tmp4 = eval(chunk_summ2_code)
+    
+    names_tmp4 = names(tmp4)
+    
+    orig_names = sapply(dotdotdot, function(code) {
+      code %>%
+        deparse %>%
+        paste0(collapse = "")
+    })
+    
+    
+    names(tmp4)[(n_grp_args + 1):length(names_tmp4)] = ifelse(names_chunk_summ_code ==
+                                                                "",
+                                                              orig_names,
+                                                              names_chunk_summ_code)
+    
+    return(tmp4)
+  }

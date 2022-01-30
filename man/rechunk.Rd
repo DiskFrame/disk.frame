@@ -6,13 +6,10 @@
 \usage{
 rechunk(
   df,
-  nchunks,
+  nchunks = disk.frame::nchunks(df),
   outdir = attr(df, "path", exact = TRUE),
   shardby = NULL,
-  overwrite = TRUE,
-  shardby_function = "hash",
-  sort_splits = NULL,
-  desc_vars = NULL
+  overwrite = TRUE
 )
 }
 \arguments{

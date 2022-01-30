@@ -26,22 +26,6 @@ cmap2 <- function(.x, .y, .f, ...){
   UseMethod("cmap2")
 }
 
-#' @export
-#' @rdname cmap2
-map2 <- function(.x, .y, .f, ...){
-  UseMethod("map2")
-}
-
-#' @export
-map2.default <- function(.x, .y, .f, ...) {
-  purrr::map2(.x,.y,.f,...)
-}
-
-#' @export
-map2.disk.frame <- function(...) {
-  warning("map2.disk.frame(df, df1, ..) where df is disk.frame is deprecated. Use cmap(df, df1, ...) instead")
-  cmap2.disk.frame(...)
-}
 
 #' @export
 #' @importFrom pryr do_call
@@ -51,9 +35,7 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
     stop(sprintf("running %s : the .x argument must be a disk.frame", code))
   } 
   
-  
   .f = purrr::as_mapper(.f)
-  
   
   if("disk.frame" %in% class(.y)) {
     fs::dir_create(outdir)
@@ -65,8 +47,6 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
     yc[,yid:=get_chunk_ids(.y, full.names = TRUE)]
     
     xyc = merge(xc, yc, by="cid", all = TRUE, allow.cartesian = TRUE)
-    
-    ddd = list(...)
     # apply the functions
     
     future.apply::future_mapply(function(xid, yid, outid) {
@@ -77,11 +57,10 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
       if(base::nrow(xych) > 0) {
         fst::write_fst(xych, file.path(outdir, paste0(outid,".fst")))
       } else {
-        warning(glue::glue("one of the chunks, {xid}, is empty"))
+        warning(sprintf("one of the chunks, %s, is empty", xid))
       }
       NULL
-    }
-    ,xyc$xid, xyc$yid, xyc$cid # together with mapply
+    }, xyc$xid, xyc$yid, xyc$cid # together with mapply
     , future.seed=NULL
     )
     
@@ -91,13 +70,12 @@ cmap2.disk.frame <- function(.x, .y, .f, ..., outdir = tempfile(fileext = ".df")
     warning("in cmap2(.x,.y,...) the .y is not a disk.frame, so returning a list instead of a disk.frame")
     
     f_for_passing = force(.f)
-    ddd = list(...)
     tmp_disk.frame = force(.x)
-    res = furrr::future_map2(get_chunk_ids(tmp_disk.frame, full.names = TRUE), .y, function(xs, ys) {
-      ddd = c(list(get_chunk(tmp_disk.frame, xs, full.names = TRUE), ys), ddd)
-      
-      pryr::do_call(f_for_passing, ddd)
-    })
+    res = future.apply::future_mapply(function(xs, ys, ...) {
+      ddd = c(list(get_chunk(tmp_disk.frame, xs, full.names = TRUE), ys), ...)
+      do.call(f_for_passing, ddd)
+    }, get_chunk_ids(tmp_disk.frame, full.names = TRUE), .y, ..., SIMPLIFY=FALSE, future.seed = TRUE)
+    
     
     return(res)
   }

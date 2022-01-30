@@ -20,18 +20,18 @@ test_that("testing cmap lazy", {
   expect_equal(nrow(df2), 5L)
 })
 
-test_that("testing cmap eager", {
-  b = disk.frame(file.path(tempdir(), "tmp_map.df"))
-  
-  # return 1 row from each chunk
-  df = b %>% cmap(~.x[1], lazy = F)
-  expect_false("disk.frame" %in% class(df))
-
-  # return 1 row from each chunk
-  df = b %>% cmap_dfr(~.x[1])
-  expect_false("disk.frame" %in% class(df))
-  expect_true("data.frame" %in% class(df))
-})
+# test_that("testing cmap eager", {
+#   b = disk.frame(file.path(tempdir(), "tmp_map.df"))
+#   
+#   # return 1 row from each chunk
+#   df = b %>% cmap(~.x[1], lazy = FALSE)
+#   expect_false("disk.frame" %in% class(df))
+# 
+#   # return 1 row from each chunk
+#   df = b %>% cmap_dfr(~.x[1])
+#   expect_false("disk.frame" %in% class(df))
+#   expect_true("data.frame" %in% class(df))
+# })
 
 test_that("testing delayed", {
   b = disk.frame(file.path(tempdir(), "tmp_map.df"))

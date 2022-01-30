@@ -17,11 +17,11 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   overwrite_check(outdir, overwrite)
   
   if("data.frame" %in% class(y)) {
-    quo_dotdotdot = enquos(...)
-    cmap_dfr(x, ~{
-      code = quo(semi_join(.x, y, by = by, copy = copy, !!!quo_dotdotdot))
-      rlang::eval_tidy(code)
+    tmp = cmap_dfr(x, ~{
+      semi_join(.x, y, by = by, copy = copy, ...)
     }, .progress = .progress)
+    
+    return(tmp)
   } else if("disk.frame" %in% class(y)) {
     if(is.null(merge_by_chunk_id)) {
       stop("both x and y are disk.frames. You need to specify merge_by_chunk_id = TRUE or FALSE explicitly")
@@ -34,8 +34,8 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
     ncy = nchunks(y)
     if (merge_by_chunk_id == FALSE) {
       warning("merge_by_chunk_id = FALSE. This will take significantly longer and the preparations needed are performed eagerly which may lead to poor performance. Consider making y a data.frame or set merge_by_chunk_id = TRUE for better performance.")
-      x = hard_group_by(x, by, nchunks = max(ncy,ncx), overwrite = TRUE)
-      y = hard_group_by(y, by, nchunks = max(ncy,ncx), overwrite = TRUE)
+      x = rechunk(x, by, nchunks = max(ncy,ncx), outdir=tempfile(fileext = ".jdf"), overwrite = FALSE)
+      y = rechunk(y, by, nchunks = max(ncy,ncx), outdir=tempfile(fileext = ".jdf"), overwrite = FALSE)
       return(semi_join.disk.frame(x, y, by, copy = copy, outdir = outdir, merge_by_chunk_id = TRUE, overwrite = overwrite, .progress = .progress))
     } else if ((identical(shardkey(x)$shardkey, "") & identical(shardkey(y)$shardkey, "")) | identical(shardkey(x), shardkey(y))) {
       res = cmap2.disk.frame(x, y, ~{
