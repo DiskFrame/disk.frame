@@ -45,12 +45,10 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2,
-    rmarkdown
+    ggplot2
 LinkingTo: 
     Rcpp
 RoxygenNote: 7.1.2
-VignetteBuilder: rmarkdown
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/xiaodaigh/disk.frame/issues
