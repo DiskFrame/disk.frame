@@ -1,7 +1,7 @@
 context("test-left_join")
 
 setup({
-  
+  setup_disk.frame(2)
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
   d = data.frame(a = 1:50, b = 1:50)
@@ -26,6 +26,10 @@ test_that("testing left_join where right is data.frame", {
   expect_equal(nrow(abc), 100)
   
   abc0 = left_join(a, bc, by = c("a","b")) %>% collect
+  expect_equal(nrow(abc0), 100)
+  
+  by_cols = c("a","b")
+  abc0 = left_join(a, bc, by = by_cols) %>% collect
   expect_equal(nrow(abc0), 100)
   
   abc100 = left_join(a, bc, by = "b") %>% collect

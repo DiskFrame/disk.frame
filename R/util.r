@@ -25,3 +25,23 @@ gen_datatable_synthetic <- function(N=2e8, K=100) {
     date1 = sample(seq(as.Date('1970-01-01'), as.Date('2019-01-01'), by = "day"), N, TRUE)  # date
   )
 }
+
+#' Used to convert a function to purrr syntax if needed
+#' @param .f a normal function or purrr syntax function i.e. `~{ ...code...}`
+#' @importFrom purrr as_mapper 
+purrr_as_mapper <- function(.f) {
+  if(typeof(.f) == "language") {
+    if(requireNamespace("purrr")) {
+      .f = purrr::as_mapper(.f)
+    } else {
+      code = paste0(deparse(substitute(.f)), collapse = "")
+      stop(
+        sprintf(
+          "in cmap(.x, %s), it appears you are using {purrr} syntax but do not have {purrr} installed. Try `install.packages('purrr')`",
+          code
+        )
+      )
+    }
+  }
+  return(.f)
+}

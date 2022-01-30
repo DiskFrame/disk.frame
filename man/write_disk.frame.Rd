@@ -6,10 +6,10 @@
 \title{Write disk.frame to disk}
 \usage{
 write_disk.frame(
-  df,
+  diskf,
   outdir = tempfile(fileext = ".df"),
-  nchunks = ifelse("disk.frame" \%in\% class(df), nchunks.disk.frame(df),
-    recommend_nchunks(df)),
+  nchunks = ifelse("disk.frame" \%in\% class(diskf), nchunks.disk.frame(diskf),
+    recommend_nchunks(diskf)),
   overwrite = FALSE,
   shardby = NULL,
   compress = 50,
@@ -22,7 +22,7 @@ write_disk.frame(
 output_disk.frame(...)
 }
 \arguments{
-\item{df}{a disk.frame}
+\item{diskf}{a disk.frame}
 
 \item{outdir}{output directory for the disk.frame}
 

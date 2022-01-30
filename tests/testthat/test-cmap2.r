@@ -28,7 +28,7 @@ test_that("testing map2 .y is not disk.frame", {
   d = 1:nchunks(b)
   
   # return 1 row from each chunk
-  expect_warning(df <- cmap2(b, d, ~.x[1,.(y = .y)], outdir = "tmp_map2_out2.df"))
+  expect_warning(df <- cmap2(b, d, ~.x[1, ] %>% mutate(y = .y), outdir = "tmp_map2_out2.df"))
   
   expect_type(df, "list")
   

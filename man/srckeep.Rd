@@ -2,12 +2,9 @@
 % Please edit documentation in R/srckeep.disk.frame.r
 \name{srckeep}
 \alias{srckeep}
-\alias{srckeepchunks}
 \title{Keep only the variables from the input listed in selections}
 \usage{
 srckeep(diskf, selections, ...)
-
-srckeepchunks(diskf, chunks, ...)
 }
 \arguments{
 \item{diskf}{a disk.frame}
@@ -15,8 +12,6 @@ srckeepchunks(diskf, chunks, ...)
 \item{selections}{The list of variables to keep from the input source}
 
 \item{...}{not yet used}
-
-\item{chunks}{The chunks to load}
 }
 \description{
 Keep only the variables from the input listed in selections
