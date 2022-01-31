@@ -1,3 +1,4 @@
+
 #' Recommend number of chunks based on input size
 #' @description Computes the recommended number of chunks to break a data.frame
 #' into. It can accept filesizes in bytes (as integer) or a data.frame
@@ -119,10 +120,21 @@ df_ram_size <- function() {
       ram_size = benchmarkme::get_ram()/1024^3
       
       if(is.na(ram_size)) {
-        warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-        warning("Please report this error at github.com/xiaodaigh/disk.frame/issues")
-        warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
-        return(16)
+        # try another method
+        os = R.version$os
+        ram = suppressWarnings(try(system_ram(os), silent=TRUE))
+        
+        if (class(ram) == "try-error" || length(ram) == 0 || 
+            is.na(ram)) {
+          warning("RAM size can't be determined. Assume you have 16GB of RAM.")
+          warning("Please report this error at github.com/xiaodaigh/disk.frame/issues")
+          warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
+          return(16)
+        } else {
+          sum(as.numeric(ram), na.rm=TRUE)
+          
+        }
+        
       } else {
         ram_size = max(ram_size, 1, na.rm = TRUE)
         return(ram_size)
