@@ -74,8 +74,18 @@ collect.summarized_disk.frame <-
       }
     }
     
+    group_by_globals_list = attr(x_as.disk.frame, "group_by_globals_and_pkgs")$globals
+    
+    if(is.null(group_by_globals_list)) {
+      eval_clos = parent.frame()
+    } else {
+      eval_clos = list2env(group_by_globals_list, parent=parent.frame())
+    }
+      
     # TODO add appropriate environment
-    tmp_df = eval(first_stage_code)
+    # tmp_df = eval(first_stage_code, envir=environment(), enclos = eval_clos
+    tmp_df = eval(first_stage_code, group_by_globals_list)
+    
     
     n_summ_args = length(dotdotdot_chunk_agg)
     
@@ -103,7 +113,16 @@ collect.summarized_disk.frame <-
       )
     }
     
-    tmp2 = collect(eval(parse(text = chunk_summ_code_str)))
+    summarize_globals_list = attr(x_as.disk.frame, "summarize_globals_and_pkgs")$globals
+    
+    if(is.null(summarize_globals_list)) {
+      summ_eval_clos = parent.frame()
+    } else {
+      summ_eval_clos = list2env(summarize_globals_list, parent=parent.frame())
+    }
+    
+    #tmp2 = collect(eval(parse(text = chunk_summ_code_str), envir = environment(), enclos=summ_eval_clos))
+    tmp2 = collect(eval(parse(text = chunk_summ_code_str), envir = summarize_globals_list))
     
     second_stage_code = eval(parse(text = sprintf(
       "quote(group_by(tmp2, %s))", paste0(rep_len("NULL", n_grp_args), collapse = ", ")
@@ -111,7 +130,12 @@ collect.summarized_disk.frame <-
     
     if (n_grp_args >= 1) {
       for (i in 1:n_grp_args) {
-        second_stage_code[[i + 2]] = group_by_vars[[i]]
+        second_stage_code[[i + 2]] = group_by_vars[[i]] %>% 
+          deparse() %>% 
+          paste0(collapse="") %>% 
+          sprintf("`%s`", .) %>% 
+          parse(text=.) %>% 
+          .[[1]]
       }
     }
     

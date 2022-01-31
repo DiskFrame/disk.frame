@@ -299,6 +299,51 @@ test_that("tests for {{}}", {
   expect_equal(a, b)
 })
 
+
+test_that("tests for global", {
+  # TODO make this work
+  val = 2
+  val2 = 2
+  
+  b = iris %>% 
+    as.disk.frame %>% 
+    group_by(as.integer(Species) + val, as.integer(Species) + val2) %>% 
+    summarize(mean(Petal.Length)) %>% 
+    collect
+  
+  a = iris %>% 
+    group_by(as.integer(Species) + val, as.integer(Species) + val2) %>% 
+    summarize(mean(Petal.Length)) %>% 
+    collect
+  
+  expect_equal(b, a)
+  
+  b = iris %>%
+    as.disk.frame %>%
+    group_by(as.integer(Species) + val, as.integer(Species) + val2) %>%
+    summarize(mean(Petal.Length+val2)) %>%
+    collect
+
+  a = iris %>%
+    group_by(as.integer(Species) + val, as.integer(Species) + val2) %>%
+    summarize(mean(Petal.Length+val2)) %>%
+    collect
+
+  expect_equal(a, b)
+   
+   a = iris %>%
+    summarize(mean(Petal.Length+val2))
+
+  b = iris %>%
+    as.disk.frame %>%
+    summarize(mean(Petal.Length+val2)) %>%
+    collect
+
+  expect_equal(names(a), names(b))
+
+  expect_equal(a[[1]], b[[1]])
+})
+
 teardown({
   # fs::file_delete(file.path(tempdir(), "tmp_pls_delete_gb.csv"))
   # fs::dir_delete(file.path(tempdir(), "tmp_pls_delete_gb.df"))
