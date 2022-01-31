@@ -42,10 +42,31 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
       warning(warning_msg)
     }
     
-    # you need to use list otherwise the names will be gone
-    code = substitute(chunk_fn(.disk.frame.chunk, ...))
+    dotdotdot = rlang::enexprs(...)
     
-    if (paste0(deparse(code), collapse="") == "chunk_fn(NULL)") {
+    # convert any quosure to labels
+    for (i in seq_along(dotdotdot)) {
+      dotdotdot[[i]] <- dotdotdot[[i]] %>% 
+        rlang::quo_squash()
+    }
+    
+    args_str = mapply(function(name, val) {
+      rhs = deparse(val) %>% 
+        paste0(collapse = "")
+      if(name != "") {
+        sprintf("%s=%s", name, rhs)
+      } else {
+        rhs
+      }
+    }, names(dotdotdot), dotdotdot) %>% 
+      paste0(collapse = ", ")
+    
+    code = parse(text=sprintf("chunk_fn(.disk.frame.chunk, %s)", args_str))[[1]]
+    
+    # you need to use list otherwise the names will be gone
+    # code = substitute(chunk_fn(.disk.frame.chunk, ...))
+    
+    if (paste0(deparse(code), collapse="") == "chunk_fn(.disk.frame.chunk, NULL)") {
       globals_and_pkgs = future::getGlobalsAndPackages(expression(chunk_fn()))
     } else {
       globals_and_pkgs = future::getGlobalsAndPackages(code)

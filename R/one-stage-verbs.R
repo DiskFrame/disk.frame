@@ -209,7 +209,6 @@ IQR_df.collected_agg.disk.frame <- function(listx, ...) {
 #' @rdname group_by
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
-  
   class(.data) <- c("summarized_disk.frame", "disk.frame")
   
   # get all components of the summarise
@@ -217,9 +216,7 @@ summarise.grouped_disk.frame <- function(.data, ...) {
   
   # convert any quosure to labels
   for (i in seq_along(dotdotdot)) {
-    dotdotdot[[i]] <- rlang::as_label(dotdotdot[[i]]) %>% 
-      parse(text = .) %>% 
-      .[[1]]
+    dotdotdot[[i]] <- rlang::quo_squash(dotdotdot[[i]])
   }
   
   attr(.data, "summarize_code") = dotdotdot
@@ -269,9 +266,7 @@ group_by.disk.frame <- function(.data, ..., .add = FALSE, .drop = stop("disk.fra
   # convert any quosure to labels
   for (i in seq_along(group_by_cols)) {
     group_by_cols[[i]] <- group_by_cols[[i]] %>% 
-      rlang::as_label() %>% 
-      parse(text=.) %>% 
-      .[[1]]
+      rlang::quo_squash()
   }
   
   attr(.data, "group_by_cols") = group_by_cols
@@ -301,9 +296,8 @@ summarize.disk.frame <- function(.data, ...) {
   
   # convert any quosure to labels
   for (i in seq_along(dotdotdot)) {
-    dotdotdot[[i]] <- rlang::as_label(dotdotdot[[i]]) %>% 
-      parse(text=.) %>% 
-      .[[1]]
+    dotdotdot[[i]] <- dotdotdot[[i]] %>% 
+      rlang::quo_squash()
   }
   
   attr(.data, "summarize_code") = dotdotdot
