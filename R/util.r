@@ -45,3 +45,30 @@ purrr_as_mapper <- function(.f) {
   }
   return(.f)
 }
+
+#' Find globals in an expression by searching through the chain
+find_globals_recursively <- function(code, envir) {
+  globals_and_pkgs = future::getGlobalsAndPackages(code, envir)
+  
+  global_vars = globals_and_pkgs$globals
+  
+  env = parent.env(envir)
+  
+  done = identical(env, emptyenv()) || identical(env, globalenv())
+  
+  # keep adding global variables by moving up the environment chain
+  while(!done) {
+    tmp_globals_and_pkgs = future::getGlobalsAndPackages(code, envir = env)
+    new_global_vars = tmp_globals_and_pkgs$globals
+    for (name in setdiff(names(new_global_vars), names(global_vars))) {
+      global_vars[[name]] <- new_global_vars[[name]]
+    }
+    
+    done = identical(env, emptyenv()) || identical(env, globalenv())
+    env = parent.env(env)
+  }
+  
+  globals_and_pkgs$globals = global_vars
+  
+  return(globals_and_pkgs)
+}
