@@ -56,7 +56,6 @@ recommend_nchunks <- function(df, type = "csv", minchunks = data.table::getDTthr
 #' # returns the RAM size in gigabyte (GB)
 #' df_ram_size() 
 df_ram_size <- function() {
-  #browser()
   tryCatch({
     ram_size = NULL
     # the amount of memory available in gigabytes
