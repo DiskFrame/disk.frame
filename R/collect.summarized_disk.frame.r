@@ -13,6 +13,7 @@
 #' @importFrom data.table data.table as.data.table
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
+#' @importFrom globals findGlobals
 #' @return collect return a data.frame/data.table
 #' @examples
 #' cars.df = as.disk.frame(cars)

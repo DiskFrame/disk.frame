@@ -47,6 +47,8 @@ purrr_as_mapper <- function(.f) {
 }
 
 #' Find globals in an expression by searching through the chain
+#' @param code An expression to search for globals
+#' @param envir The environment from which to begin the search
 find_globals_recursively <- function(code, envir) {
   globals_and_pkgs = future::getGlobalsAndPackages(code, envir)
   
