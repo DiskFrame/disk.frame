@@ -26,7 +26,26 @@
 collect.summarized_disk.frame <-
   function(x, ..., parallel = !is.null(attr(x, "recordings"))) {
     dotdotdot <- attr(x, 'summarize_code')
+    group_by_vars = attr(x, "group_by_cols")
     
+    browser()
+    
+    # look at the group by and summarise codes and figure out which columns need to be 
+    # srckeep
+    df_to_find_cols = fst::read_fst(get_chunk_ids(x, full.names = TRUE)[1], from=1, to=1)
+    
+    cols_in_summ = lapply(dotdotdot, function(one) {
+      globals::findGlobals(one, envir = list2env(df_to_find_cols, parent=globalenv()))
+    }) %>% unlist %>% unique
+    
+    cols_in_group_by = lapply(group_by_vars, function(one) {
+      globals::findGlobals(one, envir = list2env(df_to_find_cols, parent=globalenv()))
+    }) %>% unlist %>% unique
+    
+    src_keep_cols = intersect(names(df_to_find_cols), c(cols_in_summ, cols_in_group_by) %>% unique)
+    
+    x = srckeep(x, src_keep_cols)
+  
     # make a copy
     dotdotdot_chunk_agg <- dotdotdot
     dotdotdot_collected_agg <- dotdotdot
