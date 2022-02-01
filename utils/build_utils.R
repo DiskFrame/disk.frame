@@ -205,6 +205,12 @@ df_release <- function() {
   devtools::release()
 }
 
+df_ultimate <- function() {
+  df_check()
+  df_release()
+  df_build_site()
+}
+
 if(F) {
   df_check()
 }

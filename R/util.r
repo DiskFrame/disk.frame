@@ -54,6 +54,10 @@ find_globals_recursively <- function(code, envir) {
   
   global_vars = globals_and_pkgs$globals
   
+  done = identical(envir, emptyenv()) || identical(envir, globalenv())
+  
+  if(done) return(globals_and_pkgs)
+  
   env = parent.env(envir)
   
   done = identical(env, emptyenv()) || identical(env, globalenv())

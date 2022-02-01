@@ -86,11 +86,13 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
       fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
     }
   } else {
-    if(typeof(keep)!="closure") {
+    if(typeof(keep)=="closure") {
       play(fst::read_fst(filename, as.data.table = TRUE,...), recordings)
     } else {
-      play(fst::read_fst(filename, columns = keep, as.data.table = TRUE,...), recordings)
+      tmp_df_input = fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
       
+      res = play(tmp_df_input, recordings)
+      return(res)
     }
   }
 }

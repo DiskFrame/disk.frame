@@ -6,6 +6,11 @@
 \usage{
 find_globals_recursively(code, envir)
 }
+\arguments{
+\item{code}{An expression to search for globals}
+
+\item{envir}{The environment from which to begin the search}
+}
 \description{
 Find globals in an expression by searching through the chain
 }

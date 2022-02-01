@@ -41,7 +41,6 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
     if(!is.null(warning_msg)) {
       warning(warning_msg)
     }
-    
     dotdotdot = rlang::enexprs(...)
     
     # convert any quosure to labels
@@ -61,7 +60,12 @@ create_chunk_mapper <- function(chunk_fn, warning_msg = NULL, as.data.frame = FA
     }, names(dotdotdot), dotdotdot) %>% 
       paste0(collapse = ", ")
     
-    code = parse(text=sprintf("chunk_fn(.disk.frame.chunk, %s)", args_str))[[1]]
+    if (args_str == "") {
+      code = parse(text="chunk_fn(.disk.frame.chunk)")[[1]]
+    } else {
+      code = parse(text=sprintf("chunk_fn(.disk.frame.chunk, %s)", args_str))[[1]]
+    }
+    
     
     # you need to use list otherwise the names will be gone
     # code = substitute(chunk_fn(.disk.frame.chunk, ...))
