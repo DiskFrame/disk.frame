@@ -29,8 +29,6 @@ collect.summarized_disk.frame <-
     dotdotdot <- attr(x, 'summarize_code')
     group_by_vars = attr(x, "group_by_cols")
     
-    browser()
-    
     # look at the group by and summarise codes and figure out which columns need to be 
     # srckeep
     df_to_find_cols = fst::read_fst(get_chunk_ids(x, full.names = TRUE)[1], from=1, to=1)

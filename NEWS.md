@@ -1,3 +1,8 @@
+# disk.frame 0.6.1
+* Fixed bug with data.table syntax
+* Auto detection of srckeep in group by
+* Global detection for group by and summarise
+
 # disk.frame 0.6
 * Much better NSE support in disk.frame!
 * removed `hard_arrange` and `hard_group_by`
