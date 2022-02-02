@@ -1,3 +1,7 @@
+# disk.frame 0.7
+* Partitioned by folder
+* Updated R version to 4
+
 # disk.frame 0.6.1
 * Fixed bug with data.table syntax
 * Auto detection of srckeep in group by
