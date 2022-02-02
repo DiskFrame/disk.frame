@@ -136,16 +136,6 @@ chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 # do not introduce it as it was never introduced
 #ungroup.disk.frame( < - create_dplyr_mapper(dplyr::ungroup, , warning_msg="`ungroup.disk.frame` is now deprecated. Please use `chunk_ungroup` instead. This is in preparation for a more powerful `group_by` framework")
 
-add_count.disk.frame <- function(x, ...) {
-  warning("check if it works")
-  counts = x %>% 
-    group_by({{...}}) %>% 
-    summarize(n=n()) %>% 
-    collect
-  
-  left_join.disk.frame(x, counts)
-}
-
 
 
 #' @export

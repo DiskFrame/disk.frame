@@ -1,4 +1,5 @@
 #' Turn a string of the form /partion1=val/partion2=val2 into data.frame
+#' @param path_strs The paths in string form to break into partition format
 split_string_into_df <- function(path_strs) {
   paths = dirname(path_strs) %>% unique
   list_of_partitions = stringr::str_split(paths, "/")
@@ -26,6 +27,9 @@ if(F) {
 }
 
 #' Get the partitioning structure of a folder
+#' @param df a disk.frame whose paths will be used to determine if it's
+#'   folder-partitioned disk.frame
+#' @importFrom utils type.convert
 get_partition_paths <- function(df) {
   stopifnot("disk.frame" %in% class(df))
   path = tools::file_path_as_absolute(attr(df, "path"))
@@ -44,7 +48,7 @@ get_partition_paths <- function(df) {
     # create a data.frame of the paths so it can be filtered
     df_of_partitions = split_string_into_df(lf)
     # infer the types
-    df_of_partitions = type.convert(df_of_partitions, as.is=TRUE)
+    df_of_partitions = utils::type.convert(df_of_partitions, as.is=TRUE)
     
     # if there is a filter operation, filter the above to figure out
     allowed_paths = df_of_partitions$.disk.frame.sub.path

@@ -6,6 +6,10 @@
 \usage{
 get_partition_paths(df)
 }
+\arguments{
+\item{df}{a disk.frame whose paths will be used to determine if it's
+folder-partitioned disk.frame}
+}
 \description{
 Get the partitioning structure of a folder
 }

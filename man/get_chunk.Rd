@@ -19,6 +19,8 @@ get_chunk(...)
 \item{keep}{the columns to keep}
 
 \item{full.names}{whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric}
+
+\item{partitioned_info}{for internal use only. It's a data.frame used to help with filtering by partitions}
 }
 \description{
 Obtain one chunk by chunk id

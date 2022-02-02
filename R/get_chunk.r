@@ -4,6 +4,7 @@
 #' @param keep the columns to keep
 #' @param full.names whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
 #' @param ... passed to fst::read_fst or whichever read function is used in the backend
+#' @param partitioned_info for internal use only. It's a data.frame used to help with filtering by partitions
 #' @export
 #' @examples
 #' cars.df = as.disk.frame(cars, nchunks = 2)

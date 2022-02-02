@@ -6,6 +6,9 @@
 \usage{
 split_string_into_df(path_strs)
 }
+\arguments{
+\item{path_strs}{The paths in string form to break into partition format}
+}
 \description{
 Turn a string of the form /partion1=val/partion2=val2 into data.frame
 }

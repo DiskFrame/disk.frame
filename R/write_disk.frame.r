@@ -12,6 +12,7 @@
 #' @param ... passed to cmap.disk.frame
 #' @export
 #' @import fst fs
+#' @importFrom dplyr group_map
 #' @importFrom glue glue
 #' @examples
 #' cars.df = as.disk.frame(cars)
@@ -51,7 +52,7 @@ write_disk.frame <- function(
           tmp_dir_to_write = tempfile(as.character(.y))
           tmp = .x %>%
             group_by(!!!syms(partitionby)) %>%
-            group_map(~{
+            dplyr::group_map(~{
               # convert group keys to path
               tmp_path = lapply(names(.y), function(n) {
                 sprintf("%s=%s", n, .y[, n])
@@ -79,7 +80,7 @@ write_disk.frame <- function(
       
       partitioned_files %>% 
         group_by(partition_path) %>% 
-        group_map(function(df, grp) {
+        dplyr::group_map(function(df, grp) {
           mapply(function(file, i) {
             outfile = file.path(outdir, grp$partition_path, paste0(i, ".fst"))
             if(!dir.exists(file.path(outdir, grp$partition_path))) {
@@ -116,8 +117,6 @@ write_disk.frame <- function(
             overwrite = TRUE,
             shardby = shardby,
             compress = compress,
-            shardby_function=shardby_function, 
-            sort_splits=sort_splits, desc_vars=desc_vars,
             ...
             )
     }
