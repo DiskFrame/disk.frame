@@ -1,7 +1,7 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.6.1
+Version: 0.6.999.999
 Date: 2022-02-01
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
@@ -33,7 +33,7 @@ Imports:
     globals,
     rlang
 Depends:
-    R (>= 3.4),
+    R (>= 4.0),
     dplyr (>= 1.0.0)
 Suggests:
     nycflights13,

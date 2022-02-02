@@ -133,13 +133,6 @@ collect.summarized_disk.frame <-
     
     summarize_globals_list = attr(x_as.disk.frame, "summarize_globals_and_pkgs")$globals
     
-    if(is.null(summarize_globals_list)) {
-      summ_eval_clos = parent.frame()
-    } else {
-      summ_eval_clos = list2env(summarize_globals_list, parent=parent.frame())
-    }
-    
-    #tmp2 = collect(eval(parse(text = chunk_summ_code_str), envir = environment(), enclos=summ_eval_clos))
     tmp2 = collect(eval(parse(text = chunk_summ_code_str), envir = summarize_globals_list))
     
     second_stage_code = eval(parse(text = sprintf(

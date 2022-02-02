@@ -15,7 +15,6 @@
 #' # clean up
 #' fs::dir_delete(tf)
 overwrite_check <- function(outdir, overwrite) {
-  ##browser
   if (is.null(outdir)) {
     warning("outdir is NULL; no overwrite check is performed")
     return(NULL)
@@ -30,7 +29,7 @@ overwrite_check <- function(outdir, overwrite) {
         fs::dir_delete(outdir)
       }, error = function(e) {
         message(e)
-        stop(glue::glue("Failed to delete the directory {outdir} in preparation for overwrite, this could be due to many reason and may be a genuine bug. Firstly, though, please ensure you do not have the folder open by Explorer (Windows) or other file management systems"))
+        stop(glue::glue("Failed to delete the directory {outdir} in preparation for overwrite, this could be due to many reasons and may be a genuine bug. Firstly, though, please ensure you do not have the folder open by Explorer (Windows) or other file management systems"))
       })
     }
     

@@ -1,2 +1,0 @@
-# Introduction
-This course will teach you all the ins and outs of {disk.frame}. The instructor is the author of {disk.frame}. Enjoy!

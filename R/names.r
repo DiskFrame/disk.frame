@@ -25,17 +25,17 @@ names.disk.frame <- function(x, ...) {
 #' @export
 colnames.disk.frame <- function(x, ...) {
   res = attr(x, "path", exact=TRUE) %>% 
-    list.files(full.names = TRUE)
+    list.files(full.names = TRUE, recursive=TRUE, pattern = "fst")
   
-  if(is.null(attr(x, "recordings"))) {
+  # if(is.null(attr(x, "recordings"))) {
     if(length(res) == 0) {
       return(vector("character"))
     }
     return(fst::metadata_fst(res[1])$columnNames)
-  } else {
-    tiny_example_data.frame = get_chunk(x, 1, from=1, to=1)
-    return(colnames(tiny_example_data.frame))
-  }
+  # } else {
+  #   tiny_example_data.frame = get_chunk(x, 1, from=1, to=1)
+  #   return(colnames(tiny_example_data.frame))
+  # }
 }
 
 

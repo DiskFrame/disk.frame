@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.999.999</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_chunk</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for disk.frame</span>
-<span class="fu">get_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">n</span>, keep <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+<span class="fu">get_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">n</span>, keep <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span>, partitioned_info <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,6 +114,8 @@
 <dd><p>the columns to keep</p></dd>
 <dt>full.names</dt>
 <dd><p>whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric</p></dd>
+<dt>partitioned_info</dt>
+<dd><p>for internal use only. It's a data.frame used to help with filtering by partitions</p></dd>
 </dl></div>
 
     <div id="ref-examples">

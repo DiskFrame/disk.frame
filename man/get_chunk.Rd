@@ -7,7 +7,7 @@
 \usage{
 get_chunk(...)
 
-\method{get_chunk}{disk.frame}(df, n, keep = NULL, full.names = FALSE, ...)
+\method{get_chunk}{disk.frame}(df, n, keep = NULL, full.names = FALSE, ..., partitioned_info = NULL)
 }
 \arguments{
 \item{...}{passed to fst::read_fst or whichever read function is used in the backend}
@@ -19,6 +19,8 @@ get_chunk(...)
 \item{keep}{the columns to keep}
 
 \item{full.names}{whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric}
+
+\item{partitioned_info}{for internal use only. It's a data.frame used to help with filtering by partitions}
 }
 \description{
 Obtain one chunk by chunk id

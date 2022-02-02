@@ -12,13 +12,13 @@ test_that("testing names", {
   expect_setequal(names(b), c("a","b"))
 })
 
-test_that("testing names with lazyfn", {
-  b = disk.frame(file.path(tempdir(), "tmp_names.df")) %>% 
-    mutate(d = a + b)
-  
-  expect_setequal(colnames(b), c("a","b", "d"))
-  expect_setequal(names(b), c("a","b", "d"))
-})
+# test_that("testing names with lazyfn", {
+#   b = disk.frame(file.path(tempdir(), "tmp_names.df")) %>% 
+#     mutate(d = a + b)
+#   
+#   expect_setequal(colnames(b), c("a","b", "d"))
+#   expect_setequal(names(b), c("a","b", "d"))
+# })
 
 teardown({
   fs::dir_delete(file.path(tempdir(), "tmp_names.df"))

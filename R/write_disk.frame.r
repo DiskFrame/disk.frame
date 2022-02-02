@@ -7,13 +7,12 @@
 #' @param nchunks number of chunks
 #' @param overwrite overwrite output directory
 #' @param shardby the columns to shard by
+#' @param partitionby the columns to (folder) partition by
 #' @param compress compression ratio for fst files
-#' @param shardby_function splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks
-#' @param sort_splits for the "sort" shardby function, a dataframe with the split values.
-#' @param desc_vars for the "sort" shardby function, the variables to sort descending. 
 #' @param ... passed to cmap.disk.frame
 #' @export
 #' @import fst fs
+#' @importFrom dplyr group_map
 #' @importFrom glue glue
 #' @examples
 #' cars.df = as.disk.frame(cars)
@@ -33,18 +32,67 @@ write_disk.frame <- function(
     nchunks.disk.frame(diskf),
     recommend_nchunks(diskf)),
   overwrite = FALSE,
-  shardby=NULL, compress = 50, shardby_function="hash", sort_splits=NULL, desc_vars=NULL, ...) {
+  shardby=NULL, 
+  partitionby=NULL,
+  compress = 50, ...) {
 
   force(nchunks)
   overwrite_check(outdir, overwrite)
-
 
   if(is.null(outdir)) {
     stop("write_disk.frame error: outdir must not be NULL")
   }
 
   if(is_disk.frame(diskf)) {
-    if(is.null(shardby)) {
+    if(!is.null(partitionby)) {
+      
+      # for each chunk group by the partionby and then write out a partitioned disk.frame for each chunk
+      list_of_paths = diskf %>%
+        cimap(~{
+          tmp_dir_to_write = tempfile(as.character(.y))
+          tmp = .x %>%
+            group_by(!!!syms(partitionby)) %>%
+            dplyr::group_map(~{
+              # convert group keys to path
+              tmp_path = lapply(names(.y), function(n) {
+                sprintf("%s=%s", n, .y[, n])
+              }) %>%
+                do.call(file.path, .)
+              
+              final_tmp_path = file.path(tmp_dir_to_write, tmp_path)
+              as.disk.frame(.x, final_tmp_path, overwrite = FALSE)
+            })
+          return(tmp_dir_to_write)
+        }, lazy=FALSE)
+      
+      # for each of the chunks, do a soft row-append
+      partitioned_files = lapply(list_of_paths, function(path) {
+        # each path is a partitioned disk.frame
+        files = list.files(path, full.names = TRUE, recursive=TRUE)
+        tmp = data.frame(partition_path =  files %>% 
+          dirname %>% 
+          sapply(tools::file_path_as_absolute) %>% 
+          stringr::str_sub(nchar(path)+2))
+        tmp = tmp %>% mutate(path=path, files=files)
+        
+        tmp
+      }) %>% rbindlist
+      
+      partitioned_files %>% 
+        group_by(partition_path) %>% 
+        dplyr::group_map(function(df, grp) {
+          mapply(function(file, i) {
+            outfile = file.path(outdir, grp$partition_path, paste0(i, ".fst"))
+            if(!dir.exists(file.path(outdir, grp$partition_path))) {
+              fs::dir_create(file.path(outdir, grp$partition_path))
+            }
+            fs::file_move(file, outfile)
+          }, df$files, seq_along(df$files))
+        })
+        
+      return(disk.frame(outdir))
+        
+    } else if(is.null(shardby)) {
       path = attr(diskf, "path")
       files_shortname <- list.files(path)
       cids = get_chunk_ids(diskf, full.names = T, strip_extension = F)
@@ -69,8 +117,6 @@ write_disk.frame <- function(
             overwrite = TRUE,
             shardby = shardby,
             compress = compress,
-            shardby_function=shardby_function, 
-            sort_splits=sort_splits, desc_vars=desc_vars,
             ...
             )
     }

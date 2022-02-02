@@ -58,7 +58,13 @@ globalVariables(c(
                   "pathB",
                   "w",
                   "xid",
-                  "yid"))
+                  "yid",
+                  "paths",
+                  ".disk.frame.sub.path",
+                  "fullpath",
+                  ".check", 
+                  "partition_path"
+                  ))
 
 #' @useDynLib disk.frame
 #' @importFrom Rcpp evalCpp

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.999.999</span>
       </span>
     </div>
 
@@ -555,26 +555,26 @@
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">collect</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
 <span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     5  16      930            906        24     1235           1239</span>
-<span class="co">#&gt; 2: 2013    12  30      818            810         8     1008            955</span>
-<span class="co">#&gt; 3: 2013     2   6     1238           1240        -2     1536           1555</span>
-<span class="co">#&gt; 4: 2013    12  20      921            854        27     1226           1212</span>
-<span class="co">#&gt; 5: 2013     1  15     1452           1500        -8     1625           1619</span>
-<span class="co">#&gt; 6: 2013     2   3     1340           1320        20     1511           1509</span>
+<span class="co">#&gt; 1: 2013     2   1      622            625        -3      722            730</span>
+<span class="co">#&gt; 2: 2013     5  18      949            955        -6     1115           1140</span>
+<span class="co">#&gt; 3: 2013     2   3     1930           1932        -2     2211           2230</span>
+<span class="co">#&gt; 4: 2013     1   2      628            630        -2      935            932</span>
+<span class="co">#&gt; 5: 2013     5  13     1819           1825        -6     2041           2146</span>
+<span class="co">#&gt; 6: 2013     5  23       NA           1329        NA       NA           1618</span>
 <span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        -4      B6    641  N806JB    JFK  SFO      343     2586    9      6</span>
-<span class="co">#&gt; 2:        13      EV   5463  N740EV    LGA  BNA      142      764    8     10</span>
-<span class="co">#&gt; 3:       -19      AA   2041  N5EBAA    JFK  MIA      150     1089   12     40</span>
-<span class="co">#&gt; 4:        14      UA    997  N511UA    EWR  LAX      346     2454    8     54</span>
-<span class="co">#&gt; 5:         6      US   2179  N702UW    LGA  DCA       56      214   15      0</span>
-<span class="co">#&gt; 6:         2      EV   4628  N13123    EWR  STL      132      872   13     20</span>
+<span class="co">#&gt; 1:        -8      WN   3127  N723SW    EWR  BWI       45      169    6     25</span>
+<span class="co">#&gt; 2:       -25      AA    319  N539AA    LGA  ORD      110      733    9     55</span>
+<span class="co">#&gt; 3:       -19      UA   1416  N24715    EWR  IAH      201     1400   19     32</span>
+<span class="co">#&gt; 4:         3      DL   2137  N912DE    LGA  TPA      159     1010    6     30</span>
+<span class="co">#&gt; 5:       -65      UA   1075  N24702    EWR  SNA      286     2434   18     25</span>
+<span class="co">#&gt; 6:        NA      UA   1122            EWR  PBI       NA     1023   13     29</span>
 <span class="co">#&gt;              time_hour</span>
-<span class="co">#&gt; 1: 2013-05-16 13:00:00</span>
-<span class="co">#&gt; 2: 2013-12-30 13:00:00</span>
-<span class="co">#&gt; 3: 2013-02-06 17:00:00</span>
-<span class="co">#&gt; 4: 2013-12-20 13:00:00</span>
-<span class="co">#&gt; 5: 2013-01-15 20:00:00</span>
-<span class="co">#&gt; 6: 2013-02-03 18:00:00</span></code></pre></div>
+<span class="co">#&gt; 1: 2013-02-01 11:00:00</span>
+<span class="co">#&gt; 2: 2013-05-18 13:00:00</span>
+<span class="co">#&gt; 3: 2013-02-04 00:00:00</span>
+<span class="co">#&gt; 4: 2013-01-02 11:00:00</span>
+<span class="co">#&gt; 5: 2013-05-13 22:00:00</span>
+<span class="co">#&gt; 6: 2013-05-23 17:00:00</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="writing-data">Writing Data<a class="anchor" aria-label="anchor" href="#writing-data"></a>

@@ -4,6 +4,7 @@
 #' @param keep the columns to keep
 #' @param full.names whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric
 #' @param ... passed to fst::read_fst or whichever read function is used in the backend
+#' @param partitioned_info for internal use only. It's a data.frame used to help with filtering by partitions
 #' @export
 #' @examples
 #' cars.df = as.disk.frame(cars, nchunks = 2)
@@ -24,7 +25,7 @@ get_chunk <- function(...) {
 #' @rdname get_chunk
 #' @importFrom fst read_fst
 #' @export
-get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
+get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ..., partitioned_info=NULL) {
   stopifnot("disk.frame" %in% class(df))
   # keep_chunks = attr(df, "keep_chunks", exact=TRUE)
   
@@ -44,9 +45,10 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
       keep1_vars = paste0(keep1, collapse = ", ")
       keep_no_good_vars = setdiff(keep, keep1) %>% paste0(collapse = ", ")
       stop(
-        glue::glue(
-          "This disk.frame has a srckeep containing these variables {keep1_vars}. 
-          You are trying to keep {keep_no_good_vars}, which are not available."))
+        sprintf(
+          "This disk.frame has a `srckeep` containing these columns: `%s`. 
+          You are trying to keep `%s`, which are not available.",
+          paste0(keep1_vars, collapse=", "), paste0(keep_no_good_vars, collapse=", ")))
     }
     keep = intersect(keep1, keep)
     if (!all(keep %in% keep1)) {
@@ -78,21 +80,37 @@ get_chunk.disk.frame <- function(df, n, keep = NULL, full.names = FALSE, ...) {
     return(notbl)
   }
 
-  
   if (is.null(recordings)) {
     if(typeof(keep)=="closure") {
-      fst::read_fst(filename, as.data.table = TRUE,...)
+      tmp = fst::read_fst(filename, as.data.table = TRUE,...)
     } else {
-      fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
+      tmp = fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
+    }
+    
+    if(!is.null(partitioned_info)) {
+      res = tmp %>% 
+        mutate(.check=1) %>% 
+        full_join(partitioned_info %>% mutate(.check=1), by=".check") %>% 
+        select(-.check, -fullpath, -.disk.frame.sub.path)
+      return(res)
+    } else{
+      return(tmp)
     }
   } else {
     if(typeof(keep)=="closure") {
-      play(fst::read_fst(filename, as.data.table = TRUE,...), recordings)
+      tmp_df_input = fst::read_fst(filename, as.data.table = TRUE,...)
     } else {
       tmp_df_input = fst::read_fst(filename, columns = keep, as.data.table = TRUE,...)
-      
-      res = play(tmp_df_input, recordings)
-      return(res)
+    }
+    
+    if(!is.null(partitioned_info)) {
+      res = tmp_df_input %>% 
+        mutate(.check=1) %>% 
+        full_join(partitioned_info %>% mutate(.check=1), by=".check") %>% 
+        select(-.check, -fullpath, -.disk.frame.sub.path)
+      return(play(res, recordings))
+    } else{
+      return(play(tmp_df_input, recordings))
     }
   }
 }
