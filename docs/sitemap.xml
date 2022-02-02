@@ -187,6 +187,9 @@
     <loc>/reference/get_chunk_ids.html</loc>
   </url>
   <url>
+    <loc>/reference/get_partition_paths.html</loc>
+  </url>
+  <url>
     <loc>/reference/groups.disk.frame.html</loc>
   </url>
   <url>
@@ -244,6 +247,9 @@
     <loc>/reference/overwrite_check.html</loc>
   </url>
   <url>
+    <loc>/reference/partition_filter.html</loc>
+  </url>
+  <url>
     <loc>/reference/play.html</loc>
   </url>
   <url>
@@ -284,6 +290,9 @@
   </url>
   <url>
     <loc>/reference/show_ceremony.html</loc>
+  </url>
+  <url>
+    <loc>/reference/split_string_into_df.html</loc>
   </url>
   <url>
     <loc>/reference/srckeep.html</loc>
