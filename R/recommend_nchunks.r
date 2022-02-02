@@ -23,7 +23,6 @@
 #' # recommend nchunks based on file size ONLY CSV is implemented at the moment
 #' recommend_nchunks(1024^3)
 recommend_nchunks <- function(df, type = "csv", minchunks = data.table::getDTthreads(), conservatism = 8, ram_size = df_ram_size()) {
-  
   dfsize = 0
   if ("data.frame" %in% class(df)) {
     # the df's size in gigabytes

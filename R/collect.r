@@ -25,15 +25,61 @@
 #' @rdname collect
 collect.disk.frame <- function(x, ..., parallel = !is.null(attr(x,"recordings"))) {
   cids = get_chunk_ids(x, full.names = TRUE, strip_extension = FALSE)
+  # obtain filters from structure
+  partitioned_paths_or_not = get_partition_paths(x)
+  
+  if (partitioned_paths_or_not$is_partitioned) {
+    partitioned_paths = partitioned_paths_or_not$paths
+    if(length(partitioned_paths) >= 1) {
+      # filter the cids based on the paths
+      tmp = data.frame(paths = cids) %>% 
+        mutate(dirname = dirname(paths)) %>% 
+        inner_join(data.frame(dirname = sapply(partitioned_paths, tools::file_path_as_absolute)), by = "dirname")
+      cids = tmp$paths
+    }
+  }
+  
   if(nchunks(x) > 0) {
     if(parallel) {
-      tmp<-future.apply::future_lapply(cids, function(.x) {
-      
-          get_chunk.disk.frame(x, .x, full.names = TRUE)
-      }, future.seed = TRUE)
+      tmp<-future.apply::future_lapply(cids, function(.x, meh) {
+          if(partitioned_paths_or_not$is_partitioned) {
+            dirpath = dirname(.x)
+            tmp2 = partitioned_paths_or_not$df %>%
+              mutate(fullpath = file.path(attr(x, "path") %>% tools::file_path_as_absolute(), .disk.frame.sub.path)) 
+            
+            tmp2a = tmp2 %>% 
+              filter(fullpath == dirpath) %>% 
+              mutate(.check=1)
+            
+            stopifnot(nrow(tmp2a) == 1)
+            
+            tmp3 = get_chunk.disk.frame(x, .x, full.names = TRUE, partitioned_info = tmp2a)
+            return(tmp3)
+          } else {
+            return(get_chunk.disk.frame(x, .x, full.names = TRUE))
+          }
+      }, future.seed = NULL)
       return(rbindlist(tmp))
     } else {
-      purrr::map_dfr(cids, ~get_chunk.disk.frame(x, .x, full.names = TRUE))
+      tmp<-lapply(cids, function(.x, meh) {
+        if(partitioned_paths_or_not$is_partitioned) {
+          dirpath = dirname(.x)
+          tmp2 = partitioned_paths_or_not$df %>%
+            mutate(fullpath = file.path(attr(x, "path") %>% tools::file_path_as_absolute(), .disk.frame.sub.path)) 
+          
+          tmp2a = tmp2 %>% 
+            filter(fullpath == dirpath) %>% 
+            mutate(.check=1)
+          
+          stopifnot(nrow(tmp2a) == 1)
+          
+          tmp3 = get_chunk.disk.frame(x, .x, full.names = TRUE, partitioned_info = tmp2a)
+          return(tmp3)
+        } else {
+          return(get_chunk.disk.frame(x, .x, full.names = TRUE))
+        }
+      })
+      return(rbindlist(tmp))
     }
   } else {
     data.table()
