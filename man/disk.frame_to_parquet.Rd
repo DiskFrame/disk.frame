@@ -6,6 +6,11 @@
 \usage{
 disk.frame_to_parquet(df, outdir)
 }
+\arguments{
+\item{df}{a disk.frame or a path to a disk.frame}
+
+\item{outdir}{the path to save the parquet files}
+}
 \description{
 A function to convert a disk.frame to parquet format
 }

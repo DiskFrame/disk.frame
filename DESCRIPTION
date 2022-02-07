@@ -31,7 +31,8 @@ Imports:
     benchmarkme,
     purrr (>= 0.3.2),
     globals,
-    rlang
+    rlang,
+    arrow
 Depends:
     R (>= 4.0),
     dplyr (>= 1.0.0)

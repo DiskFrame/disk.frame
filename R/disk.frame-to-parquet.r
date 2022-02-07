@@ -1,6 +1,8 @@
 #' A function to convert a disk.frame to parquet format
 #' @importFrom arrow write_parquet
 #' @export
+#' @param df a disk.frame or a path to a disk.frame
+#' @param outdir the path to save the parquet files
 disk.frame_to_parquet <- function(df, outdir) {
   if("disk.frame" %in% class(df)) {
     path = attr(df, "path")

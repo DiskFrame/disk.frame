@@ -5,8 +5,6 @@
 #' @importFrom future nbrOfWorkers
 #' @importFrom crayon red blue green
 .onAttach <- function(libname, pkgname) {
-  #setup_disk.frame()
-  
   packageStartupMessage(
   crayon::blue(
 "\n\n Thank you for using {disk.frame}. However {disk.frame} has been soft-deprecated and I recommend users to swith over to using the {arrow} package for handling larger-than-RAM data. You can convert your existing disk.frames to the parquet format which {arrow} can use by using:\n\n
