@@ -3,6 +3,30 @@
 
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
+# NOTICE
+
+**{disk.frame} has been soft-deprecated in favor of {arrow}**. With the
+{arrow} 6.0.0 release, it’s now capable of doing larger-than-RAM data
+analysis quite well see [release
+note](https://arrow.apache.org/docs/r/news/index.html#1-expanded-arrow-native-queries-aggregation-and-joins-6-0-0).
+Hence, there is no strong reason to prefer {disk.frame} unless you have
+very specific feature needs.
+
+For the above reason, I’ve decided to soft-deprecate {disk.frame} which
+means I will no longer actively develop new features for it but it will
+remain on CRAN in maintenance mode.
+
+To help with the transition I’ve created a function,
+`disk.frame::disk.frame_to_parquet(df, outdir)` to help you convert
+existing {disk.frame}s to the parquet format so you can use {arrow} with
+it.
+
+I am working on an reincarnation of {disk.frame} in Julia, so the
+{disk.frame} will live on!
+
+Thank your for support {disk.frame}. I’ve learnt alot along the way, but
+time has come to move on!
+
 # Introduction
 
 How do I manipulate tabular data that doesn’t fit into Random Access
@@ -34,7 +58,7 @@ And the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("xiaodaigh/disk.frame")
+devtools::install_github("DiskFrame/disk.frame")
 ```
 
 On some platforms, such as SageMaker, you may need to explicitly specify
@@ -190,6 +214,7 @@ library(nycflights13)
 
 # this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)
 setup_disk.frame()
+#> The number of workers available for disk.frame is 6
 # this allows large datasets to be transferred between sessions
 options(future.globals.maxSize = Inf)
 
@@ -210,15 +235,15 @@ flights.df %>%
   filter(year == 2013) %>% 
   mutate(origin_dest = paste0(origin, dest)) %>% 
   head(2)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#> 1: 2013     1   1      517            515         2      830            819
-#> 2: 2013     1   1      533            529         4      850            830
-#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
-#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
-#> 2:        20      UA   1714  N24211    LGA  IAH      227     1416    5     29
-#>              time_hour origin_dest
-#> 1: 2013-01-01 05:00:00      EWRIAH
-#> 2: 2013-01-01 05:00:00      LGAIAH
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
+#> 1: 2013     1   1      517            515         2      830            819        11
+#> 2: 2013     1   1      533            529         4      850            830        20
+#>    carrier flight tailnum origin dest air_time distance hour minute           time_hour
+#> 1:      UA   1545  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00
+#> 2:      UA   1714  N24211    LGA  IAH      227     1416    5     29 2013-01-01 05:00:00
+#>    origin_dest
+#> 1:      EWRIAH
+#> 2:      LGAIAH
 ```
 
 ### Group-by
@@ -245,12 +270,12 @@ result_from_disk.frame = iris %>%
 
 The results should be exactly the same as if applying the same group-by
 operations on a data.frame. If not, please [report a
-bug](https://github.com/xiaodaigh/disk.frame/issues).
+bug](https://github.com/DiskFrame/disk.frame/issues).
 
 #### List of supported group-by functions
 
 If a function you like is missing, please make a feature request
-[here](https://github.com/xiaodaigh/disk.frame/issues). It is a
+[here](https://github.com/DiskFrame/disk.frame/issues). It is a
 limitation that function that depend on the order a column can only be
 obtained using estimated methods.
 
@@ -285,6 +310,7 @@ suppressWarnings(
       .(qtr = ifelse(month <= 3, "Q1", "Q2"))
       ]
 )
+#> data.table syntax for disk.frame may be moved to a separate package in the future
 
 grp_by_stage1
 #>    qtr sum_dist
@@ -315,7 +341,7 @@ To find out where the disk.frame is stored on disk:
 ``` r
 # where is the disk.frame stored
 attr(flights.df, "path")
-#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpQH7obF\\file42d452c32907.df"
+#> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpeygI4C\\file4e9c4ab6775c.df"
 ```
 
 A number of data.frame functions are implemented for disk.frame
@@ -323,23 +349,19 @@ A number of data.frame functions are implemented for disk.frame
 ``` r
 # get first few rows
 head(flights.df, 1)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#> 1: 2013     1   1      517            515         2      830            819
-#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
-#> 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15
-#>              time_hour
-#> 1: 2013-01-01 05:00:00
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
+#> 1: 2013     1   1      517            515         2      830            819        11
+#>    carrier flight tailnum origin dest air_time distance hour minute           time_hour
+#> 1:      UA   1545  N14228    EWR  IAH      227     1400    5     15 2013-01-01 05:00:00
 ```
 
 ``` r
 # get last few rows
 tail(flights.df, 1)
-#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-#> 1: 2013     9  30       NA            840        NA       NA           1020
-#>    arr_delay carrier flight tailnum origin dest air_time distance hour minute
-#> 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40
-#>              time_hour
-#> 1: 2013-09-30 08:00:00
+#>    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
+#> 1: 2013     9  30       NA            840        NA       NA           1020        NA
+#>    carrier flight tailnum origin dest air_time distance hour minute           time_hour
+#> 1:      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40 2013-09-30 08:00:00
 ```
 
 ``` r
@@ -361,7 +383,7 @@ ncol(flights.df)
 ## Contributors
 
 This project exists thanks to all the people who contribute.
-<a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/DiskFrame/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
 
 ## Current Priorities
 
@@ -432,19 +454,18 @@ ways? Here are some ways you can contribute
     help promote it
 -   Bring attention to typos and grammatical errors by correcting and
     making a PR. Or simply by [raising an issue
-    here](https://github.com/xiaodaigh/disk.frame/issues)
+    here](https://github.com/DiskFrame/disk.frame/issues)
 -   Star the [`{disk.frame}` Github
-    repo](https://github.com/xiaodaigh/disk.frame)
+    repo](https://github.com/DiskFrame/disk.frame)
 -   Star any repo that `{disk.frame}` depends on
     e.g. [`{fst}`](https://github.com/fstpackage/fst) and
     [`{future}`](https://github.com/HenrikBengtsson/future)
 
 ## Related Repos
 
-<https://github.com/xiaodaigh/disk.frame-fannie-mae-example>
-<https://github.com/xiaodaigh/disk.frame-vs>
-<https://github.com/xiaodaigh/disk.frame.ml>
-<https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame>
+<https://github.com/DiskFrame/disk.frame-fannie-mae-example>
+<https://github.com/DiskFrame/disk.frame-vs>
+<https://github.com/DiskFrame/disk.frame.ml>
 
 ## Download Counts & Build Status
 
