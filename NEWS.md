@@ -1,3 +1,10 @@
+# disk.frame 0.7.2
+* Bugfixes Github 384
+
+# disk.frame 0.7.1
+* Bugfixes
+* And ability to convert to Parquet 
+
 # disk.frame 0.7
 * Partitioned by folder
 * Updated R version to 4

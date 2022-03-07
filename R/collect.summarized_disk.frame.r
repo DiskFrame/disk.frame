@@ -29,7 +29,7 @@ collect.summarized_disk.frame <-
     dotdotdot <- attr(x, 'summarize_code')
     group_by_vars = attr(x, "group_by_cols")
     
-    # look at the group by and summarise codes and figure out which columns need to be 
+    # look at the group by and summaries codes and figure out which columns need to be 
     # srckeep
     df_to_find_cols = fst::read_fst(get_chunk_ids(x, full.names = TRUE)[1], from=1, to=1)
     
@@ -41,9 +41,21 @@ collect.summarized_disk.frame <-
       globals::findGlobals(one, envir = list2env(df_to_find_cols, parent=globalenv()))
     }) %>% unlist %>% unique
     
-    src_keep_cols = intersect(names(df_to_find_cols), c(cols_in_summ, cols_in_group_by) %>% unique)
+    cols_used = c(cols_in_summ, cols_in_group_by) %>% unique
+    src_keep_cols = intersect(names(df_to_find_cols), cols_used)
     
-    x = srckeep(x, src_keep_cols)
+    # are there any variables used in the group by or summarise that is not present in the original data?
+    # if yes then that indicates this could be more complicated e.g. a new var was created with mutate
+    extra_vars = setdiff(cols_used, names(df_to_find_cols))
+    if(length(extra_vars) > 0) {
+      warning(sprintf(
+        "These columns that appear in the group-by and summarise does not appear in the original data set: %s. This set of action is too hard for disk.frame to figure out the `srckeep` automatically, you must do the `srckeep` manually."
+        , paste0(extra_vars, collapse = ", ")))
+    } else {
+      x = srckeep(x, src_keep_cols)
+    }
+    
+    
   
     # make a copy
     dotdotdot_chunk_agg <- dotdotdot

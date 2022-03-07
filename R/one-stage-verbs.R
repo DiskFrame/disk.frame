@@ -260,7 +260,7 @@ summarize.grouped_disk.frame = summarise.grouped_disk.frame
 group_by.disk.frame <- function(.data, ..., .add = FALSE, .drop = stop("disk.frame does not support `.drop` in `group_by` at this stage")) {
   class(.data) <- c("grouped_disk.frame", "disk.frame")
   
-  # using rlang is a neccesary evil here as I need to deal with !!! that is supported by group_by etc
+  # using rlang is a necessary evil here as I need to deal with !!! that is supported by group_by etc
   group_by_cols = rlang::enexprs(...)
   
   # convert any quosure to labels

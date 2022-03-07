@@ -7,7 +7,7 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
   crayon::blue(
-"\n\n Thank you for using {disk.frame}. However {disk.frame} has been soft-deprecated and I recommend users to swith over to using the {arrow} package for handling larger-than-RAM data. You can convert your existing disk.frames to the parquet format which {arrow} can use by using:\n\n
+"\n\n Thank you for using {disk.frame}. However {disk.frame} has been soft-deprecated. You are recommended to switch over to using the {arrow} package for handling larger-than-RAM data. You can convert your existing disk.frames to the parquet format which {arrow} can use by using:\n\n
 ```
 disk.frame::disk.frame_to_parquet(path.to.your.disk.frame, parquet_path)
 ````
