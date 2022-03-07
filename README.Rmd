@@ -15,6 +15,19 @@ knitr::opts_chunk$set(
 ```
 # disk.frame <img src="inst/figures/disk.frame.png" align="right">
 
+# NOTICE
+
+**{disk.frame} has been soft-deprecated in favor of {arrow}**. With the {arrow} 6.0.0 release, it's now capable of doing larger-than-RAM data analysis quite well see [release note](https://arrow.apache.org/docs/r/news/index.html#1-expanded-arrow-native-queries-aggregation-and-joins-6-0-0). Hence, there is no strong reason to prefer {disk.frame} unless you have very specific feature needs. 
+
+For the above reason, I've decided to soft-deprecate {disk.frame} which means I will no longer actively develop new features for it but it will remain on CRAN in maintenance mode.
+
+To help with the transition I've created a function, `disk.frame::disk.frame_to_parquet(df, outdir)` to help you convert existing {disk.frame}s to the parquet format so you can use {arrow} with it. 
+
+I am working on an reincarnation of {disk.frame} in Julia, so the {disk.frame} will live on!
+
+Thank your for support {disk.frame}. I've learnt alot along the way, but time has come to move on!
+
+
 # Introduction
 
 How do I manipulate tabular data that doesn't fit into Random Access Memory (RAM)? 
@@ -40,7 +53,7 @@ And the development version from [GitHub](https://github.com/) with:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("xiaodaigh/disk.frame")
+devtools::install_github("DiskFrame/disk.frame")
 
 ```
 
@@ -169,11 +182,11 @@ result_from_disk.frame = iris %>%
   collect
 ```
 
-The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please [report a bug](https://github.com/xiaodaigh/disk.frame/issues).
+The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please [report a bug](https://github.com/DiskFrame/disk.frame/issues).
 
 #### List of supported group-by functions
 
-If a function you like is missing, please make a feature request [here](https://github.com/xiaodaigh/disk.frame/issues). It is a limitation that function that depend on the order a column can only be obtained using estimated methods.
+If a function you like is missing, please make a feature request [here](https://github.com/DiskFrame/disk.frame/issues). It is a limitation that function that depend on the order a column can only be obtained using estimated methods.
 
 | Function | Exact/Estimate | Notes |
 | -- | -- | -- |
@@ -255,7 +268,7 @@ ncol(flights.df)
 ## Contributors
 
 This project exists thanks to all the people who contribute. 
-<a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/DiskFrame/disk.frame/graphs/contributors"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&button=false" /></a>
 
 ## Current Priorities
 
@@ -317,16 +330,15 @@ Do you wish to give back the open-source community in non-financial ways? Here a
 
 * Write a blogpost about your `{disk.frame}` usage or experience. I would love to learn more about how `{disk.frame}` has helped you
 * Tweet or post on social media (e.g LinkedIn) about `{disk.frame}` to help promote it
-* Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by [raising an issue here](https://github.com/xiaodaigh/disk.frame/issues)
-* Star the [`{disk.frame}` Github repo](https://github.com/xiaodaigh/disk.frame)
+* Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by [raising an issue here](https://github.com/DiskFrame/disk.frame/issues)
+* Star the [`{disk.frame}` Github repo](https://github.com/DiskFrame/disk.frame)
 * Star any repo that `{disk.frame}` depends on e.g. [`{fst}`](https://github.com/fstpackage/fst) and [`{future}`](https://github.com/HenrikBengtsson/future)
 
 ## Related Repos
 
-https://github.com/xiaodaigh/disk.frame-fannie-mae-example
-https://github.com/xiaodaigh/disk.frame-vs
-https://github.com/xiaodaigh/disk.frame.ml
-https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame
+https://github.com/DiskFrame/disk.frame-fannie-mae-example
+https://github.com/DiskFrame/disk.frame-vs
+https://github.com/DiskFrame/disk.frame.ml
 
 ## Download Counts & Build Status
 

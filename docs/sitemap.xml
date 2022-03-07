@@ -166,6 +166,9 @@
     <loc>/reference/disk.frame.html</loc>
   </url>
   <url>
+    <loc>/reference/disk.frame_to_parquet.html</loc>
+  </url>
+  <url>
     <loc>/reference/dplyr_verbs.html</loc>
   </url>
   <url>

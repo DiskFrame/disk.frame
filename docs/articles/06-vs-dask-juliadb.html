@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
       </span>
     </div>
 
@@ -189,14 +189,14 @@
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># ~4s</span>
 <span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.15    0.04    2.41</span></code></pre></div>
+<span class="co">#&gt;    0.17    0.01    1.06</span></code></pre></div>
 <p>We note that there is some time needed for disk.frame to start up all the workers. Next we try to convert the largest CSV file to disk.frame format. The file to be converted is about 2.2GB in size</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">time_to_convert_disk.frame</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="st">"c:/data/Performance_2004Q3.txt"</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>
 
 <span class="va">time_to_convert_disk.frame</span>
 <span class="co">#&gt; elapsed </span>
-<span class="co">#&gt;   29.67</span></code></pre></div>
+<span class="co">#&gt;   28.49</span></code></pre></div>
 <p>Now that we have converted it, we want to a count by the first column. To achieve this we use a “two-stage” aggregation strategy. Note that use <code>keep="V1"</code> to bring only the column <code>V1</code> into RAM. This avoids the reading of other unnecessary columns and should speed-up the analysis significantly</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">time_to_agg_disk.frame</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="va">df1</span><span class="op">[</span>,<span class="va">.N</span>, <span class="va">V1</span>, keep <span class="op">=</span> <span class="st">"V1"</span><span class="op">]</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span><span class="op">)</span>, <span class="va">V1</span><span class="op">]</span><span class="op">)</span>
@@ -204,7 +204,7 @@
 
 <span class="va">time_to_agg_disk.frame</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.08    0.01    8.82</span></code></pre></div>
+<span class="co">#&gt;    0.13    0.03    9.40</span></code></pre></div>
 <p>We can inspect the result as well.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">summ</span>
@@ -228,7 +228,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="va">collect</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    1.64    0.13    4.43</span></code></pre></div>
+<span class="co">#&gt;    1.46    0.16    5.69</span></code></pre></div>
 <p>However, the <code>dplyr</code> syntax tends to be slightly slower than using data.table syntax. This may be improved as much of the overhead is due to inefficient use of NSE.</p>
 </div>
 <div class="section level5">
