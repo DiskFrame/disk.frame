@@ -20,19 +20,19 @@
 #' # clean up cars.df
 #' delete(cars.df)
 get_chunk_ids <- function(df, ..., full.names = FALSE, strip_extension = TRUE) {
-  lf = list.files(attr(df,"path"), full.names = full.names, ...)
+  stopifnot("disk.frame" %in% class(df))
+  
+  lf = list.files(attr(df,"path"), full.names = full.names, ..., recursive = TRUE)
   if(full.names) {
     return(lf)
   }
-  purrr::map_chr(lf, ~{
-    tmp = stringr::str_split(.x,stringr::fixed("."), simplify = TRUE)
-    l = length(tmp)
-    if(l == 1) {
-      return(tmp)
-    } else if(strip_extension) {
-      paste0(tmp[-l], collapse="")
-    } else {
-      .x
+  
+  # strip out the path or file name if required
+  sapply(lf, function(path) {
+    tmp = basename(path)
+    if (strip_extension) {
+      tmp = tools::file_path_sans_ext(tmp)
     }
+    return(tmp)
   })
 }

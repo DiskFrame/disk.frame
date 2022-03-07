@@ -45,10 +45,12 @@ test_that("data.table global vars",  {
   }
   
   # Check function with data.table object
-  grep_storm_name(storms_dt, "^A")
+  a = grep_storm_name(storms_dt, "^A")
   
   # Check function with diskframe object
-  grep_storm_name(storms_df, "^A")
+  b = grep_storm_name(storms_df, "^A")
+  
+  expect_equal(a, b)
 })
 
 teardown({

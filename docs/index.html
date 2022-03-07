@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
       </span>
     </div>
 
@@ -228,6 +228,7 @@
 
 <span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span>
 <span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; The number of workers available for disk.frame is 6</span>
 <span class="co"># this allows large datasets to be transferred between sessions</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>
 
@@ -247,12 +248,12 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>origin_dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
-<span class="co">#&gt; 2: 2013     1   1      533            529         4      850            830</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
-<span class="co">#&gt; 2:        20      UA   1714  N24211    LGA  IAH      227     1416    5     29</span>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay</span>
+<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11</span>
+<span class="co">#&gt; 2: 2013     1   1      533            529         4      850            830        20</span>
+<span class="co">#&gt;    carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1:      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
+<span class="co">#&gt; 2:      UA   1714  N24211    LGA  IAH      227     1416    5     29</span>
 <span class="co">#&gt;              time_hour origin_dest</span>
 <span class="co">#&gt; 1: 2013-01-01 05:00:00      EWRIAH</span>
 <span class="co">#&gt; 2: 2013-01-01 05:00:00      LGAIAH</span></code></pre></div>
@@ -380,6 +381,7 @@
       <span class="fu">.</span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span>
       <span class="op">]</span>
 <span class="op">)</span>
+<span class="co">#&gt; data.table syntax for disk.frame may be moved to a separate package in the future</span>
 
 <span class="va">grp_by_stage1</span>
 <span class="co">#&gt;    qtr sum_dist</span>
@@ -405,24 +407,24 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># where is the disk.frame stored</span>
 <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpQH7obF\\file42d452c32907.df"</span></code></pre></div>
+<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpQJt0m9\\file393027da33b.df"</span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get first few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        11      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay</span>
+<span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11</span>
+<span class="co">#&gt;    carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1:      UA   1545  N14228    EWR  IAH      227     1400    5     15</span>
 <span class="co">#&gt;              time_hour</span>
 <span class="co">#&gt; 1: 2013-01-01 05:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get last few rows</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time</span>
-<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020</span>
-<span class="co">#&gt;    arr_delay carrier flight tailnum origin dest air_time distance hour minute</span>
-<span class="co">#&gt; 1:        NA      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40</span>
+<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay</span>
+<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA</span>
+<span class="co">#&gt;    carrier flight tailnum origin dest air_time distance hour minute</span>
+<span class="co">#&gt; 1:      MQ   3531  N839MQ    LGA  RDU       NA      431    8     40</span>
 <span class="co">#&gt;              time_hour</span>
 <span class="co">#&gt; 1: 2013-09-30 08:00:00</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">

@@ -13,6 +13,7 @@
 #' @importFrom data.table data.table as.data.table
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr collect select mutate
+#' @importFrom globals findGlobals
 #' @return collect return a data.frame/data.table
 #' @examples
 #' cars.df = as.disk.frame(cars)
@@ -26,7 +27,36 @@
 collect.summarized_disk.frame <-
   function(x, ..., parallel = !is.null(attr(x, "recordings"))) {
     dotdotdot <- attr(x, 'summarize_code')
+    group_by_vars = attr(x, "group_by_cols")
     
+    # look at the group by and summaries codes and figure out which columns need to be 
+    # srckeep
+    df_to_find_cols = fst::read_fst(get_chunk_ids(x, full.names = TRUE)[1], from=1, to=1)
+    
+    cols_in_summ = lapply(dotdotdot, function(one) {
+      globals::findGlobals(one, envir = list2env(df_to_find_cols, parent=globalenv()))
+    }) %>% unlist %>% unique
+    
+    cols_in_group_by = lapply(group_by_vars, function(one) {
+      globals::findGlobals(one, envir = list2env(df_to_find_cols, parent=globalenv()))
+    }) %>% unlist %>% unique
+    
+    cols_used = c(cols_in_summ, cols_in_group_by) %>% unique
+    src_keep_cols = intersect(names(df_to_find_cols), cols_used)
+    
+    # are there any variables used in the group by or summarise that is not present in the original data?
+    # if yes then that indicates this could be more complicated e.g. a new var was created with mutate
+    extra_vars = setdiff(cols_used, names(df_to_find_cols))
+    if(length(extra_vars) > 0) {
+      warning(sprintf(
+        "These columns that appear in the group-by and summarise does not appear in the original data set: %s. This set of action is too hard for disk.frame to figure out the `srckeep` automatically, you must do the `srckeep` manually."
+        , paste0(extra_vars, collapse = ", ")))
+    } else {
+      x = srckeep(x, src_keep_cols)
+    }
+    
+    
+  
     # make a copy
     dotdotdot_chunk_agg <- dotdotdot
     dotdotdot_collected_agg <- dotdotdot
@@ -74,8 +104,18 @@ collect.summarized_disk.frame <-
       }
     }
     
+    group_by_globals_list = attr(x_as.disk.frame, "group_by_globals_and_pkgs")$globals
+    
+    if(is.null(group_by_globals_list)) {
+      eval_clos = parent.frame()
+    } else {
+      eval_clos = list2env(group_by_globals_list, parent=parent.frame())
+    }
+      
     # TODO add appropriate environment
-    tmp_df = eval(first_stage_code)
+    # tmp_df = eval(first_stage_code, envir=environment(), enclos = eval_clos
+    tmp_df = eval(first_stage_code, group_by_globals_list)
+    
     
     n_summ_args = length(dotdotdot_chunk_agg)
     
@@ -103,7 +143,9 @@ collect.summarized_disk.frame <-
       )
     }
     
-    tmp2 = collect(eval(parse(text = chunk_summ_code_str)))
+    summarize_globals_list = attr(x_as.disk.frame, "summarize_globals_and_pkgs")$globals
+    
+    tmp2 = collect(eval(parse(text = chunk_summ_code_str), envir = summarize_globals_list))
     
     second_stage_code = eval(parse(text = sprintf(
       "quote(group_by(tmp2, %s))", paste0(rep_len("NULL", n_grp_args), collapse = ", ")
@@ -111,7 +153,12 @@ collect.summarized_disk.frame <-
     
     if (n_grp_args >= 1) {
       for (i in 1:n_grp_args) {
-        second_stage_code[[i + 2]] = group_by_vars[[i]]
+        second_stage_code[[i + 2]] = group_by_vars[[i]] %>% 
+          deparse() %>% 
+          paste0(collapse="") %>% 
+          sprintf("`%s`", .) %>% 
+          parse(text=.) %>% 
+          .[[1]]
       }
     }
     

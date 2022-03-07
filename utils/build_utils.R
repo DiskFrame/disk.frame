@@ -1,21 +1,3 @@
-# df_bookdown_build <- function() {
-#   rmds = list.files("vignettes", pattern = "*.Rmd")
-#   sapply(rmds, function(file) {
-#     fs::file_copy(
-#       file.path("book", file), 
-#       file.path("vignettes", file),
-#       overwrite = TRUE
-#       )
-#   })
-#   if(fs::dir_exists("book/_bookdown_files")) {
-#     fs::dir_delete("book/_bookdown_files")
-#   }
-#   while(fs::dir_exists("book/_bookdown_files")) {
-#     Sys.sleep(1)
-#   }
-#   rmarkdown::render_site("book", encoding = 'UTF-8')
-# }
-
 df_build_site <- function() {
   df_build_readme()
   df_setup_vignette()
@@ -203,6 +185,12 @@ df_release <- function() {
   
   
   devtools::release()
+}
+
+df_ultimate <- function() {
+  df_check()
+  df_release()
+  df_build_site()
 }
 
 if(F) {

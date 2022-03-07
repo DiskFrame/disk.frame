@@ -1,3 +1,4 @@
+
 #' Recommend number of chunks based on input size
 #' @description Computes the recommended number of chunks to break a data.frame
 #' into. It can accept filesizes in bytes (as integer) or a data.frame
@@ -22,7 +23,6 @@
 #' # recommend nchunks based on file size ONLY CSV is implemented at the moment
 #' recommend_nchunks(1024^3)
 recommend_nchunks <- function(df, type = "csv", minchunks = data.table::getDTthreads(), conservatism = 8, ram_size = df_ram_size()) {
-  
   dfsize = 0
   if ("data.frame" %in% class(df)) {
     # the df's size in gigabytes
@@ -55,7 +55,6 @@ recommend_nchunks <- function(df, type = "csv", minchunks = data.table::getDTthr
 #' # returns the RAM size in gigabyte (GB)
 #' df_ram_size() 
 df_ram_size <- function() {
-  #browser()
   tryCatch({
     ram_size = NULL
     # the amount of memory available in gigabytes
@@ -119,10 +118,10 @@ df_ram_size <- function() {
       ram_size = benchmarkme::get_ram()/1024^3
       
       if(is.na(ram_size)) {
-        warning("RAM size can't be determined. Assume you have 16GB of RAM.")
-        warning("Please report this error at github.com/xiaodaigh/disk.frame/issues")
-        warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
-        return(16)
+          warning("RAM size can't be determined. Assume you have 16GB of RAM.")
+          warning("Please report this error at github.com/xiaodaigh/disk.frame/issues")
+          warning(glue::glue("Please include your operating system, R version, and if using RStudio the Rstudio version number"))
+          return(16)
       } else {
         ram_size = max(ram_size, 1, na.rm = TRUE)
         return(ram_size)

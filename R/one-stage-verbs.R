@@ -209,18 +209,30 @@ IQR_df.collected_agg.disk.frame <- function(listx, ...) {
 #' @rdname group_by
 #' @export
 summarise.grouped_disk.frame <- function(.data, ...) {
+  class(.data) <- c("summarized_disk.frame", "disk.frame")
+  
   # get all components of the summarise
   dotdotdot = rlang::enexprs(...)
   
   # convert any quosure to labels
   for (i in seq_along(dotdotdot)) {
-    if("quosure" %in% class(dotdotdot[[i]])) {
-      dotdotdot[[i]] <- rlang::sym(rlang::as_label(dotdotdot[[i]]))
-    }
+    dotdotdot[[i]] <- rlang::quo_squash(dotdotdot[[i]])
   }
   
-  class(.data) <- c("summarized_disk.frame", "disk.frame")
   attr(.data, "summarize_code") = dotdotdot
+  
+  # detect any global variables
+  args_str = sapply(dotdotdot, function(code) {
+    deparse(code) %>% 
+      paste0(collapse="")
+  }) %>% paste(collapse = ", ")
+  
+  
+  attr(.data, "summarize_globals_and_pkgs") = 
+    find_globals_recursively(
+      parse(text=sprintf("list(%s)", args_str))[[1]], 
+      parent.frame()
+    )
   
   return(.data)
 }
@@ -246,21 +258,27 @@ summarize.grouped_disk.frame = summarise.grouped_disk.frame
 #' @rdname group_by
 # learning from https://docs.dask.org/en/latest/dataframe-groupby.html
 group_by.disk.frame <- function(.data, ..., .add = FALSE, .drop = stop("disk.frame does not support `.drop` in `group_by` at this stage")) {
-  
   class(.data) <- c("grouped_disk.frame", "disk.frame")
   
-  # using rlang is a neccesary evil here as I need to deal with !!! that is supported by group_by etc
+  # using rlang is a necessary evil here as I need to deal with !!! that is supported by group_by etc
   group_by_cols = rlang::enexprs(...)
   
   # convert any quosure to labels
   for (i in seq_along(group_by_cols)) {
-    if("quosure" %in% class(group_by_cols[[i]])) {
-      group_by_cols[[i]] <- rlang::sym(rlang::as_label(group_by_cols[[i]]))
-    }
+    group_by_cols[[i]] <- group_by_cols[[i]] %>% 
+      rlang::quo_squash()
   }
   
-  
   attr(.data, "group_by_cols") = group_by_cols
+  
+  # detect any global variables
+  args_str = sapply(group_by_cols, function(code) {
+    deparse(code) %>% 
+      paste0(collapse="")
+  }) %>% paste(collapse = ", ")
+  
+  
+  attr(.data, "group_by_globals_and_pkgs") = find_globals_recursively(parse(text=sprintf("list(%s)", args_str))[[1]], parent.frame())
   
   .data
 }
@@ -270,18 +288,32 @@ group_by.disk.frame <- function(.data, ..., .add = FALSE, .drop = stop("disk.fra
 #' @importFrom dplyr summarize
 #' @rdname group_by
 summarize.disk.frame <- function(.data, ...) {
+  
+  class(.data) <- c("summarized_disk.frame", "disk.frame")
+  
   # get all components of the summarise
   dotdotdot = rlang::enexprs(...)
   
   # convert any quosure to labels
   for (i in seq_along(dotdotdot)) {
-    if("quosure" %in% class(dotdotdot[[i]])) {
-      dotdotdot[[i]] <- rlang::sym(rlang::as_label(dotdotdot[[i]]))
-    }
+    dotdotdot[[i]] <- dotdotdot[[i]] %>% 
+      rlang::quo_squash()
   }
   
-  class(.data) <- c("summarized_disk.frame", "disk.frame")
   attr(.data, "summarize_code") = dotdotdot
+  
+  # detect any global variables
+  args_str = sapply(dotdotdot, function(code) {
+    deparse(code) %>% 
+      paste0(collapse="")
+  }) %>% paste(collapse = ", ")
+  
+  
+  attr(.data, "summarize_globals_and_pkgs") = 
+    find_globals_recursively(
+      parse(text=sprintf("list(%s)", args_str))[[1]], 
+      parent.frame()
+    )
   
   return(.data)
 }

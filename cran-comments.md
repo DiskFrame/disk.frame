@@ -1,14 +1,12 @@
-## Resubmission 1 for v0.6.0
-* removed the vignette builder which should remove the 1 NOTE
-
-## Submission for v0.6.0
-*  Updated the API for many functions leading to semver update of functions
+## Submission for v0.7
+* Implemented partition by folder
+* Updated R version to v4.0
 
 ## Test environments
 * local Windows 11 Pro install, R 4.1.2
-* local Windows 11 Pro install, R devel (as of 2022-01-31)
+* local Windows 11 Pro install, R devel (as of 2022-02-01)
 * local Linux/Ubuntu install, R 4.1.2
-* local Linux/Ubuntu install, R devel (as of 2022-01-31)
+* local Linux/Ubuntu install, R devel (as of 2022-02-01)
 
 ## R CMD check results
 There were no ERRORs nor WARNINGs nor NOTE when run locally.

@@ -18,7 +18,7 @@ then using the as.disk.frame function is recommended for most cases"><!-- mathja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7</span>
       </span>
     </div>
 
@@ -105,10 +105,8 @@ then using the as.disk.frame function is recommended for most cases</p>
     <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span><span class="op">)</span>,
   overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
   shardby <span class="op">=</span> <span class="cn">NULL</span>,
+  partitionby <span class="op">=</span> <span class="cn">NULL</span>,
   compress <span class="op">=</span> <span class="fl">50</span>,
-  shardby_function <span class="op">=</span> <span class="st">"hash"</span>,
-  sort_splits <span class="op">=</span> <span class="cn">NULL</span>,
-  desc_vars <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>
 <span class="op">)</span>
 
@@ -127,14 +125,10 @@ then using the as.disk.frame function is recommended for most cases</p>
 <dd><p>overwrite output directory</p></dd>
 <dt>shardby</dt>
 <dd><p>the columns to shard by</p></dd>
+<dt>partitionby</dt>
+<dd><p>the columns to (folder) partition by</p></dd>
 <dt>compress</dt>
 <dd><p>compression ratio for fst files</p></dd>
-<dt>shardby_function</dt>
-<dd><p>splitting of chunks: "hash" for hash function or "sort" for semi-sorted chunks</p></dd>
-<dt>sort_splits</dt>
-<dd><p>for the "sort" shardby function, a dataframe with the split values.</p></dd>
-<dt>desc_vars</dt>
-<dd><p>for the "sort" shardby function, the variables to sort descending.</p></dd>
 <dt>...</dt>
 <dd><p>passed to cmap.disk.frame</p></dd>
 </dl></div>

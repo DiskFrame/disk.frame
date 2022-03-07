@@ -36,7 +36,7 @@ nchunks.disk.frame <- function(df, skip.ready.check = FALSE, ...) {
   #if(!skip.ready.check) stopifnot(is_ready(df))
   fpath <- attr(df,"path", exact=TRUE)
   if(is.dir.disk.frame(df)) {
-    return(length(fs::dir_ls(fpath, type="file")))
+    return(length(list.files(fpath, pattern="fst", recursive = TRUE)))
   } else {
     return(1)
   }

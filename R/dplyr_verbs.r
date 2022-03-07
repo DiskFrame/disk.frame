@@ -137,6 +137,7 @@ chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 #ungroup.disk.frame( < - create_dplyr_mapper(dplyr::ungroup, , warning_msg="`ungroup.disk.frame` is now deprecated. Please use `chunk_ungroup` instead. This is in preparation for a more powerful `group_by` framework")
 
 
+
 #' @export
 #' @rdname dplyr_verbs
 glimpse.disk.frame <- function(.data, ...) {

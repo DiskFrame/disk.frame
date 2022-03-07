@@ -24,42 +24,7 @@
   
   code = substitute(chunk[...])
   
-  # sometimes the arguments could be empty
-  # in a recent version of globals that would cause a fail
-  # to avoid the fail remove them from the test
-  #dotdotdot_for_find_global = dotdotdot[!sapply(sapply(dotdotdot, as.character), function(x) all(unlist(x) == ""))]
-  
-  #ag = globals::findGlobals(dotdotdot_for_find_global)
-  #ag = setdiff(ag, "") # "" can cause issues with future # this line no longer needed
-  
-  
-  # you need to use list otherwise the names will be gone
-  if (paste0(deparse(code), collapse="") == "chunk_fn(NULL)") {
-    globals_and_pkgs = future::getGlobalsAndPackages(expression(chunk_fn()))
-  } else {
-    globals_and_pkgs = future::getGlobalsAndPackages(code)
-  }
-  
-  
-  global_vars = globals_and_pkgs$globals
-  
-  env = parent.frame()
-  
-  done = identical(env, emptyenv()) || identical(env, globalenv())
-  
-  # keep adding global variables by moving up the environment chain
-  while(!done) {
-    tmp_globals_and_pkgs = future::getGlobalsAndPackages(code, envir = env)
-    new_global_vars = tmp_globals_and_pkgs$globals
-    for (name in setdiff(names(new_global_vars), names(global_vars))) {
-      global_vars[[name]] <- new_global_vars[[name]]
-    }
-    
-    done = identical(env, emptyenv()) || identical(env, globalenv())
-    env = parent.env(env)
-  }
-  
-  globals_and_pkgs$globals = global_vars
+  globals_and_pkgs = find_globals_recursively(code, parent.frame())
   
   res = future.apply::future_lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
   #res = lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
