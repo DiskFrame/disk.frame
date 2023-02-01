@@ -10,7 +10,7 @@
 #' 
 #' # clean up
 #' delete(cars.df)
-as.data.frame.disk.frame <- function(x, row.names, optional, ...) { # needs to retain x for consistency
+as.data.frame.disk.frame <- function(x, row.names = NULL, optional = FALSE, ...) { # needs to retain x for consistency
   as.data.frame(collect(x), row.names, optional, ...)
 }
 
