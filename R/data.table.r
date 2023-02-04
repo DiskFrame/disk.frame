@@ -1,4 +1,4 @@
-#' [ interface for disk.frame using fst backend
+#' [[ interface for disk.frame using fst backend
 #' @param df a disk.frame
 #' @param ... same as data.table
 #' @param keep the columns to srckeep
@@ -13,7 +13,7 @@
 #' @examples 
 #' cars.df = as.disk.frame(cars)
 #' speed_limit = 50
-#' cars.df[speed < speed_limit ,.N, cut(dist, pretty(dist))]
+#' cars.df[[speed < speed_limit ,.N, cut(dist, pretty(dist))]]
 #' 
 #' # clean up
 #' delete(cars.df)
@@ -36,7 +36,7 @@
   , future.packages = c("data.table", globals_and_pkgs$packages),
    future.seed=TRUE
   )
-  
+
   if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
     rbindlist(res, use.names = use.names, fill = fill, idcol = idcol)
   } else if(rbind)  {
@@ -44,6 +44,13 @@
   } else {
     res
   }
+}
+
+#' @export
+#' @rdname data.table
+`[.disk.frame` <- function(df, ...) {
+  message("`df[...] syntax for {disk.frame} has been deprecated. Use `df[[...]]` instead")
+  `[[.disk.frame`(df, ...)
 }
 
 # Solutions from https://stackoverflow.com/questions/57122960/how-to-use-non-standard-evaluation-nse-to-evaluate-arguments-on-data-table?answertab=active#tab-top
