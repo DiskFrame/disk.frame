@@ -20,7 +20,7 @@ reorganizes the chunks by the shard key."><!-- mathjax --><script src="https://c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@ reorganizes the chunks by the shard key."><!-- mathjax --><script src="https://c
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,7 +75,7 @@ reorganizes the chunks by the shard key."><!-- mathjax --><script src="https://c
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -90,7 +90,7 @@ reorganizes the chunks by the shard key."><!-- mathjax --><script src="https://c
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>A function to parse the summarize function</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/one-stage-verbs.R" class="external-link"><code>R/one-stage-verbs.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/one-stage-verbs.R" class="external-link"><code>R/one-stage-verbs.R</code></a></small>
     <div class="hidden name"><code>group_by.Rd</code></div>
     </div>
 
@@ -102,37 +102,44 @@ reorganizes the chunks by the shard key.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for grouped_disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for grouped_disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span>
-  <span class="va">.data</span>,
-  <span class="va">...</span>,
-  .add <span class="op">=</span> <span class="cn">FALSE</span>,
-  .drop <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"disk.frame does not support `.drop` in `group_by` at this stage"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for grouped_disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for grouped_disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span></span>
+<span>  <span class="va">.data</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .drop <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"disk.frame does not support `.drop` in `group_by` at this stage"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.data</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>...</dt>
 <dd><p>same as the dplyr::group_by</p></dd>
+
+
 <dt>.add</dt>
 <dd><p>from dplyr</p></dd>
+
+
 <dt>.drop</dt>
 <dd><p>from dplyr</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -151,7 +158,7 @@ reorganizes the chunks by the shard key.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

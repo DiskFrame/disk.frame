@@ -18,7 +18,7 @@ gets run by .f(x.chunk, y.chunk)"><!-- mathjax --><script src="https://cdnjs.clo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ gets run by .f(x.chunk, y.chunk)"><!-- mathjax --><script src="https://cdnjs.clo
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,7 +73,7 @@ gets run by .f(x.chunk, y.chunk)"><!-- mathjax --><script src="https://cdnjs.clo
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,7 +88,7 @@ gets run by .f(x.chunk, y.chunk)"><!-- mathjax --><script src="https://cdnjs.clo
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>`cmap2` a function to two disk.frames</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/map2.r" class="external-link"><code>R/map2.r</code></a>, <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/map_by_chunk_id.r" class="external-link"><code>R/map_by_chunk_id.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/map2.r" class="external-link"><code>R/map2.r</code></a>, <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/map_by_chunk_id.r" class="external-link"><code>R/map_by_chunk_id.r</code></a></small>
     <div class="hidden name"><code>cmap2.Rd</code></div>
     </div>
 
@@ -98,32 +98,41 @@ gets run by .f(x.chunk, y.chunk)</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cmap2</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">map_by_chunk_id</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span>, <span class="va">.f</span>, <span class="va">...</span>, <span class="va">outdir</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cmap2</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">map_by_chunk_id</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span>, <span class="va">.f</span>, <span class="va">...</span>, <span class="va">outdir</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.x</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>.y</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>.f</dt>
 <dd><p>a function to be called on each chunk of x and y matched by
 chunk_id</p></dd>
+
+
 <dt>...</dt>
 <dd><p>not used</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>output directory</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">cmap2</span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span>, <span class="op">~</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">cmap2</span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span>, <span class="op">~</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">.y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:     4   10</span>
@@ -226,10 +235,10 @@ chunk_id</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  99:    24  120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 100:    25   85</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      speed dist</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -244,7 +253,7 @@ chunk_id</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

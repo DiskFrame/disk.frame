@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -93,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
                         <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/04-ingesting-data.Rmd" class="external-link"><code>vignettes/04-ingesting-data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/vignettes/04-ingesting-data.Rmd" class="external-link"><code>vignettes/04-ingesting-data.Rmd</code></a></small>
       <div class="hidden name"><code>04-ingesting-data.Rmd</code></div>
 
     </div>
@@ -125,134 +125,189 @@
 <div class="section level2">
 <h2 id="ingesting-data">Ingesting Data<a class="anchor" aria-label="anchor" href="#ingesting-data"></a>
 </h2>
-<p>One of the most important tasks to perform before using the <a href="https://diskframe.com" class="external-link">disk.frame</a> package is to make some <code>disk.frame</code>s! There are a few functions to help you do that. Before we do that, we set up the <a href="https://diskframe.com" class="external-link">disk.frame</a> as usual</p>
+<p>One of the most important tasks to perform before using the
+<a href="https://diskframe.com" class="external-link">disk.frame</a> package is to make some
+<code>disk.frame</code>s! There are a few functions to help you do that.
+Before we do that, we set up the <a href="https://diskframe.com" class="external-link">disk.frame</a> as usual</p>
 <p><strong>Setting up</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
-
-<span class="co"># set-up disk.frame to use multiple workers</span>
-<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="co"># highly recommended, however it is pun into interactive() for CRAN because</span>
-  <span class="co"># change user options are not allowed on CRAN</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>  
-<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set-up disk.frame to use multiple workers</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="co"># highly recommended, however it is pun into interactive() for CRAN because</span></span>
+<span>  <span class="co"># change user options are not allowed on CRAN</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>  </span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="convert-a-data-frame-to-disk-frame">Convert a <code>data.frame</code> to <code>disk.frame</code><a class="anchor" aria-label="anchor" href="#convert-a-data-frame-to-disk-frame"></a>
 </h3>
-<p>Firstly, there is <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
+<p>Firstly, there is <code><a href="../reference/as.disk.frame.html">as.disk.frame()</a></code> which allows you to
+make a <code>disk.frame</code> from a <code>data.frame</code>, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span></code></pre></div>
-<p>will convert the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">nycflights13::flights</a></code> <code>data.frame</code> to a <code>disk.frame</code> somewhere in <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>. To find out the location of the <code>disk.frame</code> use:</p>
+<code class="sourceCode R"><span><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span></span></code></pre></div>
+<p>will convert the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">nycflights13::flights</a></code>
+<code>data.frame</code> to a <code>disk.frame</code> somewhere in
+<code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>. To find out the location of the
+<code>disk.frame</code> use:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span></code></pre></div>
-<p>You can also specify a location to output the <code>disk.frame</code> to using <code>outdir</code></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span></span></code></pre></div>
+<p>You can also specify a location to output the <code>disk.frame</code>
+to using <code>outdir</code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span>, outdir <span class="op">=</span> <span class="st">"some/path.df"</span><span class="op">)</span></code></pre></div>
-<p>it is recommended that you use <code>.df</code> as the extension for a <code>disk.frame</code>, however this is not an enforced requirement.</p>
-<p>However, one of the reasons for <code>disk.frame</code> to exist is to handle larger-than-RAM files, hence <code>as.disk.frame</code> is not all that useful because it can only convert data that can fit into RAM. <code>disk.frame</code> comes with a couple more ways to create <code>disk.frame</code>.</p>
+<code class="sourceCode R"><span><span class="va">flights.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span>, outdir <span class="op">=</span> <span class="st">"some/path.df"</span><span class="op">)</span></span></code></pre></div>
+<p>it is recommended that you use <code>.df</code> as the extension for
+a <code>disk.frame</code>, however this is not an enforced
+requirement.</p>
+<p>However, one of the reasons for <code>disk.frame</code> to exist is
+to handle larger-than-RAM files, hence <code>as.disk.frame</code> is not
+all that useful because it can only convert data that can fit into RAM.
+<code>disk.frame</code> comes with a couple more ways to create
+<code>disk.frame</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="creating-disk-frame-from-csvs">Creating <code>disk.frame</code> from CSVs<a class="anchor" aria-label="anchor" href="#creating-disk-frame-from-csvs"></a>
 </h3>
-<p>The function <code>csv_to_disk.frame</code> can convert CSV files to <code>disk.frame</code>. The most basic usage is</p>
+<p>The function <code>csv_to_disk.frame</code> can convert CSV files to
+<code>disk.frame</code>. The most basic usage is</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="st">"some/path.csv"</span>, outdir <span class="op">=</span> <span class="st">"some.df"</span><span class="op">)</span></code></pre></div>
-<p>this will convert the CSV file <code>"some/path.csv"</code> to a <code>disk.frame</code>.</p>
+<code class="sourceCode R"><span><span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="st">"some/path.csv"</span>, outdir <span class="op">=</span> <span class="st">"some.df"</span><span class="op">)</span></span></code></pre></div>
+<p>this will convert the CSV file <code>"some/path.csv"</code> to a
+<code>disk.frame</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="multiple-csv-files">Multiple CSV files<a class="anchor" aria-label="anchor" href="#multiple-csv-files"></a>
 </h3>
-<p>However, sometimes we have multiple CSV files that you want to read in and row-bind into one large <code>disk.frame</code>. You can do so by supplying a vector of file paths e.g. from the result of <code>list.files</code></p>
+<p>However, sometimes we have multiple CSV files that you want to read
+in and row-bind into one large <code>disk.frame</code>. You can do so by
+supplying a vector of file paths e.g. from the result of
+<code>list.files</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"some/path/file1.csv"</span>, <span class="st">"some/path/file2.csv"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># or</span>
-<span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"some/path"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"some/path/file1.csv"</span>, <span class="st">"some/path/file2.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or</span></span>
+<span><span class="va">some.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"some/path"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="ingesting-csv-files-chunk-wise">Ingesting CSV files chunk-wise<a class="anchor" aria-label="anchor" href="#ingesting-csv-files-chunk-wise"></a>
 </h3>
-<p>The <code>csv_to_disk.frame(path, ...)</code> function reads the file located at <code>path</code> in full into RAM but sometimes the CSV file may be too large to read in one go, as that would require loading the whole file into RAM. In that case, you can read the files chunk-by-chunk by using the <code>in_chunk_size</code> argument which controls how many rows you read in per chunk</p>
+<p>The <code>csv_to_disk.frame(path, ...)</code> function reads the file
+located at <code>path</code> in full into RAM but sometimes the CSV file
+may be too large to read in one go, as that would require loading the
+whole file into RAM. In that case, you can read the files chunk-by-chunk
+by using the <code>in_chunk_size</code> argument which controls how many
+rows you read in per chunk</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># to read in 1 million (=1e6) rows per chunk</span>
-<span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">path</span>, in_chunk_size <span class="op">=</span> <span class="fl">1e6</span><span class="op">)</span></code></pre></div>
-<p>When <code>in_chunk_size</code> is specified, the input file is split into many smaller files using <code>bigreadr</code>’s split file functions. This is generally the fastest way to ingest large CSVs, as the split files can be processed in parallel using all CPU cores. But the disk space requirement is doubled because the split files are as large as the original file. If you run out of disk space, then you must clean R’s temporary folder at <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> and choose another <code>chunk_reader</code> e.g. <code>csv_to_disk.frame(..., chunk_reader = "LaF")</code>.</p>
+<code class="sourceCode R"><span><span class="co"># to read in 1 million (=1e6) rows per chunk</span></span>
+<span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">path</span>, in_chunk_size <span class="op">=</span> <span class="fl">1e6</span><span class="op">)</span></span></code></pre></div>
+<p>When <code>in_chunk_size</code> is specified, the input file is split
+into many smaller files using <code>bigreadr</code>’s split file
+functions. This is generally the fastest way to ingest large CSVs, as
+the split files can be processed in parallel using all CPU cores. But
+the disk space requirement is doubled because the split files are as
+large as the original file. If you run out of disk space, then you must
+clean R’s temporary folder at <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> and choose another
+<code>chunk_reader</code>
+e.g. <code>csv_to_disk.frame(..., chunk_reader = "LaF")</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="sharding">Sharding<a class="anchor" aria-label="anchor" href="#sharding"></a>
 </h3>
-<p>One of the most important aspects of <code>disk.frame</code> is sharding. One can shard a <code>disk.frame</code> at read time by using the <code>shardby</code></p>
+<p>One of the most important aspects of <code>disk.frame</code> is
+sharding. One can shard a <code>disk.frame</code> at read time by using
+the <code>shardby</code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">path</span>, shardby <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></code></pre></div>
-<p>In the above case, all rows with the same <code>id</code> values will end up in the same chunk.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">path</span>, shardby <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></code></pre></div>
+<p>In the above case, all rows with the same <code>id</code> values will
+end up in the same chunk.</p>
 </div>
 <div class="section level3">
 <h3 id="just-in-time-transformation">Just-in-time transformation<a class="anchor" aria-label="anchor" href="#just-in-time-transformation"></a>
 </h3>
-<p>Sometimes, one may wish to perform some transformation on the CSV before writing out to disk. One can use the <code>inmapfn</code> argument to do that. The <code>inmapfn</code> name comes from INput MAPping FuNction. The general usage pattern is as follows:</p>
+<p>Sometimes, one may wish to perform some transformation on the CSV
+before writing out to disk. One can use the <code>inmapfn</code>
+argument to do that. The <code>inmapfn</code> name comes from INput
+MAPping FuNction. The general usage pattern is as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span>, inmapfn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">some_transformation</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
-<p>As a contrived example, suppose you wish to convert a string into date at read time:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span>, inmapfn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">some_transformation</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>As a contrived example, suppose you wish to convert a string into
+date at read time:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date_str <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-02"</span>, <span class="st">"2019-01-02"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># write the data.frame </span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># this would show that date_str is a string</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">date_str</span><span class="op">)</span>
-<span class="co">## chr [1:2] "2019-01-02" "2019-01-02"</span>
-
-<span class="co"># this would show that date_str is a string</span>
-<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span>, inmapfn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># convert to date_str to date format and store as "date"</span>
-  <span class="va">chunk</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">date_str</span>, <span class="st">"%Y-%m-%d"</span><span class="op">)</span><span class="op">]</span>
-  <span class="va">chunk</span><span class="op">[</span>, <span class="va">date_str</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>
-<span class="co">## Date[1:2], format: "2019-01-02" "2019-01-02"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date_str <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-01-02"</span>, <span class="st">"2019-01-02"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># write the data.frame </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># this would show that date_str is a string</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">date_str</span><span class="op">)</span></span>
+<span><span class="co">## chr [1:2] "2019-01-02" "2019-01-02"</span></span>
+<span></span>
+<span><span class="co"># this would show that date_str is a string</span></span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"df.csv"</span><span class="op">)</span>, inmapfn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># convert to date_str to date format and store as "date"</span></span>
+<span>  <span class="va">chunk</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">date_str</span>, <span class="st">"%Y-%m-%d"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">chunk</span><span class="op">[</span>, <span class="va">date_str</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span>
+<span><span class="co">## Date[1:2], format: "2019-01-02" "2019-01-02"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reading-csvs-from-zip-files">Reading CSVs from zip files<a class="anchor" aria-label="anchor" href="#reading-csvs-from-zip-files"></a>
 </h3>
-<p>Often, CSV comes zipped in a zip files. You can use the <code>zip_to_disk.frame</code> to convert all CSVs within a zip file</p>
+<p>Often, CSV comes zipped in a zip files. You can use the
+<code>zip_to_disk.frame</code> to convert all CSVs within a zip file</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/zip_to_disk.frame.html">zip_to_disk.frame</a></span><span class="op">(</span><span class="va">path_to_zip_file</span><span class="op">)</span></code></pre></div>
-<p>The arguments for <code>zip_to_disk.frame</code> are the same as <code>csv_to_disk.frame</code>’s.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/zip_to_disk.frame.html">zip_to_disk.frame</a></span><span class="op">(</span><span class="va">path_to_zip_file</span><span class="op">)</span></span></code></pre></div>
+<p>The arguments for <code>zip_to_disk.frame</code> are the same as
+<code>csv_to_disk.frame</code>’s.</p>
 </div>
 <div class="section level3">
 <h3 id="using-add_chunk">Using <code>add_chunk</code><a class="anchor" aria-label="anchor" href="#using-add_chunk"></a>
 </h3>
-<p>What if the method of converting to a <code>disk.frame</code> isn’t implemented in <code>disk.frame</code> yet? One can use some lower level constructs provided by <code>disk.frame</code> to create <code>disk.frame</code>s. For example, the <code>add_chunk</code> function can be used to add more chunks to a <code>disk.frame</code>, e.g.</p>
+<p>What if the method of converting to a <code>disk.frame</code> isn’t
+implemented in <code>disk.frame</code> yet? One can use some lower level
+constructs provided by <code>disk.frame</code> to create
+<code>disk.frame</code>s. For example, the <code>add_chunk</code>
+function can be used to add more chunks to a <code>disk.frame</code>,
+e.g.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">a.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># create an empty disk.frame</span>
-<span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">a.df</span>, <span class="va">cars</span><span class="op">)</span> <span class="co"># adds cars as chunk 1</span>
-<span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">a.df</span>, <span class="va">cars</span><span class="op">)</span> <span class="co"># adds cars as chunk 2</span></code></pre></div>
-<p>Another example of using <code>add_chunk</code> is via <code>readr</code>’s chunked read functions to create a delimited file reader</p>
+<code class="sourceCode R"><span><span class="va">a.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># create an empty disk.frame</span></span>
+<span><span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">a.df</span>, <span class="va">cars</span><span class="op">)</span> <span class="co"># adds cars as chunk 1</span></span>
+<span><span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">a.df</span>, <span class="va">cars</span><span class="op">)</span> <span class="co"># adds cars as chunk 2</span></span></code></pre></div>
+<p>Another example of using <code>add_chunk</code> is via
+<code>readr</code>’s chunked read functions to create a delimited file
+reader</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">delimited_to_disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span>, <span class="va">outdir</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">res.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim_chunked.html" class="external-link">read_delim_chunked</a></span><span class="op">(</span><span class="va">file</span>, callback <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">res.df</span>, <span class="va">chunk</span><span class="op">)</span>
-  <span class="op">}</span>, <span class="va">...</span><span class="op">)</span>
-  
-  <span class="va">res.df</span>
-<span class="op">}</span>
-
-<span class="fu">delimited_to_disk.frame</span><span class="op">(</span><span class="va">path</span>, outdir <span class="op">=</span> <span class="st">"some.df"</span><span class="op">)</span></code></pre></div>
-<p>The above code uses <code>readr</code>’s <code>read_delim_chunked</code> function to read <code>file</code> and call <code>add_chunk</code>. The problem with this approach is that is it sequential in nature and hence is not able to take advantage of parallelism.</p>
+<code class="sourceCode R"><span><span class="va">delimited_to_disk.frame</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span>, <span class="va">outdir</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">res.df</span> <span class="op">=</span> <span class="fu"><a href="../reference/disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim_chunked.html" class="external-link">read_delim_chunked</a></span><span class="op">(</span><span class="va">file</span>, callback <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/add_chunk.html">add_chunk</a></span><span class="op">(</span><span class="va">res.df</span>, <span class="va">chunk</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">res.df</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">delimited_to_disk.frame</span><span class="op">(</span><span class="va">path</span>, outdir <span class="op">=</span> <span class="st">"some.df"</span><span class="op">)</span></span></code></pre></div>
+<p>The above code uses <code>readr</code>’s
+<code>read_delim_chunked</code> function to read <code>file</code> and
+call <code>add_chunk</code>. The problem with this approach is that is
+it sequential in nature and hence is not able to take advantage of
+parallelism.</p>
 </div>
 <div class="section level3">
 <h3 id="exploiting-the-structure-of-a-disk-frame">Exploiting the structure of a disk.frame<a class="anchor" aria-label="anchor" href="#exploiting-the-structure-of-a-disk-frame"></a>
 </h3>
-<p>Of course, a <code>disk.frame</code> is just a folder with many <code>fst</code> files named as <code>1.fst</code>, <code>2.fst</code> etc. So one can simply create these <code>fst</code> files and ensure they have the same variable names and put them in a folder.</p>
+<p>Of course, a <code>disk.frame</code> is just a folder with many
+<code>fst</code> files named as <code>1.fst</code>, <code>2.fst</code>
+etc. So one can simply create these <code>fst</code> files and ensure
+they have the same variable names and put them in a folder.</p>
 </div>
 </div>
   </div>
@@ -274,7 +329,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

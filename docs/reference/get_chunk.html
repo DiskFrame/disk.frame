@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Obtain one chunk by chunk id</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/get_chunk.r" class="external-link"><code>R/get_chunk.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/get_chunk.r" class="external-link"><code>R/get_chunk.r</code></a></small>
     <div class="hidden name"><code>get_chunk.Rd</code></div>
     </div>
 
@@ -96,32 +96,43 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_chunk</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">get_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">n</span>, keep <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span>, partitioned_info <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">n</span>, keep <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span>, partitioned_info <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>passed to fst::read_fst or whichever read function is used in the backend</p></dd>
+
+
 <dt>df</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>n</dt>
 <dd><p>the chunk id. If numeric then matches by number, if character then returns the chunk with the same name as n</p></dd>
+
+
 <dt>keep</dt>
 <dd><p>the columns to keep</p></dd>
+
+
 <dt>full.names</dt>
 <dd><p>whether n is the full path to the chunks or just a relative path file name. Ignored if n is numeric</p></dd>
+
+
 <dt>partitioned_info</dt>
 <dd><p>for internal use only. It's a data.frame used to help with filtering by partitions</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     4   10</span>
@@ -149,7 +160,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24:    15   20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25:    15   26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
-<span class="r-in"><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:    15   54</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:    16   32</span>
@@ -177,7 +188,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24:    24  120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25:    25   85</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
-<span class="r-in"><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span>, keep <span class="op">=</span> <span class="st">"speed"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span>, keep <span class="op">=</span> <span class="st">"speed"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     4</span>
@@ -205,9 +216,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24:    15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25:    15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># if full.names = TRUE then the full path to the chunk need to be provided</span></span>
-<span class="r-in"><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="st">"path"</span><span class="op">)</span>, <span class="st">"1.fst"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># if full.names = TRUE then the full path to the chunk need to be provided</span></span></span>
+<span class="r-in"><span><span class="fu">get_chunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="st">"path"</span><span class="op">)</span>, <span class="st">"1.fst"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     4   10</span>
@@ -235,9 +246,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24:    15   20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25:    15   26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -252,7 +263,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Apply data.table's foverlaps to the disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/foverlaps.disk.frame.r" class="external-link"><code>R/foverlaps.disk.frame.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/foverlaps.disk.frame.r" class="external-link"><code>R/foverlaps.disk.frame.r</code></a></small>
     <div class="hidden name"><code>foverlaps.disk.frame.Rd</code></div>
     </div>
 
@@ -96,57 +96,74 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">foverlaps.disk.frame</span><span class="op">(</span>
-  <span class="va">df1</span>,
-  <span class="va">df2</span>,
-  by.x <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span> <span class="kw">else</span>
-    <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>,
-  by.y <span class="op">=</span> <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>,
-  <span class="va">...</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"df_foverlaps_tmp"</span>, fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
-  merge_by_chunk_id <span class="op">=</span> <span class="cn">FALSE</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">foverlaps.disk.frame</span><span class="op">(</span></span>
+<span>  <span class="va">df1</span>,</span>
+<span>  <span class="va">df2</span>,</span>
+<span>  by.x <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span> <span class="kw">else</span></span>
+<span>    <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>,</span>
+<span>  by.y <span class="op">=</span> <span class="fu"><a href="shardkey.html">shardkey</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">$</span><span class="va">shardkey</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"df_foverlaps_tmp"</span>, fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,</span>
+<span>  merge_by_chunk_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df1</dt>
 <dd><p>A disk.frame</p></dd>
+
+
 <dt>df2</dt>
 <dd><p>A disk.frame or a data.frame</p></dd>
+
+
 <dt>by.x</dt>
 <dd><p>character/string vector. by.x used in foverlaps</p></dd>
+
+
 <dt>by.y</dt>
 <dd><p>character/string vector. by.x used in foverlaps</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to data.table::foverlaps and disk.frame::cmap.disk.frame</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>The output directory of the disk.frame</p></dd>
+
+
 <dt>merge_by_chunk_id</dt>
 <dd><p>If TRUE then the merges will happen for chunks in df1 and df2 with the same chunk id which speed up processing. Otherwise every chunk of df1 is merged with every chunk of df2. Ignored with df2 is not a disk.frame</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>The compression ratio for fst</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>overwrite existing directory</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## simple example:</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">31</span>,<span class="fl">22</span>,<span class="fl">16</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">50</span>,<span class="fl">25</span>,<span class="fl">18</span><span class="op">)</span>, val2 <span class="op">=</span> <span class="fl">7</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span>, val1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">byxy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">xy.df</span> <span class="op">=</span> <span class="fu">foverlaps.disk.frame</span><span class="op">(</span></span>
-<span class="r-in">   <span class="va">x</span>, <span class="va">y</span>, by.x <span class="op">=</span> <span class="va">byxy</span>, by.y <span class="op">=</span> <span class="va">byxy</span>,</span>
-<span class="r-in">  merge_by_chunk_id <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">xy.df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## simple example:</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">31</span>,<span class="fl">22</span>,<span class="fl">16</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">50</span>,<span class="fl">25</span>,<span class="fl">18</span><span class="op">)</span>, val2 <span class="op">=</span> <span class="fl">7</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span>, val1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">byxy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xy.df</span> <span class="op">=</span> <span class="fu">foverlaps.disk.frame</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="va">x</span>, <span class="va">y</span>, by.x <span class="op">=</span> <span class="va">byxy</span>, by.y <span class="op">=</span> <span class="va">byxy</span>,</span></span>
+<span class="r-in"><span>  merge_by_chunk_id <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">xy.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -161,7 +178,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

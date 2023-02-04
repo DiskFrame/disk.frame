@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -93,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
                         <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/08-more-epic.Rmd" class="external-link"><code>vignettes/08-more-epic.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/vignettes/08-more-epic.Rmd" class="external-link"><code>vignettes/08-more-epic.Rmd</code></a></small>
       <div class="hidden name"><code>08-more-epic.Rmd</code></div>
 
     </div>
@@ -125,180 +125,253 @@
 <div class="section level2">
 <h2 id="someone-wrote-a-blog-about-disk-frame-being-epic">Someone wrote a blog about {disk.frame} being “epic”<a class="anchor" aria-label="anchor" href="#someone-wrote-a-blog-about-disk-frame-being-epic"></a>
 </h2>
-<p>Mr Bruno Rodrigues had kindly written <a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/" class="external-link">a nice blog post titled ‘{disk.frame} is epic’</a>. In the post, he compared {disk.frame}’s performance vs Spark’s on doing a simple group-by operation. The task is done on a single-machine and hence is not the ideal use-case for Spark. However, in <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/" class="external-link">an earlier post</a>, Bruno had shown how Spark can be used for this use case. This is symptomatic of what I call the “premature adoption of Spark syndrome”. It’s not hard to find examples where Spark is used when a more light-weight tool like Dask or {disk.frame} could be more efficient. There is no need to use a sledgehammer to crack a nut. In data science, what a “nut” can represent is getting larger and larger. Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and Python, as many machines back then were still 32bit and hence did not have more than 4GB of RAM in general. Nowadays, 16GB laptop are common place, so any file less than 4GB in size can be considered a “nut”. Furthermore, if you use a tool like {disk.frame} which keeps the data on-disk until you need to process it, then the “nut” you can crack is now substantially larger than 4GB. I would argue, the sledgehammer that is Spark should only be considered for <em>much</em> larger datasets. I don’t want to put a number to it, but the largest dataset I have dealt with is <a href="https://docs.rapids.ai/datasets/mortgage-data" class="external-link">the Fannie Mae dataset</a> which is about 200GB in size in CSV format.</p>
+<p>Mr Bruno Rodrigues had kindly written <a href="https://www.brodrigues.co/blog/2019-09-03-disk_frame/" class="external-link">a nice blog
+post titled ‘{disk.frame} is epic’</a>. In the post, he compared
+{disk.frame}’s performance vs Spark’s on doing a simple group-by
+operation. The task is done on a single-machine and hence is not the
+ideal use-case for Spark. However, in <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/" class="external-link">an
+earlier post</a>, Bruno had shown how Spark can be used for this use
+case. This is symptomatic of what I call the “premature adoption of
+Spark syndrome”. It’s not hard to find examples where Spark is used when
+a more light-weight tool like Dask or {disk.frame} could be more
+efficient. There is no need to use a sledgehammer to crack a nut. In
+data science, what a “nut” can represent is getting larger and larger.
+Ten years ago, a 1GB (in CSV) dataset can be a struggle for R and
+Python, as many machines back then were still 32bit and hence did not
+have more than 4GB of RAM in general. Nowadays, 16GB laptop are common
+place, so any file less than 4GB in size can be considered a “nut”.
+Furthermore, if you use a tool like {disk.frame} which keeps the data
+on-disk until you need to process it, then the “nut” you can crack is
+now substantially larger than 4GB. I would argue, the sledgehammer that
+is Spark should only be considered for <em>much</em> larger datasets. I
+don’t want to put a number to it, but the largest dataset I have dealt
+with is <a href="https://docs.rapids.ai/datasets/mortgage-data" class="external-link">the
+Fannie Mae dataset</a> which is about 200GB in size in CSV format.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-make-disk-frame-more-epic">How to make {disk.frame} more ‘epic’?<a class="anchor" aria-label="anchor" href="#how-to-make-disk-frame-more-epic"></a>
 </h2>
-<p>If you follow <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/" class="external-link">this post by Bruno</a>, you will end up with a 30GB CSV file. But this 30GB file was made by row-appending 303 files (size ranging from 70MB to 143MB) together. I will you a few ways to handle such data. As usual, let’s start by setting up {disk.frame}</p>
+<p>If you follow <a href="https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/" class="external-link">this
+post by Bruno</a>, you will end up with a 30GB CSV file. But this 30GB
+file was made by row-appending 303 files (size ranging from 70MB to
+143MB) together. I will you a few ways to handle such data. As usual,
+let’s start by setting up {disk.frame}</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
-
-<span class="co"># this willl set disk.frame with multiple workers</span>
-<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this willl set disk.frame with multiple workers</span></span>
+<span><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="load-the-individuals-files">Load the individuals files<a class="anchor" aria-label="anchor" href="#load-the-individuals-files"></a>
 </h3>
-<p>The best way to use {disk.frame} is to load the individual files, as <code>csv_to_disk.frame</code> allows a vector of files to be used as input:</p>
+<p>The best way to use {disk.frame} is to load the individual files, as
+<code>csv_to_disk.frame</code> allows a vector of files to be used as
+input:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_files</span>  <span class="op">=</span> <span class="st">"c:/data/AirOnTimeCSV"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span>
-
-<span class="co">#&gt; [1] "c:/data/AirOnTimeCSV/airOT198710.csv" "c:/data/AirOnTimeCSV/airOT198711.csv"</span>
-<span class="co">#&gt; [3] "c:/data/AirOnTimeCSV/airOT198712.csv" "c:/data/AirOnTimeCSV/airOT198801.csv"</span>
-<span class="co">#&gt; [5] "c:/data/AirOnTimeCSV/airOT198802.csv" "c:/data/AirOnTimeCSV/airOT198803.csv"</span></code></pre></div>
-<p>However, there is always a danger with importing from CSVs, especially when importing from multiple CSVs. The chief danger is this: CSV do not encode the type of the columns. Hence the column types need to be inferred. However, when inferring the column type, we only use the first few thousand rows. This is fine most of the time. However, there are times when the column type inferred using the first few thousand rows isn’t compatible with data that comes after. That’s why you will see an error</p>
+<code class="sourceCode R"><span><span class="va">path_to_files</span>  <span class="op">=</span> <span class="st">"c:/data/AirOnTimeCSV"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span></span>
+<span></span>
+<span><span class="co">#&gt; [1] "c:/data/AirOnTimeCSV/airOT198710.csv" "c:/data/AirOnTimeCSV/airOT198711.csv"</span></span>
+<span><span class="co">#&gt; [3] "c:/data/AirOnTimeCSV/airOT198712.csv" "c:/data/AirOnTimeCSV/airOT198801.csv"</span></span>
+<span><span class="co">#&gt; [5] "c:/data/AirOnTimeCSV/airOT198802.csv" "c:/data/AirOnTimeCSV/airOT198803.csv"</span></span></code></pre></div>
+<p>However, there is always a danger with importing from CSVs,
+especially when importing from multiple CSVs. The chief danger is this:
+CSV do not encode the type of the columns. Hence the column types need
+to be inferred. However, when inferring the column type, we only use the
+first few thousand rows. This is fine most of the time. However, there
+are times when the column type inferred using the first few thousand
+rows isn’t compatible with data that comes after. That’s why you will
+see an error</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Column <span class="st">`</span><span class="at">WHEELS_OFF</span><span class="st">`</span> can<span class="st">'t be converted from integer to character</span></span></code></pre></div>
 <p>when running the below code</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">list_files</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">list_files</span>, <span class="va">co</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>I need to come up with a framework to help with these types of task, but for now, you should use the <code>colClasses</code> argument whenever possible to set the column types. For example,</p>
+<code class="sourceCode R"><span><span class="va">list_files</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span><span class="va">list_files</span>, <span class="va">co</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>I need to come up with a framework to help with these types of task,
+but for now, you should use the <code>colClasses</code> argument
+whenever possible to set the column types. For example,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">list_files</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span>
-   <span class="va">list_files</span>,
-   colClasses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHEELS_OFF"</span>, <span class="st">"WHEELS_ON"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">list_files</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">path_to_files</span>, patter<span class="op">=</span><span class="st">"air"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span></span>
+<span>   <span class="va">list_files</span>,</span>
+<span>   colClasses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHEELS_OFF"</span>, <span class="st">"WHEELS_ON"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>which yielded</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span>
-<span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span>
-<span class="co">#&gt; -- Converting CSVs to disk.frame --</span>
-<span class="co">#&gt; Converting 303 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Stage 1 or 2 took: 00:01:47 elapsed (0.170s cpu)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span>
-<span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c77035a94.df</span>
-<span class="co">#&gt; Appending disk.frames:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Stage 2 of 2 took: 00:01:01 elapsed (0.340s cpu)</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:02:48 elapsed (0.510s cpu)</span>
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.51    0.32  168.72</span></code></pre></div>
-<p>As you can see the the 303 files are converted to a <code>disk.frame</code> in about ~3mins, this much faster than Spark.</p>
+<code class="sourceCode R"><span><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></span>
+<span><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></span>
+<span><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></span>
+<span><span class="co">#&gt; Converting 303 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Stage 1 or 2 took: 00:01:47 elapsed (0.170s cpu)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></span>
+<span><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c77035a94.df</span></span>
+<span><span class="co">#&gt; Appending disk.frames:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Stage 2 of 2 took: 00:01:01 elapsed (0.340s cpu)</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:02:48 elapsed (0.510s cpu)</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;    0.51    0.32  168.72</span></span></code></pre></div>
+<p>As you can see the the 303 files are converted to a
+<code>disk.frame</code> in about ~3mins, this much faster than
+Spark.</p>
 </div>
 <div class="section level3">
 <h3 id="load-one-large-file-splitting">Load one large-file (splitting)<a class="anchor" aria-label="anchor" href="#load-one-large-file-splitting"></a>
 </h3>
-<p>However, in real life you may be given one large CSV and told to work from there. In Linux or MacOS, we can use the <code>split</code> command to split up the file first, and apply the previous strategy. But on Windows, this isn’t trivial unless you have installed some nix tools (e.g. git bash).</p>
-<p>Starting from {disk.frame} v0.1.1, we have something to help with this. When you call <code>csv_to_disk.frame</code> with the <code>in_chunk_size</code> argument, then the big file will be split into smaller files using {bigreadr} before reading. This happen automatically.</p>
-<p>Splitting up a large file might take a few minutes, but once the file is split, we can use multiple cores to process the split-up files in parallel! The performance gain there might offset the overhead of splitting a file.</p>
-<p>As mentioned, the key is setting argument <code>in_chunk_size</code> to a value, which will activate the file splitting</p>
+<p>However, in real life you may be given one large CSV and told to work
+from there. In Linux or MacOS, we can use the <code>split</code> command
+to split up the file first, and apply the previous strategy. But on
+Windows, this isn’t trivial unless you have installed some nix tools
+(e.g. git bash).</p>
+<p>Starting from {disk.frame} v0.1.1, we have something to help with
+this. When you call <code>csv_to_disk.frame</code> with the
+<code>in_chunk_size</code> argument, then the big file will be split
+into smaller files using {bigreadr} before reading. This happen
+automatically.</p>
+<p>Splitting up a large file might take a few minutes, but once the file
+is split, we can use multiple cores to process the split-up files in
+parallel! The performance gain there might offset the overhead of
+splitting a file.</p>
+<p>As mentioned, the key is setting argument <code>in_chunk_size</code>
+to a value, which will activate the file splitting</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_data</span> <span class="op">=</span> <span class="st">"c:/data/"</span>
-
-<span class="co"># read 10 millions at once</span>
-<span class="va">in_chunk_size</span> <span class="op">=</span> <span class="fl">1e7</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span>
-   <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path_to_data</span>, <span class="st">"combined.csv"</span><span class="op">)</span>, 
-   in_chunk_size <span class="op">=</span> <span class="va">in_chunk_size</span>,
-   colClasses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHEELS_OFF"</span>,<span class="st">"WHEELS_ON"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">path_to_data</span> <span class="op">=</span> <span class="st">"c:/data/"</span></span>
+<span></span>
+<span><span class="co"># read 10 millions at once</span></span>
+<span><span class="va">in_chunk_size</span> <span class="op">=</span> <span class="fl">1e7</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span></span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path_to_data</span>, <span class="st">"combined.csv"</span><span class="op">)</span>, </span>
+<span>   in_chunk_size <span class="op">=</span> <span class="va">in_chunk_size</span>,</span>
+<span>   colClasses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHEELS_OFF"</span>,<span class="st">"WHEELS_ON"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>which yielded</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 1 of 2: splitting the file c:/data//combined.csv into smallers files:</span>
-<span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c22af50f3</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 1 of 2 took: 00:02:06 elapsed (00:01:15 cpu)</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 2 of 2: Converting the smaller files into disk.frame</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span>
-<span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span>
-<span class="co">#&gt; -- Converting CSVs to disk.frame --</span>
-<span class="co">#&gt; Converting 15 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Stage 1 or 2 took: 54.0s elapsed (0.120s cpu)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span>
-<span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c680f2305.df</span>
-<span class="co">#&gt; Appending disk.frames:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Stage 2 of 2 took: 36.0s elapsed (0.200s cpu)</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:01:29 elapsed (0.320s cpu)</span>
-<span class="co">#&gt; Stage 2 of 2 took: 00:01:29 elapsed (0.320s cpu)</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt; Stage 2 &amp; 2 took: 00:03:36 elapsed (00:01:15 cpu)</span>
-<span class="co">#&gt;  -----------------------------------------------------</span>
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   75.79   47.89  216.42</span></code></pre></div>
-<p>As you can see, this takes longer than loading the individual files approach. I am working on a guess the <code>in_chunk_size</code> feature so that <code>in_chunk_size="guess"</code> will work in the future, so the user doesn’t have to input a manual <code>in_chunk_size</code>.</p>
+<code class="sourceCode R"><span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 1 of 2: splitting the file c:/data//combined.csv into smallers files:</span></span>
+<span><span class="co">#&gt; Destination: C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c22af50f3</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 1 of 2 took: 00:02:06 elapsed (00:01:15 cpu)</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 2 of 2: Converting the smaller files into disk.frame</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; csv_to_disk.frame: you are trying to read multiple files.</span></span>
+<span><span class="co">#&gt; Please use colClasses to set column types to minimize the chance of a failed read</span></span>
+<span><span class="co">#&gt; -- Converting CSVs to disk.frame --</span></span>
+<span><span class="co">#&gt; Converting 15 CSVs to 36 disk.frame each consisting of 36 chunks (Stage 1 of 2):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Stage 1 or 2 took: 54.0s elapsed (0.120s cpu)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Row-binding the 36 disk.frames together to form one large disk.frame (Stage 2 of 2):</span></span>
+<span><span class="co">#&gt; Creating the disk.frame at C:\Users\RTX2080\AppData\Local\Temp\Rtmp6VQrsK\file1a1c680f2305.df</span></span>
+<span><span class="co">#&gt; Appending disk.frames:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Stage 2 of 2 took: 36.0s elapsed (0.200s cpu)</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 1 &amp; 2 in total took: 00:01:29 elapsed (0.320s cpu)</span></span>
+<span><span class="co">#&gt; Stage 2 of 2 took: 00:01:29 elapsed (0.320s cpu)</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt; Stage 2 &amp; 2 took: 00:03:36 elapsed (00:01:15 cpu)</span></span>
+<span><span class="co">#&gt;  -----------------------------------------------------</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;   75.79   47.89  216.42</span></span></code></pre></div>
+<p>As you can see, this takes longer than loading the individual files
+approach. I am working on a guess the <code>in_chunk_size</code> feature
+so that <code>in_chunk_size="guess"</code> will work in the future, so
+the user doesn’t have to input a manual <code>in_chunk_size</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="load-one-large-file-no-splitting">Load one large-file (no splitting)<a class="anchor" aria-label="anchor" href="#load-one-large-file-no-splitting"></a>
 </h3>
-<p>Split up the file will effectively double the amount of disk space needed. We have the original file and we need additional space equal to the size of the original file to store the split files. This is not always feasible and that’s why you can specify the <code>LaF</code> backend which was shown in Bruno’s post but repeated here for completeness. The problem with a <code>LaF</code> backend and reading one big file is that it can NOT be parallelized and hence it is much slower than the other approaches.</p>
+<p>Split up the file will effectively double the amount of disk space
+needed. We have the original file and we need additional space equal to
+the size of the original file to store the split files. This is not
+always feasible and that’s why you can specify the <code>LaF</code>
+backend which was shown in Bruno’s post but repeated here for
+completeness. The problem with a <code>LaF</code> backend and reading
+one big file is that it can NOT be parallelized and hence it is much
+slower than the other approaches.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_data</span> <span class="op">=</span> <span class="st">"c:/data/"</span>
-
-<span class="co"># read 10 millions at once</span>
-<span class="va">in_chunk_size</span> <span class="op">=</span> <span class="fl">1e7</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path_to_data</span>, <span class="st">"combined.csv"</span><span class="op">)</span>,
-  in_chunk_size <span class="op">=</span> <span class="va">in_chunk_size</span>,
-  backend <span class="op">=</span> <span class="st">"LaF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">path_to_data</span> <span class="op">=</span> <span class="st">"c:/data/"</span></span>
+<span></span>
+<span><span class="co"># read 10 millions at once</span></span>
+<span><span class="va">in_chunk_size</span> <span class="op">=</span> <span class="fl">1e7</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csv_to_disk.frame.html">csv_to_disk.frame</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path_to_data</span>, <span class="st">"combined.csv"</span><span class="op">)</span>,</span>
+<span>  in_chunk_size <span class="op">=</span> <span class="va">in_chunk_size</span>,</span>
+<span>  backend <span class="op">=</span> <span class="st">"LaF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>there were multiple warnings</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#&gt; Loading required namespace: LaF</span>
-<span class="co">#&gt; Warning in FUN(X[[i]], ...): Unsupported type 'logical'; using default type</span>
-<span class="co">#&gt; 'string'</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#&gt; Loading required namespace: LaF</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): Unsupported type 'logical'; using default type</span></span>
+<span><span class="co">#&gt; 'string'</span></span></code></pre></div>
 <p>and the timings were</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  591.32   26.94  599.08</span></code></pre></div>
-<p>As can be seen <code>LaF</code> works and can detect the column types automatically. However it is slower than the default backend which is <code>data.table</code>.</p>
+<code class="sourceCode R"><span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;  591.32   26.94  599.08</span></span></code></pre></div>
+<p>As can be seen <code>LaF</code> works and can detect the column types
+automatically. However it is slower than the default backend which is
+<code>data.table</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h3>
-<p>Here is a chart summarizing the performance of the various approaches for reading large CSVs on my computer</p>
+<p>Here is a chart summarizing the performance of the various approaches
+for reading large CSVs on my computer</p>
 <p><img src="08-more-epic_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="can-disk-frame-be-even-more-epic">Can {disk.frame} be even more “epic”?<a class="anchor" aria-label="anchor" href="#can-disk-frame-be-even-more-epic"></a>
 </h2>
-<p>Well yes! We can actually speed up the group-by operation that Bruno did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t be emphasized enough! It works by reading from disk only the columns needed for the analysis, and hence disk IO time is (drastically) reduced!</p>
+<p>Well yes! We can actually speed up the group-by operation that Bruno
+did by using <code>srckeep</code>. The use of <code>srckeep</code> can’t
+be emphasized enough! It works by reading from disk only the columns
+needed for the analysis, and hence disk IO time is (drastically)
+reduced!</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tic</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span>
-<span class="va">mean_dep_delay</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">YEAR</span>, <span class="va">MONTH</span>, <span class="va">DAY_OF_MONTH</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">DEP_DELAY</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> 
-<span class="op">(</span><span class="va">toc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tic</span><span class="op">)</span>
-<span class="co">#&gt; Time difference of 2.800005 secs</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tic</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># doing group-by in two-stages which is annoying; I am working on something better</span></span>
+<span><span class="va">mean_dep_delay</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY_OF_MONTH"</span>, <span class="st">"DEP_DELAY"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">YEAR</span>, <span class="va">MONTH</span>, <span class="va">DAY_OF_MONTH</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">DEP_DELAY</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">(</span><span class="va">toc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tic</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Time difference of 2.800005 secs</span></span></code></pre></div>
 <p>Compare the above the to timing without <code>srckeep</code></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tic</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">mean_dep_delay</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">YEAR</span>, <span class="va">MONTH</span>, <span class="va">DAY_OF_MONTH</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">DEP_DELAY</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> 
-<span class="op">(</span><span class="va">toc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tic</span><span class="op">)</span>
-<span class="co">#&gt; Time difference of 15.62312 secs</span></code></pre></div>
-<p>On my computer, with <code>srckeep</code> the timing is only ~3 seconds and without it is 16 seconds!</p>
+<code class="sourceCode R"><span><span class="va">tic</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mean_dep_delay</span> <span class="op">&lt;-</span> <span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">YEAR</span>, <span class="va">MONTH</span>, <span class="va">DAY_OF_MONTH</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">DEP_DELAY</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">(</span><span class="va">toc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tic</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Time difference of 15.62312 secs</span></span></code></pre></div>
+<p>On my computer, with <code>srckeep</code> the timing is only ~3
+seconds and without it is 16 seconds!</p>
 <p><img src="08-more-epic_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>So there you go! {disk.frame} can be even more “epic”! Here are the two main take-aways</p>
+<p>So there you go! {disk.frame} can be even more “epic”! Here are the
+two main take-aways</p>
 <ol style="list-style-type: decimal">
-<li>Load CSV files as many individual files if possible to take advantage of multi-core parallelism</li>
+<li>Load CSV files as many individual files if possible to take
+advantage of multi-core parallelism</li>
 <li>
-<code>srckeep</code> is your friend! Disk IO is often the bottleneck in data manipulation, and you can reduce disk IO by specifying only columns that you will use with <code>srckeep(c(columns1, columns2, ...))</code>.</li>
+<code>srckeep</code> is your friend! Disk IO is often the bottleneck
+in data manipulation, and you can reduce disk IO by specifying only
+columns that you will use with
+<code>srckeep(c(columns1, columns2, ...))</code>.</li>
 </ol>
 </div>
   </div>
@@ -320,7 +393,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

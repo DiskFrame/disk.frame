@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>A streaming function for speedglm</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/make_glm_streaming_fn.r" class="external-link"><code>R/make_glm_streaming_fn.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/make_glm_streaming_fn.r" class="external-link"><code>R/make_glm_streaming_fn.r</code></a></small>
     <div class="hidden name"><code>make_glm_streaming_fn.Rd</code></div>
     </div>
 
@@ -96,19 +96,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_glm_streaming_fn</span><span class="op">(</span><span class="va">data</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_glm_streaming_fn</span><span class="op">(</span><span class="va">data</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Whether to print the status of data loading. Default to FALSE</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>return a function, fn, that can be used as the data argument in biglm::bigglm or speedglm::shglm</p>
+    
+
+<p>return a function, fn, that can be used as the data argument in biglm::bigglm or speedglm::shglm</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -118,19 +123,19 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">streamacq</span> <span class="op">=</span> <span class="fu">make_glm_streaming_fn</span><span class="op">(</span><span class="va">cars.df</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">majorv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">major</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">minorv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/tstrsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">minor</span>, <span class="st">"."</span>, fixed<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">majorv</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">minorv</span> <span class="op">&gt;=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">majorv</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">m</span> <span class="op">=</span> <span class="fu">biglm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/biglm/man/bigglm.html" class="external-link">bigglm</a></span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">speed</span>, data <span class="op">=</span> <span class="va">streamacq</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, <span class="fu"><a href="get_chunk.html">get_chunk</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">m</span> <span class="op">=</span> <span class="fu">speedglm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/speedglm/man/speedglm.html" class="external-link">shglm</a></span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">speed</span>, data <span class="op">=</span> <span class="va">streamacq</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">streamacq</span> <span class="op">=</span> <span class="fu">make_glm_streaming_fn</span><span class="op">(</span><span class="va">cars.df</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">majorv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">major</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">minorv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">minor</span>, <span class="st">"."</span>, fixed<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">majorv</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">minorv</span> <span class="op">&gt;=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">majorv</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span> <span class="op">=</span> <span class="fu">biglm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/biglm/man/bigglm.html" class="external-link">bigglm</a></span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">speed</span>, data <span class="op">=</span> <span class="va">streamacq</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, <span class="fu"><a href="get_chunk.html">get_chunk</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span> <span class="op">=</span> <span class="fu">speedglm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/speedglm/man/speedglm.html" class="external-link">shglm</a></span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">speed</span>, data <span class="op">=</span> <span class="va">streamacq</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  -1.849460</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  -1.849460</span>
@@ -196,7 +201,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

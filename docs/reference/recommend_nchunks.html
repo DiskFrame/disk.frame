@@ -18,7 +18,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame"><!-- mathja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame"><!-- mathja
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,7 +73,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame"><!-- mathja
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,7 +88,7 @@ into. It can accept filesizes in bytes (as integer) or a data.frame"><!-- mathja
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Recommend number of chunks based on input size</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/recommend_nchunks.r" class="external-link"><code>R/recommend_nchunks.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/recommend_nchunks.r" class="external-link"><code>R/recommend_nchunks.r</code></a></small>
     <div class="hidden name"><code>recommend_nchunks.Rd</code></div>
     </div>
 
@@ -98,13 +98,13 @@ into. It can accept filesizes in bytes (as integer) or a data.frame</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">recommend_nchunks</span><span class="op">(</span>
-  <span class="va">df</span>,
-  type <span class="op">=</span> <span class="st">"csv"</span>,
-  minchunks <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,
-  conservatism <span class="op">=</span> <span class="fl">8</span>,
-  ram_size <span class="op">=</span> <span class="fu"><a href="df_ram_size.html">df_ram_size</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">recommend_nchunks</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"csv"</span>,</span>
+<span>  minchunks <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  conservatism <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  ram_size <span class="op">=</span> <span class="fu"><a href="df_ram_size.html">df_ram_size</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -112,28 +112,37 @@ into. It can accept filesizes in bytes (as integer) or a data.frame</p>
     <dl><dt>df</dt>
 <dd><p>a disk.frame or the file size in bytes of a CSV file holding the
 data</p></dd>
+
+
 <dt>type</dt>
 <dd><p>only = "csv" is supported. It indicates the file type
 corresponding to file size `df`</p></dd>
+
+
 <dt>minchunks</dt>
 <dd><p>the minimum number of chunks. Defaults to the number of CPU
 cores (without hyper-threading)</p></dd>
+
+
 <dt>conservatism</dt>
 <dd><p>a multiplier to the recommended number of chunks. The
 more chunks the smaller the chunk size and more likely that each chunk can
 fit into RAM</p></dd>
+
+
 <dt>ram_size</dt>
 <dd><p>The amount of RAM available which is usually computed. Except on RStudio with R3.6+</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># recommend nchunks based on data.frame</span></span>
-<span class="r-in"><span class="fu">recommend_nchunks</span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># recommend nchunks based on data.frame</span></span></span>
+<span class="r-in"><span><span class="fu">recommend_nchunks</span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># recommend nchunks based on file size ONLY CSV is implemented at the moment</span></span>
-<span class="r-in"><span class="fu">recommend_nchunks</span><span class="op">(</span><span class="fl">1024</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># recommend nchunks based on file size ONLY CSV is implemented at the moment</span></span></span>
+<span class="r-in"><span><span class="fu">recommend_nchunks</span><span class="op">(</span><span class="fl">1024</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
 </code></pre></div>
     </div>
@@ -149,7 +158,7 @@ fit into RAM</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

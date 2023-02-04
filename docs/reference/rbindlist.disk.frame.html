@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>rbindlist disk.frames together</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/rbindlist.disk.frame.r" class="external-link"><code>R/rbindlist.disk.frame.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/rbindlist.disk.frame.r" class="external-link"><code>R/rbindlist.disk.frame.r</code></a></small>
     <div class="hidden name"><code>rbindlist.disk.frame.Rd</code></div>
     </div>
 
@@ -96,46 +96,59 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rbindlist.disk.frame</span><span class="op">(</span>
-  <span class="va">df_list</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
-  by_chunk_id <span class="op">=</span> <span class="cn">TRUE</span>,
-  parallel <span class="op">=</span> <span class="cn">TRUE</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
-  .progress <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rbindlist.disk.frame</span><span class="op">(</span></span>
+<span>  <span class="va">df_list</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,</span>
+<span>  by_chunk_id <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df_list</dt>
 <dd><p>A list of disk.frames</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>Output directory of the row-bound disk.frames</p></dd>
+
+
 <dt>by_chunk_id</dt>
 <dd><p>If TRUE then only the chunks with the same chunk IDs will be bound</p></dd>
+
+
 <dt>parallel</dt>
 <dd><p>if TRUE then bind multiple disk.frame simultaneously, Defaults to TRUE</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>0-100, 100 being the highest compression rate.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>overwrite the output directory</p></dd>
+
+
 <dt>.progress</dt>
 <dd><p>A logical, for whether or not to show progress.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># row-bind two disk.frames</span></span>
-<span class="r-in"><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">rbindlist.disk.frame</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># row-bind two disk.frames</span></span></span>
+<span class="r-in"><span><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">rbindlist.disk.frame</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="va">cars.df</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -150,7 +163,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

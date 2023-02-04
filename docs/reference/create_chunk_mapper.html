@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create function that applies to each chunk if disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/chunk_mapper.r" class="external-link"><code>R/chunk_mapper.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/chunk_mapper.r" class="external-link"><code>R/chunk_mapper.r</code></a></small>
     <div class="hidden name"><code>create_chunk_mapper.Rd</code></div>
     </div>
 
@@ -96,42 +96,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="va">chunk_fn</span>, warning_msg <span class="op">=</span> <span class="cn">NULL</span>, as.data.frame <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="va">chunk_fn</span>, warning_msg <span class="op">=</span> <span class="cn">NULL</span>, as.data.frame <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>chunk_fn</dt>
 <dd><p>The dplyr function to create a mapper for</p></dd>
+
+
 <dt>warning_msg</dt>
 <dd><p>The warning message to display when invoking the mapper</p></dd>
+
+
 <dt>as.data.frame</dt>
 <dd><p>force the input chunk of a data.frame; needed for dtplyr</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">filter</span> <span class="op">=</span> <span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#' example: creating a function that keeps only the first and last n row</span></span>
-<span class="r-in"><span class="va">first_and_last</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span>, <span class="va">n</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">nr</span> <span class="op">=</span> <span class="fu"><a href="ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nr</span><span class="op">-</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="va">nr</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">chunk</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span>, <span class="op">(</span><span class="va">nr</span><span class="op">-</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">nr</span><span class="op">)</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#' create the function for use with disk.frame</span></span>
-<span class="r-in"><span class="va">first_and_last_df</span> <span class="op">=</span> <span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="va">first_and_last</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mtcars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#' the operation is lazy</span></span>
-<span class="r-in"><span class="va">lazy_mtcars.df</span> <span class="op">=</span> <span class="va">mtcars.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">first_and_last_df</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#' bring into R</span></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">lazy_mtcars.df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filter</span> <span class="op">=</span> <span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#' example: creating a function that keeps only the first and last n row</span></span></span>
+<span class="r-in"><span><span class="va">first_and_last</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span>, <span class="va">n</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">nr</span> <span class="op">=</span> <span class="fu"><a href="ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nr</span><span class="op">-</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="va">nr</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">chunk</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span>, <span class="op">(</span><span class="va">nr</span><span class="op">-</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">nr</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#' create the function for use with disk.frame</span></span></span>
+<span class="r-in"><span><span class="va">first_and_last_df</span> <span class="op">=</span> <span class="fu">create_chunk_mapper</span><span class="op">(</span><span class="va">first_and_last</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mtcars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#' the operation is lazy</span></span></span>
+<span class="r-in"><span><span class="va">lazy_mtcars.df</span> <span class="op">=</span> <span class="va">mtcars.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">first_and_last_df</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#' bring into R</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">lazy_mtcars.df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5  6  7  8  9 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5  6  7  8  9 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5  6  7  8  9 10</span>
@@ -164,10 +169,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23: 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24: 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#' clean up</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">mtcars.df</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#' clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">mtcars.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -182,7 +187,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

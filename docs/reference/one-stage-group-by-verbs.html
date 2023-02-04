@@ -19,7 +19,7 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -28,7 +28,7 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,7 +74,7 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,7 +89,7 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>One Stage function</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/one-stage-verbs.R" class="external-link"><code>R/one-stage-verbs.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/one-stage-verbs.R" class="external-link"><code>R/one-stage-verbs.R</code></a></small>
     <div class="hidden name"><code>one-stage-group-by-verbs.Rd</code></div>
     </div>
 
@@ -100,73 +100,80 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">var_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">var_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span>
-
-<span class="fu">sd_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">sd_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span>
-
-<span class="fu">mean_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">mean_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span>
-
-<span class="fu">sum_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">sum_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">min_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">min_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">max_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">max_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">median_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">median_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">n_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">n_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">length_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">length_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">any_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">any_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">all_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">all_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">n_distinct_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">n_distinct_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">quantile_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">quantile_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">IQR_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">IQR_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">var_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">var_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mean_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mean_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sum_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sum_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">min_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">min_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">max_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">max_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">median_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">median_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">n_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">n_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">length_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">length_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">any_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">any_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">all_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">all_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">n_distinct_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">n_distinct_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">quantile_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">quantile_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">IQR_df.chunk_agg.disk.frame</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">IQR_df.collected_agg.disk.frame</span><span class="op">(</span><span class="va">listx</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>the input</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>Remove NAs. TRUE of FALSE</p></dd>
+
+
 <dt>listx</dt>
 <dd><p>a list</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional options</p></dd>
+
 </dl></div>
 
   </div>
@@ -181,7 +188,7 @@ mean collected_agg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

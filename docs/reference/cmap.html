@@ -21,7 +21,7 @@ second is the chunk ID
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ second is the chunk ID
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,7 +76,7 @@ second is the chunk ID
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,7 +91,7 @@ second is the chunk ID
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Apply the same function to all chunks</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/cmap.r" class="external-link"><code>R/cmap.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/cmap.r" class="external-link"><code>R/cmap.r</code></a></small>
     <div class="hidden name"><code>cmap.Rd</code></div>
     </div>
 
@@ -104,92 +104,115 @@ second is the chunk ID</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span>, use.names <span class="op">=</span> <span class="va">fill</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>, idcol <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">cimap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">cimap</span><span class="op">(</span>
-  <span class="va">.x</span>,
-  <span class="va">.f</span>,
-  outdir <span class="op">=</span> <span class="cn">NULL</span>,
-  keep <span class="op">=</span> <span class="cn">NULL</span>,
-  lazy <span class="op">=</span> <span class="cn">TRUE</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">cimap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">cimap_dfr</span><span class="op">(</span>
-  <span class="va">.x</span>,
-  <span class="va">.f</span>,
-  <span class="va">...</span>,
-  .id <span class="op">=</span> <span class="cn">NULL</span>,
-  use.names <span class="op">=</span> <span class="va">fill</span>,
-  fill <span class="op">=</span> <span class="cn">FALSE</span>,
-  idcol <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">lazy</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for disk.frame</span>
-<span class="fu">lazy</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">delayed</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">clapply</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">cmap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span>, use.names <span class="op">=</span> <span class="va">fill</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>, idcol <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cimap</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">cimap</span><span class="op">(</span></span>
+<span>  <span class="va">.x</span>,</span>
+<span>  <span class="va">.f</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  keep <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cimap_dfr</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span>, .id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">cimap_dfr</span><span class="op">(</span></span>
+<span>  <span class="va">.x</span>,</span>
+<span>  <span class="va">.f</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use.names <span class="op">=</span> <span class="va">fill</span>,</span>
+<span>  fill <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  idcol <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">lazy</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu">lazy</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">delayed</span><span class="op">(</span><span class="va">.x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">clapply</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.x</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>.f</dt>
 <dd><p>a function to apply to each of the chunks</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Passed to `collect` and `write_disk.frame`</p></dd>
+
+
 <dt>.id</dt>
 <dd><p>ignored</p></dd>
+
+
 <dt>use.names</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
+
+
 <dt>fill</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
+
+
 <dt>idcol</dt>
 <dd><p>for cmap_dfr's call to data.table::rbindlist. See data.table::rbindlist</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>the output directory</p></dd>
+
+
 <dt>keep</dt>
 <dd><p>The columns to keep at source</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>if TRUE then do this lazily</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>Whether to overwrite any files in the output directory</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>The compression setting. 0-100</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the first row of each chunk lazily</span></span>
-<span class="r-in"><span class="co"># </span></span>
-<span class="r-in"><span class="va">cars2</span> <span class="op">=</span> <span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"> <span class="va">chunk</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the first row of each chunk lazily</span></span></span>
+<span class="r-in"><span><span class="co"># </span></span></span>
+<span class="r-in"><span><span class="va">cars2</span> <span class="op">=</span> <span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chunk</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">chunk</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     4</span>
@@ -242,11 +265,11 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49:    24</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 50:    25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># same as above but using purrr </span></span>
-<span class="r-in"><span class="va">cars2</span> <span class="op">=</span> <span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># same as above but using purrr </span></span></span>
+<span class="r-in"><span><span class="va">cars2</span> <span class="op">=</span> <span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="va">cars2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    11   17</span>
@@ -254,18 +277,18 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    16   40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    19   46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    24   70</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the first row of each chunk eagerly as list</span></span>
-<span class="r-in"><span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr\file2b642873746.df"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the first row of each chunk eagerly as list</span></span></span>
+<span class="r-in"><span><span class="fu">cmap</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, lazy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk\file361c30b669f5.df"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 6</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (post operations): ???</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (post operations): ???</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the first row of each chunk eagerly as data.table/data.frame by row-binding</span></span>
-<span class="r-in"><span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the first row of each chunk eagerly as data.table/data.frame by row-binding</span></span></span>
+<span class="r-in"><span><span class="fu">cmap_dfr</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    11   17</span>
@@ -273,9 +296,9 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    16   40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    19   46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    24   70</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># lazy and delayed are just an aliases for cmap(..., lazy = TRUE)</span></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu">lazy</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># lazy and delayed are just an aliases for cmap(..., lazy = TRUE)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu">lazy</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    11   17</span>
@@ -283,7 +306,7 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    16   40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    19   46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    24   70</span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu">delayed</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu">delayed</span><span class="op">(</span><span class="va">cars.df</span>, <span class="op">~</span><span class="va">.x</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    speed dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     4    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    11   17</span>
@@ -291,9 +314,9 @@ second is the chunk ID</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    16   40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    19   46</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    24   70</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -308,7 +331,7 @@ second is the chunk ID</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

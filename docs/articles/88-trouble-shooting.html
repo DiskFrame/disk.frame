@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -93,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
                         <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/88-trouble-shooting.Rmd" class="external-link"><code>vignettes/88-trouble-shooting.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/vignettes/88-trouble-shooting.Rmd" class="external-link"><code>vignettes/88-trouble-shooting.Rmd</code></a></small>
       <div class="hidden name"><code>88-trouble-shooting.Rmd</code></div>
 
     </div>
@@ -126,27 +126,33 @@
 <h3 id="steps-to-trouble-shoot">Steps to trouble shoot<a class="anchor" aria-label="anchor" href="#steps-to-trouble-shoot"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li><p>I suggest updating {future} and your R version if you have not already done so.</p></li>
+<li><p>I suggest updating {future} and your R version if you have not
+already done so.</p></li>
 <li><p>Are you able to share the data?</p></li>
 <li><p>Do a good MWE</p></li>
 </ol>
-<pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">df</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
-
-
-<span class="va">df1</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">df</span>, date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">datadate</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"%Y%m%d"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">df1</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">df</span>, date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">datadate</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"%Y%m%d"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Check if your virus scanner is blocking interprocess communication</p></li>
-<li><p>Try to apply the function to just one chunk, perhaps there is a syntax error or column error? If one chunk works then you can rule out coding error</p></li>
+<li><p>Check if your virus scanner is blocking interprocess
+communication</p></li>
+<li><p>Try to apply the function to just one chunk, perhaps there is a
+syntax error or column error? If one chunk works then you can rule out
+coding error</p></li>
 </ol>
-<pre><code><span class="fu"><a href="../reference/get_chunk.html">get_chunk</a></span><span class="op">(</span><span class="va">df</span>, <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">datadate</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"%Y%m%d"</span><span class="op">)</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="../reference/get_chunk.html">get_chunk</a></span><span class="op">(</span><span class="va">df</span>, <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">datadate</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"%Y%m%d"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Set the number of workers to 1, so there is no more inter-process communication. Does it work now? If it does, then it’s the inter process communication. You might need to contact your admin for help</li>
+<li>Set the number of workers to 1, so there is no more inter-process
+communication. Does it work now? If it does, then it’s the inter process
+communication. You might need to contact your admin for help</li>
 </ol>
 <pre><code>setup_disk.frame(workers=1)
 mutate(df, date = as.Date(as.character(datadate), format="%Y%m%d"))
@@ -171,7 +177,7 @@ a = data.frame(datadate = rep("20201007", 3e6))</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

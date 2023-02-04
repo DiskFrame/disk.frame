@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Make a data.frame into a disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/as.disk.frame.r" class="external-link"><code>R/as.disk.frame.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/as.disk.frame.r" class="external-link"><code>R/as.disk.frame.r</code></a></small>
     <div class="hidden name"><code>as.disk.frame.Rd</code></div>
     </div>
 
@@ -96,51 +96,64 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as.disk.frame</span><span class="op">(</span>
-  <span class="va">df</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
-  nchunks <span class="op">=</span> <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  shardby <span class="op">=</span> <span class="cn">NULL</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.disk.frame</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,</span>
+<span>  nchunks <span class="op">=</span> <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  shardby <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>the output directory</p></dd>
+
+
 <dt>nchunks</dt>
 <dd><p>number of chunks</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>if TRUE the outdir will be overwritten, if FALSE it will throw an error if the directory is not empty</p></dd>
+
+
 <dt>shardby</dt>
 <dd><p>The shardkey</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>the compression level 0-100; 100 is highest</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to output_disk.frame</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># write to temporary location</span></span>
-<span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span><span class="op">)</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># specify a different path in the temporary folder, you are free to choose a different folder</span></span>
-<span class="r-in"><span class="va">cars_new_location.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"some_path.df"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># specify a different number of chunks</span></span>
-<span class="r-in"><span class="co"># this writes to tempdir() by default</span></span>
-<span class="r-in"><span class="va">cars_chunks.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">4</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars_new_location.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars_chunks.df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># write to temporary location</span></span></span>
+<span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span><span class="op">)</span> </span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># specify a different path in the temporary folder, you are free to choose a different folder</span></span></span>
+<span class="r-in"><span><span class="va">cars_new_location.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"some_path.df"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># specify a different number of chunks</span></span></span>
+<span class="r-in"><span><span class="co"># this writes to tempdir() by default</span></span></span>
+<span class="r-in"><span><span class="va">cars_chunks.df</span> <span class="op">=</span> <span class="fu">as.disk.frame</span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">4</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars_new_location.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars_chunks.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -155,7 +168,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

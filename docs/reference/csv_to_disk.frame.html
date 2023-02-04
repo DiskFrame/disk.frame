@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert CSV file(s) to disk.frame format</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/csv2disk.frame.r" class="external-link"><code>R/csv2disk.frame.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/csv2disk.frame.r" class="external-link"><code>R/csv2disk.frame.r</code></a></small>
     <div class="hidden name"><code>csv_to_disk.frame.Rd</code></div>
     </div>
 
@@ -96,53 +96,73 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">csv_to_disk.frame</span><span class="op">(</span>
-  <span class="va">infile</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,
-  inmapfn <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span>,
-  nchunks <span class="op">=</span> <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="va">infile</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-  in_chunk_size <span class="op">=</span> <span class="cn">NULL</span>,
-  shardby <span class="op">=</span> <span class="cn">NULL</span>,
-  compress <span class="op">=</span> <span class="fl">50</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
-  header <span class="op">=</span> <span class="cn">TRUE</span>,
-  .progress <span class="op">=</span> <span class="cn">TRUE</span>,
-  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.table"</span>, <span class="st">"readr"</span>, <span class="st">"LaF"</span><span class="op">)</span>,
-  chunk_reader <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bigreadr"</span>, <span class="st">"data.table"</span>, <span class="st">"readr"</span>, <span class="st">"readLines"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">csv_to_disk.frame</span><span class="op">(</span></span>
+<span>  <span class="va">infile</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span>,</span>
+<span>  inmapfn <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span>,</span>
+<span>  nchunks <span class="op">=</span> <span class="fu"><a href="recommend_nchunks.html">recommend_nchunks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="va">infile</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  in_chunk_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shardby <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  header <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.table"</span>, <span class="st">"readr"</span>, <span class="st">"LaF"</span><span class="op">)</span>,</span>
+<span>  chunk_reader <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bigreadr"</span>, <span class="st">"data.table"</span>, <span class="st">"readr"</span>, <span class="st">"readLines"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>infile</dt>
 <dd><p>The input CSV file or files</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>The directory to output the disk.frame to</p></dd>
+
+
 <dt>inmapfn</dt>
 <dd><p>A function to be applied to the chunk read in from CSV before
 the chunk is being written out. Commonly used to perform simple
 transformations. Defaults to the identity function (ie. no transformation)</p></dd>
+
+
 <dt>nchunks</dt>
 <dd><p>Number of chunks to output</p></dd>
+
+
 <dt>in_chunk_size</dt>
 <dd><p>When reading in the file, how many lines to read in at
 once. This is different to nchunks which controls how many chunks are
 output</p></dd>
+
+
 <dt>shardby</dt>
 <dd><p>The column(s) to shard the data by. For example suppose
 `shardby = c("col1","col2")`  then every row where the values `col1` and
 `col2` are the same will end up in the same chunk; this will allow merging
 by `col1` and `col2` to be more efficient</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>For fst backends it's a number between 0 and 100 where 100 is
 the highest compression ratio.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>Whether to overwrite the existing directory</p></dd>
+
+
 <dt>header</dt>
 <dd><p>Whether the files have header. Defaults to TRUE</p></dd>
+
+
 <dt>.progress</dt>
 <dd><p>A logical, for whether or not to show progress</p></dd>
+
+
 <dt>backend</dt>
 <dd><p>The CSV reader backend to choose: "data.table" or "readr". 
 disk.frame does not have its own CSV reader. It uses either
@@ -152,6 +172,8 @@ strings, and you are encouraged to use fasttime to convert the strings to
 date. You can use the `inmapfn` to do that. However, if you want automatic
 date detection, then backend="readr" may suit your needs. However, readr
 is often slower than data.table, hence data.table is chosen as the default.</p></dd>
+
+
 <dt>chunk_reader</dt>
 <dd><p>Even if you choose a backend there can still be multiple
 strategies on how to approach the CSV reads. For example, data.table::fread
@@ -160,9 +182,12 @@ fail. In that case we can change the chunk_reader to "readLines" which uses the
 readLines function to read chunk by chunk and still use data.table::fread
 to process the chunks. There are currently no strategies for readr backend,
 except the default one.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to data.table::fread, disk.frame::as.disk.frame,
 disk.frame::shard</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -172,14 +197,14 @@ disk.frame::shard</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">tmpfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">cars</span>, <span class="va">tmpfile</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmpdf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">=</span> <span class="fu">csv_to_disk.frame</span><span class="op">(</span><span class="va">tmpfile</span>, outdir <span class="op">=</span> <span class="va">tmpdf</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/delete.html" class="external-link">file_delete</a></span><span class="op">(</span><span class="va">tmpfile</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tmpfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">cars</span>, <span class="va">tmpfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmpdf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu">csv_to_disk.frame</span><span class="op">(</span><span class="va">tmpfile</span>, outdir <span class="op">=</span> <span class="va">tmpdf</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/delete.html" class="external-link">file_delete</a></span><span class="op">(</span><span class="va">tmpfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -194,7 +219,7 @@ disk.frame::shard</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

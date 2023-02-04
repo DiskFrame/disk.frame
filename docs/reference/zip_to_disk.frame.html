@@ -20,7 +20,7 @@ file to disk.frame format"><!-- mathjax --><script src="https://cdnjs.cloudflare
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@ file to disk.frame format"><!-- mathjax --><script src="https://cdnjs.cloudflare
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,7 +75,7 @@ file to disk.frame format"><!-- mathjax --><script src="https://cdnjs.cloudflare
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,7 +91,7 @@ file to disk.frame format"><!-- mathjax --><script src="https://cdnjs.cloudflare
     <div class="page-header">
     <h1>`zip_to_disk.frame` is used to read and convert every CSV file within the zip
 file to disk.frame format</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/zip_to_disk.frame.r" class="external-link"><code>R/zip_to_disk.frame.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/zip_to_disk.frame.r" class="external-link"><code>R/zip_to_disk.frame.r</code></a></small>
     <div class="hidden name"><code>zip_to_disk.frame.Rd</code></div>
     </div>
 
@@ -101,31 +101,42 @@ file to disk.frame format</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">zip_to_disk.frame</span><span class="op">(</span>
-  <span class="va">zipfile</span>,
-  <span class="va">outdir</span>,
-  <span class="va">...</span>,
-  validation.check <span class="op">=</span> <span class="cn">FALSE</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">zip_to_disk.frame</span><span class="op">(</span></span>
+<span>  <span class="va">zipfile</span>,</span>
+<span>  <span class="va">outdir</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  validation.check <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>zipfile</dt>
 <dd><p>The zipfile</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>The output directory for disk.frame</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to fread</p></dd>
+
+
 <dt>validation.check</dt>
 <dd><p>should the function perform a check at the end to check for validity of output. It can detect issues with conversion</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>overwrite output directory</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list of disk.frame</p>
+    
+
+<p>a list of disk.frame</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -135,26 +146,26 @@ file to disk.frame format</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># create a zip file containing a csv</span></span>
-<span class="r-in"><span class="va">csvfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">cars</span>, <span class="va">csvfile</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">zipfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/zip.html" class="external-link">zip</a></span><span class="op">(</span><span class="va">zipfile</span>, <span class="va">csvfile</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'"zip"' not found</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># read every file and convert it to a disk.frame</span></span>
-<span class="r-in"><span class="va">zip.df</span> <span class="op">=</span> <span class="fu">zip_to_disk.frame</span><span class="op">(</span><span class="va">zipfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in unzip(zipfile, list = TRUE):</span> zip file 'C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr\file2b64e7c483a.zip' cannot be opened</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># there is only one csv file so it return a list of one disk.frame</span></span>
-<span class="r-in"><span class="va">zip.df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'zip.df' not found</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">csvfile</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">zipfile</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">zip.df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "disk.frame" %in% class(df):</span> object 'zip.df' not found</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a zip file containing a csv</span></span></span>
+<span class="r-in"><span><span class="va">csvfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">cars</span>, <span class="va">csvfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">zipfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/zip.html" class="external-link">zip</a></span><span class="op">(</span><span class="va">zipfile</span>, <span class="va">csvfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># read every file and convert it to a disk.frame</span></span></span>
+<span class="r-in"><span><span class="va">zip.df</span> <span class="op">=</span> <span class="fu">zip_to_disk.frame</span><span class="op">(</span><span class="va">zipfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># there is only one csv file so it return a list of one disk.frame</span></span></span>
+<span class="r-in"><span><span class="va">zip.df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk\file361c4c3b5a30.df/Users/RTX2080/AppData/Local/Temp/Rtmp2LOQEk/file361c46d13f34.csv"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 3</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">csvfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">zipfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">zip.df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -169,7 +180,7 @@ file to disk.frame format</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

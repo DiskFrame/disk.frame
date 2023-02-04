@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get the chunk IDs and files names</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/get_chunk_ids.r" class="external-link"><code>R/get_chunk_ids.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/get_chunk_ids.r" class="external-link"><code>R/get_chunk_ids.r</code></a></small>
     <div class="hidden name"><code>get_chunk_ids.Rd</code></div>
     </div>
 
@@ -96,44 +96,53 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">df</span>, <span class="va">...</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, strip_extension <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">df</span>, <span class="va">...</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, strip_extension <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df</dt>
 <dd><p>a disk.frame</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to list.files</p></dd>
+
+
 <dt>full.names</dt>
 <dd><p>If TRUE returns the full path to the file, Defaults to FALSE</p></dd>
+
+
 <dt>strip_extension</dt>
 <dd><p>If TRUE then the file extension in the chunk_id is removed. Defaults to TRUE</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the integer-string chunk IDs</span></span>
-<span class="r-in"><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1" "2" "3" "4" "5" "6"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the file name chunk IDs</span></span>
-<span class="r-in"><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/1.fst"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/2.fst"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/3.fst"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/4.fst"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/5.fst"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpCo1OFr\\file2b641215571a.df/6.fst"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># return the file name chunk IDs with file extension</span></span>
-<span class="r-in"><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span>, strip_extension <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.fst" "2.fst" "3.fst" "4.fst" "5.fst" "6.fst"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the integer-string chunk IDs</span></span></span>
+<span class="r-in"><span><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.fst 2.fst 3.fst 4.fst 5.fst 6.fst </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "1"   "2"   "3"   "4"   "5"   "6" </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the file name chunk IDs</span></span></span>
+<span class="r-in"><span><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/1.fst"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/2.fst"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/3.fst"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/4.fst"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/5.fst"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmp2LOQEk\\file361c69ed481d.df/6.fst"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># return the file name chunk IDs with file extension</span></span></span>
+<span class="r-in"><span><span class="fu">get_chunk_ids</span><span class="op">(</span><span class="va">cars.df</span>, strip_extension <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.fst   2.fst   3.fst   4.fst   5.fst   6.fst </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "1.fst" "2.fst" "3.fst" "4.fst" "5.fst" "6.fst" </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -148,7 +157,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

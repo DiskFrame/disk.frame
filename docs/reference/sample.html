@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sample n rows from a disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/sample_frac.R" class="external-link"><code>R/sample_frac.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/sample_frac.R" class="external-link"><code>R/sample_frac.R</code></a></small>
     <div class="hidden name"><code>sample.Rd</code></div>
     </div>
 
@@ -96,63 +96,74 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for disk.frame</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="va">tbl</span>, size <span class="op">=</span> <span class="fl">1</span>, replace <span class="op">=</span> <span class="cn">FALSE</span>, weight <span class="op">=</span> <span class="cn">NULL</span>, .env <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for disk.frame</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="va">tbl</span>, size <span class="op">=</span> <span class="fl">1</span>, replace <span class="op">=</span> <span class="cn">FALSE</span>, weight <span class="op">=</span> <span class="cn">NULL</span>, .env <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>tbl</dt>
 <dd><p>A data.frame.</p></dd>
+
+
 <dt>size</dt>
 <dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt;
 For <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n()</a></code>, the number of rows to select.
 For <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac()</a></code>, the fraction of rows to select.
 If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p></dd>
+
+
 <dt>replace</dt>
 <dd><p>Sample with or without replacement?</p></dd>
+
+
 <dt>weight</dt>
 <dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Sampling weights.
 This must evaluate to a vector of non-negative numbers the same length as
 the input. Weights are automatically standardised to sum to 1.</p></dd>
+
+
 <dt>.env</dt>
 <dd><p>DEPRECATED.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>ignored</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_frac</a></span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    10   34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     7    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     7   22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     8   16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    11   17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    12   28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     8   16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     7   22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    10   34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     4    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    12   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    13   34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  7:    13   34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    12   14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    11   17</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:    15   26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    14   80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    14   36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    13   46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:    18   76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:    18   84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:    17   40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:    19   36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:    23   54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:    20   64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    14   36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    15   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    14   26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:    18   42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:    17   40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:    17   32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:    17   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:    20   64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:    20   48</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19:    19   46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:    20   48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:    25   85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:    24   70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:    20   56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:    24   70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:    24   93</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     speed dist</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -167,7 +178,7 @@ the input. Weights are automatically standardised to sum to 1.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

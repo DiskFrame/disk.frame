@@ -18,7 +18,7 @@ largest numbered file, "n.fst".'><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ largest numbered file, "n.fst".'><!-- mathjax --><script src="https://cdnjs.clou
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,7 +73,7 @@ largest numbered file, "n.fst".'><!-- mathjax --><script src="https://cdnjs.clou
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,7 +88,7 @@ largest numbered file, "n.fst".'><!-- mathjax --><script src="https://cdnjs.clou
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add a chunk to the disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/add_chunk.r" class="external-link"><code>R/add_chunk.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/add_chunk.r" class="external-link"><code>R/add_chunk.r</code></a></small>
     <div class="hidden name"><code>add_chunk.Rd</code></div>
     </div>
 
@@ -98,27 +98,38 @@ largest numbered file, "n.fst".</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">chunk</span>, chunk_id <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df</span>, <span class="va">chunk</span>, chunk_id <span class="op">=</span> <span class="cn">NULL</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df</dt>
 <dd><p>the disk.frame to add a chunk to</p></dd>
+
+
 <dt>chunk</dt>
 <dd><p>a data.frame to be added as a chunk</p></dd>
+
+
 <dt>chunk_id</dt>
 <dd><p>a numeric number indicating the id of the chunk. If NULL it
 will be set to the largest chunk_id + 1</p></dd>
+
+
 <dt>full.names</dt>
 <dd><p>whether the chunk_id name match should be to the full file
 path not just the file name</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Passed in the write_fst. E.g. compress</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>disk.frame</p>
+    
+
+<p>disk.frame</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -129,51 +140,51 @@ path not just the file name</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># create a disk.frame</span></span>
-<span class="r-in"><span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_add_chunk"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">diskf</span> <span class="op">=</span> <span class="fu"><a href="disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="va">df_path</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># add a chunk to diskf</span></span>
-<span class="r-in"><span class="fu">add_chunk</span><span class="op">(</span><span class="va">diskf</span>, <span class="va">cars</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr/tmp_add_chunk"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a disk.frame</span></span></span>
+<span class="r-in"><span><span class="va">df_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_add_chunk"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">diskf</span> <span class="op">=</span> <span class="fu"><a href="disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="va">df_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add a chunk to diskf</span></span></span>
+<span class="r-in"><span><span class="fu">add_chunk</span><span class="op">(</span><span class="va">diskf</span>, <span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk/tmp_add_chunk"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
-<span class="r-in"><span class="fu">add_chunk</span><span class="op">(</span><span class="va">diskf</span>, <span class="va">cars</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr/tmp_add_chunk"</span>
+<span class="r-in"><span><span class="fu">add_chunk</span><span class="op">(</span><span class="va">diskf</span>, <span class="va">cars</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk/tmp_add_chunk"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 100</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span> <span class="co"># 2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span> <span class="co"># 2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">=</span> <span class="fu"><a href="disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_add_chunk2"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># add chunks by specifying the chunk_id number; this is especially useful if</span></span>
-<span class="r-in"><span class="co"># you wish to add multiple chunk in parralel</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chunk<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr/tmp_add_chunk2"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">=</span> <span class="fu"><a href="disk.frame.html">disk.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tmp_add_chunk2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add chunks by specifying the chunk_id number; this is especially useful if</span></span></span>
+<span class="r-in"><span><span class="co"># you wish to add multiple chunk in parralel</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chunk<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk/tmp_add_chunk2"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 1</span>
-<span class="r-in"><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chunk<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr/tmp_add_chunk2"</span>
+<span class="r-in"><span><span class="fu">add_chunk</span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chunk<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk/tmp_add_chunk2"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span> <span class="co"># 2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span> <span class="co"># 2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df2</span>, <span class="st">"path"</span>, exact<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df2</span>, <span class="st">"path"</span>, exact<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.fst" "3.fst"</span>
-<span class="r-in"><span class="co"># [1] "1.fst" "3.fst"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># [1] "1.fst" "3.fst"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">diskf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -188,7 +199,7 @@ path not just the file name</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

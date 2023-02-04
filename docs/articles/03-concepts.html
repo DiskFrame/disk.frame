@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -93,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -115,7 +115,7 @@
                         <h4 data-toc-skip class="author">ZJ</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/vignettes/03-concepts.Rmd" class="external-link"><code>vignettes/03-concepts.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/vignettes/03-concepts.Rmd" class="external-link"><code>vignettes/03-concepts.Rmd</code></a></small>
       <div class="hidden name"><code>03-concepts.Rmd</code></div>
 
     </div>
@@ -125,75 +125,117 @@
 <div class="section level2">
 <h2 id="key-disk-frame-concepts">Key <code>{disk.frame}</code> concepts<a class="anchor" aria-label="anchor" href="#key-disk-frame-concepts"></a>
 </h2>
-<p>There are a number of concepts and terminologies that are useful to understand in order to use <code>disk.frame</code> effectively.</p>
+<p>There are a number of concepts and terminologies that are useful to
+understand in order to use <code>disk.frame</code> effectively.</p>
 <div class="section level3">
 <h3 id="what-is-a-disk-frame-and-what-are-chunks">What is a <code>disk.frame</code> and what are chunks?<a class="anchor" aria-label="anchor" href="#what-is-a-disk-frame-and-what-are-chunks"></a>
 </h3>
-<p>A <code>disk.frame</code> is a folder containing <a href="https://www.fstpackage.org/" class="external-link"><code>fst</code></a> files named “1.fst”, “2.fst”, “3.fst” etc. Each of the “.fst” file is called a <em>chunk</em>.</p>
+<p>A <code>disk.frame</code> is a folder containing <a href="https://www.fstpackage.org/" class="external-link"><code>fst</code></a> files named
+“1.fst”, “2.fst”, “3.fst” etc. Each of the “.fst” file is called a
+<em>chunk</em>.</p>
 </div>
 <div class="section level3">
 <h3 id="workers-and-parallelism">Workers and parallelism<a class="anchor" aria-label="anchor" href="#workers-and-parallelism"></a>
 </h3>
-<p>Parallelism in <code>{disk.frame</code>} is achieved using the <a href="https://cran.r-project.org/package=future" class="external-link"><code>{future}</code> package</a>. When performing many tasks, <a href="https://diskframe.com" class="external-link">disk.frame</a> uses multiple workers to perform the tasks in parallel. A <em>worker</em> is an R session.</p>
-<p>It is recommended that you run the following immediately after <code><a href="https://diskframe.com" class="external-link">library(disk.frame)</a></code> to set-up multiple workers. For example:</p>
+<p>Parallelism in <code>{disk.frame</code>} is achieved using the <a href="https://cran.r-project.org/package=future" class="external-link"><code>{future}</code>
+package</a>. When performing many tasks, <a href="https://diskframe.com" class="external-link">disk.frame</a> uses
+multiple workers to perform the tasks in parallel. A <em>worker</em> is
+an R session.</p>
+<p>It is recommended that you run the following immediately after
+<code><a href="https://diskframe.com" class="external-link">library(disk.frame)</a></code> to set-up multiple workers. For
+example:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: dplyr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="co">#&gt; </span>
-<span class="co"><span style="color: #BB0000;">#&gt; ## Message from disk.frame:</span></span>
-<span class="co"><span style="color: #BB0000;">#&gt; We have 1 workers to use with disk.frame.</span></span>
-<span class="co"><span style="color: #BB0000;">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; It is recommended that you run the following immediately to set up disk.frame with multiple workers in order to parallelize your operations:</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; ```r</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; # this will set up disk.frame with multiple workers</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; setup_disk.frame()</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; options(future.globals.maxSize = Inf)</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; ```</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span></span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'disk.frame'</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     colnames, ncol, nrow</span>
-<span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; The number of workers available for disk.frame is 6</span>
-
-<span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
-<p>For example, suppose we wish to compute the number of rows for each chunk, we can clearly perform this simultaneously in parallel. The code to do that is</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: dplyr</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt;  Thank you for using {disk.frame}. However {disk.frame} has been soft-deprecated. You are recommended to switch over to using the {arrow} package for handling larger-than-RAM data. You can convert your existing disk.frames to the parquet format which {arrow} can use by using:</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; ```</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; disk.frame::disk.frame_to_parquet(path.to.your.disk.frame, parquet_path)</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; ````</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; Once done you can use {arrow}'s dataset features to manipulate the larger-than-RAM data using dplyr verbs. E.g.</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; ```</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; dataset = arrow::open_dataset(parquet_path)</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; parquet_path |&gt;</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt;   mutate(...) |&gt;</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt;   group_by(...) |&gt;</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt;   summarize(...) |&gt;</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt;   collect(...)</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; ```</span></span></span>
+<span><span class="co"><span style="color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; ## Message from disk.frame:</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; We have 1 workers to use with disk.frame.</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; To change that, use setup_disk.frame(workers = n) or just setup_disk.frame() to use the defaults.</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; It is recommended that you run the following immediately to set up disk.frame with multiple workers in order to parallelize your operations:</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; ```r</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; # this will set up disk.frame with multiple workers</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; setup_disk.frame()</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; # this will allow unlimited amount of data to be passed from worker to worker</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; options(future.globals.maxSize = Inf)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; ```</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'disk.frame'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     colnames, ncol, nrow</span></span>
+<span><span class="fu"><a href="../reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
+<span></span>
+<span><span class="co"># this will allow unlimited amount of data to be passed from worker to worker</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
+<p>For example, suppose we wish to compute the number of rows for each
+chunk, we can clearly perform this simultaneously in parallel. The code
+to do that is</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># use only one column is fastest</span>
-<span class="va">df</span><span class="op">[</span>,<span class="va">.N</span>, keep <span class="op">=</span> <span class="st">"first_col"</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># use only one column is fastest</span></span>
+<span><span class="va">df</span><span class="op">[</span>,<span class="va">.N</span>, keep <span class="op">=</span> <span class="st">"first_col"</span><span class="op">]</span></span></code></pre></div>
 <p>or equivalent using the <code>srckeep</code> function</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># use only one column is fastest</span>
-<span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"first_col"</span><span class="op">)</span><span class="op">[</span>,<span class="va">.N</span>, keep <span class="op">=</span> <span class="st">"first_col"</span><span class="op">]</span></code></pre></div>
-<p>Say there are <code>n</code> chunks in <code>df</code>, and there are <code>m</code> workers. Then the first <code>m</code> chunks will run <code>chunk[,.N]</code> simultaneously.</p>
-<p>To see how many workers are available for <a href="https://diskframe.com" class="external-link">disk.frame</a> to use, run</p>
+<code class="sourceCode R"><span><span class="co"># use only one column is fastest</span></span>
+<span><span class="fu"><a href="../reference/srckeep.html">srckeep</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"first_col"</span><span class="op">)</span><span class="op">[</span>,<span class="va">.N</span>, keep <span class="op">=</span> <span class="st">"first_col"</span><span class="op">]</span></span></code></pre></div>
+<p>Say there are <code>n</code> chunks in <code>df</code>, and there are
+<code>m</code> workers. Then the first <code>m</code> chunks will run
+<code>chunk[,.N]</code> simultaneously.</p>
+<p>To see how many workers are available for <a href="https://diskframe.com" class="external-link">disk.frame</a>
+to use, run</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="how-disk-frame-works">How <code>{disk.frame}</code> works<a class="anchor" aria-label="anchor" href="#how-disk-frame-works"></a>
 </h3>
-<p>When <code>df %&gt;% some_fn %&gt;% collect</code> is called. The <code>some_fn</code> is applied to each chunk of <code>df</code>. The collect will row-bind the results from <code>some_fn(chunk)</code>together if the returned value of <code>some_fn</code> is a data.frame, or it will return a <code>list</code> containing the results of <code>some_fn</code>.</p>
-<p>The session that receives these results is called the <strong>main session</strong>. In general, we should try to minimize the amount of data passed from the worker sessions back to the main session, because passing data around can be slow.</p>
-<p>Also, please note that there is no communication between the workers, except for workers passing data back to the main session.</p>
+<p>When <code>df %&gt;% some_fn %&gt;% collect</code> is called. The
+<code>some_fn</code> is applied to each chunk of <code>df</code>. The
+collect will row-bind the results from
+<code>some_fn(chunk)</code>together if the returned value of
+<code>some_fn</code> is a data.frame, or it will return a
+<code>list</code> containing the results of <code>some_fn</code>.</p>
+<p>The session that receives these results is called the <strong>main
+session</strong>. In general, we should try to minimize the amount of
+data passed from the worker sessions back to the main session, because
+passing data around can be slow.</p>
+<p>Also, please note that there is no communication between the workers,
+except for workers passing data back to the main session.</p>
 </div>
 </div>
   </div>
@@ -215,7 +257,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

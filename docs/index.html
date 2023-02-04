@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -97,7 +97,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -144,14 +144,14 @@
 </h2>
 <p>You can install the released version of <a href="https://diskframe.com" class="external-link">disk.frame</a> from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span><span class="op">)</span></span></code></pre></div>
 <p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"xiaodaigh/disk.frame"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"DiskFrame/disk.frame"</span><span class="op">)</span></span></code></pre></div>
 <p>On some platforms, such as SageMaker, you may need to explicitly specify a repo like this</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, repo<span class="op">=</span><span class="st">"https://cran.rstudio.com"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"disk.frame"</span>, repo<span class="op">=</span><span class="st">"https://cran.rstudio.com"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="vignettes-and-articles">Vignettes and articles<a class="anchor" aria-label="anchor" href="#vignettes-and-articles"></a>
@@ -221,10 +221,10 @@
 </h2>
 <p><a href="https://diskframe.com" class="external-link">disk.frame</a> works best if it can process multiple data chunks in parallel. The best way to set-up <a href="https://diskframe.com" class="external-link">disk.frame</a> so that each CPU core runs a background worker is by using</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># this allows large datasets to be transferred between sessions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this allows large datasets to be transferred between sessions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="reference/setup_disk.frame.html">setup_disk.frame()</a></code> sets up background workers equal to the number of CPU cores; please note that, by default, hyper-threaded cores are counted as one not two.</p>
 <p>Alternatively, one may specify the number of workers using <code>setup_disk.frame(workers = n)</code>.</p>
 </div>
@@ -232,18 +232,18 @@
 <h2 id="quick-start">Quick-start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span>
-
-<span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span>
-<span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; The number of workers available for disk.frame is 6</span>
-<span class="co"># this allows large datasets to be transferred between sessions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>
-
-<span class="co"># convert the flights data.frame to a disk.frame</span>
-<span class="co"># optionally, you may specify an outdir, otherwise, the </span>
-<span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://diskframe.com" class="external-link">disk.frame</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13" class="external-link">nycflights13</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this will setup disk.frame's parallel backend with number of workers equal to the number of CPU cores (hyper-threaded cores are counted as one not two)</span></span>
+<span><span class="fu"><a href="reference/setup_disk.frame.html">setup_disk.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The number of workers available for disk.frame is 6</span></span>
+<span><span class="co"># this allows large datasets to be transferred between sessions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert the flights data.frame to a disk.frame</span></span>
+<span><span class="co"># optionally, you may specify an outdir, otherwise, the </span></span>
+<span><span class="va">flights.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-dplyr-verbs">Example: dplyr verbs<a class="anchor" aria-label="anchor" href="#example-dplyr-verbs"></a>
@@ -253,45 +253,47 @@
 </h3>
 <p>{disk.frame} aims to support as many dplyr verbs as possible. For example</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>origin_dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830</span>
-<span class="co">#&gt; 2: 2013     1   1      533            529         4      850</span>
-<span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest</span>
-<span class="co">#&gt; 1:            819        11      UA   1545  N14228    EWR  IAH</span>
-<span class="co">#&gt; 2:            830        20      UA   1714  N24211    LGA  IAH</span>
-<span class="co">#&gt;    air_time distance hour minute           time_hour origin_dest</span>
-<span class="co">#&gt; 1:      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span>
-<span class="co">#&gt; 2:      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">flights.df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>origin_dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin dest</span></span>
+<span><span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228    EWR  IAH</span></span>
+<span><span class="co">#&gt; 2: 2013     1   1      533            529         4      850            830        20      UA   1714  N24211    LGA  IAH</span></span>
+<span><span class="co">#&gt;    air_time distance hour minute           time_hour origin_dest</span></span>
+<span><span class="co">#&gt; 1:      227     1400    5     15 2013-01-01 05:00:00      EWRIAH</span></span>
+<span><span class="co">#&gt; 2:      227     1416    5     29 2013-01-01 05:00:00      LGAIAH</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="group-by">Group-by<a class="anchor" aria-label="anchor" href="#group-by"></a>
 </h3>
 <p>Starting from <a href="https://diskframe.com" class="external-link">disk.frame</a> v0.3.0, there is <code>group_by</code> support for a limited set of functions. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="va">as.disk.frame</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, 
-    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, 
-    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, 
-    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="va">collect</span></code></pre></div>
-<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">report a bug</a>.</p>
+<code class="sourceCode R"><span><span class="va">result_from_disk.frame</span> <span class="op">=</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="va">as.disk.frame</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, </span>
+<span>    sumx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">/</span><span class="va">Sepal.Width</span><span class="op">)</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Petal.Length</span><span class="op">)</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span><span class="op">)</span>, </span>
+<span>    l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">/</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="va">collect</span></span></code></pre></div>
+<p>The results should be exactly the same as if applying the same group-by operations on a data.frame. If not, please <a href="https://github.com/DiskFrame/disk.frame/issues" class="external-link">report a bug</a>.</p>
 <div class="section level4">
 <h4 id="list-of-supported-group-by-functions">List of supported group-by functions<a class="anchor" aria-label="anchor" href="#list-of-supported-group-by-functions"></a>
 </h4>
-<p>If a function you like is missing, please make a feature request <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">here</a>. It is a limitation that function that depend on the order a column can only be obtained using estimated methods.</p>
+<p>If a function you like is missing, please make a feature request <a href="https://github.com/DiskFrame/disk.frame/issues" class="external-link">here</a>. It is a limitation that function that depend on the order a column can only be obtained using estimated methods.</p>
 <table class="table">
+<colgroup>
+<col width="18%">
+<col width="21%">
+<col width="59%">
+</colgroup>
 <thead><tr class="header">
 <th>Function</th>
 <th>Exact/Estimate</th>
@@ -376,74 +378,36 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="example-datatable-syntax">Example: data.table syntax<a class="anchor" aria-label="anchor" href="#example-datatable-syntax"></a>
-</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span>
-  <span class="va">grp_by_stage1</span> <span class="op">&lt;-</span> 
-    <span class="va">flights.df</span><span class="op">[</span>
-      keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"month"</span>, <span class="st">"distance"</span><span class="op">)</span>, <span class="co"># this analysis only required "month" and "dist" so only load those</span>
-      <span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span>, 
-      <span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span>, 
-      <span class="fu">.</span><span class="op">(</span>qtr <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="st">"Q1"</span>, <span class="st">"Q2"</span><span class="op">)</span><span class="op">)</span>
-      <span class="op">]</span>
-<span class="op">)</span>
-<span class="co">#&gt; data.table syntax for disk.frame may be moved to a separate package in the future</span>
-
-<span class="va">grp_by_stage1</span>
-<span class="co">#&gt;    qtr sum_dist</span>
-<span class="co">#&gt; 1:  Q1 27188805</span>
-<span class="co">#&gt; 2:  Q1   953578</span>
-<span class="co">#&gt; 3:  Q1 53201567</span>
-<span class="co">#&gt; 4:  Q2  3383527</span>
-<span class="co">#&gt; 5:  Q2 58476357</span>
-<span class="co">#&gt; 6:  Q2 27397926</span></code></pre></div>
-<p>The result <code>grp_by_stage1</code> is a <code>data.table</code> so we can finish off the two-stage aggregation using data.table syntax</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">grp_by_stage2</span> <span class="op">=</span> <span class="va">grp_by_stage1</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>sum_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sum_dist</span><span class="op">)</span><span class="op">)</span>, <span class="va">qtr</span><span class="op">]</span>
-
-<span class="va">grp_by_stage2</span>
-<span class="co">#&gt;    qtr sum_dist</span>
-<span class="co">#&gt; 1:  Q1 81343950</span>
-<span class="co">#&gt; 2:  Q2 89257810</span></code></pre></div>
-</div>
-<div class="section level2">
 <h2 id="basic-info">Basic info<a class="anchor" aria-label="anchor" href="#basic-info"></a>
 </h2>
 <p>To find out where the disk.frame is stored on disk:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># where is the disk.frame stored</span>
-<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\Rtmpuc6nG8\\file1ad034f6ff6.df"</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># where is the disk.frame stored</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="st">"path"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "C:\\Users\\RTX2080\\AppData\\Local\\Temp\\RtmpMFKExh\\file37984a277309.df"</span></span></code></pre></div>
 <p>A number of data.frame functions are implemented for disk.frame</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get first few rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin dest</span></span>
+<span><span class="co">#&gt; 1: 2013     1   1      517            515         2      830            819        11      UA   1545  N14228    EWR  IAH</span></span>
+<span><span class="co">#&gt;    air_time distance hour minute           time_hour</span></span>
+<span><span class="co">#&gt; 1:      227     1400    5     15 2013-01-01 05:00:00</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get last few rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier flight tailnum origin dest</span></span>
+<span><span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA           1020        NA      MQ   3531  N839MQ    LGA  RDU</span></span>
+<span><span class="co">#&gt;    air_time distance hour minute           time_hour</span></span>
+<span><span class="co">#&gt; 1:       NA      431    8     40 2013-09-30 08:00:00</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get first few rows</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt; 1: 2013     1   1      517            515         2      830</span>
-<span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest</span>
-<span class="co">#&gt; 1:            819        11      UA   1545  N14228    EWR  IAH</span>
-<span class="co">#&gt;    air_time distance hour minute           time_hour</span>
-<span class="co">#&gt; 1:      227     1400    5     15 2013-01-01 05:00:00</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># number of rows</span></span>
+<span><span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 336776</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get last few rows</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">flights.df</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt;    year month day dep_time sched_dep_time dep_delay arr_time</span>
-<span class="co">#&gt; 1: 2013     9  30       NA            840        NA       NA</span>
-<span class="co">#&gt;    sched_arr_time arr_delay carrier flight tailnum origin dest</span>
-<span class="co">#&gt; 1:           1020        NA      MQ   3531  N839MQ    LGA  RDU</span>
-<span class="co">#&gt;    air_time distance hour minute           time_hour</span>
-<span class="co">#&gt; 1:       NA      431    8     40 2013-09-30 08:00:00</span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># number of rows</span>
-<span class="fu"><a href="reference/ncol_nrow.html">nrow</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
-<span class="co">#&gt; [1] 336776</span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># number of columns</span>
-<span class="fu"><a href="reference/ncol_nrow.html">ncol</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span>
-<span class="co">#&gt; [1] 19</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># number of columns</span></span>
+<span><span class="fu"><a href="reference/ncol_nrow.html">ncol</a></span><span class="op">(</span><span class="va">flights.df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 19</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="hex-logo">Hex logo<a class="anchor" aria-label="anchor" href="#hex-logo"></a>
@@ -455,7 +419,7 @@
 <div class="section level2">
 <h2 id="contributors">Contributors<a class="anchor" aria-label="anchor" href="#contributors"></a>
 </h2>
-<p>This project exists thanks to all the people who contribute. <a href="https://github.com/xiaodaigh/disk.frame/graphs/contributors" class="external-link"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&amp;button=false"></a></p>
+<p>This project exists thanks to all the people who contribute. <a href="https://github.com/DiskFrame/disk.frame/graphs/contributors" class="external-link"><img src="https://opencollective.com/diskframe/contributors.svg?width=890&amp;button=false"></a></p>
 </div>
 <div class="section level2">
 <h2 id="current-priorities">Current Priorities<a class="anchor" aria-label="anchor" href="#current-priorities"></a>
@@ -595,9 +559,9 @@
 <ul>
 <li>Write a blogpost about your <a href="https://diskframe.com" class="external-link">disk.frame</a> usage or experience. I would love to learn more about how <a href="https://diskframe.com" class="external-link">disk.frame</a> has helped you</li>
 <li>Tweet or post on social media (e.g LinkedIn) about <a href="https://diskframe.com" class="external-link">disk.frame</a> to help promote it</li>
-<li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">raising an issue here</a>
+<li>Bring attention to typos and grammatical errors by correcting and making a PR. Or simply by <a href="https://github.com/DiskFrame/disk.frame/issues" class="external-link">raising an issue here</a>
 </li>
-<li>Star the <a href="https://github.com/xiaodaigh/disk.frame" class="external-link"><code>{disk.frame}</code> Github repo</a>
+<li>Star the <a href="https://github.com/DiskFrame/disk.frame" class="external-link"><code>{disk.frame}</code> Github repo</a>
 </li>
 <li>Star any repo that <a href="https://diskframe.com" class="external-link">disk.frame</a> depends on e.g. <a href="https://github.com/fstpackage/fst" class="external-link"><code>{fst}</code></a> and <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>{future}</code></a>
 </li>
@@ -606,7 +570,7 @@
 <div class="section level2">
 <h2 id="related-repos">Related Repos<a class="anchor" aria-label="anchor" href="#related-repos"></a>
 </h2>
-<p><a href="https://github.com/xiaodaigh/disk.frame-fannie-mae-example" class="external-link uri">https://github.com/xiaodaigh/disk.frame-fannie-mae-example</a> <a href="https://github.com/xiaodaigh/disk.frame-vs" class="external-link uri">https://github.com/xiaodaigh/disk.frame-vs</a> <a href="https://github.com/xiaodaigh/disk.frame.ml" class="external-link uri">https://github.com/xiaodaigh/disk.frame.ml</a> <a href="https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame" class="external-link uri">https://github.com/xiaodaigh/courses-larger-than-ram-data-manipulation-with-disk-frame</a></p>
+<p><a href="https://github.com/DiskFrame/disk.frame-fannie-mae-example" class="external-link uri">https://github.com/DiskFrame/disk.frame-fannie-mae-example</a> <a href="https://github.com/DiskFrame/disk.frame-vs" class="external-link uri">https://github.com/DiskFrame/disk.frame-vs</a> <a href="https://github.com/DiskFrame/disk.frame.ml" class="external-link uri">https://github.com/DiskFrame/disk.frame.ml</a></p>
 </div>
 <div class="section level2">
 <h2 id="download-counts--build-status">Download Counts &amp; Build Status<a class="anchor" aria-label="anchor" href="#download-counts--build-status"></a>
@@ -622,8 +586,8 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=disk.frame" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/xiaodaigh/disk.frame/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/DiskFrame/disk.frame/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/DiskFrame/disk.frame/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -665,7 +629,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Increase or decrease the number of chunks in the disk.frame</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/rechunk.r" class="external-link"><code>R/rechunk.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/rechunk.r" class="external-link"><code>R/rechunk.r</code></a></small>
     <div class="hidden name"><code>rechunk.Rd</code></div>
     </div>
 
@@ -96,50 +96,59 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rechunk</span><span class="op">(</span>
-  <span class="va">df</span>,
-  nchunks <span class="op">=</span> <span class="fu">disk.frame</span><span class="fu">::</span><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"path"</span>, exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
-  shardby <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rechunk</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  nchunks <span class="op">=</span> <span class="fu">disk.frame</span><span class="fu">::</span><span class="fu"><a href="nchunks.html">nchunks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"path"</span>, exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  shardby <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>df</dt>
 <dd><p>the disk.frame to rechunk</p></dd>
+
+
 <dt>nchunks</dt>
 <dd><p>number of chunks</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>the output directory</p></dd>
+
+
 <dt>shardby</dt>
 <dd><p>the shardkeys</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>overwrite the output directory</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># create a disk.frame with 2 chunks in tempdir()</span></span>
-<span class="r-in"><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span></span>
-<span class="r-in"><span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr\back_up_tmp_dir2b64104a78f2. You can recover there files until you restart your R session</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\RtmpCo1OFr\file2b64fd96c35.df"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a disk.frame with 2 chunks in tempdir()</span></span></span>
+<span class="r-in"><span><span class="va">cars.df</span> <span class="op">=</span> <span class="fu"><a href="as.disk.frame.html">as.disk.frame</a></span><span class="op">(</span><span class="va">cars</span>, nchunks <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># re-chunking cars.df to 3 chunks, done "in-place" to the same folder as cars.df</span></span></span>
+<span class="r-in"><span><span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> files have been backed up to temporary dir C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk\back_up_tmp_dir361c296a33c9. You can recover there files until you restart your R session</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> path: "C:\Users\RTX2080\AppData\Local\Temp\Rtmp2LOQEk\file361c21383ec.df"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nchunks: 3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> nrow (at source): 50</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ncol (at source): 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">new_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># re-chunking cars.df to 4 chunks, shard by speed, and done "out-of-place" to a new directory</span></span>
-<span class="r-in"><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">4</span>, outdir<span class="op">=</span><span class="va">new_path</span>, shardby <span class="op">=</span> <span class="st">"speed"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">new_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".df"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># re-chunking cars.df to 4 chunks, shard by speed, and done "out-of-place" to a new directory</span></span></span>
+<span class="r-in"><span><span class="va">cars2.df</span> <span class="op">=</span> <span class="fu">rechunk</span><span class="op">(</span><span class="va">cars.df</span>, <span class="fl">4</span>, outdir<span class="op">=</span><span class="va">new_path</span>, shardby <span class="op">=</span> <span class="st">"speed"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Appending disk.frames: </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># clean up cars.df</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># clean up cars.df</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars.df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="delete.html">delete</a></span><span class="op">(</span><span class="va">cars2.df</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -154,7 +163,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

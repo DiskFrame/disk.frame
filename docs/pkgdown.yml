@@ -1,5 +1,5 @@
-pandoc: 2.14.0.3
-pkgdown: 2.0.2
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   01-intro: 01-intro.html
@@ -14,5 +14,5 @@ articles:
   10-group-by: 10-group-by.html
   11-custom-group-by: 11-custom-group-by.html
   88-trouble-shooting: 88-trouble-shooting.html
-last_built: 2022-02-14T07:00Z
+last_built: 2023-02-04T12:35Z
 

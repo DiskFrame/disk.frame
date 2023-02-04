@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disk.frame</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +72,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/xiaodaigh/disk.frame/" class="external-link">
+  <a href="https://github.com/DiskFrame/disk.frame/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,7 +87,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Set up disk.frame environment</h1>
-    <small class="dont-index">Source: <a href="https://github.com/xiaodaigh/disk.frame/blob/HEAD/R/setup.r" class="external-link"><code>R/setup.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/DiskFrame/disk.frame/blob/HEAD/R/setup.r" class="external-link"><code>R/setup.r</code></a></small>
     <div class="hidden name"><code>setup_disk.frame.Rd</code></div>
     </div>
 
@@ -96,45 +96,52 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">setup_disk.frame</span><span class="op">(</span>
-  workers <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,
-  future_backend <span class="op">=</span> <span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/multisession.html" class="external-link">multisession</a></span>,
-  <span class="va">...</span>,
-  gui <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">setup_disk.frame</span><span class="op">(</span></span>
+<span>  workers <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  future_backend <span class="op">=</span> <span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/multisession.html" class="external-link">multisession</a></span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  gui <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>workers</dt>
 <dd><p>the number of workers (background R processes in the</p></dd>
+
+
 <dt>future_backend</dt>
 <dd><p>which future backend to use for parallelization</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to `future::plan`</p></dd>
+
+
 <dt>gui</dt>
 <dd><p>Whether to use a Graphical User Interface (GUI) for selecting the options. Defaults to FALSE</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="co"># setup disk.frame to use multiple workers these may use more than two</span></span>
-<span class="r-in">  <span class="co"># cores, and is therefore not allowed on CRAN. Hence it's set to run only in</span></span>
-<span class="r-in">  <span class="co"># interactive session</span></span>
-<span class="r-in">  <span class="fu">setup_disk.frame</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  </span>
-<span class="r-in">  <span class="co"># use a Shiny GUI to adjust settings</span></span>
-<span class="r-in">  <span class="co"># only run in interactive()</span></span>
-<span class="r-in">  <span class="fu">setup_disk.frame</span><span class="op">(</span>gui <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># set the number workers to 2</span></span>
-<span class="r-in"><span class="fu">setup_disk.frame</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="co"># setup disk.frame to use multiple workers these may use more than two</span></span></span>
+<span class="r-in"><span>  <span class="co"># cores, and is therefore not allowed on CRAN. Hence it's set to run only in</span></span></span>
+<span class="r-in"><span>  <span class="co"># interactive session</span></span></span>
+<span class="r-in"><span>  <span class="fu">setup_disk.frame</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># use a Shiny GUI to adjust settings</span></span></span>
+<span class="r-in"><span>  <span class="co"># only run in interactive()</span></span></span>
+<span class="r-in"><span>  <span class="fu">setup_disk.frame</span><span class="op">(</span>gui <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set the number workers to 2</span></span></span>
+<span class="r-in"><span><span class="fu">setup_disk.frame</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The number of workers available for disk.frame is 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># if you do not wish to use multiple workers you can set it to sequential</span></span>
-<span class="r-in"><span class="fu">setup_disk.frame</span><span class="op">(</span>future_backend<span class="op">=</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/sequential.html" class="external-link">sequential</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># if you do not wish to use multiple workers you can set it to sequential</span></span></span>
+<span class="r-in"><span><span class="fu">setup_disk.frame</span><span class="op">(</span>future_backend<span class="op">=</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/sequential.html" class="external-link">sequential</a></span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Detected 1 unknown future arguments: 'workers'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The number of workers available for disk.frame is 1</span>
 </code></pre></div>
@@ -151,7 +158,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
