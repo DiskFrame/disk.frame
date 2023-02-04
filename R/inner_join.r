@@ -25,7 +25,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, suffix=c(".x", ".y"
   
   if("data.frame" %in% class(y)) {
     res = cmap_dfr(x, ~{
-      inner_join(.x, y, by = by, copy = copy, suffix=suffix, ..., keep=keep)
+      inner_join(.x, y, by = by, copy = copy, suffix=suffix, keep=keep)
     }, .progress = .progress)
     return(res)
   } else if("disk.frame" %in% class(y)) {
@@ -49,7 +49,7 @@ inner_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, suffix=c(".x", ".y"
         } else if (is.null(.x)) {
           return(data.table())
         }
-        inner_join(.x, .y, by = by, copy = copy, suffix = suffix, ..., keep=keep)
+        inner_join(.x, .y, by = by, copy = copy, suffix = suffix, keep=keep)
       }, outdir = outdir, .progress = .progress, overwrite = overwrite)
       return(res)
     } else {

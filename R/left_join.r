@@ -39,9 +39,7 @@ left_join.disk.frame = function(x, y, by=NULL, copy=FALSE, suffix=c(".x", ".y"),
         } else if (is.null(.x)) {
           return(data.table())
         }
-        left_join(.x, .y, by = by, copy = copy, suffix=suffix, ..., keep=keep)
-        #llj = purrr::lift(dplyr::left_join)
-        #llj(c(list(x=.x, y =.y, by = by, copy = copy), dotdotdot))
+        left_join(.x, .y, by = by, copy = copy, suffix=suffix, keep=keep)
       }, outdir = outdir)
       return(res)
     } else {

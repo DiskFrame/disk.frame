@@ -1,3 +1,7 @@
+# disk.frame 0.8.0
+* Supports dplyr 1.1+
+* Removed data.table syntax
+
 # disk.frame 0.7.3
 * Bugfixes Github 388
 

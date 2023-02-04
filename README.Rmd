@@ -206,31 +206,6 @@ If a function you like is missing, please make a feature request [here](https://
 | `IQR` | Estimate |  |
 
 
-## Example: data.table syntax
-```{r}
-library(data.table)
-
-suppressWarnings(
-  grp_by_stage1 <- 
-    flights.df[
-      keep = c("month", "distance"), # this analysis only required "month" and "dist" so only load those
-      month <= 6, 
-      .(sum_dist = sum(distance)), 
-      .(qtr = ifelse(month <= 3, "Q1", "Q2"))
-      ]
-)
-
-grp_by_stage1
-```
-
-The result `grp_by_stage1` is a `data.table` so we can finish off the two-stage aggregation using data.table syntax
-
-```{r}
-grp_by_stage2 = grp_by_stage1[,.(sum_dist = sum(sum_dist)), qtr]
-
-grp_by_stage2
-```
-
 ## Basic info
 
 To find out where the disk.frame is stored on disk:

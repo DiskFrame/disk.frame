@@ -4,7 +4,7 @@
 \alias{as.data.frame.disk.frame}
 \title{Convert disk.frame to data.frame by collecting all chunks}
 \usage{
-\method{as.data.frame}{disk.frame}(x, row.names, optional, ...)
+\method{as.data.frame}{disk.frame}(x, row.names = NULL, optional = FALSE, ...)
 }
 \arguments{
 \item{x}{a disk.frame}

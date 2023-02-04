@@ -31,7 +31,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   
   if("data.frame" %in% class(y)) {
     tmp = cmap.disk.frame(x, ~{
-      anti_join(.x, y, by = by, copy = copy, ...)
+      anti_join(.x, y, by = by, copy = copy)
     }, .progress = .progress)
     
     return(tmp)
@@ -59,7 +59,7 @@ anti_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
         } else if (is.null(.x)) {
           return(data.table())
         }
-        anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        anti_join(.x, .y, by = by, copy = copy)
       }, outdir = outdir, .progress = .progress)
       return(res)
     } else {

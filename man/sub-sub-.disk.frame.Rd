@@ -2,7 +2,6 @@
 % Please edit documentation in R/data.table.r
 \name{[[.disk.frame}
 \alias{[[.disk.frame}
-\alias{[.disk.frame}
 \title{[[ interface for disk.frame using fst backend}
 \usage{
 \method{[[}{disk.frame}(
@@ -14,8 +13,6 @@
   fill = FALSE,
   idcol = NULL
 )
-
-\method{[}{disk.frame}(df, ...)
 }
 \arguments{
 \item{df}{a disk.frame}

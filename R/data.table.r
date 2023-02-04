@@ -17,8 +17,9 @@
 #' 
 #' # clean up
 #' delete(cars.df)
-`[.disk.frame` <- function(df, ..., keep = NULL, rbind = TRUE, use.names = TRUE, fill = FALSE, idcol = NULL) {
-  message("data.table syntax for disk.frame may be moved to a separate package in the future")
+`[[.disk.frame` <- function(df, ..., keep = NULL, rbind = TRUE, use.names = TRUE, fill = FALSE, idcol = NULL) {
+  #message("data.table syntax for disk.frame may be moved to a separate package in the future")
+  #browser()
 
   keep_for_future = keep
   
@@ -26,15 +27,15 @@
   
   globals_and_pkgs = find_globals_recursively(code, parent.frame())
   
-  res = future.apply::future_lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
-  #res = lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
+  #res = future.apply::future_lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
+  res = lapply(get_chunk_ids(df, full.names = TRUE), function(chunk_id) {
     chunk = get_chunk(df, chunk_id, full.names=TRUE, keep = keep_for_future)
     data.table::setDT(chunk)
     res = eval(code, envir=globals_and_pkgs$globals)
     res
   }
-  , future.packages = c("data.table", globals_and_pkgs$packages),
-   future.seed=TRUE
+  #, future.packages = c("data.table", globals_and_pkgs$packages),
+  # future.seed=TRUE
   )
 
   if(rbind & all(sapply(res, function(x) "data.frame" %in% class(x)))) {
@@ -49,7 +50,8 @@
 #' @export
 #' @rdname data.table
 `[.disk.frame` <- function(df, ...) {
-  message("`df[...] syntax for {disk.frame} has been deprecated. Use `df[[...]]` instead")
+  stop("[ data.table syntax is no longer supported")
+  warning("`df[...] syntax for {disk.frame} has been deprecated. Use `df[[...]]` instead")
   `[[.disk.frame`(df, ...)
 }
 

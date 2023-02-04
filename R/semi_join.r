@@ -18,7 +18,7 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
   
   if("data.frame" %in% class(y)) {
     tmp = cmap_dfr(x, ~{
-      semi_join(.x, y, by = by, copy = copy, ...)
+      semi_join(.x, y, by = by, copy = copy)
     }, .progress = .progress)
     
     return(tmp)
@@ -44,7 +44,7 @@ semi_join.disk.frame <- function(x, y, by=NULL, copy=FALSE, ..., outdir = tempfi
         } else if (is.null(.x)) {
           return(data.table())
         }
-        semi_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite)
+        semi_join(.x, .y, by = by, copy = copy)
       }, outdir = outdir, .progress = .progress)
       return(res)
     } else {
