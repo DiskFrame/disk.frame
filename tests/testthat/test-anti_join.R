@@ -1,7 +1,7 @@
 context("test-anti_join")
 
 setup({
-  setup_disk.frame(workers = 2)
+  setup_disk.frame(workers = 1)
   
   a = data.frame(a = 1:100, b = 1:100)
   b = data.frame(a = 51:150, b = 1:100)
