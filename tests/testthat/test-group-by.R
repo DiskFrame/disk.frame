@@ -271,13 +271,13 @@ test_that("tests for across", {
   # TODO use a prototype approach?
   result2 <- iris %>% 
     group_by(across(where(is.numeric))) %>% 
-    summarize(Species)
+    summarize(length(Species))
   
-  testthat::expect_error({result1 = iris %>% 
+  testthat::expect_error(result1 <- iris %>% 
     as.disk.frame() %>% 
     group_by(across(where(is.numeric))) %>% 
-    summarize(Species) %>% 
-    collect}
+    summarize(length(Species)) %>% 
+    collect
   )
   
   #expect_equal(result1, result2)

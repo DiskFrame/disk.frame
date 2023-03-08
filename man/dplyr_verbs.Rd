@@ -31,12 +31,16 @@ chunk_arrange(.data, ...)
 
 chunk_distinct(.data, ...)
 
-\method{glimpse}{disk.frame}(.data, ...)
+\method{glimpse}{disk.frame}(x, width = NULL, ...)
 }
 \arguments{
 \item{.data}{a disk.frame}
 
 \item{...}{Same as the dplyr functions}
+
+\item{x}{`dplyr::glimpse` parameter}
+
+\item{width}{`dplyr::glimpse` parameter}
 }
 \description{
 Please see the dplyr document for their usage. Please note

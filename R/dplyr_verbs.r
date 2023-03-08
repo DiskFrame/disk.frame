@@ -6,6 +6,8 @@
 #'   group_by group_by glimpse summarise
 #' @param ... Same as the dplyr functions
 #' @param .data a disk.frame
+#' @param x `dplyr::glimpse` parameter
+#' @param width `dplyr::glimpse` parameter
 #' @rdname dplyr_verbs
 #' @family dplyr verbs
 #' @examples
@@ -140,6 +142,6 @@ chunk_ungroup = create_chunk_mapper(dplyr::ungroup)
 
 #' @export
 #' @rdname dplyr_verbs
-glimpse.disk.frame <- function(.data, ...) {
-  glimpse(head(.data, ...), ...)
+glimpse.disk.frame <- function(x, width = NULL, ...) {
+  glimpse(head(x, ...), width = width, ...)
 }

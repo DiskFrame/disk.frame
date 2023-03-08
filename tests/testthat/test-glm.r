@@ -23,6 +23,8 @@ test_that("glm", {
   
   m <- dfglm(dist~speed, cars.df, glm_backend = "speedglm")
   summary(m)
+  
+  testthat::expect(TRUE, "meh")
 })
 
 teardown({

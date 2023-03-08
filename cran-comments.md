@@ -1,11 +1,12 @@
-## Submission for v0.7.2
-* Bugfix
+## Submission for v0.8.1
+* Fixed a new warniing on CRAN
+
 
 ## Test environments
-* local Windows 11 Pro install, R 4.1.2
-* local Windows 11 Pro install, R devel (as of 2022-03-07)
-* local Linux/Ubuntu install, R 4.1.2
-* local Linux/Ubuntu install, R devel (as of 2022-03-07)
+* local Windows 11 Pro install, R 4.2.2
+* local Windows 11 Pro install, R devel (as of 2023-02-04)
+* local Linux/Ubuntu install, R 4.4.2
+* local Linux/Ubuntu install, R devel (as of 2022-02-04)
 
 ## R CMD check results
 There were no ERRORs nor WARNINGs nor NOTE when run locally.

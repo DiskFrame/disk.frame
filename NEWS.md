@@ -1,3 +1,7 @@
+# disk.frame 0.8.1
+* Fixed warning about `glimpse`
+
+
 # disk.frame 0.8.0
 * Supports dplyr 1.1+
 * Removed data.table syntax
