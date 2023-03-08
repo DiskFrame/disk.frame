@@ -1,5 +1,5 @@
 ## Submission for v0.8.1
-* Fixed a new warniing on CRAN
+* Fixed a new warning on CRAN
 
 
 ## Test environments
