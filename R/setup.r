@@ -3,7 +3,7 @@
 #' @param future_backend which future backend to use for parallelization
 #' @param gui Whether to use a Graphical User Interface (GUI) for selecting the options. Defaults to FALSE
 #' @param ... passed to `future::plan`
-#' @importFrom future plan multiprocess nbrOfWorkers sequential
+#' @importFrom future plan multisession nbrOfWorkers sequential
 #' @export
 #' @examples 
 #' if (interactive()) {
