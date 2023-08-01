@@ -1,8 +1,8 @@
 Type: Package
 Package: disk.frame
 Title: Larger-than-RAM Disk-Based Data Manipulation Framework
-Version: 0.8.1
-Date: 2023-03-09
+Version: 0.8.3
+Date: 2023-08-01
 Authors@R: c(
   person("Dai", "ZJ", email = "zhuojia.dai@gmail.com", role = c("aut", "cre")),
   person("Jacky", "Poon", role = c("ctb"))
@@ -43,9 +43,6 @@ Suggests:
     LaF,
     readr,
     rstudioapi,
-    biglm,
-    biglmm,
-    speedglm,
     broom,
     ggplot2
 LinkingTo: 

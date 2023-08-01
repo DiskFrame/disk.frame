@@ -1,3 +1,6 @@
+# disk.frame 0.8.2
+* Removed references to defunct `future::multiprocess`
+
 # disk.frame 0.8.1
 * Fixed warning about `glimpse`
 

@@ -1,12 +1,12 @@
-## Submission for v0.8.1
-* Fixed a new warning on CRAN
+## Submission for v0.8.3
+* Fixed a reference to defunct `future::multiprocess`
 
 
 ## Test environments
-* local Windows 11 Pro install, R 4.2.2
-* local Windows 11 Pro install, R devel (as of 2023-02-04)
-* local Linux/Ubuntu install, R 4.4.2
-* local Linux/Ubuntu install, R devel (as of 2022-02-04)
+* local Windows 11 Pro install, R 4.3.1
+* local Windows 11 Pro install, R devel (as of 2023-08-01)
+* local Linux/Ubuntu install, R 4.3.1
+* local Linux/Ubuntu install, R devel (as of 2022-08-01)
 
 ## R CMD check results
 There were no ERRORs nor WARNINGs nor NOTE when run locally.
