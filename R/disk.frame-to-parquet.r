@@ -4,6 +4,16 @@
 #' @param df a disk.frame or a path to a disk.frame
 #' @param outdir the path to save the parquet files
 disk.frame_to_parquet <- function(df, outdir) {
+  
+  if (!requireNamespace("arrow", quietly = TRUE)) {
+    msg <- paste(
+      "The 'arrow' package is required but is not available. Install it with:",
+      'install.packages("arrow", repos = c("https://p3m.dev/cran/2024-02-02", getOption("repos")))',
+      sep = "\n"
+    )
+    stop(msg)
+  }
+  
   if("disk.frame" %in% class(df)) {
     path = attr(df, "path")
   } else {
