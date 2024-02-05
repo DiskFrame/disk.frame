@@ -31,8 +31,7 @@ Imports:
     benchmarkme,
     purrr (>= 0.3.2),
     globals,
-    rlang,
-    arrow
+    rlang
 Depends:
     R (>= 4.0),
     dplyr (>= 1.0.0)
@@ -47,10 +46,11 @@ Suggests:
     biglmm,
     speedglm,
     broom,
-    ggplot2
+    ggplot2,
+    arrow
 LinkingTo: 
     Rcpp
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Encoding: UTF-8
 URL: https://diskframe.com
 BugReports: https://github.com/DiskFrame/disk.frame/issues
