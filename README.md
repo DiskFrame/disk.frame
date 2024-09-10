@@ -370,12 +370,6 @@ The work priorities at this stage are
 | [Emma goes to useR! 2019](https://emmavestesson.netlify.app/2019/07/user2019/)                                                        | English  | Emma Vestesson  | 2019-07-16 | The first mention of `{disk.frame}` in a blog post                                                 |
 | [深入对比数据科学工具箱：Python3 和 R 之争(2020版)](https://segmentfault.com/a/1190000021653567)                                      | Chinese  | Harry Zhu       | 2020-02-16 | Mentions disk.frame                                                                                |
 
-### Interested in learning `{disk.frame}` in a structured course?
-
-Please register your interest at:
-
-<https://leanpub.com/c/taminglarger-than-ramwithdiskframe>
-
 ## Open Collective
 
 If you like `{disk.frame}` and want to speed up its development or
